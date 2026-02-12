@@ -1512,11 +1512,18 @@ export default function Home() {
 
     try {
       // Combine date and time (all-day uses 00:00–23:59)
-      const startTime = newEvent.allDay ? '00:00' : newEvent.startTime || '00:00'
-      const endTime = newEvent.allDay ? '23:59' : (newEvent.endDate && newEvent.endTime ? newEvent.endTime : '23:59')
-      const endDate = newEvent.endDate || newEvent.startDate
-      const startDateTime = new Date(`${newEvent.startDate}T${startTime}`)
-      const endDateTime = new Date(`${endDate}T${endTime}`)
+      let startDateTime: Date
+      let endDateTime: Date
+      if (newEvent.allDay) {
+        const endDate = newEvent.endDate || newEvent.startDate
+        startDateTime = new Date(`${newEvent.startDate}T00:00`)
+        endDateTime = new Date(`${endDate}T23:59`)
+      } else {
+        startDateTime = new Date(`${newEvent.startDate}T${newEvent.startTime || '00:00'}`)
+        endDateTime = newEvent.endDate && newEvent.endTime
+          ? new Date(`${newEvent.endDate}T${newEvent.endTime}`)
+          : new Date(startDateTime.getTime() + 2 * 60 * 60 * 1000)
+      }
 
       const eventData = {
         title: newEvent.title,

@@ -45,6 +45,7 @@ interface Event {
   title: string
   date: string
   time: string
+  allDay?: boolean
   location: string
   status: 'draft' | 'live'
   attendees: number
@@ -84,6 +85,7 @@ const translations = {
     save: 'Save',
     create: 'Create',
     deleteConfirm: 'Are you sure you want to delete this event?',
+    allDay: 'All day',
     filterByDate: 'Date',
     filterByReadiness: 'Readiness',
     filterByTasks: 'Tasks',
@@ -125,6 +127,7 @@ const translations = {
     save: 'Mentés',
     create: 'Létrehozás',
     deleteConfirm: 'Biztosan törölni szeretnéd ezt az eseményt?',
+    allDay: 'Egész nap',
     filterByDate: 'Dátum',
     filterByReadiness: 'Készültség',
     filterByTasks: 'Teendők',
@@ -166,6 +169,7 @@ const translations = {
     save: 'Speichern',
     create: 'Erstellen',
     deleteConfirm: 'Möchtest du dieses Event wirklich löschen?',
+    allDay: 'Ganztägig',
     filterByDate: 'Datum',
     filterByReadiness: 'Bereitschaft',
     filterByTasks: 'Aufgaben',
@@ -207,6 +211,7 @@ const translations = {
     save: 'Сохранить',
     create: 'Создать',
     deleteConfirm: 'Вы уверены, что хотите удалить это событие?',
+    allDay: 'Весь день',
     filterByDate: 'Дата',
     filterByReadiness: 'Готовность',
     filterByTasks: 'Задачи',
@@ -588,7 +593,7 @@ function EventCardApple({
         <div className="flex items-center gap-2 text-[13px]">
           <CalendarIcon className="w-4 h-4 flex-shrink-0" style={{ color: 'rgba(60, 60, 67, 0.3)' }} />
           <span style={{ color: 'rgba(60, 60, 67, 0.6)' }}>
-            {formatDate(event.date)} · {event.time}
+            {formatDate(event.date)} · {event.allDay ? t.allDay : event.time}
           </span>
         </div>
         <div className="flex items-center gap-2 text-[13px]">
@@ -668,6 +673,7 @@ export default function ManagePage() {
     title: '',
     date: '',
     time: '',
+    allDay: false,
     location: '',
     type: 'public' as 'public' | 'private',
     status: 'draft' as 'draft' | 'live',
@@ -856,6 +862,7 @@ export default function ManagePage() {
       title: '',
       date: '',
       time: '',
+      allDay: false,
       location: '',
       type: 'public',
       status: 'draft',
@@ -869,6 +876,7 @@ export default function ManagePage() {
       title: event.title,
       date: event.date,
       time: event.time,
+      allDay: event.allDay,
       location: event.location,
       type: event.type,
       status: event.status,
@@ -1250,17 +1258,31 @@ export default function ManagePage() {
                   >
                     {t.time}
                   </label>
-                  <input
-                    type="time"
-                    value={formData.time}
-                    onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl text-[17px] transition-all outline-none"
-                    style={{ 
-                        backgroundColor: 'rgba(118, 118, 128, 0.12)',
-                        color: '#000',
-                      }}
-                    required
-                  />
+                  <div className="flex items-center gap-2">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={formData.allDay}
+                        onChange={(e) => setFormData({ ...formData, allDay: e.target.checked, time: e.target.checked ? '' : formData.time })}
+                        className="w-4 h-4 rounded"
+                        style={{ accentColor: '#007AFF' }}
+                      />
+                      <span className="text-[13px]" style={{ color: 'rgba(60, 60, 67, 0.8)' }}>{t.allDay}</span>
+                    </label>
+                    {!formData.allDay && (
+                      <input
+                        type="time"
+                        value={formData.time}
+                        onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                        className="flex-1 px-4 py-3 rounded-xl text-[17px] transition-all outline-none min-w-0"
+                        style={{ 
+                          backgroundColor: 'rgba(118, 118, 128, 0.12)',
+                          color: '#000',
+                        }}
+                        required
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
 

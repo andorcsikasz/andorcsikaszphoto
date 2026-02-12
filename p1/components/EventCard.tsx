@@ -33,14 +33,14 @@ export default function EventCard({ event, onClick }: EventCardProps) {
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
-      className="relative rounded-xl p-4 cursor-pointer transition-all hover:shadow-lg overflow-hidden"
+      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+      className="relative rounded-xl p-4 cursor-pointer overflow-hidden"
       style={{
         background: isOrganizer
-          ? 'linear-gradient(135deg, #0d9488 0%, #14b8a6 100%)'
-          : 'linear-gradient(135deg, #0f766e 0%, #134e4a 100%)',
+          ? 'linear-gradient(135deg, #0f4c75 0%, #1e5f8e 50%, #164a6f 100%)'
+          : 'linear-gradient(135deg, #0a3d5c 0%, #0f4c75 50%, #134e6a 100%)',
         color: '#fff',
         boxShadow: 'var(--shadow-md)',
       }}
@@ -56,7 +56,7 @@ export default function EventCard({ event, onClick }: EventCardProps) {
           style={{ backgroundColor: readinessColor }}
           initial={{ width: 0 }}
           animate={{ width: `${event.readiness}%` }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         />
       </div>
 
