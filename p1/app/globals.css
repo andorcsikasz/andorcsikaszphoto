@@ -241,6 +241,16 @@ body {
   letter-spacing: -0.01em;
 }
 
+/* Input placeholders - visible contrast */
+::placeholder {
+  color: var(--placeholder);
+  opacity: 0.9;
+}
+
+:-ms-input-placeholder {
+  color: var(--placeholder);
+}
+
 /* Typography Hierarchy - Open Sans Bold/Extra Bold */
 h1, h2, h3, h4, h5, h6 {
   line-height: 1.2;
