@@ -3,7 +3,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { resolveUserId } from '@/lib/user-resolver'
+import { resolveUserId, getOrCreateUser } from '@/lib/user-resolver'
 import { z } from 'zod'
 
 const createEventSchema = z.object({
@@ -107,10 +107,8 @@ export async function POST(request: NextRequest) {
 
     if (data.inviteeEmails?.length) {
       for (const email of data.inviteeEmails) {
-        const user = await prisma.user.findUnique({
-          where: { email },
-          select: { id: true },
-        })
+        const name = email.split('@')[0].replace(/[._]/g, ' ')
+        const user = await getOrCreateUser(email, name)
         if (user && !participantUserIds.includes(user.id)) {
           participantUserIds.push(user.id)
         }

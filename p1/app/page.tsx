@@ -61,6 +61,7 @@ import {
 import { RevolutLogo, GoogleLogo, AppleLogo } from '@/components/PaymentLogos'
 import LandingPageComponent from '@/components/LandingPage'
 import Aurora from '@/components/Aurora'
+import ConnectionsManager from '@/components/ConnectionsManager'
 
 type Language = 'en' | 'hu'
 type EventStatus = 'fixed' | 'optimal' | 'in-progress'
@@ -209,6 +210,7 @@ interface UserProfile {
   revolutTag: string
   avatarIndex: number
   email?: string
+  userId?: string
   googleConnected?: boolean
   appleConnected?: boolean
   groups?: UserGroup[]
@@ -1285,8 +1287,28 @@ export default function Home() {
   })
   const [datePickerMonth, setDatePickerMonth] = useState(new Date())
   const [newInvitee, setNewInvitee] = useState('')
+  const [selectedConnectionIds, setSelectedConnectionIds] = useState<string[]>([])
 
   const t = translations[lang]
+
+  // Sync profile to backend and get userId for connections/events
+  const syncProfileToBackend = async (profile: UserProfile): Promise<UserProfile> => {
+    const email = profile.email || `${profile.name.replace(/\s/g, '').toLowerCase()}@vibecheck.local`
+    try {
+      const res = await fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, name: profile.name }),
+      })
+      if (res.ok) {
+        const data = await res.json()
+        return { ...profile, userId: data.user?.id, email }
+      }
+    } catch {
+      // ignore - use local profile only
+    }
+    return profile
+  }
   
   // Reset create modal
   const resetCreateModal = () => {
@@ -1315,6 +1337,7 @@ export default function Home() {
       resources: [],
     })
     setNewInvitee('')
+    setSelectedConnectionIds([])
     setDatePickerMonth(new Date())
   }
   
@@ -1533,7 +1556,9 @@ export default function Home() {
         endDate: endDateTime.toISOString(),
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         isInviteOnly: newEvent.type === 'private',
-        organizerId: userProfile?.name || 'user1', // Use name as organizer ID
+        organizerId: userProfile?.userId || userProfile?.name || 'user1',
+        participantIds: selectedConnectionIds,
+        inviteeEmails: newEvent.invitees,
       }
 
       const response = await fetch('/api/events', {
@@ -1619,12 +1644,25 @@ export default function Home() {
     }
   }, [])
 
+  // Sync profile to backend on load if we have profile but no userId
+  useEffect(() => {
+    if (userProfile?.name && !userProfile?.userId && mounted) {
+      syncProfileToBackend(userProfile).then((synced) => {
+        if (synced.userId) {
+          const updated = { ...userProfile, userId: synced.userId, email: synced.email }
+          setUserProfile(updated)
+          localStorage.setItem('vibecheck_profile', JSON.stringify(updated))
+        }
+      })
+    }
+  }, [mounted, userProfile?.name, userProfile?.userId])
+
   // Refetch events when user profile changes
   useEffect(() => {
     if (userProfile) {
       fetchEvents()
     }
-  }, [userProfile?.name])
+  }, [userProfile?.name, userProfile?.userId])
   
   // Apply theme to document
   useEffect(() => {
@@ -1695,17 +1733,21 @@ export default function Home() {
   }
   
   // Complete onboarding
-  const completeOnboarding = () => {
-    localStorage.setItem('vibecheck_profile', JSON.stringify(tempProfile))
-    setUserProfile(tempProfile)
+  const completeOnboarding = async () => {
+    const synced = await syncProfileToBackend(tempProfile)
+    const final = { ...synced, userId: synced.userId ?? tempProfile.userId }
+    localStorage.setItem('vibecheck_profile', JSON.stringify(final))
+    setUserProfile(final)
     setShowOnboarding(false)
     setOnboardingStep(1)
   }
   
   // Save profile from modal
-  const saveProfile = () => {
-    localStorage.setItem('vibecheck_profile', JSON.stringify(tempProfile))
-    setUserProfile(tempProfile)
+  const saveProfile = async () => {
+    const synced = await syncProfileToBackend(tempProfile)
+    const final = { ...synced, userId: synced.userId ?? tempProfile.userId }
+    localStorage.setItem('vibecheck_profile', JSON.stringify(final))
+    setUserProfile(final)
     setShowProfileModal(false)
   }
 
@@ -1745,9 +1787,9 @@ export default function Home() {
   
   // Calculate metrics
   // Events I organize: organizerId is 'me' or matches userProfile name
-  const currentUserId = userProfile?.name || 'me'
-  const myEvents = events.filter(e => e.organizerId === 'me' || e.organizerId === currentUserId || e.organizerId === userProfile?.name)
-  const invitedEvents = events.filter(e => e.organizerId !== 'me' && e.organizerId !== currentUserId && e.organizerId !== userProfile?.name)
+  const currentUserId = userProfile?.userId || userProfile?.name || 'me'
+  const myEvents = events.filter(e => e.organizerId === 'me' || e.organizerId === currentUserId || e.organizerId === userProfile?.name || e.organizerId === userProfile?.userId)
+  const invitedEvents = events.filter(e => !myEvents.includes(e))
   const totalAttendees = events.reduce((sum, e) => sum + e.confirmedAttendees, 0)
   const totalEvents = events.length
   const upcomingCount = events.filter(e => new Date(e.date) >= new Date()).length
@@ -4822,9 +4864,18 @@ export default function Home() {
                           {lang === 'en' ? 'Invite Participants' : 'Résztvevők meghívása'}
                         </h3>
                         <p className="text-sm text-[var(--text-muted)] mt-1">
-                          {lang === 'en' ? 'Add email addresses to invite' : 'Add hozzá az email címeket'}
+                          {lang === 'en' ? 'Add from connections or enter email addresses' : 'Válassz a kapcsolatokból vagy add meg az email címeket'}
                         </p>
       </div>
+
+                      {(userProfile?.userId || userProfile?.name) && (
+                        <ConnectionsManager
+                          userId={userProfile.userId || userProfile.name}
+                          selectedIds={selectedConnectionIds}
+                          onSelectionChange={setSelectedConnectionIds}
+                          lang={lang}
+                        />
+                      )}
 
                       <div className="flex gap-3">
                         <input
