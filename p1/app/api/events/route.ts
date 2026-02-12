@@ -31,21 +31,26 @@ export async function GET(request: NextRequest) {
     const participantId = searchParams.get('participantId')
 
     const where: Record<string, unknown> = {}
+    const orConditions: Record<string, unknown>[] = []
 
     if (organizerId) {
       const resolved = await resolveUserId(organizerId)
-      if (resolved) where.organizerId = resolved
+      if (resolved) orConditions.push({ organizerId: resolved })
     }
 
     if (participantId) {
       const resolved = await resolveUserId(participantId)
       if (resolved) {
-        where.participants = {
-          some: {
-            id: resolved,
+        orConditions.push({
+          participants: {
+            some: { id: resolved },
           },
-        }
+        })
       }
+    }
+
+    if (orConditions.length > 0) {
+      where.OR = orConditions
     }
 
     const events = await prisma.event.findMany({

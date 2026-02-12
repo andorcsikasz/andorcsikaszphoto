@@ -1590,23 +1590,31 @@ export default function Home() {
         const data = await response.json()
         if (data.events && data.events.length > 0) {
           // Transform API events to match frontend Event interface
-          const transformedEvents: Event[] = data.events.map((e: any) => ({
-            id: e.id,
-            title: e.title,
-            date: e.startDate.split('T')[0],
-            time: new Date(e.startDate).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
-            location: e.location || '',
-            type: e.isInviteOnly ? 'private' : 'public',
-            attendees: e._count?.participants || 0,
-            confirmedAttendees: e._count?.participants || 0,
-            organizerId: e.organizerId,
-            organizerName: e.organizer?.name || 'Unknown',
-            readiness: e._count?.participants > 0 ? Math.round((e._count.participants / (e._count.participants + 1)) * 100) : 0,
-            hasVoting: (e._count?.decisions || 0) > 0,
-            hasTasks: (e._count?.tasks || 0) > 0,
-            hasPayment: false,
-            status: e._count?.participants > 0 ? 'fixed' : 'optimal' as EventStatus,
-          }))
+          const transformedEvents: Event[] = data.events.map((e: any) => {
+            const startDate = e.startDate || ''
+            const dateStr = typeof startDate === 'string' ? startDate.split('T')[0] : new Date(startDate).toISOString().split('T')[0]
+            const participantCount = e._count?.participants ?? 0
+            return {
+              id: e.id,
+              title: e.title,
+              date: dateStr,
+              time: new Date(startDate).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+              location: e.location || '',
+              type: e.isInviteOnly ? 'private' : 'public',
+              attendees: participantCount,
+              confirmedAttendees: participantCount,
+              organizerId: e.organizerId,
+              organizerName: e.organizer?.name || 'Unknown',
+              readiness: participantCount > 0 ? Math.round((participantCount / (participantCount + 1)) * 100) : 0,
+              hasVoting: (e._count?.decisions || 0) > 0,
+              hasTasks: false,
+              hasPayment: false,
+              status: (participantCount > 0 ? 'fixed' : 'optimal') as EventStatus,
+              tasks: [],
+              participants: [],
+              resources: [],
+            }
+          })
           setEvents(transformedEvents)
         } else {
           // Use demo events if no events from API
