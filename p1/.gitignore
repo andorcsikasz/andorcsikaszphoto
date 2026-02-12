@@ -12,4 +12,9 @@ npm-debug.log*
 .pnpm-debug.log*
 
 # Env files
+.env
 .env*.local
+
+# Prisma
+prisma/*.db
+prisma/*.db-journal
