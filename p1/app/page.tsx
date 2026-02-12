@@ -3151,7 +3151,7 @@ export default function Home() {
                     <div className="flex items-center justify-between mb-4 pt-2">
                       <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
                         event.status === 'fixed' ? 'bg-emerald-500/20 text-emerald-400' :
-                        event.status === 'optimal' ? 'bg-gray-500/20 text-[var(--text-muted)]' :
+                        event.status === 'optimal' ? 'bg-[var(--bg-tertiary)] text-[var(--text-muted)]' :
                         'bg-orange-500/20 text-orange-400'
                       }`}>
                         {getStatusLabel(event.status)}
@@ -3288,7 +3288,7 @@ export default function Home() {
                         <div className="flex items-center justify-between mb-4 pt-2">
                           <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
                             event.status === 'fixed' ? 'bg-emerald-500/20 text-emerald-400' :
-                            event.status === 'optimal' ? 'bg-gray-500/20 text-[var(--text-muted)]' :
+                            event.status === 'optimal' ? 'bg-[var(--bg-tertiary)] text-[var(--text-muted)]' :
                             'bg-orange-500/20 text-orange-400'
                           }`}>
                             {getStatusLabel(event.status)}
@@ -3471,12 +3471,12 @@ export default function Home() {
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                     {/* Events I Organize */}
                     <div className={`rounded-xl border overflow-hidden ${
-                      theme === 'light' ? 'bg-white border-gray-200' : 'bg-[var(--bg-card)] border-[var(--border-primary)]'
+                      theme === 'light' ? 'bg-[var(--bg-card)] border-[var(--border-primary)]' : 'bg-[var(--bg-card)] border-[var(--border-primary)]'
                     }`}>
                       <button
                         onClick={() => setShowAllOrganizedEvents(!showAllOrganizedEvents)}
                         className={`w-full p-5 border-b flex items-center justify-between transition-colors ${
-                          theme === 'light' ? 'border-gray-100 bg-blue-50 hover:bg-blue-100' : 'border-[var(--border-primary)] bg-blue-500/10 hover:bg-blue-500/20'
+                          theme === 'light' ? 'border-[var(--border-primary)] bg-[var(--info-bg)] hover:bg-[var(--accent-light)]' : 'border-[var(--border-primary)] bg-blue-500/10 hover:bg-blue-500/20'
                         }`}
                       >
                         <div className="flex items-center gap-3">
@@ -3498,10 +3498,10 @@ export default function Home() {
                           )}
                         </div>
                       </button>
-                      <div className={`divide-y ${theme === 'light' ? 'divide-gray-100' : 'divide-[#1F1F1F]'}`}>
+                      <div className={`divide-y ${theme === 'light' ? 'divide-[var(--border-primary)]' : 'divide-[#1F1F1F]'}`}>
                         {myEvents.length === 0 ? (
                           <div className="p-8 text-center">
-                            <CalendarIcon className={`w-12 h-12 mx-auto mb-3 ${theme === 'light' ? 'text-[var(--text-secondary)]' : 'text-gray-600'}`} />
+                            <CalendarIcon className={`w-12 h-12 mx-auto mb-3 ${theme === 'light' ? 'text-[var(--text-secondary)]' : 'text-[var(--text-muted)]'}`} />
                             <p className={theme === 'light' ? 'text-[var(--text-muted)]' : 'text-[var(--text-muted)]'}>
                               {lang === 'en' ? 'No events organized yet' : 'Még nincs szervezett esemény'}
                             </p>
@@ -3512,7 +3512,7 @@ export default function Home() {
                               key={event.id}
                               onClick={() => setSelectedEvent(event)}
                               className={`w-full p-4 transition-colors flex items-center gap-4 text-left ${
-                                theme === 'light' ? 'hover:bg-gray-50' : 'hover:bg-[var(--bg-tertiary)]'
+                                theme === 'light' ? 'hover:bg-[var(--bg-hover)]' : 'hover:bg-[var(--bg-tertiary)]'
                               }`}
                             >
                               <div className={`w-2 h-10 rounded-full ${getStatusColor(event.status)}`} />
@@ -3533,12 +3533,12 @@ export default function Home() {
 
                     {/* Events I'm Invited To */}
                     <div className={`rounded-xl border overflow-hidden ${
-                      theme === 'light' ? 'bg-white border-gray-200' : 'bg-[var(--bg-card)] border-[var(--border-primary)]'
+                      theme === 'light' ? 'bg-[var(--bg-card)] border-[var(--border-primary)]' : 'bg-[var(--bg-card)] border-[var(--border-primary)]'
                     }`}>
                       <button
                         onClick={() => setShowAllInvitedEvents(!showAllInvitedEvents)}
                         className={`w-full p-5 border-b flex items-center justify-between transition-colors ${
-                          theme === 'light' ? 'border-gray-100 bg-purple-50 hover:bg-purple-100' : 'border-[var(--border-primary)] bg-purple-500/10 hover:bg-purple-500/20'
+                          theme === 'light' ? 'border-[var(--border-primary)] bg-[var(--accent-light)] hover:bg-[var(--accent-muted)]' : 'border-[var(--border-primary)] bg-purple-500/10 hover:bg-purple-500/20'
                         }`}
                       >
                         <div className="flex items-center gap-3">
@@ -3560,10 +3560,10 @@ export default function Home() {
                           )}
                         </div>
                       </button>
-                      <div className={`divide-y ${theme === 'light' ? 'divide-gray-100' : 'divide-[#1F1F1F]'}`}>
+                      <div className={`divide-y ${theme === 'light' ? 'divide-[var(--border-primary)]' : 'divide-[#1F1F1F]'}`}>
                         {invitedEvents.length === 0 ? (
                           <div className="p-8 text-center">
-                            <UserGroupIcon className={`w-12 h-12 mx-auto mb-3 ${theme === 'light' ? 'text-[var(--text-secondary)]' : 'text-gray-600'}`} />
+                            <UserGroupIcon className={`w-12 h-12 mx-auto mb-3 ${theme === 'light' ? 'text-[var(--text-secondary)]' : 'text-[var(--text-muted)]'}`} />
                             <p className={theme === 'light' ? 'text-[var(--text-muted)]' : 'text-[var(--text-muted)]'}>
                               {lang === 'en' ? 'No invitations yet' : 'Még nincs meghívás'}
                             </p>
@@ -3574,7 +3574,7 @@ export default function Home() {
               key={event.id}
                               onClick={() => setSelectedEvent(event)}
                               className={`w-full p-4 transition-colors flex items-center gap-4 text-left ${
-                                theme === 'light' ? 'hover:bg-gray-50' : 'hover:bg-[var(--bg-tertiary)]'
+                                theme === 'light' ? 'hover:bg-[var(--bg-hover)]' : 'hover:bg-[var(--bg-tertiary)]'
                               }`}
                             >
                               <div className={`w-2 h-10 rounded-full ${getStatusColor(event.status)}`} />
@@ -3594,18 +3594,18 @@ export default function Home() {
 
                   {/* Recent Events */}
                   <div className={`rounded-xl border overflow-hidden ${
-                    theme === 'light' ? 'bg-white border-gray-200' : 'bg-[var(--bg-card)] border-[var(--border-primary)]'
+                    theme === 'light' ? 'bg-[var(--bg-card)] border-[var(--border-primary)]' : 'bg-[var(--bg-card)] border-[var(--border-primary)]'
                   }`}>
-                    <div className={`p-6 border-b ${theme === 'light' ? 'border-gray-100' : 'border-[var(--border-primary)]'}`}>
+                    <div className={`p-6 border-b ${theme === 'light' ? 'border-[var(--border-primary)]' : 'border-[var(--border-primary)]'}`}>
                       <h3 className="text-lg font-semibold" style={{ fontFamily: 'var(--font-sans)' }}>{t.upcomingEvents}</h3>
                     </div>
-                    <div className={`divide-y ${theme === 'light' ? 'divide-gray-100' : 'divide-[#1F1F1F]'}`}>
+                    <div className={`divide-y ${theme === 'light' ? 'divide-[var(--border-primary)]' : 'divide-[#1F1F1F]'}`}>
                       {events.slice(0, 5).map((event) => (
                         <button
             key={event.id}
                           onClick={() => setSelectedEvent(event)}
                           className={`w-full p-4 transition-colors flex items-center gap-4 text-left ${
-                            theme === 'light' ? 'hover:bg-gray-50' : 'hover:bg-[var(--bg-tertiary)]'
+                            theme === 'light' ? 'hover:bg-[var(--bg-hover)]' : 'hover:bg-[var(--bg-tertiary)]'
                           }`}
                         >
                           <div className={`w-3 h-3 rounded-full ${getStatusColor(event.status)}`} />
@@ -3666,7 +3666,7 @@ export default function Home() {
                       <div className="flex items-center gap-2 mb-2">
                         <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-semibold ${
                           selectedEvent.status === 'fixed' ? 'bg-emerald-500/20 text-emerald-400' :
-                          selectedEvent.status === 'optimal' ? 'bg-gray-500/20 text-[var(--text-muted)]' :
+                          selectedEvent.status === 'optimal' ? 'bg-[var(--bg-tertiary)] text-[var(--text-muted)]' :
                           'bg-orange-500/20 text-orange-400'
                         }`}>
                           {getStatusLabel(selectedEvent.status)}
@@ -4164,7 +4164,7 @@ export default function Home() {
                               className={`px-4 py-2 rounded-full border transition-all flex items-center gap-2 ${
                                 newEvent.category === cat.id
                                   ? cat.id === 'none' 
-                                    ? 'border-gray-500 bg-gray-500/20 text-[var(--text-muted)]'
+                                    ? 'border-[var(--border-secondary)] bg-[var(--bg-tertiary)] text-[var(--text-muted)]'
                                     : `border-${cat.color}-500 bg-${cat.color}-500/20 text-${cat.color}-400`
                                   : 'border-[var(--border-primary)] hover:border-[var(--border-hover)] text-[var(--text-muted)]'
                               }`}
@@ -4198,7 +4198,7 @@ export default function Home() {
                             value={newEvent.customCategory || ''}
                             onChange={(e) => setNewEvent({ ...newEvent, customCategory: e.target.value })}
                             placeholder={lang === 'en' ? 'Enter category name...' : 'Add meg a kategória nevét...'}
-                            className="w-full px-4 py-2 rounded-lg border bg-[var(--bg-tertiary)] border-[var(--border-primary)] text-[var(--text-secondary)] focus:outline-none focus:border-gray-500"
+                            className="w-full px-4 py-2 rounded-lg border bg-[var(--bg-tertiary)] border-[var(--border-primary)] text-[var(--text-secondary)] focus:outline-none focus:border-[var(--border-focus)]"
                             style={{
                               backgroundColor: 'var(--bg-input)',
                               borderColor: 'var(--border-primary)',
@@ -4307,7 +4307,7 @@ export default function Home() {
                                   disabled={isPast}
                                   className={`
                                     aspect-square rounded-lg text-sm font-medium transition-all relative
-                                    ${isPast ? 'text-gray-700 cursor-not-allowed' : 'hover:bg-[var(--bg-hover)] cursor-pointer'}
+                                    ${isPast ? 'opacity-60 cursor-not-allowed' : 'hover:bg-[var(--bg-hover)] cursor-pointer'}
                                     ${isToday && !isStart && !isEnd ? 'ring-1 ring-white/30' : ''}
                                     ${isStart ? 'bg-blue-500 text-[var(--text-primary)] hover:bg-blue-600' : ''}
                                     ${isEnd ? 'bg-purple-500 text-[var(--text-primary)] hover:bg-purple-600' : ''}
@@ -4351,7 +4351,7 @@ export default function Home() {
                             type="checkbox"
                             checked={newEvent.allDay || false}
                             onChange={(e) => setNewEvent({ ...newEvent, allDay: e.target.checked })}
-                            className="w-4 h-4 rounded border-gray-300"
+                            className="w-4 h-4 rounded"
                             style={{ accentColor: 'var(--accent-primary)' }}
                           />
                           <span className="text-sm font-medium text-[var(--text-secondary)]">
@@ -4478,7 +4478,7 @@ export default function Home() {
 
                       {newEvent.votingQuestions.length === 0 ? (
                         <div className="text-center py-12 bg-[var(--bg-card)] rounded-xl border border-dashed border-[var(--border-primary)]">
-                          <QuestionMarkCircleIcon className="w-12 h-12 mx-auto mb-4 text-gray-600" />
+                          <QuestionMarkCircleIcon className="w-12 h-12 mx-auto mb-4" style={{ color: 'var(--text-muted)' }} />
                           <p className="text-[var(--text-muted)] mb-2">{lang === 'en' ? 'No voting questions yet' : 'Még nincs szavazási kérdés'}</p>
                           <p className="text-sm text-[var(--text-muted)]">{lang === 'en' ? 'Click "Add Question" to create a poll' : 'Kattints a "Kérdés hozzáadása" gombra'}</p>
                         </div>
@@ -4676,7 +4676,7 @@ export default function Home() {
 
                       {newEvent.tasks.length === 0 ? (
                         <div className="text-center py-12 bg-[var(--bg-card)] rounded-xl border border-dashed border-[var(--border-primary)]">
-                          <ClipboardDocumentCheckIcon className="w-12 h-12 mx-auto mb-4 text-gray-600" />
+                          <ClipboardDocumentCheckIcon className="w-12 h-12 mx-auto mb-4" style={{ color: 'var(--text-muted)' }} />
                           <p className="text-[var(--text-muted)] mb-2">{lang === 'en' ? 'No tasks yet' : 'Még nincs feladat'}</p>
                           <p className="text-sm text-[var(--text-muted)]">{lang === 'en' ? 'Add tasks to delegate work' : 'Adj hozzá feladatokat'}</p>
                         </div>
@@ -4745,7 +4745,7 @@ export default function Home() {
                                         onClick={() => updateTask(task.id, 'assigneeId', '', '')}
                                         className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all ${
                                           !task.assigneeId
-                                            ? 'border-gray-500 bg-gray-500/20 text-[var(--text-secondary)]'
+                                            ? 'border-[var(--border-secondary)] bg-[var(--bg-tertiary)] text-[var(--text-secondary)]'
                                             : 'border-[var(--border-primary)] hover:border-[var(--border-hover)] text-[var(--text-muted)]'
                                         }`}
                                       >
@@ -4974,7 +4974,7 @@ export default function Home() {
         </div>
                       ) : (
                         <div className="text-center py-8 bg-[var(--bg-card)] rounded-xl border border-dashed border-[var(--border-primary)]">
-                          <UserGroupIcon className="w-12 h-12 mx-auto mb-4 text-gray-600" />
+                          <UserGroupIcon className="w-12 h-12 mx-auto mb-4" style={{ color: 'var(--text-muted)' }} />
                           <p className="text-[var(--text-muted)]">{lang === 'en' ? 'No invitees yet' : 'Még nincs meghívott'}</p>
                         </div>
                       )}

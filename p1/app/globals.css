@@ -21,33 +21,34 @@
   --yellow-glow: rgba(201, 162, 39, 0.12);
   
   /* ==================== LIGHT THEME (Default) ==================== */
-  /* Deep blue - elite, premium feel */
-  --bg-primary: #f8fafc;
-  --bg-secondary: #f1f5f9;
-  --bg-tertiary: #e2e8f0;
-  --bg-accent: #ffffff;
-  --bg-hover: #e8f0f7;
-  --bg-active: #dbe4f0;
-  --bg-card: #ffffff;
-  --bg-card-hover: #f8fafc;
+  /* Soft, readable - reduced glare, strong contrast */
+  --bg-primary: #eef0f3;
+  --bg-secondary: #e4e6ea;
+  --bg-tertiary: #d6d9df;
+  --bg-accent: #f8f9fb;
+  --bg-hover: #dfe3e8;
+  --bg-active: #d4d8de;
+  --bg-card: #f5f6f8;
+  --bg-card-hover: #eef0f3;
   --bg-input: #ffffff;
-  --bg-modal: #ffffff;
-  --bg-nav: rgba(248, 250, 252, 0.95);
+  --bg-modal: #f8f9fb;
+  --bg-nav: rgba(245, 246, 248, 0.96);
   
-  /* Text colors */
-  --text-primary: #0a1628;
+  /* Text - strong contrast for readability */
+  --text-primary: #0c1321;
   --text-secondary: #1e293b;
-  --text-muted: #475569;
+  --text-muted: #4b5768;
   --text-inverse: #ffffff;
-  --text-link: #0f4c75;
+  --placeholder: #6b7280;
+  --text-link: #0c4a6e;
   --text-link-hover: #0a3d5c;
   
-  /* Border colors */
-  --border-primary: #cbd5e1;
-  --border-secondary: #94a3b8;
-  --border-hover: #64748b;
+  /* Borders - visible definition */
+  --border-primary: #b8bcc6;
+  --border-secondary: #9ca3af;
+  --border-hover: #6b7280;
   --border-focus: #0f4c75;
-  --border-accent: rgba(15, 76, 117, 0.3);
+  --border-accent: rgba(15, 76, 117, 0.35);
   
   /* Accent - Deep blue, elite */
   --accent-primary: #0f4c75;
@@ -56,9 +57,9 @@
   --accent-light: rgba(15, 76, 117, 0.1);
   --accent-muted: rgba(15, 76, 117, 0.15);
   
-  /* Gradient fade - elite mesh */
-  --fade-gradient: linear-gradient(180deg, transparent 0%, rgba(248, 250, 252, 0.4) 40%, rgba(248, 250, 252, 0.95) 100%);
-  --fade-gradient-inverse: linear-gradient(0deg, transparent 0%, rgba(10, 22, 40, 0.3) 50%, rgba(10, 22, 40, 0.8) 100%);
+  /* Gradient fade */
+  --fade-gradient: linear-gradient(180deg, transparent 0%, rgba(238, 240, 243, 0.5) 40%, rgba(238, 240, 243, 0.98) 100%);
+  --fade-gradient-inverse: linear-gradient(0deg, transparent 0%, rgba(12, 19, 33, 0.25) 50%, rgba(12, 19, 33, 0.75) 100%);
   
   /* Readiness chart - Muted, refined */
   --readiness-date: #b91c1c;
@@ -76,35 +77,35 @@
   --btn-secondary-border: #0f4c75;
   --btn-secondary-hover: rgba(15, 76, 117, 0.08);
   
-  /* Status colors */
-  --success-bg: #ecfdf5;
-  --success-text: #047857;
-  --success-border: #a7f3d0;
-  --warning-bg: #fffbeb;
-  --warning-text: #b45309;
-  --warning-border: #fde68a;
-  --error-bg: #fef2f2;
-  --error-text: #dc2626;
-  --error-border: #fecaca;
-  --info-bg: #eff6ff;
-  --info-text: #2563eb;
-  --info-border: #bfdbfe;
+  /* Status colors - readable on light */
+  --success-bg: #d1fae5;
+  --success-text: #065f46;
+  --success-border: #6ee7b7;
+  --warning-bg: #fef3c7;
+  --warning-text: #92400e;
+  --warning-border: #fcd34d;
+  --error-bg: #fee2e2;
+  --error-text: #b91c1c;
+  --error-border: #fca5a5;
+  --info-bg: #dbeafe;
+  --info-text: #1d4ed8;
+  --info-border: #93c5fd;
   
-  /* Shadow */
-  --shadow-sm: 0 1px 2px rgba(10, 22, 40, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(10, 22, 40, 0.08), 0 2px 4px -1px rgba(10, 22, 40, 0.05);
-  --shadow-lg: 0 10px 15px -3px rgba(10, 22, 40, 0.1), 0 4px 6px -2px rgba(10, 22, 40, 0.05);
-  --shadow-xl: 0 20px 25px -5px rgba(10, 22, 40, 0.12), 0 10px 10px -5px rgba(10, 22, 40, 0.06);
-  --shadow-glow: 0 0 28px rgba(15, 76, 117, 0.18);
+  /* Shadow - subtle depth */
+  --shadow-sm: 0 1px 2px rgba(12, 19, 33, 0.08);
+  --shadow-md: 0 4px 6px -1px rgba(12, 19, 33, 0.1), 0 2px 4px -1px rgba(12, 19, 33, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(12, 19, 33, 0.12), 0 4px 6px -2px rgba(12, 19, 33, 0.08);
+  --shadow-xl: 0 20px 25px -5px rgba(12, 19, 33, 0.14), 0 10px 10px -5px rgba(12, 19, 33, 0.06);
+  --shadow-glow: 0 0 28px rgba(15, 76, 117, 0.2);
   
   /* Overlay */
   --overlay-color: rgba(10, 22, 40, 0.6);
   --overlay-light: rgba(10, 22, 40, 0.4);
   
   /* Scrollbar */
-  --scrollbar-track: #f1f5f9;
-  --scrollbar-thumb: #94a3b8;
-  --scrollbar-thumb-hover: #64748b;
+  --scrollbar-track: #e4e6ea;
+  --scrollbar-thumb: #9ca3af;
+  --scrollbar-thumb-hover: #6b7280;
   
   /* Calendar specific */
   --calendar-today-bg: #0f4c75;
@@ -142,6 +143,7 @@
   --text-muted: #a3a3a3;
   --text-inverse: #0a1628;
   --text-link: #6b9dc4;
+  --placeholder: #9ca3af;
   --text-link-hover: #8bb4d4;
   
   /* Border colors */

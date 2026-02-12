@@ -222,7 +222,7 @@ export default function EventCreationWizard({
                           type="checkbox"
                           checked={formData.allDay || false}
                           onChange={(e) => setFormData({ ...formData, allDay: e.target.checked, time: e.target.checked ? '' : formData.time })}
-                          className="w-4 h-4 rounded border-gray-300"
+                          className="w-4 h-4 rounded"
                           style={{ accentColor: 'var(--accent-primary)' }}
                         />
                         <span className="text-sm" style={{ color: 'var(--text-primary)' }}>All day</span>
