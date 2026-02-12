@@ -19,7 +19,7 @@ export async function resolveUserId(identifier: string): Promise<string | null> 
   if (byEmail) return byEmail.id
   // Try name (first match)
   const byName = await prisma.user.findFirst({
-    where: { name: { equals: s, mode: 'insensitive' } },
+    where: { name: s },
     select: { id: true },
   })
   return byName?.id ?? null

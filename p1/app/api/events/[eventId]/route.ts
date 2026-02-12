@@ -54,20 +54,6 @@ export async function GET(
             createdAt: 'desc',
           },
         },
-        tasks: {
-          include: {
-            assignee: {
-              select: {
-                id: true,
-                name: true,
-                avatar: true,
-              },
-            },
-          },
-          orderBy: {
-            createdAt: 'desc',
-          },
-        },
         discussions: {
           include: {
             user: {
@@ -83,7 +69,6 @@ export async function GET(
           },
           take: 50, // Last 50 messages
         },
-        links: true,
       },
     })
 

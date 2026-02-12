@@ -876,7 +876,7 @@ export default function ManagePage() {
       title: event.title,
       date: event.date,
       time: event.time,
-      allDay: event.allDay,
+      allDay: event.allDay ?? false,
       location: event.location,
       type: event.type,
       status: event.status,

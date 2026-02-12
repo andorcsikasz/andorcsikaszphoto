@@ -66,7 +66,6 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
               className="p-4 rounded-xl border cursor-pointer"
               whileHover={{ y: -2, boxShadow: 'var(--shadow-lg)' }}
               whileTap={{ scale: 0.99 }}
-              transition={{ type: 'tween', duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
               style={{
                 backgroundColor: 'var(--bg-card)',
                 borderColor: 'var(--border-primary)',
