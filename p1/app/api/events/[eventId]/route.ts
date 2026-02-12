@@ -7,11 +7,12 @@ import { prisma } from '@/lib/prisma'
 // GET /api/events/[eventId] - Get event details
 export async function GET(
   request: NextRequest,
-  { params }: { params: { eventId: string } }
+  { params }: { params: Promise<{ eventId: string }> }
 ) {
   try {
+    const { eventId } = await params
     const event = await prisma.event.findUnique({
-      where: { id: params.eventId },
+      where: { id: eventId },
       include: {
         organizer: {
           select: {

@@ -17,15 +17,16 @@ const voteSchema = z.object({
 // POST /api/decisions/[decisionId]/vote - Cast vote
 export async function POST(
   request: NextRequest,
-  { params }: { params: { decisionId: string } }
+  { params }: { params: Promise<{ decisionId: string }> }
 ) {
   try {
+    const { decisionId } = await params
     const body = await request.json()
     const data = voteSchema.parse(body)
 
     // Get decision with options
     const decision = await prisma.decision.findUnique({
-      where: { id: params.decisionId },
+      where: { id: decisionId },
       include: {
         options: true,
         votes: {
@@ -45,7 +46,7 @@ export async function POST(
       where: {
         userId_decisionId: {
           userId: data.userId,
-          decisionId: params.decisionId,
+          decisionId,
         },
       },
     })
@@ -76,7 +77,7 @@ export async function POST(
 
       // Calculate consensus
       const updatedDecision = await prisma.decision.findUnique({
-        where: { id: params.decisionId },
+        where: { id: decisionId },
         include: {
           options: true,
           votes: {
@@ -95,7 +96,7 @@ export async function POST(
       const vote = await prisma.vote.create({
         data: {
           userId: data.userId,
-          decisionId: params.decisionId,
+          decisionId,
           optionId: data.optionId || undefined,
           rankedChoices: data.rankedChoices
             ? JSON.stringify(data.rankedChoices)
@@ -117,7 +118,7 @@ export async function POST(
 
       // Calculate consensus
       const updatedDecision = await prisma.decision.findUnique({
-        where: { id: params.decisionId },
+        where: { id: decisionId },
         include: {
           options: true,
           votes: {
@@ -151,11 +152,12 @@ export async function POST(
 // GET /api/decisions/[decisionId]/vote - Get consensus results
 export async function GET(
   request: NextRequest,
-  { params }: { params: { decisionId: string } }
+  { params }: { params: Promise<{ decisionId: string }> }
 ) {
   try {
+    const { decisionId } = await params
     const decision = await prisma.decision.findUnique({
-      where: { id: params.decisionId },
+      where: { id: decisionId },
       include: {
         options: {
           orderBy: {

@@ -1,0 +1,14 @@
+{
+  "/api/discussions/route": "/api/discussions",
+  "/api/events/[eventId]/route": "/api/events/[eventId]",
+  "/api/seed/events/route": "/api/seed/events",
+  "/api/decisions/route": "/api/decisions",
+  "/_not-found/page": "/_not-found",
+  "/api/events/route": "/api/events",
+  "/api/decisions/[decisionId]/vote/route": "/api/decisions/[decisionId]/vote",
+  "/demo/page": "/demo",
+  "/manage/page": "/manage",
+  "/events/page": "/events",
+  "/page": "/",
+  "/seed/page": "/seed"
+}

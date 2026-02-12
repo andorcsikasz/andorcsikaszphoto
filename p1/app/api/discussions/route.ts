@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         discussion,
-        suggestedTasks: extractedTasks.filter((t) => t.confidence > 0.7),
+        suggestedTasks: extractedTasks.filter((t) => (t.confidence ?? 0) > 0.7),
       },
       { status: 201 }
     )

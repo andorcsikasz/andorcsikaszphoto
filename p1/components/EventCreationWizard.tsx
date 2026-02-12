@@ -155,7 +155,9 @@ export default function EventCreationWizard({
                       style={{
                         backgroundColor: formData.category === cat ? 'var(--accent-light)' : 'var(--bg-secondary)',
                         color: formData.category === cat ? 'var(--accent-primary)' : 'var(--text-primary)',
-                        ringColor: 'var(--accent-primary)',
+                        ...(formData.category === cat && {
+                          boxShadow: '0 0 0 2px var(--accent-primary)',
+                        }),
                       }}
                     >
                       {cat}
