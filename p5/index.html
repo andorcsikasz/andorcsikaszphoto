@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM.EXE ── 1985</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Mandelbrot Background -->
+    <canvas id="mandelbrotCanvas"></canvas>
+    <canvas id="particleCanvas"></canvas>
+    <canvas id="vasarelyCanvas"></canvas>
+    <canvas id="scanlineCanvas"></canvas>
+    
+    <!-- Moon -->
+    <div id="moon"></div>
+    
+    <!-- Main Content -->
+    <div class="content">
+        <header>
+            <div class="header-line"></div>
+            <h1 class="glitch" data-text="SYSTEM.EXE">SYSTEM.EXE</h1>
+            <div class="subtitle">[ INITIALIZING MANDELBROT MATRIX ]</div>
+            <div class="header-line"></div>
+        </header>
+        
+        <main>
+            <section class="card vasarely-card">
+                <div class="vasarely-pattern"></div>
+                <div class="card-header">
+                    <span class="blink">█</span> MAINFRAME STATUS
+                </div>
+                <div class="card-content">
+                    <div class="stat-line">
+                        <span class="label">SYSTEM:</span>
+                        <span class="value">OPERATIONAL</span>
+                    </div>
+                    <div class="stat-line">
+                        <span class="label">ZOOM:</span>
+                        <span class="value" id="zoomLevel">1.00x</span>
+                    </div>
+                    <div class="stat-line">
+                        <span class="label">ITERATIONS:</span>
+                        <span class="value" id="iterations">100</span>
+                    </div>
+                    <div class="stat-line">
+                        <span class="label">FPS:</span>
+                        <span class="value" id="fps">0</span>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="card vasarely-card">
+                <div class="vasarely-pattern"></div>
+                <div class="card-header">
+                    <span class="blink">█</span> NEURAL NETWORK
+                </div>
+                <div class="card-content">
+                    <div class="ascii-art">
+                        <pre>
+    ╔═══════════════════════════╗
+    ║  FRACTAL DIMENSIONS       ║
+    ║  INFINITE COMPLEXITY      ║
+    ║  CALCULATING...           ║
+    ╚═══════════════════════════╝
+                        </pre>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="card vasarely-card">
+                <div class="vasarely-pattern"></div>
+                <div class="card-header">
+                    <span class="blink">█</span> COMMAND INTERFACE
+                </div>
+                <div class="card-content">
+                    <div class="command-line">
+                        <span class="prompt">C:\></span>
+                        <span class="command typing">LOADING MANDELBROT.EXE...</span>
+                    </div>
+                    <div class="command-line">
+                        <span class="prompt">C:\></span>
+                        <span class="command">STATUS: <span class="blink">█</span> ACTIVE</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <div class="footer-line"></div>
+            <div class="footer-text">
+                <span>© 1985 CYBER SYSTEMS</span>
+                <span class="separator">|</span>
+                <span>MANDELBROT MATRIX v2.0</span>
+                <span class="separator">|</span>
+                <span>ALL SYSTEMS NOMINAL</span>
+            </div>
+            <div class="footer-line"></div>
+        </footer>
+    </div>
+    
+    <script src="mandelbrot.js"></script>
+</body>
+</html>

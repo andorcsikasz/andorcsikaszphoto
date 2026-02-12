@@ -1,0 +1,515 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: #000;
+    font-family: 'Courier New', Courier, monospace;
+    color: #00ff00;
+}
+
+body {
+    position: relative;
+}
+
+/* Mandelbrot Background */
+#mandelbrotCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    z-index: 0;
+    opacity: 0.3;
+    filter: contrast(1.2) brightness(0.8);
+    animation: flicker 0.2s infinite;
+    image-rendering: auto;
+}
+
+#particleCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1;
+}
+
+#vasarelyCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    opacity: 0.15;
+    z-index: 1;
+    mix-blend-mode: overlay;
+}
+
+#scanlineCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    opacity: 0.1;
+    z-index: 2;
+}
+
+/* Moon */
+#moon {
+    position: fixed;
+    top: 15%;
+    right: 15%;
+    width: clamp(80px, 8vw, 120px);
+    height: clamp(80px, 8vw, 120px);
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #ffffff, #cccccc, #888888);
+    box-shadow: 
+        0 0 40px rgba(255, 255, 255, 0.6),
+        0 0 80px rgba(255, 255, 255, 0.4),
+        inset -20px -20px 40px rgba(0, 0, 0, 0.3);
+    z-index: 3;
+    animation: moonPulse 3s ease-in-out infinite;
+    filter: contrast(1.2) brightness(1.1);
+    pointer-events: none;
+}
+
+@keyframes moonPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 
+            0 0 40px rgba(255, 255, 255, 0.6),
+            0 0 80px rgba(255, 255, 255, 0.4),
+            inset -20px -20px 40px rgba(0, 0, 0, 0.3);
+    }
+    50% {
+        transform: scale(1.15);
+        box-shadow: 
+            0 0 60px rgba(255, 255, 255, 0.8),
+            0 0 120px rgba(255, 255, 255, 0.6),
+            0 0 180px rgba(255, 255, 255, 0.3),
+            inset -20px -20px 40px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* Moon craters */
+#moon::before,
+#moon::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+#moon::before {
+    width: 25px;
+    height: 25px;
+    top: 25%;
+    left: 35%;
+}
+
+#moon::after {
+    width: 15px;
+    height: 15px;
+    top: 50%;
+    left: 60%;
+}
+
+/* Content Layer */
+.content {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 60px;
+    padding: 40px 20px;
+}
+
+.header-line {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00ff00, transparent);
+    margin: 20px 0;
+    box-shadow: 0 0 10px #00ff00;
+}
+
+h1 {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin: 30px 0;
+    text-shadow: 
+        0 0 10px #00ff00,
+        0 0 20px #00ff00,
+        0 0 30px #00ff00;
+    position: relative;
+}
+
+.glitch {
+    position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch::before {
+    left: -2px;
+    text-shadow: 2px 0 #ff0000;
+    clip: rect(0, 900px, 0, 0);
+    animation: glitch-anim 3s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+    left: 2px;
+    text-shadow: -2px 0 #00ffff;
+    clip: rect(0, 900px, 0, 0);
+    animation: glitch-anim2 2s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+    0% { clip: rect(42px, 9999px, 44px, 0); }
+    20% { clip: rect(12px, 9999px, 59px, 0); }
+    40% { clip: rect(33px, 9999px, 29px, 0); }
+    60% { clip: rect(92px, 9999px, 98px, 0); }
+    80% { clip: rect(23px, 9999px, 78px, 0); }
+    100% { clip: rect(54px, 9999px, 11px, 0); }
+}
+
+@keyframes glitch-anim2 {
+    0% { clip: rect(65px, 9999px, 100px, 0); }
+    20% { clip: rect(25px, 9999px, 34px, 0); }
+    40% { clip: rect(88px, 9999px, 15px, 0); }
+    60% { clip: rect(5px, 9999px, 60px, 0); }
+    80% { clip: rect(78px, 9999px, 50px, 0); }
+    100% { clip: rect(15px, 9999px, 90px, 0); }
+}
+
+.subtitle {
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    letter-spacing: 0.3em;
+    text-shadow: 0 0 5px #00ff00;
+    opacity: 0.8;
+}
+
+/* Main Content */
+main {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+/* Cards */
+.card {
+    background: rgba(0, 0, 0, 0.85);
+    border: 2px solid #00ff00;
+    box-shadow: 
+        0 0 20px rgba(0, 255, 0, 0.3),
+        inset 0 0 20px rgba(0, 255, 0, 0.1);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Vasarely-style patterns on cards */
+.vasarely-card {
+    position: relative;
+}
+
+.vasarely-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.2;
+    background-image: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 255, 255, 0.1) 2px,
+            rgba(255, 255, 255, 0.1) 4px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 255, 255, 0.1) 2px,
+            rgba(255, 255, 255, 0.1) 4px
+        );
+    pointer-events: none;
+    animation: vasarelyShift 10s linear infinite;
+}
+
+@keyframes vasarelyShift {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(4px, 4px); }
+}
+
+/* Op Art checkerboard pattern */
+.vasarely-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        repeating-conic-gradient(
+            #000 0% 25%,
+            #fff 0% 50%
+        ) 0 0/20px 20px;
+    opacity: 0.05;
+    mix-blend-mode: difference;
+    pointer-events: none;
+    animation: checkerboardRotate 20s linear infinite;
+}
+
+@keyframes checkerboardRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.1), transparent);
+    animation: scan 3s infinite;
+}
+
+@keyframes scan {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.card-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #00ff00;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 10px #00ff00;
+    background: rgba(0, 255, 0, 0.05);
+}
+
+.card-content {
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.card-header {
+    position: relative;
+    z-index: 1;
+}
+
+.stat-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px dotted rgba(0, 255, 0, 0.3);
+    font-size: 0.95rem;
+}
+
+.stat-line:last-child {
+    border-bottom: none;
+}
+
+.label {
+    color: #00ff00;
+    opacity: 0.7;
+}
+
+.value {
+    color: #00ff00;
+    font-weight: bold;
+    text-shadow: 0 0 5px #00ff00;
+}
+
+.ascii-art {
+    color: #00ff00;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    text-shadow: 0 0 5px #00ff00;
+}
+
+.command-line {
+    padding: 8px 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.prompt {
+    color: #00ff00;
+    margin-right: 10px;
+}
+
+.command {
+    color: #00ff00;
+    opacity: 0.9;
+}
+
+.typing {
+    border-right: 2px solid #00ff00;
+    animation: blink-cursor 1s infinite;
+    padding-right: 5px;
+}
+
+@keyframes blink-cursor {
+    0%, 50% { border-color: #00ff00; }
+    51%, 100% { border-color: transparent; }
+}
+
+.blink {
+    animation: blink 1s infinite;
+    color: #00ff00;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 60px;
+}
+
+.footer-line {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00ff00, transparent);
+    margin: 20px 0;
+    box-shadow: 0 0 10px #00ff00;
+}
+
+.footer-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+}
+
+.separator {
+    color: #00ff00;
+    opacity: 0.5;
+}
+
+/* Scanlines */
+@keyframes flicker {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.32; }
+}
+
+/* Vignette */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+    box-shadow: inset 0 0 300px rgba(0, 0, 0, 0.7);
+}
+
+/* Additional Vasarely-style geometric elements */
+.content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 10px,
+            rgba(255, 255, 255, 0.02) 10px,
+            rgba(255, 255, 255, 0.02) 20px
+        );
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.3;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .content {
+        padding: 20px 15px;
+    }
+    
+    main {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    header {
+        padding: 20px 10px;
+        margin-bottom: 40px;
+    }
+    
+    .footer-text {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .separator {
+        display: none;
+    }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #00ff00;
+    box-shadow: 0 0 10px #00ff00;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #00cc00;
+}
