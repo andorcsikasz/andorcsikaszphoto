@@ -3,6 +3,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { resolveUserId } from '@/lib/user-resolver'
 import { z } from 'zod'
 
 const createEventSchema = z.object({
@@ -17,6 +18,9 @@ const createEventSchema = z.object({
   timezone: z.string().default('UTC'),
   isInviteOnly: z.boolean().default(false),
   organizerId: z.string(),
+  // Auto-invite: user IDs from connections or emails
+  participantIds: z.array(z.string()).optional(),
+  inviteeEmails: z.array(z.string().email()).optional(),
 })
 
 // GET /api/events - List events
@@ -26,17 +30,21 @@ export async function GET(request: NextRequest) {
     const organizerId = searchParams.get('organizerId')
     const participantId = searchParams.get('participantId')
 
-    const where: any = {}
+    const where: Record<string, unknown> = {}
 
     if (organizerId) {
-      where.organizerId = organizerId
+      const resolved = await resolveUserId(organizerId)
+      if (resolved) where.organizerId = resolved
     }
 
     if (participantId) {
-      where.participants = {
-        some: {
-          id: participantId,
-        },
+      const resolved = await resolveUserId(participantId)
+      if (resolved) {
+        where.participants = {
+          some: {
+            id: resolved,
+          },
+        }
       }
     }
 
@@ -54,7 +62,6 @@ export async function GET(request: NextRequest) {
         _count: {
           select: {
             participants: true,
-            tasks: true,
             decisions: true,
           },
         },
@@ -80,6 +87,36 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const data = createEventSchema.parse(body)
 
+    const organizerId = await resolveUserId(data.organizerId)
+    if (!organizerId) {
+      return NextResponse.json(
+        { error: 'Organizer not found. Please set up your profile first.' },
+        { status: 400 }
+      )
+    }
+
+    // Resolve participants: from IDs and/or emails
+    const participantUserIds: string[] = []
+
+    if (data.participantIds?.length) {
+      for (const id of data.participantIds) {
+        const resolved = await resolveUserId(id)
+        if (resolved) participantUserIds.push(resolved)
+      }
+    }
+
+    if (data.inviteeEmails?.length) {
+      for (const email of data.inviteeEmails) {
+        const user = await prisma.user.findUnique({
+          where: { email },
+          select: { id: true },
+        })
+        if (user && !participantUserIds.includes(user.id)) {
+          participantUserIds.push(user.id)
+        }
+      }
+    }
+
     const event = await prisma.event.create({
       data: {
         title: data.title,
@@ -92,7 +129,10 @@ export async function POST(request: NextRequest) {
         endDate: new Date(data.endDate),
         timezone: data.timezone,
         isInviteOnly: data.isInviteOnly,
-        organizerId: data.organizerId,
+        organizerId,
+        participants: participantUserIds.length
+          ? { connect: participantUserIds.map((id) => ({ id })) }
+          : undefined,
       },
       include: {
         organizer: {
@@ -102,6 +142,9 @@ export async function POST(request: NextRequest) {
             email: true,
             avatar: true,
           },
+        },
+        _count: {
+          select: { participants: true, decisions: true },
         },
       },
     })
