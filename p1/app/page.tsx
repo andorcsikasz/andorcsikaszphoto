@@ -1240,6 +1240,7 @@ export default function Home() {
   const [showLanding, setShowLanding] = useState(false)
   const [showOnboarding, setShowOnboarding] = useState(false)
   const [showProfileModal, setShowProfileModal] = useState(false)
+  const [showConnectionsModal, setShowConnectionsModal] = useState(false)
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
   const [onboardingStep, setOnboardingStep] = useState(1)
   const [tempProfile, setTempProfile] = useState<UserProfile>({ name: '', revolutTag: '', avatarIndex: 0, groups: [] })
@@ -2083,6 +2084,48 @@ export default function Home() {
         )}
         
         {/* Profile Modal (not onboarding) */}
+        {showConnectionsModal && (userProfile?.userId || userProfile?.name) && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+            style={{ backgroundColor: 'var(--overlay-color)' }}
+            onClick={() => setShowConnectionsModal(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              onClick={(e) => e.stopPropagation()}
+              className="rounded-2xl w-full max-w-md max-h-[80vh] overflow-y-auto p-6"
+              style={{ backgroundColor: 'var(--bg-modal)' }}
+            >
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold" style={{ color: 'var(--text-primary)' }}>
+                  {lang === 'en' ? 'Friends & Family' : 'Barátok és család'}
+                </h2>
+                <button
+                  onClick={() => setShowConnectionsModal(false)}
+                  className="p-2 rounded-lg hover:opacity-70"
+                  style={{ color: 'var(--text-muted)' }}
+                >
+                  <XMarkIcon className="w-5 h-5" />
+                </button>
+              </div>
+              <p className="text-sm mb-4" style={{ color: 'var(--text-muted)' }}>
+                {lang === 'en' ? 'Add connections to quickly invite them to events.' : 'Add hozzá kapcsolatokat, hogy gyorsan meghívhasd őket eseményekre.'}
+              </p>
+              <ConnectionsManager
+                userId={userProfile.userId || userProfile.name}
+                selectedIds={[]}
+                onSelectionChange={() => {}}
+                lang={lang}
+                compact={false}
+              />
+            </motion.div>
+          </motion.div>
+        )}
         {showProfileModal && userProfile && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -2879,8 +2922,20 @@ export default function Home() {
                 </span>
               </div>
               
-              {/* User Profile */}
+              {/* Connections & User Profile */}
               {userProfile ? (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setShowConnectionsModal(true)}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-full border transition-colors"
+                  style={{ borderColor: 'var(--border-primary)', backgroundColor: 'var(--bg-card)' }}
+                  title={lang === 'en' ? 'Friends & Family' : 'Barátok és család'}
+                >
+                  <UserGroupIcon className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
+                  <span className="text-sm font-medium hidden sm:inline" style={{ color: 'var(--text-primary)' }}>
+                    {lang === 'en' ? 'Connections' : 'Kapcsolatok'}
+                  </span>
+                </button>
               <button
                   onClick={() => {
                     setTempProfile({ ...userProfile, groups: userProfile.groups || [] })
@@ -2903,7 +2958,8 @@ export default function Home() {
                     />
                   </div>
                   <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{userProfile.name.split(' ')[0]}</span>
-              </button>
+                </button>
+              </div>
               ) : (
                 <button
                   onClick={() => setShowOnboarding(true)}
