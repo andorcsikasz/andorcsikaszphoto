@@ -1,4 +1,4 @@
-# Railway + GitHub Deployment Guide — P1 Vibecheck
+# Railway + GitHub Deployment Guide — VibeCheck
 
 ## Current Setup ✅
 
@@ -6,8 +6,8 @@
 |------|--------|
 | **GitHub repo** | `https://github.com/andorcsikasz/x_prog.git` |
 | **Branch** | `main` |
-| **Project** | P1 (vibecheck) — Next.js 15 |
-| **Location** | `p1/` subdirectory (monorepo) |
+| **Project** | VibeCheck — Next.js 15 |
+| **Location** | `vibecheck/` subdirectory (monorepo) |
 | **railway.json** | ✓ Present with build/start commands |
 | **next.config.js** | ✓ `output: 'standalone'` (Railway-friendly) |
 | **Build** | ✓ `npm run build` succeeds locally |
@@ -16,7 +16,7 @@
 
 ## Railway Dashboard Setup
 
-Because **x_prog** is a monorepo, you need to configure Railway to deploy only the `p1` folder.
+Because **x_prog** is a monorepo, you need to configure Railway to deploy only the `vibecheck` folder.
 
 ### 1. Connect GitHub
 
@@ -30,19 +30,19 @@ Because **x_prog** is a monorepo, you need to configure Railway to deploy only t
 1. Open your project → select the **vibecheck** service
 2. Go to **Settings** tab
 3. Find **Root Directory** (or **Source**)
-4. Set to: **`p1`**
+4. Set to: **`vibecheck`**
 
-Railway will treat `p1/` as the project root, so it will use:
-- `p1/package.json`
-- `p1/railway.json`
-- `p1/next.config.js`
+Railway will treat `vibecheck/` as the project root, so it will use:
+- `vibecheck/package.json`
+- `vibecheck/railway.json`
+- `vibecheck/next.config.js`
 
 ### 3. Config File Path (if Railway can’t find it)
 
-If the service ignores `p1/railway.json`:
+If the service ignores `vibecheck/railway.json`:
 
 1. In **Settings** → **Build**
-2. Set **Railway Config File** (or similar) to: **`/p1/railway.json`**
+2. Set **Railway Config File** (or similar) to: **`/vibecheck/railway.json`**
 
 Use an absolute path from the repo root.
 
@@ -51,9 +51,9 @@ Use an absolute path from the repo root.
 To avoid deploying when other folders change:
 
 1. **Settings** → **Watch Paths**
-2. Add: **`p1/**`**
+2. Add: **`vibecheck/**`**
 
-Only changes under `p1/` will trigger new deployments.
+Only changes under `vibecheck/` will trigger new deployments.
 
 ### 5. Environment Variables
 
@@ -78,9 +78,9 @@ In **Variables** tab, add what the app expects:
 
 ## Auto-Deploy
 
-After GitHub is connected and root is set to `p1`:
+After GitHub is connected and root is set to `vibecheck`:
 
-- Pushes to `main` under `p1/` trigger new deployments
+- Pushes to `main` under `vibecheck/` trigger new deployments
 - Each deployment runs: `npm run build` → `npm start`
 
 ---
@@ -91,11 +91,11 @@ After GitHub is connected and root is set to `p1`:
 cd /Users/andorcsikasz/x_prog
 railway login
 railway link   # Select project + vibecheck service
-cd p1
+cd vibecheck
 railway up
 ```
 
-If you use `railway up` from the monorepo root, ensure **Root Directory** in the dashboard is `p1` so Railway builds from the right place.
+If you use `railway up` from the monorepo root, ensure **Root Directory** in the dashboard is `vibecheck` so Railway builds from the right place.
 
 ---
 
@@ -103,9 +103,9 @@ If you use `railway up` from the monorepo root, ensure **Root Directory** in the
 
 | Issue | Fix |
 |-------|-----|
-| "No start command found" | Confirm **Root Directory** = `p1` and `railway.json` is used |
+| "No start command found" | Confirm **Root Directory** = `vibecheck` and `railway.json` is used |
 | Build fails on `npm run build` | Check Node version (`.nvmrc` says 20); set `NODE_VERSION=20` in variables if needed |
-| Wrong project deployed | Ensure **Watch Paths** = `p1/**` and Root Directory = `p1` |
+| Wrong project deployed | Ensure **Watch Paths** = `vibecheck/**` and Root Directory = `vibecheck` |
 | 404 / routing issues | Next.js standalone is enabled; add `PORT` if Railway uses something other than 3000 |
 
 ---
@@ -113,7 +113,7 @@ If you use `railway up` from the monorepo root, ensure **Root Directory** in the
 ## Checklist
 
 - [ ] GitHub repo connected to Railway
-- [ ] Root Directory set to `p1`
-- [ ] Watch Paths set to `p1/**` (optional)
+- [ ] Root Directory set to `vibecheck`
+- [ ] Watch Paths set to `vibecheck/**` (optional)
 - [ ] Domain generated
 - [ ] Push to `main` and verify deployment
