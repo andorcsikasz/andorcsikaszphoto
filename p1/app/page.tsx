@@ -726,12 +726,12 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
     setTimeout(() => onComplete(), 600)
   }
 
-  const easeSmooth = [0.32, 0.72, 0, 1] as const
+  const easeElite = [0.16, 1, 0.3, 1] as const
   return (
     <motion.div
       initial={{ opacity: 1 }}
       animate={{ opacity: exiting ? 0 : 1 }}
-      transition={{ duration: 0.8, ease: easeSmooth }}
+      transition={{ duration: 1, ease: easeElite }}
       className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden cursor-pointer"
       style={{ 
         backgroundColor: 'var(--bg-primary)',
@@ -739,21 +739,21 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
       }}
       onClick={stage >= 3 ? handleContinue : undefined}
     >
-      {/* Aurora Background - Soft, trustworthy tones */}
-      <div className="absolute inset-0 opacity-50">
+      {/* Aurora Background - Deep blue elite fade */}
+      <div className="absolute inset-0 opacity-[0.55]">
         <Aurora 
-          colorStops={['#0d9488', '#5eead4', '#0d9488']}
+          colorStops={['#0f4c75', '#3d7ba8', '#1e5f8e', '#0f4c75']}
           amplitude={0.7}
           blend={0.4}
           speed={0.4}
         />
       </div>
 
-      {/* Subtle overlay to ensure text readability */}
+      {/* Elite radial fade - smooth edge blend */}
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse at center, transparent 30%, var(--bg-primary) 90%)',
+          background: 'radial-gradient(ellipse 80% 70% at 50% 40%, transparent 20%, rgba(248,250,252,0.3) 50%, var(--bg-primary) 95%)',
         }}
       />
 
@@ -768,9 +768,9 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
             x: stage >= 2 ? -8 : 0,
           }}
           transition={{ 
-            opacity: { duration: 1, ease: [0.32, 0.72, 0, 1] },
-            y: { duration: 1, ease: [0.32, 0.72, 0, 1] },
-            x: { duration: 1.2, ease: [0.32, 0.72, 0, 1] },
+            opacity: { duration: 1.1, ease: [0.16, 1, 0.3, 1] },
+            y: { duration: 1.1, ease: [0.16, 1, 0.3, 1] },
+            x: { duration: 1.3, ease: [0.16, 1, 0.3, 1] },
           }}
           className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold"
           style={{ 
@@ -793,7 +793,7 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
           }}
           transition={{ 
             duration: 1.1,
-            ease: [0.32, 0.72, 0, 1],
+            ease: [0.16, 1, 0.3, 1],
           }}
           className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold"
           style={{ 
@@ -818,7 +818,7 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
         transition={{ 
           duration: 1.1,
           delay: 0.35,
-          ease: [0.32, 0.72, 0, 1] 
+          ease: [0.16, 1, 0.3, 1] 
         }}
         className="absolute bottom-[32%] sm:bottom-[30%] text-xs sm:text-sm tracking-[0.2em] uppercase z-10"
         style={{ 
@@ -850,7 +850,7 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
           whileHover={{ 
             scale: 1.02,
             boxShadow: '0 6px 28px rgba(0, 0, 0, 0.3)',
-            transition: { duration: 0.4, ease: [0.32, 0.72, 0, 1] }
+            transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
           }}
           whileTap={{ scale: 0.99, transition: { duration: 0.2 } }}
         >
@@ -1021,7 +1021,7 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08, duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
+                transition={{ delay: i * 0.08, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 className="p-6 rounded-2xl border transition-all hover:scale-[1.02]"
                 style={{ 
                   backgroundColor: 'var(--bg-card)', 

@@ -7,9 +7,12 @@
 
 :root {
   --font-sans: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --transition: all 0.5s cubic-bezier(0.32, 0.72, 0, 1);
-  --transition-fast: all 0.35s cubic-bezier(0.32, 0.72, 0, 1);
-  --ease-smooth: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-elite: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-smooth: cubic-bezier(0.33, 1, 0.68, 1);
+  --transition: all 0.5s var(--ease-smooth);
+  --transition-fast: all 0.4s var(--ease-elite);
+  --transition-slow: all 0.65s var(--ease-smooth);
   
   /* Muted amber accent - trustworthy, not neon */
   --yellow: #c9a227;
@@ -325,18 +328,18 @@ small, .text-small {
   }
 }
 
-/* Refined smooth transitions - ease-out for natural feel */
+/* Elite smooth transitions */
 * {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-  transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
-  transition-duration: 220ms;
+  transition-timing-function: var(--ease-smooth);
+  transition-duration: 280ms;
 }
 
-/* Fade in animation for rotating phrases */
+/* Elite fade animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -345,21 +348,54 @@ small, .text-small {
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+  animation: fadeIn 0.6s var(--ease-smooth) forwards;
 }
 
-/* Subtle float animation */
+/* Elite fade - soft opacity only */
+@keyframes fadeInSoft {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-soft {
+  animation: fadeInSoft 0.5s var(--ease-smooth) forwards;
+}
+
+/* Elite fade overlays - add position:relative to parent */
+.fade-elite-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: var(--fade-gradient-inverse);
+  pointer-events: none;
+}
+
+.fade-elite-top::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: var(--fade-gradient);
+  pointer-events: none;
+}
+
+/* Subtle float - silky smooth */
 @keyframes float {
   0%, 100% {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-4px);
+    transform: translateY(-5px);
   }
 }
 
 .animate-float {
-  animation: float 8s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  animation: float 10s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
 /* Skeleton loader animation */
@@ -380,7 +416,7 @@ small, .text-small {
     var(--bg-secondary) 80px
   );
   background-size: 200px 100%;
-  animation: skeleton-loading 1.5s ease-in-out infinite;
+  animation: skeleton-loading 2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
   border-radius: 4px;
 }
 
@@ -503,11 +539,11 @@ html {
 }
 
 .animate-glitch {
-  animation: glitch 8s infinite;
+  animation: glitch 10s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
 .animate-glitch:hover {
-  animation: glitch 0.5s infinite, glitch-skew 0.5s infinite;
+  animation: glitch 0.6s cubic-bezier(0.45, 0, 0.55, 1) infinite, glitch-skew 0.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
 .glitch-text {
@@ -526,16 +562,16 @@ html {
 }
 
 .glitch-text:hover::before {
-  animation: glitch-subtle 0.4s infinite;
+  animation: glitch-subtle 0.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
   color: var(--accent-primary);
   opacity: 0.8;
   z-index: -1;
 }
 
 .glitch-text:hover::after {
-  animation: glitch-subtle 0.4s infinite reverse;
-  color: var(--error-text);
-  opacity: 0.8;
+  animation: glitch-subtle 0.5s cubic-bezier(0.45, 0, 0.55, 1) infinite reverse;
+  color: var(--accent-secondary);
+  opacity: 0.7;
   z-index: -1;
 }
 
@@ -543,7 +579,7 @@ html {
 .tilt-card {
   transform-style: preserve-3d;
   perspective: 1000px;
-  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: transform 0.5s var(--ease-smooth);
 }
 
 .tilt-card:hover {
@@ -552,7 +588,7 @@ html {
 
 .tilt-card-inner {
   transform-style: preserve-3d;
-  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: transform 0.5s var(--ease-smooth);
 }
 
 .tilt-card:hover .tilt-card-inner {
@@ -579,12 +615,13 @@ html {
 
 .tilt-card:hover .tilt-shine {
   opacity: 1;
+  transition: opacity 0.5s var(--ease-smooth);
 }
 
 /* ==================== ENHANCED HOVER EFFECTS ==================== */
 .hover-lift {
-  transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), 
-              box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: transform 0.45s var(--ease-smooth), 
+              box-shadow 0.45s var(--ease-smooth);
 }
 
 .hover-lift:hover {
@@ -598,7 +635,7 @@ html {
 }
 
 .hover-glow {
-  transition: box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: box-shadow 0.5s var(--ease-smooth);
 }
 
 .hover-glow:hover {
@@ -606,7 +643,7 @@ html {
 }
 
 .hover-scale {
-  transition: transform 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: transform 0.4s var(--ease-smooth);
 }
 
 .hover-scale:hover {
@@ -637,11 +674,12 @@ html {
 .btn-pulse:hover::after {
   transform: scale(2);
   opacity: 1;
+  transition: transform 0.6s var(--ease-smooth), opacity 0.6s var(--ease-smooth);
 }
 
 /* Magnetic hover effect base */
 .magnetic {
-  transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: transform 0.35s var(--ease-smooth);
 }
 
 /* ==================== SCROLL-TRIGGERED ANIMATIONS ==================== */
@@ -719,31 +757,31 @@ html {
 
 .scroll-animate.animate-in {
   animation-fill-mode: forwards;
-  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  animation-timing-function: var(--ease-smooth);
 }
 
 .scroll-animate.slide-up.animate-in {
-  animation: slideInUp 0.8s forwards;
+  animation: slideInUp 0.9s var(--ease-smooth) forwards;
 }
 
 .scroll-animate.slide-left.animate-in {
-  animation: slideInLeft 0.8s forwards;
+  animation: slideInLeft 0.9s var(--ease-smooth) forwards;
 }
 
 .scroll-animate.slide-right.animate-in {
-  animation: slideInRight 0.8s forwards;
+  animation: slideInRight 0.9s var(--ease-smooth) forwards;
 }
 
 .scroll-animate.scale-in.animate-in {
-  animation: scaleIn 0.6s forwards;
+  animation: scaleIn 0.7s var(--ease-smooth) forwards;
 }
 
 .scroll-animate.rotate-in.animate-in {
-  animation: rotateIn 0.7s forwards;
+  animation: rotateIn 0.8s var(--ease-smooth) forwards;
 }
 
 .scroll-animate.blur-in.animate-in {
-  animation: blurIn 0.6s forwards;
+  animation: blurIn 0.7s var(--ease-smooth) forwards;
 }
 
 /* Staggered animation delays */

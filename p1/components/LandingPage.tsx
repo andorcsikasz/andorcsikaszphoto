@@ -23,8 +23,10 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
       style={{ fontFamily: 'var(--font-sans)' }}
     >
       <div className="text-center">
-        <h1
-          className="text-6xl sm:text-7xl md:text-8xl font-bold tracking-tight cursor-pointer select-none transition-transform duration-500 hover:scale-[1.02]"
+        <motion.h1
+          className="text-6xl sm:text-7xl md:text-8xl font-bold tracking-tight cursor-pointer select-none"
+          whileHover={{ scale: 1.015 }}
+          transition={{ type: 'tween', duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           style={{
             color: 'var(--text-primary)',
             fontFamily: "'Public Sans', sans-serif",
@@ -33,15 +35,16 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
           onClick={onGetStarted}
+          whileTap={{ scale: 0.995 }}
         >
           <span style={{ color: 'var(--text-primary)' }}>Vibe</span>
           <span style={{ color: 'var(--accent-primary)' }}>Check</span>
-        </h1>
+        </motion.h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35, duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
+          transition={{ delay: 0.4, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
           className="mt-4 text-sm tracking-widest uppercase"
           style={{ color: 'var(--text-muted)' }}
         >
@@ -51,16 +54,19 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: hovered ? 1 : 0.7 }}
-          transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
           className="mt-16 grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto"
         >
           {valueProps.map((item, i) => (
             <motion.div
               key={item.title}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.08 * i, duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-              className="p-4 rounded-xl border transition-all cursor-pointer hover:shadow-lg"
+              transition={{ delay: 0.1 * i, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="p-4 rounded-xl border cursor-pointer"
+              whileHover={{ y: -2, boxShadow: 'var(--shadow-lg)' }}
+              whileTap={{ scale: 0.99 }}
+              transition={{ type: 'tween', duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
               style={{
                 backgroundColor: 'var(--bg-card)',
                 borderColor: 'var(--border-primary)',
@@ -80,9 +86,11 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
         <motion.button
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
+          transition={{ delay: 0.55, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
           onClick={onGetStarted}
-          className="mt-12 px-8 py-4 rounded-full font-semibold text-white transition-all hover:scale-[1.02]"
+          whileHover={{ scale: 1.02, boxShadow: '0 0 32px rgba(15, 76, 117, 0.25)' }}
+          whileTap={{ scale: 0.98 }}
+          className="mt-12 px-8 py-4 rounded-full font-semibold text-white"
           style={{
             background: 'var(--btn-primary-bg)',
             boxShadow: 'var(--shadow-glow)',

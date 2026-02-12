@@ -41,7 +41,7 @@ export default function Aurora({
     const draw = () => {
       const w = window.innerWidth
       const h = window.innerHeight
-      time += 0.002 * speed
+      time += 0.0012 * speed
 
       const gradient = ctx.createRadialGradient(
         w * (0.5 + Math.sin(time) * amplitude * 0.1),

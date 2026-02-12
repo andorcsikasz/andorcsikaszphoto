@@ -36,7 +36,7 @@ export default function EventCard({ event, onClick }: EventCardProps) {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-      className="relative rounded-xl p-4 cursor-pointer overflow-hidden"
+      className="relative rounded-xl p-4 cursor-pointer overflow-hidden transition-[box-shadow,transform] duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:shadow-xl hover:-translate-y-0.5"
       style={{
         background: isOrganizer
           ? 'linear-gradient(135deg, #0f4c75 0%, #1e5f8e 50%, #164a6f 100%)'
