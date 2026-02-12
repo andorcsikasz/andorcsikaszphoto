@@ -22,6 +22,8 @@ model User {
   // My connections (friends, family)
   connectionsFrom Connection[] @relation("ConnectionFrom")
   connectionsTo   Connection[] @relation("ConnectionTo")
+  votes           Vote[]
+  discussions     Discussion[]
 }
 
 model Connection {
@@ -57,6 +59,70 @@ model Event {
   organizer   User     @relation("Organizer", fields: [organizerId], references: [id], onDelete: Cascade)
   participants User[]  @relation("EventParticipants")
 
+  decisions    Decision[]
+  discussions  Discussion[]
+
   @@index([organizerId])
   @@index([startDate])
+}
+
+model Decision {
+  id           String   @id @default(cuid())
+  eventId      String
+  event        Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  question     String
+  type         String
+  allowMultiple Boolean @default(false)
+  rankedChoice Boolean  @default(false)
+  closesAt     DateTime?
+  createdAt    DateTime @default(now())
+
+  options Option[]
+  votes   Vote[]
+
+  @@index([eventId])
+}
+
+model Option {
+  id           String   @id @default(cuid())
+  decisionId   String
+  decision     Decision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
+  text         String
+  dateValue    DateTime?
+  order        Int      @default(0)
+  allowFreeText Boolean @default(false)
+
+  votes Vote[]
+
+  @@index([decisionId])
+}
+
+model Vote {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  decisionId    String
+  decision      Decision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
+  optionId      String?
+  option        Option?  @relation(fields: [optionId], references: [id], onDelete: SetNull)
+  rankedChoices String?
+  dateValue     DateTime?
+  textValue     String?
+  createdAt     DateTime @default(now())
+
+  @@unique([userId, decisionId])
+  @@index([decisionId])
+}
+
+model Discussion {
+  id               String   @id @default(cuid())
+  eventId          String
+  event            Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  message          String
+  aiExtractedTasks String?
+  createdAt        DateTime @default(now())
+
+  @@index([eventId])
 }
