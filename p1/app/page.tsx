@@ -1838,7 +1838,7 @@ export default function Home() {
     const month = date.getMonth()
     const firstDay = new Date(year, month, 1)
     const lastDay = new Date(year, month + 1, 0)
-    const days = []
+    const days: (Date | null)[] = []
     
     // Add empty slots for days before the first day of the month
     for (let i = 0; i < firstDay.getDay(); i++) {
@@ -1850,6 +1850,10 @@ export default function Home() {
       days.push(new Date(year, month, i))
     }
     
+    // Pad to 42 cells (6 full weeks) for consistent calendar height
+    while (days.length < 42) {
+      days.push(null)
+    }
     return days
   }
 
@@ -2803,7 +2807,7 @@ export default function Home() {
       >
       {/* Navigation */}
       <nav 
-        className="border-b backdrop-blur-xl sticky top-0 z-40"
+        className="border-b backdrop-blur-xl sticky top-0 z-40 flex-shrink-0"
         style={{ backgroundColor: 'var(--bg-nav)', borderColor: 'var(--border-primary)' }}
       >
         <div className="max-w-7xl mx-auto px-6 py-4">
@@ -3042,7 +3046,7 @@ export default function Home() {
                 </div>
 
                 {/* Calendar Days */}
-                <div className="grid grid-cols-7 grid-rows-6 flex-1 min-h-0 auto-rows-fr">
+                <div className="grid grid-cols-7 grid-rows-[repeat(6,minmax(0,1fr))] flex-1 min-h-0">
                   {getDaysInMonth(currentMonth).map((date, index) => {
                     const events = date ? getEventsForDate(date) : []
                     const today = date && isToday(date)
@@ -3104,7 +3108,7 @@ export default function Home() {
         </div>
 
               {/* Legend */}
-              <div className="flex items-center gap-6 mt-6">
+              <div className="flex items-center gap-4 mt-3 flex-shrink-0">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-emerald-500" />
                   <span className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.fixed}</span>
