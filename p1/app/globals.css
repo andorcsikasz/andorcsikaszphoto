@@ -95,9 +95,9 @@
   --overlay-light: rgba(10, 22, 40, 0.4);
   
   /* Scrollbar */
-  --scrollbar-track: #f1f5f9;
-  --scrollbar-thumb: #94a3b8;
-  --scrollbar-thumb-hover: #64748b;
+  --scrollbar-track: #f5f5f2;
+  --scrollbar-thumb: #b8b8b0;
+  --scrollbar-thumb-hover: #a8a29e;
   
   /* Calendar specific */
   --calendar-today-bg: #0d9488;
@@ -437,11 +437,11 @@ html {
   }
   2% {
     transform: translate(2px, 0);
-    text-shadow: -2px 0 var(--accent-primary), 2px 0 var(--error-text);
+    text-shadow: -2px 0 var(--accent-primary), 2px 0 var(--accent-secondary);
   }
   4% {
     transform: translate(-2px, 0);
-    text-shadow: 2px 0 var(--accent-primary), -2px 0 var(--error-text);
+    text-shadow: 2px 0 var(--accent-primary), -2px 0 var(--accent-secondary);
   }
   6% {
     transform: translate(0);

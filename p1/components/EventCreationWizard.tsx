@@ -9,6 +9,7 @@ interface EventData {
   date: string
   time: string
   location: string
+  allDay?: boolean
   description?: string
   category?: string
   budget?: number
@@ -36,6 +37,7 @@ export default function EventCreationWizard({
     date: '',
     time: '',
     location: '',
+    allDay: false,
     category: 'Social',
     currency: 'EUR',
     invitees: [],
@@ -68,6 +70,7 @@ export default function EventCreationWizard({
       date: '',
       time: '',
       location: '',
+      allDay: false,
       category: 'Social',
       currency: 'EUR',
       invitees: [],
@@ -80,7 +83,7 @@ export default function EventCreationWizard({
       case 1:
         return !!formData.category
       case 2:
-        return !!(formData.title && formData.date && formData.time && formData.location)
+        return !!(formData.title && formData.date && (formData.allDay || formData.time) && formData.location)
       case 3:
         return true
       case 4:
@@ -213,17 +216,31 @@ export default function EventCreationWizard({
                     <label className="block text-sm font-medium mb-1" style={{ color: 'var(--text-muted)' }}>
                       Time *
                     </label>
-                    <input
-                      type="time"
-                      value={formData.time}
-                      onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                      className="w-full px-4 py-3 rounded-lg border"
-                      style={{
-                        backgroundColor: 'var(--bg-input)',
-                        borderColor: 'var(--border-primary)',
-                        color: 'var(--text-primary)',
-                      }}
-                    />
+                    <div className="flex items-center gap-2">
+                      <label className="flex items-center gap-2 cursor-pointer flex-1">
+                        <input
+                          type="checkbox"
+                          checked={formData.allDay || false}
+                          onChange={(e) => setFormData({ ...formData, allDay: e.target.checked, time: e.target.checked ? '' : formData.time })}
+                          className="w-4 h-4 rounded border-gray-300"
+                          style={{ accentColor: 'var(--accent-primary)' }}
+                        />
+                        <span className="text-sm" style={{ color: 'var(--text-primary)' }}>All day</span>
+                      </label>
+                      {!formData.allDay && (
+                        <input
+                          type="time"
+                          value={formData.time}
+                          onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                          className="flex-1 px-4 py-3 rounded-lg border min-w-0"
+                          style={{
+                            backgroundColor: 'var(--bg-input)',
+                            borderColor: 'var(--border-primary)',
+                            color: 'var(--text-primary)',
+                          }}
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
                 <div>

@@ -237,6 +237,7 @@ interface NewEventData {
   endDate: string
   startTime: string
   endTime: string
+  allDay?: boolean
   location: string
   type: 'public' | 'private'
   category: EventCategory
@@ -741,7 +742,7 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
       {/* Aurora Background - Soft, trustworthy tones */}
       <div className="absolute inset-0 opacity-50">
         <Aurora 
-          colorStops={['#1e3a4f', '#3d5a73', '#1e3a4f']}
+          colorStops={['#0d9488', '#5eead4', '#0d9488']}
           amplitude={0.7}
           blend={0.4}
           speed={0.4}
@@ -1268,6 +1269,7 @@ export default function Home() {
     endDate: '',
     startTime: '',
     endTime: '',
+    allDay: false,
     location: '',
     type: 'public',
     category: 'friends',
@@ -1297,6 +1299,7 @@ export default function Home() {
       endDate: '',
       startTime: '',
       endTime: '',
+      allDay: false,
       location: '',
       type: 'public',
       category: 'friends',
@@ -1508,11 +1511,12 @@ export default function Home() {
     }
 
     try {
-      // Combine date and time
-      const startDateTime = new Date(`${newEvent.startDate}T${newEvent.startTime}`)
-      const endDateTime = newEvent.endDate && newEvent.endTime 
-        ? new Date(`${newEvent.endDate}T${newEvent.endTime}`)
-        : new Date(startDateTime.getTime() + 2 * 60 * 60 * 1000) // Default 2 hours
+      // Combine date and time (all-day uses 00:00–23:59)
+      const startTime = newEvent.allDay ? '00:00' : newEvent.startTime || '00:00'
+      const endTime = newEvent.allDay ? '23:59' : (newEvent.endDate && newEvent.endTime ? newEvent.endTime : '23:59')
+      const endDate = newEvent.endDate || newEvent.startDate
+      const startDateTime = new Date(`${newEvent.startDate}T${startTime}`)
+      const endDateTime = new Date(`${endDate}T${endTime}`)
 
       const eventData = {
         title: newEvent.title,
@@ -4235,36 +4239,52 @@ export default function Home() {
                         </div>
                       </div>
 
-                      {/* Time Selection */}
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                            {lang === 'en' ? 'Start Time' : 'Kezdési idő'}
-                          </label>
-                          <div className="relative">
-                            <ClockIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
-                            <input
-                              type="time"
-                              value={newEvent.startTime}
-                              onChange={(e) => setNewEvent({ ...newEvent, startTime: e.target.value })}
-                              className="w-full pl-12 pr-4 py-3 bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-xl text-[var(--text-primary)] focus:outline-none focus:border-blue-500 transition-colors"
-                            />
+                      {/* All Day & Time Selection */}
+                      <div className="space-y-4">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={newEvent.allDay || false}
+                            onChange={(e) => setNewEvent({ ...newEvent, allDay: e.target.checked })}
+                            className="w-4 h-4 rounded border-gray-300"
+                            style={{ accentColor: 'var(--accent-primary)' }}
+                          />
+                          <span className="text-sm font-medium text-[var(--text-secondary)]">
+                            {lang === 'en' ? 'All day' : 'Egész nap'}
+                          </span>
+                        </label>
+                        {!newEvent.allDay && (
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+                                {lang === 'en' ? 'Start Time' : 'Kezdési idő'}
+                              </label>
+                              <div className="relative">
+                                <ClockIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
+                                <input
+                                  type="time"
+                                  value={newEvent.startTime}
+                                  onChange={(e) => setNewEvent({ ...newEvent, startTime: e.target.value })}
+                                  className="w-full pl-12 pr-4 py-3 bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-xl text-[var(--text-primary)] focus:outline-none focus:border-blue-500 transition-colors"
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+                                {lang === 'en' ? 'End Time' : 'Befejezési idő'}
+                              </label>
+                              <div className="relative">
+                                <ClockIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
+                                <input
+                                  type="time"
+                                  value={newEvent.endTime}
+                                  onChange={(e) => setNewEvent({ ...newEvent, endTime: e.target.value })}
+                                  className="w-full pl-12 pr-4 py-3 bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-xl text-[var(--text-primary)] focus:outline-none focus:border-blue-500 transition-colors"
+                                />
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                            {lang === 'en' ? 'End Time' : 'Befejezési idő'}
-                          </label>
-                          <div className="relative">
-                            <ClockIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
-                            <input
-                              type="time"
-                              value={newEvent.endTime}
-                              onChange={(e) => setNewEvent({ ...newEvent, endTime: e.target.value })}
-                              className="w-full pl-12 pr-4 py-3 bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-xl text-[var(--text-primary)] focus:outline-none focus:border-blue-500 transition-colors"
-                            />
-                          </div>
-                        </div>
+                        )}
                       </div>
 
                       {/* Location */}
