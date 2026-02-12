@@ -28,7 +28,7 @@ interface EventCardProps {
 export default function EventCard({ event, onClick }: EventCardProps) {
   const isOrganizer = event.organizerId === event.currentUserId
   const readinessColor =
-    event.readiness >= 80 ? '#047857' : event.readiness >= 50 ? '#b45309' : '#c2410c'
+    event.readiness >= 80 ? 'var(--readiness-location)' : event.readiness >= 50 ? 'var(--readiness-rsvp)' : 'var(--readiness-payments)'
 
   return (
     <motion.div
@@ -39,17 +39,17 @@ export default function EventCard({ event, onClick }: EventCardProps) {
       className="relative rounded-xl p-4 cursor-pointer transition-all hover:shadow-lg overflow-hidden"
       style={{
         background: isOrganizer
-          ? 'linear-gradient(135deg, #1e3a4f 0%, #2d5a73 100%)'
-          : 'linear-gradient(135deg, #14532d 0%, #166534 100%)',
+          ? 'linear-gradient(135deg, #0d9488 0%, #14b8a6 100%)'
+          : 'linear-gradient(135deg, #0f766e 0%, #134e4a 100%)',
         color: '#fff',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.12)',
+        boxShadow: 'var(--shadow-md)',
       }}
       onClick={onClick}
     >
       {/* Readiness bar */}
       <div
         className="absolute top-0 left-0 right-0 h-1 rounded-t-xl"
-        style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}
+        style={{ backgroundColor: 'rgba(255,255,255,0.25)' }}
       >
         <motion.div
           className="h-full rounded-t-xl"
