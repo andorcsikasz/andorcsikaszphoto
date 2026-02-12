@@ -2798,7 +2798,7 @@ export default function Home() {
         initial={{ opacity: 0 }}
         animate={{ opacity: showSplash ? 0 : 1 }}
         transition={{ duration: 0.5 }}
-        className="min-h-screen"
+        className={`min-h-screen flex flex-col ${activeTab === 'calendar' ? 'h-screen overflow-hidden' : ''}`}
         style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}
       >
       {/* Navigation */}
@@ -2978,7 +2978,9 @@ export default function Home() {
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className={`max-w-7xl mx-auto px-6 flex-1 min-h-0 w-full flex flex-col ${
+        activeTab === 'calendar' ? 'py-4 overflow-hidden' : 'py-8'
+      }`}>
         <AnimatePresence mode="wait">
           {/* Calendar View */}
           {activeTab === 'calendar' && (
@@ -2988,14 +2990,15 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.2 }}
+              className="flex flex-col min-h-0 flex-1"
             >
-              <div className="mb-8">
-                <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>{t.myCalendar}</h2>
-                <p style={{ color: 'var(--text-muted)' }}>{t.upcomingEvents}</p>
-          </div>
+              <div className="flex-shrink-0 mb-3">
+                <h2 className="text-2xl font-bold mb-1" style={{ color: 'var(--text-primary)' }}>{t.myCalendar}</h2>
+                <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.upcomingEvents}</p>
+              </div>
           
               {/* Calendar Header */}
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center justify-between mb-3 flex-shrink-0">
                 <div className="flex items-center gap-4">
                   <button
                     onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))}
@@ -3026,20 +3029,20 @@ export default function Home() {
 
               {/* Calendar Grid */}
               <div 
-                className="rounded-2xl border overflow-hidden"
+                className="rounded-xl border overflow-hidden flex-1 min-h-0 flex flex-col"
                 style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
               >
                 {/* Day Headers */}
-                <div className="grid grid-cols-7 border-b" style={{ borderColor: 'var(--border-primary)' }}>
+                <div className="grid grid-cols-7 border-b flex-shrink-0" style={{ borderColor: 'var(--border-primary)' }}>
                   {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-                    <div key={day} className="p-4 text-center text-sm font-medium" style={{ color: 'var(--text-muted)' }}>
+                    <div key={day} className="py-2 px-1 text-center text-xs font-medium" style={{ color: 'var(--text-muted)' }}>
                       {day}
-        </div>
+                    </div>
                   ))}
-    </div>
+                </div>
 
                 {/* Calendar Days */}
-                <div className="grid grid-cols-7">
+                <div className="grid grid-cols-7 grid-rows-6 flex-1 min-h-0 auto-rows-fr">
                   {getDaysInMonth(currentMonth).map((date, index) => {
                     const events = date ? getEventsForDate(date) : []
                     const today = date && isToday(date)
@@ -3047,7 +3050,7 @@ export default function Home() {
   return (
                       <div
                         key={index}
-                        className="min-h-[120px] p-2 border-b border-r transition-colors"
+                        className="min-h-0 p-1.5 border-b border-r transition-colors flex flex-col"
                         style={{ 
                           borderColor: 'var(--border-primary)',
                           backgroundColor: !date ? 'var(--bg-secondary)' : 'transparent'
@@ -3056,9 +3059,9 @@ export default function Home() {
                         {date && (
                           <>
                             <div 
-                              className={`text-sm font-medium mb-2 ${
+                              className={`text-xs font-medium mb-1 flex-shrink-0 ${
                                 today 
-                                  ? 'w-7 h-7 rounded-full flex items-center justify-center' 
+                                  ? 'w-6 h-6 rounded-full flex items-center justify-center' 
                                   : ''
                               }`}
                               style={{
@@ -3068,7 +3071,7 @@ export default function Home() {
                             >
                               {date.getDate()}
         </div>
-                            <div className="space-y-1">
+                            <div className="space-y-0.5 flex-1 min-h-0 overflow-hidden">
                               {events.slice(0, 2).map((event) => (
                                 <button
                                   key={event.id}
