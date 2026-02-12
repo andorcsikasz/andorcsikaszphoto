@@ -725,11 +725,12 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
     setTimeout(() => onComplete(), 600)
   }
 
+  const easeSmooth = [0.32, 0.72, 0, 1] as const
   return (
     <motion.div
       initial={{ opacity: 1 }}
       animate={{ opacity: exiting ? 0 : 1 }}
-      transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+      transition={{ duration: 0.8, ease: easeSmooth }}
       className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden cursor-pointer"
       style={{ 
         backgroundColor: 'var(--bg-primary)',
@@ -737,13 +738,13 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
       }}
       onClick={stage >= 3 ? handleContinue : undefined}
     >
-      {/* Aurora Background Effect */}
-      <div className="absolute inset-0 opacity-70">
+      {/* Aurora Background - Soft, trustworthy tones */}
+      <div className="absolute inset-0 opacity-50">
         <Aurora 
-          colorStops={['#0f4c75', '#5ba3d6', '#0f4c75']}
-          amplitude={1.2}
-          blend={0.6}
-          speed={0.8}
+          colorStops={['#1e3a4f', '#3d5a73', '#1e3a4f']}
+          amplitude={0.7}
+          blend={0.4}
+          speed={0.4}
         />
       </div>
 
@@ -766,9 +767,9 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
             x: stage >= 2 ? -8 : 0,
           }}
           transition={{ 
-            opacity: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] },
-            y: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] },
-            x: { duration: 1, ease: [0.25, 0.1, 0.25, 1] },
+            opacity: { duration: 1, ease: [0.32, 0.72, 0, 1] },
+            y: { duration: 1, ease: [0.32, 0.72, 0, 1] },
+            x: { duration: 1.2, ease: [0.32, 0.72, 0, 1] },
           }}
           className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold"
           style={{ 
@@ -776,7 +777,7 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
             color: 'var(--text-primary)',
             letterSpacing: '-0.03em',
             willChange: 'transform, opacity',
-            textShadow: '0 4px 30px rgba(0, 0, 0, 0.3)'
+            textShadow: '0 2px 20px rgba(0, 0, 0, 0.2)'
           }}
         >
           Vibe
@@ -790,8 +791,8 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
             x: stage >= 2 ? 0 : 30,
           }}
           transition={{ 
-            duration: 1,
-            ease: [0.25, 0.1, 0.25, 1],
+            duration: 1.1,
+            ease: [0.32, 0.72, 0, 1],
           }}
           className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold"
           style={{ 
@@ -799,7 +800,7 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
             color: 'var(--accent-primary)',
             letterSpacing: '-0.03em',
             willChange: 'transform, opacity',
-            textShadow: '0 4px 30px rgba(91, 163, 214, 0.4)'
+            textShadow: '0 2px 16px rgba(107, 143, 163, 0.25)'
           }}
         >
           Check
@@ -814,9 +815,9 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
           y: stage >= 2 ? 0 : 10,
         }}
         transition={{ 
-          duration: 1,
-          delay: 0.3,
-          ease: [0.25, 0.1, 0.25, 1] 
+          duration: 1.1,
+          delay: 0.35,
+          ease: [0.32, 0.72, 0, 1] 
         }}
         className="absolute bottom-[32%] sm:bottom-[30%] text-xs sm:text-sm tracking-[0.2em] uppercase z-10"
         style={{ 
@@ -843,13 +844,14 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
             fontWeight: 600,
             fontSize: '0.95rem',
             letterSpacing: '0.01em',
-            boxShadow: '0 8px 32px rgba(91, 163, 214, 0.3)'
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)'
           }}
           whileHover={{ 
-            scale: 1.05,
-            boxShadow: '0 12px 40px rgba(91, 163, 214, 0.45)'
+            scale: 1.02,
+            boxShadow: '0 6px 28px rgba(0, 0, 0, 0.3)',
+            transition: { duration: 0.4, ease: [0.32, 0.72, 0, 1] }
           }}
-          whileTap={{ scale: 0.98 }}
+          whileTap={{ scale: 0.99, transition: { duration: 0.2 } }}
         >
           Get Started
           <motion.svg 
@@ -859,7 +861,7 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
             stroke="currentColor"
             strokeWidth={2.5}
             animate={{ x: [0, 4, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+            transition={{ duration: 2, repeat: Infinity, ease: [0.45, 0, 0.55, 1] }}
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </motion.svg>
@@ -970,8 +972,8 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
             <p className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto"
               style={{ color: 'var(--text-secondary)' }}>
               {lang === 'en'
-                ? 'The all-in-one platform for collaborative event management. From planning to execution, we make it effortless.'
-                : 'Az egyetlen platform az együttműködő eseménykezeléshez. A tervezéstől a végrehajtásig, könnyedén.'}
+                ? 'Google Calendar, events, groups & Revolut — connected. Easy to use.'
+                : 'Google Naptár, események, csoportok és Revolut — egy helyen. Egyszerű használat.'}
             </p>
             <div className="flex items-center justify-center gap-4 flex-wrap">
               <button
@@ -1009,17 +1011,17 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: '📅', title: lang === 'en' ? 'Smart Scheduling' : 'Okos ütemezés', desc: lang === 'en' ? 'Find the perfect time that works for everyone' : 'Találd meg a tökéletes időpontot' },
-              { icon: '👥', title: lang === 'en' ? 'Group Collaboration' : 'Csoportos együttműködés', desc: lang === 'en' ? 'Invite and manage guests seamlessly' : 'Hívj meg és kezelj vendégeket zökkenőmentesen' },
-              { icon: '💬', title: lang === 'en' ? 'Real-time Decisions' : 'Valós idejű döntések', desc: lang === 'en' ? 'Vote, discuss, and decide together' : 'Szavazz, beszélj és dönts együtt' },
-              { icon: '💳', title: lang === 'en' ? 'Easy Payments' : 'Egyszerű fizetés', desc: lang === 'en' ? 'Handle expenses and payments effortlessly' : 'Kezeld a költségeket könnyedén' },
+              { icon: '📅', title: lang === 'en' ? 'Google Calendar' : 'Google Naptár', desc: lang === 'en' ? 'Sync events — connect your calendar seamlessly' : 'Szinkronizált események — naptárad egyszerűen' },
+              { icon: '📆', title: lang === 'en' ? 'Events & Invites' : 'Események és meghívók', desc: lang === 'en' ? 'Create events, invite groups, track RSVPs' : 'Hozz létre eseményeket, hívj meg csoportokat' },
+              { icon: '👥', title: lang === 'en' ? 'Social & Groups' : 'Közösség és csoportok', desc: lang === 'en' ? 'Family, friends, work — manage groups in one place' : 'Család, barátok, munka — minden egy helyen' },
+              { icon: '💳', title: lang === 'en' ? 'Revolut Pay' : 'Revolut Pay', desc: lang === 'en' ? 'Split costs, collect payments with Revolut integration' : 'Oszd meg a költségeket Revolut segítségével' },
             ].map((feature, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className="p-6 rounded-2xl border transition-all hover:scale-105"
+                transition={{ delay: i * 0.08, duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
+                className="p-6 rounded-2xl border transition-all hover:scale-[1.02]"
                 style={{ 
                   backgroundColor: 'var(--bg-card)', 
                   borderColor: 'var(--border-primary)',
@@ -1661,10 +1663,13 @@ export default function Home() {
     return theme === 'light'
   }
   
-  // Handle splash complete - transition to landing page
+  // Handle splash complete - skip landing, go straight to events (if logged in) or onboarding (if not)
   const handleSplashComplete = () => {
     setShowSplash(false)
-    setShowLanding(true)
+    setShowLanding(false)
+    if (!localStorage.getItem('vibecheck_profile')) {
+      setShowOnboarding(true)
+    }
   }
 
   // Handle landing page registration - show onboarding if no profile
@@ -2302,9 +2307,9 @@ export default function Home() {
                     {tempProfile.groups && tempProfile.groups.length > 0 ? (
                       tempProfile.groups.map((group) => {
                         const typeColors = {
-                          family: { bg: 'rgba(239, 68, 68, 0.15)', border: 'rgba(239, 68, 68, 0.4)', text: '#ef4444' },
-                          friends: { bg: 'rgba(15, 76, 117, 0.15)', border: 'rgba(15, 76, 117, 0.4)', text: '#5ba3d6' },
-                          company: { bg: 'rgba(251, 191, 36, 0.15)', border: 'rgba(251, 191, 36, 0.4)', text: '#fbbf24' }
+                          family: { bg: 'var(--error-bg)', border: 'var(--error-border)', text: 'var(--error-text)' },
+                          friends: { bg: 'var(--accent-light)', border: 'var(--border-accent)', text: 'var(--accent-primary)' },
+                          company: { bg: 'var(--warning-bg)', border: 'var(--warning-border)', text: 'var(--warning-text)' }
                         }
                         const colors = typeColors[group.type]
                         return (
@@ -2964,9 +2969,9 @@ export default function Home() {
                                     backgroundColor: event.status === 'fixed' ? 'rgba(16, 185, 129, 0.2)' 
                                       : event.status === 'optimal' ? 'rgba(15, 76, 117, 0.25)' 
                                       : 'rgba(251, 191, 36, 0.2)',
-                                    color: event.status === 'fixed' ? '#10B981' 
-                                      : event.status === 'optimal' ? '#5ba3d6' 
-                                      : '#fbbf24'
+                                    color: event.status === 'fixed' ? 'var(--readiness-location)' 
+                                      : event.status === 'optimal' ? 'var(--accent-primary)' 
+                                      : 'var(--readiness-rsvp)'
                                   }}
                                 >
                                   {event.title}
@@ -3980,17 +3985,17 @@ export default function Home() {
                     <div key={step} className="flex-1 flex items-center">
                       <div 
                         className="h-1 flex-1 rounded-full transition-colors"
-                        style={{ backgroundColor: step <= createStep ? '#3b82f6' : 'var(--bg-tertiary)' }}
+                        style={{ backgroundColor: step <= createStep ? 'var(--accent-primary)' : 'var(--bg-tertiary)' }}
                       />
           </div>
         ))}
       </div>
                 <div className="flex justify-between mt-2 text-xs" style={{ color: 'var(--text-muted)' }}>
-                  <span style={{ color: createStep >= 1 ? '#60a5fa' : 'var(--text-muted)' }}>Basics</span>
-                  <span style={{ color: createStep >= 2 ? '#60a5fa' : 'var(--text-muted)' }}>Voting</span>
-                  <span style={{ color: createStep >= 3 ? '#60a5fa' : 'var(--text-muted)' }}>Tasks</span>
-                  <span style={{ color: createStep >= 4 ? '#60a5fa' : 'var(--text-muted)' }}>Payment</span>
-                  <span style={{ color: createStep >= 5 ? '#60a5fa' : 'var(--text-muted)' }}>Invite</span>
+                  <span style={{ color: createStep >= 1 ? 'var(--accent-primary)' : 'var(--text-muted)' }}>Basics</span>
+                  <span style={{ color: createStep >= 2 ? 'var(--accent-primary)' : 'var(--text-muted)' }}>Voting</span>
+                  <span style={{ color: createStep >= 3 ? 'var(--accent-primary)' : 'var(--text-muted)' }}>Tasks</span>
+                  <span style={{ color: createStep >= 4 ? 'var(--accent-primary)' : 'var(--text-muted)' }}>Payment</span>
+                  <span style={{ color: createStep >= 5 ? 'var(--accent-primary)' : 'var(--text-muted)' }}>Invite</span>
           </div>
     </div>
 
@@ -4056,10 +4061,10 @@ export default function Home() {
                               }`}
                               style={{
                                 borderColor: newEvent.category === cat.id 
-                                  ? (cat.id === 'none' ? '#6B7280' : `var(--${cat.color}-500, #3B82F6)`)
+                                  ? (cat.id === 'none' ? '#6B7280' : 'var(--accent-primary)')
                                   : undefined,
                                 backgroundColor: newEvent.category === cat.id 
-                                  ? (cat.id === 'none' ? 'rgba(107, 114, 128, 0.1)' : `rgba(59, 130, 246, 0.1)`)
+                                  ? (cat.id === 'none' ? 'rgba(107, 114, 128, 0.1)' : 'var(--accent-light)')
                                   : undefined,
                               }}
                               title={cat.id === 'none' ? (lang === 'en' ? 'Other category' : 'Egyéb kategória') : undefined}

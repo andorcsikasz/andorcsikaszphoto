@@ -28,20 +28,21 @@ interface EventCardProps {
 export default function EventCard({ event, onClick }: EventCardProps) {
   const isOrganizer = event.organizerId === event.currentUserId
   const readinessColor =
-    event.readiness >= 80 ? '#10b981' : event.readiness >= 50 ? '#f59e0b' : '#f97316'
+    event.readiness >= 80 ? '#047857' : event.readiness >= 50 ? '#b45309' : '#c2410c'
 
   return (
     <motion.div
       layout
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
       className="relative rounded-xl p-4 cursor-pointer transition-all hover:shadow-lg overflow-hidden"
       style={{
         background: isOrganizer
-          ? 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)'
-          : 'linear-gradient(135deg, #059669 0%, #14b8a6 100%)',
+          ? 'linear-gradient(135deg, #1e3a4f 0%, #2d5a73 100%)'
+          : 'linear-gradient(135deg, #14532d 0%, #166534 100%)',
         color: '#fff',
-        boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.12)',
       }}
       onClick={onClick}
     >

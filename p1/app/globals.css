@@ -7,14 +7,15 @@
 
 :root {
   --font-sans: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-  --transition-fast: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  --transition: all 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+  --transition-fast: all 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-smooth: cubic-bezier(0.32, 0.72, 0, 1);
   
-  /* Yellow accent for luxury toggle */
-  --yellow: #fbbf24;
-  --yellow-light: #fcd34d;
-  --yellow-dark: #f59e0b;
-  --yellow-glow: rgba(251, 191, 36, 0.2);
+  /* Muted amber accent - trustworthy, not neon */
+  --yellow: #c9a227;
+  --yellow-light: #d4af37;
+  --yellow-dark: #a67c00;
+  --yellow-glow: rgba(201, 162, 39, 0.12);
   
   /* ==================== LIGHT THEME (Default) ==================== */
   /* Dark blue and Pantone-inspired palette */
@@ -52,12 +53,12 @@
   --accent-light: rgba(15, 76, 117, 0.1);
   --accent-muted: rgba(15, 76, 117, 0.15);
   
-  /* Readiness chart colors - Red, Green, Yellow/Orange shades */
-  --readiness-date: #dc2626;      /* Red - Date selection */
-  --readiness-location: #10b981;  /* Green - Location */
-  --readiness-rsvp: #f59e0b;      /* Amber/Yellow - RSVP responses */
-  --readiness-tasks: #047857;     /* Darker green - Task completion */
-  --readiness-payments: #f97316;   /* Orange - Payment status */
+  /* Readiness chart colors - Muted, trustworthy tones */
+  --readiness-date: #b91c1c;      /* Muted red */
+  --readiness-location: #047857;   /* Soft green */
+  --readiness-rsvp: #b45309;      /* Amber - RSVP */
+  --readiness-tasks: #0369a1;     /* Slate blue - Tasks */
+  --readiness-payments: #c2410c;  /* Muted orange */
   
   /* Interactive colors */
   --btn-primary-bg: linear-gradient(135deg, #0f4c75 0%, #1e5f8e 100%);
@@ -87,7 +88,7 @@
   --shadow-md: 0 4px 6px -1px rgba(10, 22, 40, 0.08), 0 2px 4px -1px rgba(10, 22, 40, 0.05);
   --shadow-lg: 0 10px 15px -3px rgba(10, 22, 40, 0.1), 0 4px 6px -2px rgba(10, 22, 40, 0.05);
   --shadow-xl: 0 20px 25px -5px rgba(10, 22, 40, 0.12), 0 10px 10px -5px rgba(10, 22, 40, 0.06);
-  --shadow-glow: 0 0 25px rgba(15, 76, 117, 0.25);
+  --shadow-glow: 0 0 20px rgba(15, 76, 117, 0.12);
   
   /* Overlay */
   --overlay-color: rgba(10, 22, 40, 0.6);
@@ -124,64 +125,64 @@
   --bg-modal: #141414;
   --bg-nav: rgba(10, 10, 10, 0.95);
   
-  /* Text colors - High contrast for perfect legibility */
-  --text-primary: #ffffff;
-  --text-secondary: #e5e5e5;
-  --text-muted: #b3b3b3;
+  /* Text colors - Clean, readable hierarchy */
+  --text-primary: #fafafa;
+  --text-secondary: #d4d4d4;
+  --text-muted: #a3a3a3;
   --text-inverse: #0a0a0a;
-  --text-link: #5ba3d6;
-  --text-link-hover: #7bb8e0;
+  --text-link: #6b8fa3;
+  --text-link-hover: #8ba8ba;
   
   /* Border colors */
   --border-primary: #262626;
   --border-secondary: #2a2a2a;
   --border-hover: #404040;
-  --border-focus: #5ba3d6;
-  --border-accent: rgba(91, 163, 214, 0.3);
+  --border-focus: #6b8fa3;
+  --border-accent: rgba(107, 143, 163, 0.25);
   
-  /* Accent colors - Premium blue accents for dark mode */
-  --accent-primary: #5ba3d6;
-  --accent-secondary: #7bb8e0;
-  --accent-hover: #4a8fc4;
-  --accent-light: rgba(91, 163, 214, 0.2);
-  --accent-muted: rgba(91, 163, 214, 0.25);
+  /* Accent colors - Muted slate blue, trustworthy */
+  --accent-primary: #6b8fa3;
+  --accent-secondary: #8ba8ba;
+  --accent-hover: #5c7c8f;
+  --accent-light: rgba(107, 143, 163, 0.15);
+  --accent-muted: rgba(107, 143, 163, 0.2);
   
-  /* Readiness chart colors - Brighter shades for dark mode */
-  --readiness-date: #f87171;      /* Lighter red */
-  --readiness-location: #34d399;  /* Bright green */
-  --readiness-rsvp: #fbbf24;      /* Bright yellow */
-  --readiness-tasks: #10b981;      /* Green */
-  --readiness-payments: #fb923c;   /* Bright orange */
+  /* Readiness chart - Muted, not neon */
+  --readiness-date: #e57373;      /* Soft red */
+  --readiness-location: #4ade80;   /* Muted green */
+  --readiness-rsvp: #fbbf24;      /* Amber */
+  --readiness-tasks: #5eead4;     /* Teal */
+  --readiness-payments: #fdba74;  /* Soft orange */
   
-  /* Interactive colors */
-  --btn-primary-bg: linear-gradient(135deg, #0f4c75 0%, #5ba3d6 100%);
+  /* Interactive colors - Solid, professional */
+  --btn-primary-bg: linear-gradient(135deg, #1e3a4f 0%, #2d5a73 100%);
   --btn-primary-text: #ffffff;
-  --btn-primary-hover: linear-gradient(135deg, #0a3d5c 0%, #4a8fc4 100%);
+  --btn-primary-hover: linear-gradient(135deg, #163040 0%, #243d4d 100%);
   --btn-secondary-bg: transparent;
-  --btn-secondary-text: #5ba3d6;
-  --btn-secondary-border: #5ba3d6;
-  --btn-secondary-hover: rgba(91, 163, 214, 0.12);
+  --btn-secondary-text: #6b8fa3;
+  --btn-secondary-border: #6b8fa3;
+  --btn-secondary-hover: rgba(107, 143, 163, 0.1);
   
-  /* Status colors */
-  --success-bg: rgba(16, 185, 129, 0.12);
-  --success-text: #34d399;
-  --success-border: rgba(16, 185, 129, 0.3);
-  --warning-bg: rgba(245, 158, 11, 0.12);
-  --warning-text: #fbbf24;
-  --warning-border: rgba(245, 158, 11, 0.3);
-  --error-bg: rgba(239, 68, 68, 0.12);
-  --error-text: #f87171;
-  --error-border: rgba(239, 68, 68, 0.3);
-  --info-bg: rgba(59, 130, 246, 0.12);
-  --info-text: #60a5fa;
-  --info-border: rgba(59, 130, 246, 0.3);
+  /* Status colors - Muted */
+  --success-bg: rgba(74, 222, 128, 0.1);
+  --success-text: #4ade80;
+  --success-border: rgba(74, 222, 128, 0.2);
+  --warning-bg: rgba(251, 191, 36, 0.1);
+  --warning-text: #eab308;
+  --warning-border: rgba(251, 191, 36, 0.2);
+  --error-bg: rgba(239, 68, 68, 0.1);
+  --error-text: #e57373;
+  --error-border: rgba(239, 68, 68, 0.2);
+  --info-bg: rgba(107, 143, 163, 0.12);
+  --info-text: #6b8fa3;
+  --info-border: rgba(107, 143, 163, 0.2);
   
   /* Shadow */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.7), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
-  --shadow-glow: 0 0 30px rgba(91, 163, 214, 0.4);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.45), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 24px rgba(107, 143, 163, 0.15);
   
   /* Overlay */
   --overlay-color: rgba(0, 0, 0, 0.8);
@@ -193,14 +194,14 @@
   --scrollbar-thumb-hover: #2d4563;
   
   /* Calendar specific */
-  --calendar-today-bg: #5ba3d6;
-  --calendar-selected-bg: rgba(91, 163, 214, 0.25);
-  --calendar-event-bg: rgba(91, 163, 214, 0.2);
+  --calendar-today-bg: #6b8fa3;
+  --calendar-selected-bg: rgba(107, 143, 163, 0.2);
+  --calendar-event-bg: rgba(107, 143, 163, 0.15);
   
   /* Legacy support */
-  --primary: #5ba3d6;
-  --primary-hover: #4a8fc4;
-  --primary-light: rgba(91, 163, 214, 0.15);
+  --primary: #6b8fa3;
+  --primary-hover: #5c7c8f;
+  --primary-light: rgba(107, 143, 163, 0.15);
 }
 
 * {
@@ -316,11 +317,11 @@ small, .text-small {
   }
 }
 
-/* Refined smooth transitions */
+/* Refined smooth transitions - ease-out for natural feel */
 * {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-  transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
-  transition-duration: 180ms;
+  transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+  transition-duration: 220ms;
 }
 
 /* Fade in animation for rotating phrases */
@@ -336,7 +337,7 @@ small, .text-small {
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  animation: fadeIn 0.5s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 /* Subtle float animation */
@@ -350,7 +351,7 @@ small, .text-small {
 }
 
 .animate-float {
-  animation: float 6s ease-in-out infinite;
+  animation: float 8s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
 /* Skeleton loader animation */

@@ -11,10 +11,10 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
   const [hovered, setHovered] = useState(false)
 
   const valueProps = [
-    { title: 'Smart Voting', desc: 'Decide together with ranked choices' },
-    { title: 'AI Assistant', desc: 'Extract tasks from chat automatically' },
-    { title: 'Calendar Sync', desc: 'Connect Google Calendar seamlessly' },
-    { title: 'Payment Handling', desc: 'Revolut Pay for easy splits' },
+    { title: 'Google Calendar', desc: 'Sync events seamlessly' },
+    { title: 'Events & Invites', desc: 'Create events, invite groups, track RSVPs' },
+    { title: 'Social & Groups', desc: 'Family, friends, work — all in one place' },
+    { title: 'Revolut Pay', desc: 'Split costs, easy payments' },
   ]
 
   return (
@@ -24,7 +24,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
     >
       <div className="text-center">
         <h1
-          className="text-6xl sm:text-7xl md:text-8xl font-bold tracking-tight cursor-pointer select-none transition-transform duration-300 hover:scale-105"
+          className="text-6xl sm:text-7xl md:text-8xl font-bold tracking-tight cursor-pointer select-none transition-transform duration-500 hover:scale-[1.02]"
           style={{
             color: 'var(--text-primary)',
             fontFamily: "'Public Sans', sans-serif",
@@ -41,7 +41,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.35, duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
           className="mt-4 text-sm tracking-widest uppercase"
           style={{ color: 'var(--text-muted)' }}
         >
@@ -51,7 +51,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: hovered ? 1 : 0.7 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
           className="mt-16 grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto"
         >
           {valueProps.map((item, i) => (
@@ -59,7 +59,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
               key={item.title}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 * i }}
+              transition={{ delay: 0.08 * i, duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
               className="p-4 rounded-xl border transition-all cursor-pointer hover:shadow-lg"
               style={{
                 backgroundColor: 'var(--bg-card)',
@@ -80,9 +80,9 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
         <motion.button
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
+          transition={{ delay: 0.5, duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
           onClick={onGetStarted}
-          className="mt-12 px-8 py-4 rounded-full font-semibold text-white transition-all hover:scale-105"
+          className="mt-12 px-8 py-4 rounded-full font-semibold text-white transition-all hover:scale-[1.02]"
           style={{
             background: 'var(--btn-primary-bg)',
             boxShadow: 'var(--shadow-glow)',
