@@ -1295,8 +1295,36 @@ export default function Home() {
   const [datePickerMonth, setDatePickerMonth] = useState(new Date())
   const [newInvitee, setNewInvitee] = useState('')
   const [selectedConnectionIds, setSelectedConnectionIds] = useState<string[]>([])
+  const [descriptionKeywords, setDescriptionKeywords] = useState('')
+  const [generatingDescription, setGeneratingDescription] = useState(false)
 
   const t = translations[lang]
+
+  const generateDescriptionFromKeywords = async () => {
+    const kw = descriptionKeywords.trim()
+    if (!kw) return
+    setGeneratingDescription(true)
+    try {
+      const cat = EVENT_CATEGORIES.find((c) => c.id === newEvent.category)
+      const res = await fetch('/api/ai/description', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          keywords: kw,
+          title: newEvent.title,
+          category: cat ? (lang === 'hu' ? cat.labelHu : cat.labelEn) : '',
+        }),
+      })
+      if (res.ok) {
+        const { description } = await res.json()
+        setNewEvent({ ...newEvent, description })
+      }
+    } catch {
+      // fallback handled by API
+    } finally {
+      setGeneratingDescription(false)
+    }
+  }
 
   // Sync profile to backend and get userId for connections/events
   const syncProfileToBackend = async (profile: UserProfile): Promise<UserProfile> => {
@@ -1345,6 +1373,7 @@ export default function Home() {
     })
     setNewInvitee('')
     setSelectedConnectionIds([])
+    setDescriptionKeywords('')
     setDatePickerMonth(new Date())
   }
   
@@ -4340,11 +4369,36 @@ export default function Home() {
                         <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
                           {lang === 'en' ? 'Description' : 'Leírás'}
                         </label>
+                        <div className="flex gap-2 mb-2">
+                          <input
+                            type="text"
+                            value={descriptionKeywords}
+                            onChange={(e) => setDescriptionKeywords(e.target.value)}
+                            placeholder={lang === 'en' ? 'Keywords (e.g. BBQ, games, music)' : 'Kulcsszavak (pl. grillezés, játékok)'}
+                            className="flex-1 px-4 py-2 rounded-lg border bg-[var(--bg-card)] border-[var(--border-primary)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-blue-500"
+                          />
+                          <button
+                            type="button"
+                            onClick={generateDescriptionFromKeywords}
+                            disabled={!descriptionKeywords.trim() || generatingDescription}
+                            className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                            style={{
+                              backgroundColor: 'var(--accent-light)',
+                              color: 'var(--accent-primary)',
+                              border: '1px solid var(--accent-primary)',
+                            }}
+                          >
+                            <SparklesIcon className="w-4 h-4" />
+                            {generatingDescription
+                              ? (lang === 'en' ? 'Generating…' : 'Generálás…')
+                              : (lang === 'en' ? 'Generate' : 'Generálás')}
+                          </button>
+                        </div>
                         <textarea
                           value={newEvent.description}
                           onChange={(e) => setNewEvent({ ...newEvent, description: e.target.value })}
                           placeholder={lang === 'en' ? 'Tell people what this event is about...' : 'Mondd el, miről szól az esemény...'}
-                          rows={2}
+                          rows={3}
                           className="w-full px-4 py-3 bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-xl text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-blue-500 transition-colors resize-none"
                         />
                       </div>
