@@ -30,8 +30,8 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const navItems = [
   { label: "Home", path: "/", icon: House },
-  { label: "Properties", path: "/properties", icon: Buildings },
-  { label: "Template", path: "/template", icon: Swatches },
+  { label: "Find FlatMates", path: "/properties", icon: Buildings },
+  { label: "How It Works", path: "#how-it-works", icon: Info },
 ];
 
 function NavLinks({ onClick, mobile = false }: { onClick?: () => void; mobile?: boolean }) {
@@ -156,10 +156,10 @@ function MobileNav() {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="p-4 border-b flex items-center gap-3">
-            <div className="h-10 w-10 rounded-lg bg-blue-600 flex items-center justify-center">
-              <House className="text-white h-6 w-6" />
+            <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center shadow-lg">
+              <Users className="text-white h-6 w-6" weight="bold" />
             </div>
-            <span className="font-semibold text-lg">StayHub</span>
+            <span className="font-bold text-lg bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">FlatMate</span>
           </div>
           
           {/* Navigation */}
@@ -211,10 +211,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 mr-4 sm:mr-6">
-            <div className="h-8 w-8 sm:h-9 sm:w-9 rounded-lg bg-blue-600 flex items-center justify-center">
-              <House className="text-white h-5 w-5" />
+            <div className="h-8 w-8 sm:h-9 sm:w-9 rounded-lg bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center shadow-lg shadow-purple-500/30">
+              <Users className="text-white h-5 w-5" weight="bold" />
             </div>
-            <span className="font-semibold hidden sm:inline-block text-lg">StayHub</span>
+            <span className="font-bold hidden sm:inline-block text-lg bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">FlatMate</span>
           </Link>
 
           {/* Desktop navigation */}

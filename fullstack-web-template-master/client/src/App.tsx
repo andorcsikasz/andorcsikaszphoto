@@ -9,6 +9,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import ComponentShowcase from "./pages/ComponentShowcase";
 import Home from "./pages/Home";
 import RentalHome from "./pages/RentalHome";
+import FlatMateHome from "./pages/FlatMateHome";
 import Properties from "./pages/Properties";
 import PropertyDetails from "./pages/PropertyDetails";
 import Login from "./pages/Login";
@@ -17,7 +18,8 @@ function Router() {
   return (
     <AppLayout>
       <Switch>
-        <Route path="/" component={RentalHome} />
+        <Route path="/" component={FlatMateHome} />
+        <Route path="/stayhub" component={RentalHome} />
         <Route path="/template" component={Home} />
         <Route path="/properties" component={Properties} />
         <Route path="/properties/:id" component={PropertyDetails} />
