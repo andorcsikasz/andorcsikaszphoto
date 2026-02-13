@@ -3005,7 +3005,7 @@ export default function Home() {
                       layoutId="tabIndicator"
                       className="absolute inset-0 rounded-lg"
                       style={{ backgroundColor: 'var(--accent-primary)' }}
-                      transition={{ type: 'spring', stiffness: 280, damping: 38 }}
+                      transition={{ type: 'tween', duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
                     />
                   )}
                   <span 
