@@ -19,6 +19,7 @@ interface PhotonFeature {
 
 function formatPlace(f: PhotonFeature): string {
   const p = f.properties
+  if (!p.name) return ''
   const parts = [p.name]
   if (p.street && p.street !== p.name) parts.push(p.street)
   if (p.city && p.city !== p.name) parts.push(p.city)
@@ -38,6 +39,7 @@ export async function GET(req: NextRequest) {
     const url = new URL('https://photon.komoot.io/api/')
     url.searchParams.set('q', q)
     url.searchParams.set('limit', '8')
+    url.searchParams.set('lang', 'en')
     const res = await fetch(url.toString(), {
       headers: { 'User-Agent': 'VibeCheck/1.0' },
     })

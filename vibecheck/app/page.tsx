@@ -1300,7 +1300,6 @@ export default function Home() {
   const [locationSuggestions, setLocationSuggestions] = useState<string[]>([])
   const [locationSuggestionsOpen, setLocationSuggestionsOpen] = useState(false)
   const locationSuggestDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const locationInputRef = useRef<HTMLInputElement>(null)
 
   const t = translations[lang]
 
@@ -4612,14 +4611,13 @@ export default function Home() {
                       </div>
 
                       {/* Location */}
-                      <div ref={locationInputRef}>
+                      <div>
                         <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
                           {lang === 'en' ? 'Location' : 'Helyszín'} *
                         </label>
                         <div className="relative">
                           <MapPinIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)] z-10" />
                           <input
-                            ref={locationInputRef}
                             type="text"
                             value={newEvent.location}
                             onChange={(e) => setNewEvent({ ...newEvent, location: e.target.value })}
