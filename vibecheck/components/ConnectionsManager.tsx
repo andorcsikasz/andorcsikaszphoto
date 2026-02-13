@@ -309,6 +309,19 @@ export default function ConnectionsManager({
                   <PaperAirplaneIcon className="w-4 h-4" />
                   {t.send}
                 </button>
+                <button
+                  type="button"
+                  onClick={addSelectedConnections}
+                  disabled={selectedSearchIds.length === 0}
+                  className="p-2 rounded-lg shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{
+                    color: 'var(--btn-primary-text)',
+                    background: 'var(--btn-primary-bg)',
+                  }}
+                  title={lang === 'en' ? `Add ${selectedSearchIds.length} selected` : `${selectedSearchIds.length} kijelölt hozzáadása`}
+                >
+                  <PlusIcon className="w-5 h-5" />
+                </button>
               </div>
               {searching && <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Searching...</p>}
               {searchResults.length > 0 && (
@@ -319,9 +332,22 @@ export default function ConnectionsManager({
                       className="flex items-center justify-between gap-2 px-3 py-2 rounded-lg"
                       style={{ backgroundColor: 'var(--bg-tertiary)' }}
                     >
-                      <span className="text-sm truncate flex-1 min-w-0" style={{ color: 'var(--text-primary)' }}>
-                        {u.name} <span className="opacity-70">({u.email})</span>
-                      </span>
+                      <label className="flex items-center gap-2 flex-1 min-w-0 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={selectedSearchIds.includes(u.id)}
+                          onChange={() => {
+                            setSelectedSearchIds((prev) =>
+                              prev.includes(u.id) ? prev.filter((id) => id !== u.id) : [...prev, u.id]
+                            )
+                          }}
+                          style={{ accentColor: 'var(--accent-primary)' }}
+                          className="shrink-0"
+                        />
+                        <span className="text-sm truncate" style={{ color: 'var(--text-primary)' }}>
+                          {u.name} <span className="opacity-70">({u.email})</span>
+                        </span>
+                      </label>
                       <div className="flex items-center gap-1 shrink-0">
                         <a
                           href={`mailto:${u.email}`}
