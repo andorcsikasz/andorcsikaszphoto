@@ -3,7 +3,7 @@
 
 'use client'
 
-import { useState, useEffect, type CSSProperties } from 'react'
+import { useState, useEffect, useRef, type CSSProperties } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   CalendarIcon,
@@ -1266,6 +1266,7 @@ export default function Home() {
   const [showParticipantsModal, setShowParticipantsModal] = useState(false)
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [showIntegrateMenu, setShowIntegrateMenu] = useState(false)
+  const integrateMenuRef = useRef<HTMLDivElement>(null)
   const [mounted, setMounted] = useState(false)
   const [dashboardFilter, setDashboardFilter] = useState<EventStatus | null>(null)
   const [events, setEvents] = useState<Event[]>([])
@@ -1645,6 +1646,22 @@ export default function Home() {
   }
 
   useEffect(() => {
+    if (!showIntegrateMenu) return
+    const handleClickOutside = (e: MouseEvent) => {
+      const el = integrateMenuRef.current
+      if (el && !el.contains(e.target as Node)) {
+        setShowIntegrateMenu(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [showIntegrateMenu])
+
+  useEffect(() => {
+    if (activeTab !== 'calendar') setShowIntegrateMenu(false)
+  }, [activeTab])
+
+  useEffect(() => {
     setMounted(true)
     // Check for saved profile
     const savedProfile = localStorage.getItem('vibecheck_profile')
@@ -1884,7 +1901,10 @@ export default function Home() {
   }
 
   const getEventsForDate = (date: Date) => {
-    const dateStr = date.toISOString().split('T')[0]
+    const y = date.getFullYear()
+    const m = String(date.getMonth() + 1).padStart(2, '0')
+    const d = String(date.getDate()).padStart(2, '0')
+    const dateStr = `${y}-${m}-${d}`
     return events.filter(e => e.date === dateStr)
   }
 
@@ -3048,13 +3068,69 @@ export default function Home() {
                     <ChevronRightIcon className="w-5 h-5" />
               </button>
                 </div>
-              <button
+              <div className="flex items-center gap-2">
+                <div className="relative" ref={integrateMenuRef}>
+                  <button
+                    onClick={() => setShowIntegrateMenu(!showIntegrateMenu)}
+                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors"
+                    style={{ 
+                      backgroundColor: 'var(--bg-secondary)', 
+                      color: 'var(--text-secondary)',
+                      border: '1px solid var(--border-primary)'
+                    }}
+                  >
+                    <CloudArrowDownIcon className="w-4 h-4" />
+                    {t.integrateCalendar}
+                    <ChevronDownIcon className={`w-4 h-4 transition-transform ${showIntegrateMenu ? 'rotate-180' : ''}`} />
+                  </button>
+                  <AnimatePresence>
+                    {showIntegrateMenu && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute right-0 top-full mt-1 py-1 rounded-xl border shadow-lg z-50 min-w-[200px]"
+                        style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
+                      >
+                        <a
+                          href="https://calendar.google.com/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => setShowIntegrateMenu(false)}
+                          className="flex items-center gap-3 px-4 py-3 transition-colors first:rounded-t-xl"
+                          style={{ color: 'var(--text-primary)' }}
+                          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--bg-hover)' }}
+                          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+                        >
+                          <GoogleLogo className="w-5 h-5 flex-shrink-0" />
+                          <span className="text-sm font-medium">{t.googleCalendar}</span>
+                        </a>
+                        <a
+                          href="https://www.icloud.com/calendar/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => setShowIntegrateMenu(false)}
+                          className="flex items-center gap-3 px-4 py-3 transition-colors border-t last:rounded-b-xl"
+                          style={{ color: 'var(--text-primary)', borderColor: 'var(--border-primary)' }}
+                          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--bg-hover)' }}
+                          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+                        >
+                          <AppleLogo className="w-5 h-5 flex-shrink-0" />
+                          <span className="text-sm font-medium">{t.appleCalendar}</span>
+                        </a>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+                <button
                   onClick={() => setCurrentMonth(new Date())}
                   className="px-4 py-2 text-sm font-medium rounded-lg transition-colors"
                   style={{ backgroundColor: 'var(--bg-secondary)', color: 'var(--text-secondary)' }}
-              >
+                >
                   {t.today}
-              </button>
+                </button>
+              </div>
           </div>
 
               {/* Calendar Grid */}
@@ -3106,10 +3182,13 @@ export default function Home() {
                                 <button
                                   key={event.id}
                                   onClick={() => setSelectedEvent(event)}
-                                  className={`w-full text-left px-2 py-1 rounded text-xs font-medium truncate ${getStatusColor(event.status)} bg-opacity-20 hover:bg-opacity-30 transition-colors`}
-        style={{ 
+                                  className="w-full text-left px-2 py-1 rounded text-xs font-medium truncate transition-colors border-l-[3px]"
+                                  style={{ 
+                                    borderLeftColor: event.status === 'fixed' ? 'var(--readiness-location)' 
+                                      : event.status === 'optimal' ? 'var(--accent-primary)' 
+                                      : 'var(--readiness-rsvp)',
                                     backgroundColor: event.status === 'fixed' ? 'rgba(16, 185, 129, 0.2)' 
-                                      : event.status === 'optimal' ? 'rgba(15, 76, 117, 0.25)' 
+                                      : event.status === 'optimal' ? 'rgba(15, 76, 117, 0.2)' 
                                       : 'rgba(251, 191, 36, 0.2)',
                                     color: event.status === 'fixed' ? 'var(--readiness-location)' 
                                       : event.status === 'optimal' ? 'var(--accent-primary)' 
@@ -3120,9 +3199,15 @@ export default function Home() {
                                 </button>
                               ))}
                               {events.length > 2 && (
-                                <p className="text-xs text-[var(--text-muted)] px-2">
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    if (events[2]) setSelectedEvent(events[2])
+                                  }}
+                                  className="text-xs text-[var(--accent-primary)] px-2 font-medium hover:underline"
+                                >
                                   +{events.length - 2} more
-                                </p>
+                                </button>
                               )}
       </div>
                           </>
