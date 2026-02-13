@@ -57,6 +57,7 @@ import {
   HomeIcon,
   BeakerIcon,
   LightBulbIcon,
+  CloudArrowDownIcon,
 } from '@heroicons/react/24/outline'
 import { RevolutLogo, GoogleLogo, AppleLogo } from '@/components/PaymentLogos'
 import LandingPageComponent from '@/components/LandingPage'
@@ -314,6 +315,9 @@ const translations = {
     going: 'going',
     upcomingEvents: 'Upcoming Events',
     allEvents: 'All Events',
+    integrateCalendar: 'Integrate to calendar',
+    googleCalendar: 'Google Calendar',
+    appleCalendar: 'Apple Calendar',
   },
   hu: {
     calendar: 'Naptár',
@@ -345,6 +349,9 @@ const translations = {
     going: 'megy',
     upcomingEvents: 'Közelgő események',
     allEvents: 'Összes esemény',
+    integrateCalendar: 'Naptár csatlakoztatása',
+    googleCalendar: 'Google Naptár',
+    appleCalendar: 'Apple Naptár',
   },
 }
 
@@ -1258,6 +1265,7 @@ export default function Home() {
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const [showParticipantsModal, setShowParticipantsModal] = useState(false)
   const [currentMonth, setCurrentMonth] = useState(new Date())
+  const [showIntegrateMenu, setShowIntegrateMenu] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [dashboardFilter, setDashboardFilter] = useState<EventStatus | null>(null)
   const [events, setEvents] = useState<Event[]>([])
@@ -3008,10 +3016,10 @@ export default function Home() {
           {activeTab === 'calendar' && (
             <motion.div
               key="calendar"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.2 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col min-h-0 flex-1"
             >
               <div className="flex-shrink-0 mb-3">
@@ -3147,10 +3155,10 @@ export default function Home() {
           {activeTab === 'events' && (
             <motion.div
               key="events"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.2 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
             >
               <div className="mb-8">
                 <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>{t.allEvents}</h2>
@@ -3162,9 +3170,9 @@ export default function Home() {
                 {events.map((event, index) => (
                   <motion.div
                     key={event.id}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.05 }}
+                    transition={{ duration: 0.2, delay: index * 0.02, ease: [0.22, 1, 0.36, 1] }}
                     onClick={() => setSelectedEvent(event)}
                     className={`relative rounded-xl border ${getStatusBorderColor(event.status)} p-5 cursor-pointer transition-all group`}
                     style={{ backgroundColor: 'var(--bg-card)' }}
@@ -3246,10 +3254,10 @@ export default function Home() {
           {activeTab === 'dashboard' && (
             <motion.div
               key="dashboard"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.2 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
             >
               {/* Header with back button when filtered */}
               <div className="mb-8">
@@ -3299,9 +3307,9 @@ export default function Home() {
                     .map((event, index) => (
                       <motion.div
                         key={event.id}
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.05 }}
+                        transition={{ duration: 0.2, delay: index * 0.02, ease: [0.22, 1, 0.36, 1] }}
                         onClick={() => setSelectedEvent(event)}
                         className={`relative rounded-xl border ${getStatusBorderColor(event.status)} p-5 cursor-pointer transition-all group`}
                         style={{ backgroundColor: 'var(--bg-card)' }}
@@ -3664,19 +3672,21 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
             onClick={() => {
               setSelectedEvent(null)
               setShowParticipantsModal(false)
             }}
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              initial={{ opacity: 0, scale: 0.96, y: 12 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              exit={{ opacity: 0, scale: 0.96, y: 12 }}
+              transition={{ type: 'tween', duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
               onClick={(e) => e.stopPropagation()}
               className="rounded-2xl border w-full max-w-3xl max-h-[90vh] overflow-hidden"
-              style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
+              style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)', willChange: 'transform' }}
             >
               {/* Modal Header */}
               <div className="p-6 border-b relative" style={{ borderColor: 'var(--border-primary)' }}>
@@ -3967,16 +3977,18 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
             onClick={() => setShowParticipantsModal(false)}
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              initial={{ opacity: 0, scale: 0.96, y: 12 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              exit={{ opacity: 0, scale: 0.96, y: 12 }}
+              transition={{ type: 'tween', duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
               onClick={(e) => e.stopPropagation()}
               className="rounded-2xl border w-full max-w-2xl max-h-[90vh] overflow-hidden"
-              style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
+              style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)', willChange: 'transform' }}
             >
               {/* Modal Header */}
               <div className="p-6 border-b" style={{ borderColor: 'var(--border-primary)' }}>
@@ -4079,16 +4091,18 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4"
+            transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
             onClick={resetCreateModal}
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              initial={{ opacity: 0, scale: 0.96, y: 12 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              exit={{ opacity: 0, scale: 0.96, y: 12 }}
+              transition={{ type: 'tween', duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
               onClick={(e) => e.stopPropagation()}
               className="rounded-2xl border w-full max-w-4xl max-h-[95vh] overflow-hidden shadow-2xl"
-              style={{ backgroundColor: 'var(--bg-primary)', borderColor: 'var(--border-primary)' }}
+              style={{ backgroundColor: 'var(--bg-primary)', borderColor: 'var(--border-primary)', willChange: 'transform' }}
             >
               {/* Modal Header */}
               <div className="p-6 border-b bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10" style={{ borderColor: 'var(--border-primary)' }}>
