@@ -2868,26 +2868,35 @@ export default function Home() {
 
             {/* Center Tabs */}
             <div 
-              className="flex items-center gap-1 rounded-xl p-1 border"
+              className="relative flex items-center gap-1 rounded-xl p-1 border"
               style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-primary)' }}
             >
               {(['calendar', 'events', 'dashboard'] as const).map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className="px-5 py-2 text-sm font-medium rounded-lg transition-all flex items-center gap-2"
-                  style={{
-                    backgroundColor: activeTab === tab ? 'var(--accent-primary)' : 'transparent',
-                    color: activeTab === tab ? 'var(--text-inverse)' : 'var(--text-muted)'
-                  }}
+                  className="relative px-5 py-2 text-sm font-medium rounded-lg flex items-center gap-2 z-10"
                 >
-                  {tab === 'calendar' && <CalendarIcon className="w-4 h-4" />}
-                  {tab === 'events' && <Squares2X2Icon className="w-4 h-4" />}
-                  {tab === 'dashboard' && <ChartBarIcon className="w-4 h-4" />}
-                  {t[tab]}
+                  {activeTab === tab && (
+                    <motion.div
+                      layoutId="tabIndicator"
+                      className="absolute inset-0 rounded-lg"
+                      style={{ backgroundColor: 'var(--accent-primary)' }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    />
+                  )}
+                  <span 
+                    className="relative z-10 flex items-center gap-2"
+                    style={{ color: activeTab === tab ? 'var(--text-inverse)' : 'var(--text-muted)' }}
+                  >
+                    {tab === 'calendar' && <CalendarIcon className="w-4 h-4" />}
+                    {tab === 'events' && <Squares2X2Icon className="w-4 h-4" />}
+                    {tab === 'dashboard' && <ChartBarIcon className="w-4 h-4" />}
+                    {t[tab]}
+                  </span>
                 </button>
               ))}
-        </div>
+            </div>
 
             {/* Right side */}
             <div className="flex items-center gap-4">
@@ -3199,15 +3208,9 @@ export default function Home() {
                                 </button>
                               ))}
                               {events.length > 2 && (
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation()
-                                    if (events[2]) setSelectedEvent(events[2])
-                                  }}
-                                  className="text-xs text-[var(--accent-primary)] px-2 font-medium hover:underline"
-                                >
+                                <p className="text-xs px-2 font-medium" style={{ color: 'var(--text-muted)' }}>
                                   +{events.length - 2} more
-                                </button>
+                                </p>
                               )}
       </div>
                           </>
