@@ -1273,6 +1273,8 @@ export default function Home() {
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [showIntegrateMenu, setShowIntegrateMenu] = useState(false)
   const integrateMenuRef = useRef<HTMLDivElement>(null)
+  const logoClickTimesRef = useRef<number[]>([])
+  const [easterEggParticles, setEasterEggParticles] = useState<{ id: string; x: number; y: number; angle: number; color: string; size: number }[]>([])
   const [mounted, setMounted] = useState(false)
   const [dashboardFilter, setDashboardFilter] = useState<EventStatus | null>(null)
   const [events, setEvents] = useState<Event[]>([])
@@ -1315,6 +1317,31 @@ export default function Home() {
   const locationSuggestDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const t = translations[lang]
+
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    const now = Date.now()
+    const times = logoClickTimesRef.current
+    times.push(now)
+    const cutoff = now - 2000
+    while (times.length > 0 && times[0] < cutoff) times.shift()
+    if (times.length >= 5) {
+      logoClickTimesRef.current = []
+      const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#8b5cf6', '#ec4899']
+      const particles = Array.from({ length: 48 }, (_, i) => ({
+        id: `egg-${now}-${i}`,
+        x: (Math.random() - 0.5) * 200,
+        y: (Math.random() - 0.5) * 200,
+        angle: Math.random() * 360,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        size: 6 + Math.random() * 10,
+      }))
+      setEasterEggParticles(particles)
+      setTimeout(() => setEasterEggParticles([]), 2500)
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
 
   const generateDescriptionFromKeywords = async () => {
     const kw = descriptionKeywords.trim()
