@@ -45,6 +45,7 @@ import {
   PencilIcon,
   BriefcaseIcon,
   PaperAirplaneIcon,
+  ArrowUpOnSquareIcon,
   TrophyIcon,
   CakeIcon,
   FilmIcon,
@@ -3936,7 +3937,7 @@ export default function Home() {
                         className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
                         style={{ color: 'var(--accent-primary)', backgroundColor: 'var(--accent-light)' }}
                       >
-                        <PaperAirplaneIcon className="w-4 h-4" />
+                        <ArrowUpOnSquareIcon className="w-4 h-4" />
                         {linkCopiedFeedback ? t.linkCopied : t.copyLink}
                       </button>
                     </div>
