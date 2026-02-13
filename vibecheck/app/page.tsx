@@ -748,21 +748,21 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
       }}
       onClick={stage >= 3 ? handleContinue : undefined}
     >
-      {/* Aurora Background - deep blue + teal flow */}
-      <div className="absolute inset-0 opacity-[0.6]">
+      {/* Aurora Background - subtle, doesn't overwhelm */}
+      <div className="absolute inset-0 opacity-[0.4]">
         <Aurora 
           colorStops={['#0f4c75', '#1e5f8e', '#0d9488', '#3d7ba8', '#0f4c75']}
           amplitude={1}
-          blend={0.5}
-          speed={0.55}
+          blend={0.4}
+          speed={0.5}
         />
       </div>
 
-      {/* Elite radial fade - smooth edge blend */}
+      {/* Radial fade - keeps center readable */}
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse 80% 70% at 50% 40%, transparent 20%, rgba(248,250,252,0.3) 50%, var(--bg-primary) 95%)',
+          background: 'radial-gradient(ellipse 90% 80% at 50% 45%, transparent 15%, rgba(248,250,252,0.15) 45%, var(--bg-primary) 100%)',
         }}
       />
 
@@ -787,7 +787,7 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
             color: 'var(--text-primary)',
             letterSpacing: '-0.03em',
             willChange: 'transform, opacity',
-            textShadow: '0 2px 20px rgba(0, 0, 0, 0.2)'
+            textShadow: '0 2px 24px rgba(0,0,0,0.4), 0 0 40px rgba(0,0,0,0.2)'
           }}
         >
           Vibe
@@ -835,7 +835,8 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
         className="absolute bottom-[32%] sm:bottom-[30%] text-xs sm:text-sm tracking-[0.2em] uppercase z-10"
         style={{ 
           color: 'var(--text-muted)',
-          willChange: 'transform, opacity'
+          willChange: 'transform, opacity',
+          textShadow: '0 1px 8px rgba(0,0,0,0.3)'
         }}
       >
         Collaborative Event Management
