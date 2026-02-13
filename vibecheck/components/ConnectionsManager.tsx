@@ -9,6 +9,7 @@ import {
   MagnifyingGlassIcon,
   EnvelopeIcon,
   PaperAirplaneIcon,
+  PlusIcon,
 } from '@heroicons/react/24/outline'
 
 export interface Connection {
@@ -76,8 +77,13 @@ export default function ConnectionsManager({
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<{ id: string; name: string; email: string }[]>([])
   const [searching, setSearching] = useState(false)
+  const [selectedSearchIds, setSelectedSearchIds] = useState<string[]>([])
 
   const t = translations[lang]
+
+  useEffect(() => {
+    setSelectedSearchIds([])
+  }, [searchQuery])
 
   useEffect(() => {
     if (!userId) return
@@ -106,7 +112,7 @@ export default function ConnectionsManager({
     return () => clearTimeout(timer)
   }, [searchQuery, userId])
 
-  const addConnection = async (targetUserId: string, type: 'friend' | 'family') => {
+  const addConnection = async (targetUserId: string, type: 'friend' | 'family', keepOpen = false) => {
     try {
       const res = await fetch('/api/connections', {
         method: 'POST',
@@ -129,13 +135,25 @@ export default function ConnectionsManager({
           },
           ...prev,
         ])
-        setSearchOpen(false)
-        setSearchQuery('')
-        setSearchResults([])
+        if (!keepOpen) {
+          setSearchOpen(false)
+          setSearchQuery('')
+          setSearchResults([])
+          setSelectedSearchIds([])
+        }
       }
     } catch {
       // ignore
     }
+  }
+
+  const addSelectedConnections = async () => {
+    const ids = selectedSearchIds.filter((id) => !connections.some((c) => c.user.id === id))
+    if (ids.length === 0) return
+    for (let i = 0; i < ids.length; i++) {
+      await addConnection(ids[i], 'friend', i < ids.length - 1)
+    }
+    setSelectedSearchIds([])
   }
 
   const removeConnection = async (connectionId: string) => {
