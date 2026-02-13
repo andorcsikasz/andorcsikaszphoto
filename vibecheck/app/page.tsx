@@ -772,8 +772,10 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
         }}
       />
 
-      {/* Logo Container */}
-      <div className="relative flex items-center justify-center z-10">
+      {/* Centered Content Block */}
+      <div className="relative flex flex-col items-center justify-center gap-6 z-10 px-4">
+        {/* Logo */}
+        <div className="flex items-center justify-center">
         {/* "Vibe" text */}
         <motion.span
           initial={{ opacity: 0, y: 20 }}
@@ -821,36 +823,36 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
         >
           Check
         </motion.span>
-      </div>
+        </div>
 
-      {/* Tagline */}
-      <motion.p
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ 
-          opacity: stage >= 2 ? 1 : 0,
-          y: stage >= 2 ? 0 : 10,
-        }}
-        transition={{ 
-          duration: 1.1,
-          delay: 0.35,
-          ease: [0.16, 1, 0.3, 1] 
-        }}
-        className="absolute bottom-[32%] sm:bottom-[30%] text-sm sm:text-base tracking-[0.15em] uppercase z-10 font-medium"
-        style={{ 
-          color: 'var(--text-secondary)',
-          willChange: 'transform, opacity',
-        }}
-      >
-        Collaborative Event Management
-      </motion.p>
+        {/* Tagline */}
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ 
+            opacity: stage >= 2 ? 1 : 0,
+            y: stage >= 2 ? 0 : 10,
+          }}
+          transition={{ 
+            duration: 1.1,
+            delay: 0.35,
+            ease: [0.16, 1, 0.3, 1] 
+          }}
+          className="text-sm sm:text-base tracking-[0.15em] uppercase font-medium"
+          style={{ 
+            color: 'var(--text-secondary)',
+            willChange: 'transform, opacity',
+          }}
+        >
+          Collaborative Event Management
+        </motion.p>
 
-      {/* Click to continue CTA */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: stage >= 3 ? 1 : 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="absolute bottom-12 sm:bottom-16 flex flex-col items-center gap-4 z-10"
-      >
+        {/* Click to continue CTA */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: stage >= 3 ? 1 : 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="flex flex-col items-center gap-4"
+        >
         <motion.button
           onClick={handleContinue}
           className="group flex items-center gap-2 px-10 py-4 rounded-full transition-all animate-pulse-glow text-lg"
@@ -888,7 +890,8 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
         >
           or click anywhere to continue
         </motion.p>
-      </motion.div>
+        </motion.div>
+      </div>
     </motion.div>
   )
 }
