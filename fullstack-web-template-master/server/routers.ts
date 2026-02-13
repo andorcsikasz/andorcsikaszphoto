@@ -1,6 +1,19 @@
 import { systemRouter } from "./systemRouter";
 import { publicProcedure, router } from "./lib/trpc";
-import { decrementCounter, getCounter, incrementCounter, getProperties, getPropertyById, getFeaturedProperties } from "./db";
+import {
+  decrementCounter,
+  getCounter,
+  incrementCounter,
+  getProperties,
+  getPropertyById,
+  getFeaturedProperties,
+  getLandlordDashboardMetrics,
+  getLandlordInquiries,
+  getLandlordPropertyPerformance,
+  getTenantDashboardMetrics,
+  getTenantBookingHistory,
+  getTenantFavorites
+} from "./db";
 import { z } from "zod";
 
 export const appRouter = router({
@@ -42,6 +55,48 @@ export const appRouter = router({
     featured: publicProcedure
       .input(z.object({ limit: z.number().default(6) }).optional())
       .query(({ input }) => getFeaturedProperties(input?.limit)),
+  }),
+
+  // Landlord Dashboard
+  landlord: router({
+    // Get comprehensive dashboard metrics
+    metrics: publicProcedure
+      .input(z.object({ landlordId: z.number() }))
+      .query(({ input }) => getLandlordDashboardMetrics(input.landlordId)),
+
+    // Get recent inquiries
+    inquiries: publicProcedure
+      .input(z.object({
+        landlordId: z.number(),
+        limit: z.number().default(10).optional(),
+      }))
+      .query(({ input }) => getLandlordInquiries(input.landlordId, input.limit)),
+
+    // Get property performance breakdown
+    propertyPerformance: publicProcedure
+      .input(z.object({ landlordId: z.number() }))
+      .query(({ input }) => getLandlordPropertyPerformance(input.landlordId)),
+  }),
+
+  // Tenant Dashboard
+  tenant: router({
+    // Get comprehensive dashboard metrics
+    metrics: publicProcedure
+      .input(z.object({ userId: z.number() }))
+      .query(({ input }) => getTenantDashboardMetrics(input.userId)),
+
+    // Get booking history
+    bookings: publicProcedure
+      .input(z.object({
+        userId: z.number(),
+        limit: z.number().default(10).optional(),
+      }))
+      .query(({ input }) => getTenantBookingHistory(input.userId, input.limit)),
+
+    // Get saved properties
+    favorites: publicProcedure
+      .input(z.object({ userId: z.number() }))
+      .query(({ input }) => getTenantFavorites(input.userId)),
   }),
 });
 
