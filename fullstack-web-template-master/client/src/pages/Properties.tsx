@@ -354,7 +354,9 @@ export default function Properties() {
                   className="mt-4"
                   onClick={() => {
                     setSearchQuery("");
-                    setPriceRange([0, 10000]);
+                    setPriceRange([50000, 800000]);
+                    setMinPriceInput("50000");
+                    setMaxPriceInput("800000");
                     setBedrooms("");
                     setSelectedAmenities([]);
                   }}
