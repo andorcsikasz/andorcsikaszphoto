@@ -93,7 +93,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
             transition: { duration: 0.35 }
           }}
           whileTap={{ scale: 0.97 }}
-          className="mt-12 px-10 py-4 rounded-full text-lg font-semibold text-white animate-pulse-glow"
+          className="mt-12 px-12 py-5 rounded-full text-xl font-semibold text-white animate-pulse-glow"
           style={{
             background: 'var(--btn-primary-bg)',
             boxShadow: 'var(--shadow-glow), 0 0 24px rgba(13, 148, 136, 0.15)',

@@ -851,12 +851,11 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
       >
         <motion.button
           onClick={handleContinue}
-          className="group flex items-center gap-2 px-8 py-3.5 rounded-full transition-all animate-pulse-glow"
+          className="group flex items-center gap-2 px-10 py-4 rounded-full transition-all animate-pulse-glow text-lg"
           style={{
             background: 'var(--btn-primary-bg)',
             color: 'var(--btn-primary-text)',
             fontWeight: 600,
-            fontSize: '1rem',
             letterSpacing: '0.01em',
             boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25), 0 0 24px rgba(13, 148, 136, 0.2)'
           }}
@@ -869,7 +868,7 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
         >
           Get Started
           <motion.svg 
-            className="w-4 h-4" 
+            className="w-5 h-5" 
             fill="none" 
             viewBox="0 0 24 24" 
             stroke="currentColor"
