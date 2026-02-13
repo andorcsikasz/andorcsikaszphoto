@@ -25,6 +25,9 @@ import {
   ArrowRight,
   Briefcase,
   GraduationCap,
+  ShieldCheck,
+  CreditCard,
+  Lock,
 } from "@phosphor-icons/react";
 import { useState } from "react";
 import { Link } from "wouter";
@@ -415,6 +418,70 @@ export default function FlatMateHome() {
                 <div className="text-5xl sm:text-6xl font-bold mb-2">{stat.number}</div>
                 <div className="text-lg font-semibold mb-1">{stat.label}</div>
                 <div className="text-sm text-blue-100">{stat.sublabel}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Features Section */}
+      <section className="py-20 sm:py-28 bg-white">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl sm:text-5xl font-bold mb-6">
+              Safe, Transparent, Trusted
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Your security and peace of mind are our top priorities
+            </p>
+          </motion.div>
+
+          <div className="grid sm:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {[
+              {
+                icon: ShieldCheck,
+                title: "Verified Users",
+                description: "All users go through ID verification. No fake listings, no scams.",
+                gradient: "from-cyan-500 to-blue-600",
+              },
+              {
+                icon: CreditCard,
+                title: "Deposit-Free",
+                description: "Our guarantee program eliminates the need for security deposits.",
+                gradient: "from-green-500 to-emerald-600",
+              },
+              {
+                icon: Lock,
+                title: "Safe Payments",
+                description: "Secure payment processing with escrow protection for your peace of mind.",
+                gradient: "from-blue-500 to-indigo-600",
+              },
+            ].map((feature, index) => (
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.15 }}
+              >
+                <Card className="h-full border-0 shadow-lg hover:shadow-2xl transition-all duration-300 group">
+                  <CardHeader className="text-center pb-4">
+                    <div className={`h-20 w-20 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-lg`}>
+                      <feature.icon className="h-10 w-10 text-white" weight="duotone" />
+                    </div>
+                    <CardTitle className="text-2xl">{feature.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-center">
+                    <p className="text-muted-foreground leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </CardContent>
+                </Card>
               </motion.div>
             ))}
           </div>
