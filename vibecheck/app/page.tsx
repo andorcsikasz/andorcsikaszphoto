@@ -1297,6 +1297,10 @@ export default function Home() {
   const [selectedConnectionIds, setSelectedConnectionIds] = useState<string[]>([])
   const [descriptionKeywords, setDescriptionKeywords] = useState('')
   const [generatingDescription, setGeneratingDescription] = useState(false)
+  const [locationSuggestions, setLocationSuggestions] = useState<string[]>([])
+  const [locationSuggestionsOpen, setLocationSuggestionsOpen] = useState(false)
+  const locationSuggestDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const locationInputRef = useRef<HTMLInputElement>(null)
 
   const t = translations[lang]
 
@@ -1374,9 +1378,43 @@ export default function Home() {
     setNewInvitee('')
     setSelectedConnectionIds([])
     setDescriptionKeywords('')
+    setLocationSuggestions([])
+    setLocationSuggestionsOpen(false)
     setDatePickerMonth(new Date())
   }
-  
+
+  // Location autocomplete: debounced fetch when typing
+  useEffect(() => {
+    const q = newEvent.location.trim()
+    if (q.length < 2 || q.startsWith('http://') || q.startsWith('https://')) {
+      setLocationSuggestions([])
+      return
+    }
+    if (locationSuggestDebounceRef.current) {
+      clearTimeout(locationSuggestDebounceRef.current)
+    }
+    locationSuggestDebounceRef.current = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/places/suggest?q=${encodeURIComponent(q)}`)
+        if (res.ok) {
+          const { suggestions } = await res.json()
+          setLocationSuggestions(suggestions || [])
+          setLocationSuggestionsOpen(true)
+        } else {
+          setLocationSuggestions([])
+        }
+      } catch {
+        setLocationSuggestions([])
+      }
+      locationSuggestDebounceRef.current = null
+    }, 300)
+    return () => {
+      if (locationSuggestDebounceRef.current) {
+        clearTimeout(locationSuggestDebounceRef.current)
+      }
+    }
+  }, [newEvent.location])
+
   // Auto-update icon when title changes
   const handleTitleChange = (title: string) => {
     const suggestedIconId = getSuggestedIcon(title)
@@ -4574,19 +4612,50 @@ export default function Home() {
                       </div>
 
                       {/* Location */}
-                      <div>
+                      <div ref={locationInputRef}>
                         <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
                           {lang === 'en' ? 'Location' : 'Helyszín'} *
                         </label>
                         <div className="relative">
-                          <MapPinIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
+                          <MapPinIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)] z-10" />
                           <input
+                            ref={locationInputRef}
                             type="text"
                             value={newEvent.location}
                             onChange={(e) => setNewEvent({ ...newEvent, location: e.target.value })}
-                            placeholder={lang === 'en' ? 'Add location or link' : 'Helyszín vagy link'}
+                            onFocus={() => locationSuggestions.length > 0 && setLocationSuggestionsOpen(true)}
+                            onBlur={() => setTimeout(() => setLocationSuggestionsOpen(false), 150)}
+                            placeholder={lang === 'en' ? 'Add location or link (e.g. Budapest)' : 'Helyszín vagy link (pl. Budapest)'}
                             className="w-full pl-12 pr-4 py-3 bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-xl text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-blue-500 transition-colors"
                           />
+                          {locationSuggestionsOpen && locationSuggestions.length > 0 && (
+                            <ul
+                              className="absolute top-full left-0 right-0 mt-1 py-1 rounded-xl border shadow-lg z-50 max-h-48 overflow-y-auto"
+                              style={{
+                                backgroundColor: 'var(--bg-modal)',
+                                borderColor: 'var(--border-primary)',
+                              }}
+                            >
+                              {locationSuggestions.map((s) => (
+                                <li key={s}>
+                                  <button
+                                    type="button"
+                                    onMouseDown={(e) => {
+                                      e.preventDefault()
+                                      setNewEvent({ ...newEvent, location: s })
+                                      setLocationSuggestions([])
+                                      setLocationSuggestionsOpen(false)
+                                    }}
+                                    className="w-full text-left px-4 py-2 text-sm hover:bg-[var(--bg-hover)] transition-colors flex items-center gap-2"
+                                    style={{ color: 'var(--text-primary)' }}
+                                  >
+                                    <MapPinIcon className="w-4 h-4 flex-shrink-0 text-[var(--text-muted)]" />
+                                    {s}
+                                  </button>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
                         </div>
                       </div>
 
