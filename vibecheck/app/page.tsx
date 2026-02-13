@@ -3586,9 +3586,7 @@ export default function Home() {
                       style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
                     >
                       <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                          <CalendarIcon className="w-5 h-5 text-blue-400" />
-                        </div>
+                        <CalendarIcon className="w-5 h-5 text-blue-500 flex-shrink-0" />
                         <span className="text-sm" style={{ color: 'var(--text-muted)' }}>
                           {lang === 'en' ? 'Total Events' : 'Összes esemény'}
                         </span>
@@ -3601,9 +3599,7 @@ export default function Home() {
                       style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
                     >
                       <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                          <UserGroupIcon className="w-5 h-5 text-purple-400" />
-                        </div>
+                        <UserGroupIcon className="w-5 h-5 text-purple-500 flex-shrink-0" />
                         <span className="text-sm" style={{ color: 'var(--text-muted)' }}>
                           {lang === 'en' ? 'Total Attendees' : 'Összes résztvevő'}
                         </span>
@@ -3616,9 +3612,7 @@ export default function Home() {
                       style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
                     >
                       <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-emerald-500/20 rounded-lg flex items-center justify-center">
-                          <ArrowTrendingUpIcon className="w-5 h-5 text-emerald-400" />
-                        </div>
+                        <ArrowTrendingUpIcon className="w-5 h-5 text-emerald-500 flex-shrink-0" />
                         <span className="text-sm" style={{ color: 'var(--text-muted)' }}>
                           {lang === 'en' ? 'Avg Readiness' : 'Átl. készültség'}
                         </span>
@@ -3631,9 +3625,7 @@ export default function Home() {
                       style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
                     >
                       <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-orange-500/20 rounded-lg flex items-center justify-center">
-                          <FireIcon className="w-5 h-5 text-orange-400" />
-                        </div>
+                        <FireIcon className="w-5 h-5 text-orange-500 flex-shrink-0" />
                         <span className="text-sm" style={{ color: 'var(--text-muted)' }}>
                           {lang === 'en' ? 'Upcoming' : 'Közelgő'}
                         </span>
@@ -3652,10 +3644,8 @@ export default function Home() {
                       style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
                     >
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center group-hover:bg-emerald-500/30 transition-colors">
-                          <CheckCircleIcon className="w-6 h-6 text-emerald-400" />
-                        </div>
-    <div>
+                        <CheckCircleIcon className="w-6 h-6 text-emerald-500 flex-shrink-0 group-hover:text-emerald-600 transition-colors" />
+                        <div>
                           <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.fixed}</p>
                           <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{events.filter(e => e.status === 'fixed').length}</p>
                         </div>
@@ -3673,9 +3663,7 @@ export default function Home() {
                       style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
                     >
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center group-hover:bg-orange-500/30 transition-colors">
-                          <ClockIcon className="w-6 h-6 text-orange-400" />
-                        </div>
+                        <ClockIcon className="w-6 h-6 text-orange-500 flex-shrink-0 group-hover:text-orange-600 transition-colors" />
                         <div>
                           <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.inProgress}</p>
                           <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{events.filter(e => e.status === 'in-progress').length}</p>
@@ -3694,12 +3682,7 @@ export default function Home() {
                       style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
                     >
                       <div className="flex items-center gap-4">
-                        <div 
-                          className="w-12 h-12 rounded-xl flex items-center justify-center transition-colors"
-                          style={{ backgroundColor: 'var(--bg-tertiary)' }}
-                        >
-                          <UserGroupIcon className="w-6 h-6" style={{ color: 'var(--text-muted)' }} />
-                        </div>
+                        <UserGroupIcon className="w-6 h-6 text-slate-500 flex-shrink-0" />
                         <div>
                           <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.optimal}</p>
                           <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{events.filter(e => e.status === 'optimal').length}</p>
