@@ -241,22 +241,20 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 }
 
 const footerLinks = {
-  product: [
-    { label: "Find FlatMates", href: "/properties" },
-    { label: "How AI Works", href: "#" },
-    { label: "For Landlords", href: "#" },
-    { label: "CRM Platform", href: "#" },
+  renters: [
+    { label: "Browse Listings", href: "/properties" },
+    { label: "Create Profile", href: "#" },
+    { label: "Find Roommates", href: "#" },
   ],
-  company: [
-    { label: "About FlatMate", href: "#" },
-    { label: "Our Technology", href: "#" },
-    { label: "Careers", href: "#" },
+  landlords: [
+    { label: "List Your Flat", href: "#" },
+    { label: "Dashboard", href: "#" },
+  ],
+  support: [
+    { label: "Help Center", href: "#" },
     { label: "Contact Us", href: "#" },
-  ],
-  legal: [
-    { label: "Privacy Policy", href: "#" },
-    { label: "Terms of Service", href: "#" },
-    { label: "Data Protection", href: "#" },
+    { label: "Privacy", href: "#" },
+    { label: "Terms", href: "#" },
   ],
 };
 
@@ -300,11 +298,11 @@ function Footer() {
             </div>
           </div>
 
-          {/* Product */}
+          {/* For Renters */}
           <div>
-            <h3 className="font-semibold mb-3 text-sm">Product</h3>
+            <h3 className="font-semibold mb-3 text-sm">For Renters</h3>
             <ul className="space-y-2">
-              {footerLinks.product.map((link) => (
+              {footerLinks.renters.map((link) => (
                 <li key={link.label}>
                   <a
                     href={link.href}
@@ -317,11 +315,11 @@ function Footer() {
             </ul>
           </div>
 
-          {/* Company */}
+          {/* For Landlords */}
           <div>
-            <h3 className="font-semibold mb-3 text-sm">Company</h3>
+            <h3 className="font-semibold mb-3 text-sm">For Landlords</h3>
             <ul className="space-y-2">
-              {footerLinks.company.map((link) => (
+              {footerLinks.landlords.map((link) => (
                 <li key={link.label}>
                   <a
                     href={link.href}
@@ -334,11 +332,11 @@ function Footer() {
             </ul>
           </div>
 
-          {/* Legal */}
+          {/* Support */}
           <div>
-            <h3 className="font-semibold mb-3 text-sm">Legal</h3>
+            <h3 className="font-semibold mb-3 text-sm">Support</h3>
             <ul className="space-y-2">
-              {footerLinks.legal.map((link) => (
+              {footerLinks.support.map((link) => (
                 <li key={link.label}>
                   <a
                     href={link.href}
