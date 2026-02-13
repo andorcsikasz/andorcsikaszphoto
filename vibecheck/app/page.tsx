@@ -25,7 +25,6 @@ import {
   PhotoIcon,
   FolderIcon,
   ClipboardDocumentListIcon,
-  ClipboardDocumentIcon,
   TrashIcon,
   GlobeAltIcon,
   LockClosedIcon,
@@ -258,7 +257,7 @@ interface NewEventData {
 }
 
 interface Event {
-  id: number
+  id: number | string
   title: string
   date: string
   time: string
@@ -1769,6 +1768,50 @@ export default function Home() {
     }
   }, [userProfile?.name, userProfile?.userId])
   
+  // Open event from URL (?eventId=xxx)
+  useEffect(() => {
+    if (typeof window === 'undefined' || showSplash) return
+    const params = new URLSearchParams(window.location.search)
+    const eventId = params.get('eventId')
+    if (!eventId) return
+
+    const loadAndShowEvent = async () => {
+      try {
+        const res = await fetch(`/api/events/${eventId}`)
+        if (!res.ok) return
+        const { event: e } = await res.json()
+        if (!e) return
+        const startDate = e.startDate || ''
+        const dateStr = typeof startDate === 'string' ? startDate.split('T')[0] : new Date(startDate).toISOString().split('T')[0]
+        const participantCount = e.participants?.length ?? 0
+        const ev: Event = {
+          id: e.id,
+          title: e.title,
+          date: dateStr,
+          time: new Date(startDate).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+          location: e.location || '',
+          type: e.isInviteOnly ? 'private' : 'public',
+          attendees: participantCount,
+          confirmedAttendees: participantCount,
+          organizerId: e.organizerId,
+          organizerName: e.organizer?.name || 'Unknown',
+          readiness: participantCount > 0 ? Math.round((participantCount / (participantCount + 1)) * 100) : 0,
+          hasVoting: (e.decisions?.length || 0) > 0,
+          hasTasks: false,
+          hasPayment: false,
+          status: (participantCount > 0 ? 'fixed' : 'optimal') as EventStatus,
+          tasks: [],
+          participants: e.participants?.map((p: { id: string; name: string }) => ({ id: p.id, name: p.name, status: 'pending' as const })) || [],
+          resources: [],
+        }
+        setSelectedEvent(ev)
+      } catch {
+        // ignore
+      }
+    }
+    loadAndShowEvent()
+  }, [showSplash])
+
   // Apply theme to document
   useEffect(() => {
     if (typeof document !== 'undefined') {
@@ -3900,6 +3943,7 @@ export default function Home() {
                       onClick={() => {
                         setSelectedEvent(null)
                         setShowParticipantsModal(false)
+                        setLinkCopiedFeedback(false)
                       }}
                       className="p-2 rounded-lg transition-colors"
                       style={{ color: 'var(--text-muted)' }}
