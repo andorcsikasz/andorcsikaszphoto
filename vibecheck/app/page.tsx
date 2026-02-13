@@ -3936,7 +3936,7 @@ export default function Home() {
                         className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
                         style={{ color: 'var(--accent-primary)', backgroundColor: 'var(--accent-light)' }}
                       >
-                        <LinkIcon className="w-4 h-4" />
+                        <PaperAirplaneIcon className="w-4 h-4" />
                         {linkCopiedFeedback ? t.linkCopied : t.copyLink}
                       </button>
                     </div>
@@ -4000,13 +4000,22 @@ export default function Home() {
                     </p>
                     <p style={{ color: 'var(--text-muted)' }}>{selectedEvent.time}</p>
     </div>
-                  <div className="rounded-xl p-4" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                  <a
+                    href={selectedEvent.location.startsWith('http') ? selectedEvent.location : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedEvent.location)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-xl p-4 block transition-opacity hover:opacity-90 cursor-pointer"
+                    style={{ backgroundColor: 'var(--bg-tertiary)' }}
+                  >
                     <div className="flex items-center gap-3 mb-2">
                       <MapPinIcon className="w-5 h-5" style={{ color: 'var(--text-muted)' }} />
                       <span className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.location}</span>
-            </div>
-                    <p className="font-medium" style={{ color: 'var(--text-primary)' }}>{selectedEvent.location}</p>
-              </div>
+                    </div>
+                    <p className="font-medium flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
+                      {selectedEvent.location}
+                      <LinkIcon className="w-3.5 h-3.5 opacity-60" />
+                    </p>
+                  </a>
           </div>
 
                 {/* Participants */}
