@@ -3116,8 +3116,15 @@ export default function Home() {
                     <motion.div
                       layoutId="tabIndicator"
                       className="absolute inset-0 rounded-lg"
-                      style={{ backgroundColor: 'var(--accent-primary)' }}
-                      transition={{ type: 'spring', stiffness: 380, damping: 35 }}
+                      style={{ 
+                        backgroundColor: 'var(--accent-primary)',
+                        willChange: 'transform',
+                      }}
+                      transition={{ 
+                        type: 'tween',
+                        duration: 0.4,
+                        ease: [0.25, 0.46, 0.45, 0.94],
+                      }}
                       layout
                     />
                   )}
