@@ -16,6 +16,7 @@ import {
   SignOut,
   Swatches,
   User,
+  Users,
   List,
   GithubLogo,
   TwitterLogo,

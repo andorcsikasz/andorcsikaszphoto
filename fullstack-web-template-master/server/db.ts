@@ -233,7 +233,7 @@ export async function getProperties(filters?: PropertyFilters): Promise<Property
     }
 
     if (filters?.lifestyleCategory) {
-      conditions.push(eq(properties.lifestyleCategory, filters.lifestyleCategory));
+      conditions.push(eq(properties.lifestyleCategory, filters.lifestyleCategory as any));
     }
 
     if (filters?.search) {
