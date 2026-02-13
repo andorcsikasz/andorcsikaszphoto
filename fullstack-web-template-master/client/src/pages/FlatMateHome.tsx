@@ -125,7 +125,6 @@ export default function FlatMateHome() {
             >
               <Sparkle className="h-4 w-4 text-yellow-400" weight="fill" />
               <span className="text-sm font-semibold text-white">AI-Powered Smart Matching</span>
-              <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 border-0">New</Badge>
             </motion.div>
 
             <motion.h1
