@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Dashboard from '@/components/Dashboard'
 import EventWorkspace from '@/components/EventWorkspace'
 import EventCreationWizard from '@/components/EventCreationWizard'
@@ -162,15 +162,23 @@ export default function DemoPage() {
   }
 
   const handleWizardSubmit = (eventData: any) => {
-    console.log('Event created:', eventData)
     // In a real app, you would create the event here
     setShowWizard(false)
   }
 
+  useEffect(() => {
+    if (view === 'workspace' && selectedEvent) {
+      const event = demoEvents.find((e) => e.id === selectedEvent)
+      if (!event) {
+        setView('dashboard')
+        setSelectedEvent(null)
+      }
+    }
+  }, [view, selectedEvent])
+
   if (view === 'workspace' && selectedEvent) {
     const event = demoEvents.find((e) => e.id === selectedEvent)
     if (!event) {
-      setView('dashboard')
       return null
     }
 

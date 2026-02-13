@@ -19,9 +19,11 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
-                var t = localStorage.getItem('vibecheck_theme');
-                var isDark = t === 'dark' || (t !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-                document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+                try {
+                  var t = localStorage.getItem('vibecheck_theme');
+                  var isDark = t === 'dark' || (t !== 'light' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+                } catch (e) {}
               })();
             `,
           }}
