@@ -7,6 +7,7 @@ import {
   UserPlusIcon,
   XMarkIcon,
   MagnifyingGlassIcon,
+  EnvelopeIcon,
 } from '@heroicons/react/24/outline'
 
 export interface Connection {
@@ -42,6 +43,7 @@ const translations = {
     inviteFromConnections: 'Invite from connections',
     selectAll: 'Select all',
     deselectAll: 'Deselect all',
+    sendEmail: 'Send email',
   },
   hu: {
     title: 'Kapcsolatok',
@@ -54,6 +56,7 @@ const translations = {
     inviteFromConnections: 'Meghívás a kapcsolatokból',
     selectAll: 'Összes kijelölése',
     deselectAll: 'Kijelölés törlése',
+    sendEmail: 'Email küldése',
   },
 }
 
@@ -259,10 +262,20 @@ export default function ConnectionsManager({
                       className="flex items-center justify-between gap-2 px-3 py-2 rounded-lg"
                       style={{ backgroundColor: 'var(--bg-tertiary)' }}
                     >
-                      <span className="text-sm truncate" style={{ color: 'var(--text-primary)' }}>
+                      <span className="text-sm truncate flex-1 min-w-0" style={{ color: 'var(--text-primary)' }}>
                         {u.name} <span className="opacity-70">({u.email})</span>
                       </span>
-                      <div className="flex gap-1 shrink-0">
+                      <div className="flex items-center gap-1 shrink-0">
+                        <a
+                          href={`mailto:${u.email}`}
+                          title={t.sendEmail}
+                          className="p-1.5 rounded transition-colors"
+                          style={{ color: 'var(--accent-primary)' }}
+                          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-light)' }}
+                          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+                        >
+                          <EnvelopeIcon className="w-4 h-4" />
+                        </a>
                         <button
                           type="button"
                           onClick={() => addConnection(u.id, 'friend')}
@@ -334,14 +347,28 @@ export default function ConnectionsManager({
                   </span>
                 </label>
                 {!compact && (
-                  <button
-                    type="button"
-                    onClick={() => removeConnection(c.id)}
-                    className="p-1 rounded hover:opacity-70"
-                    style={{ color: 'var(--text-muted)' }}
-                  >
-                    <XMarkIcon className="w-4 h-4" />
-                  </button>
+                  <div className="flex items-center gap-0.5 shrink-0">
+                    {c.user.email && (
+                      <a
+                        href={`mailto:${c.user.email}`}
+                        title={t.sendEmail}
+                        className="p-1.5 rounded transition-colors"
+                        style={{ color: 'var(--accent-primary)' }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-light)' }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+                      >
+                        <EnvelopeIcon className="w-4 h-4" />
+                      </a>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => removeConnection(c.id)}
+                      className="p-1.5 rounded hover:opacity-70"
+                      style={{ color: 'var(--text-muted)' }}
+                    >
+                      <XMarkIcon className="w-4 h-4" />
+                    </button>
+                  </div>
                 )}
               </div>
             ))}
