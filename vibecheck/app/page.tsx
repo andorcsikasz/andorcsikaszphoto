@@ -323,6 +323,7 @@ const translations = {
     openLink: 'Open link',
     linkCopied: 'Link copied!',
     privateEventRestricted: 'This event is private. Only the organizer and invited participants can view the details.',
+    edit: 'Edit',
   },
   hu: {
     calendar: 'Naptár',
@@ -361,6 +362,7 @@ const translations = {
     openLink: 'Link megnyitása',
     linkCopied: 'Link másolva!',
     privateEventRestricted: 'Ez az esemény privát. Csak a szervező és a meghívott résztvevők láthatják a részleteket.',
+    edit: 'Szerkesztés',
   },
 }
 
@@ -1283,6 +1285,7 @@ export default function Home() {
   const [showAllInvitedEvents, setShowAllInvitedEvents] = useState(false)
   
   // Create Event Modal
+  const [editingEvent, setEditingEvent] = useState<Event | null>(null)
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [createStep, setCreateStep] = useState(1)
   const [newEvent, setNewEvent] = useState<NewEventData>({
@@ -1317,6 +1320,35 @@ export default function Home() {
   const locationSuggestDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const t = translations[lang]
+
+  const openEditModal = (event: Event) => {
+    const dateStr = event.date || new Date().toISOString().split('T')[0]
+    setNewEvent({
+      title: event.title,
+      description: event.description || '',
+      startDate: dateStr,
+      endDate: dateStr,
+      startTime: event.time || '00:00',
+      endTime: event.time ? `${event.time.slice(0, 2)}:${String(parseInt(event.time.slice(3, 5) || '0') + 2).padStart(2, '0')}` : '23:59',
+      allDay: !event.time || event.time === '12:00 AM',
+      location: event.location || '',
+      type: event.type || 'public',
+      category: event.category || 'friends',
+      iconId: event.iconId || 'calendar',
+      votingQuestions: [],
+      tasks: [],
+      paymentType: 'free',
+      paymentAmount: event.paymentAmount || 0,
+      paymentLink: '',
+      currency: (event.currency as 'EUR' | 'USD' | 'HUF') || 'EUR',
+      invitees: [],
+      resources: event.resources || [],
+    })
+    setEditingEvent(event)
+    setSelectedEvent(null)
+    setShowCreateModal(true)
+    setCreateStep(1)
+  }
 
   const handleLogoClick = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -1392,6 +1424,7 @@ export default function Home() {
   const resetCreateModal = () => {
     setShowCreateModal(false)
     setCreateStep(1)
+    setEditingEvent(null)
     setNewEvent({
       title: '',
       description: '',
@@ -1661,27 +1694,46 @@ export default function Home() {
           : new Date(startDateTime.getTime() + 2 * 60 * 60 * 1000)
       }
 
-      const eventData = {
-        title: newEvent.title,
-        description: newEvent.description,
-        location: newEvent.location,
-        startDate: startDateTime.toISOString(),
-        endDate: endDateTime.toISOString(),
-        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        isInviteOnly: newEvent.type === 'private',
-        organizerId: userProfile?.userId || userProfile?.name || 'user1',
-        participantIds: selectedConnectionIds,
-        inviteeEmails: newEvent.invitees,
-      }
+      if (editingEvent) {
+        // Update existing event
+        const response = await fetch(`/api/events/${editingEvent.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: newEvent.title,
+            description: newEvent.description,
+            location: newEvent.location,
+            startDate: startDateTime.toISOString(),
+            endDate: endDateTime.toISOString(),
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            isInviteOnly: newEvent.type === 'private',
+          }),
+        })
+        if (!response.ok) throw new Error('Failed to update event')
+      } else {
+        // Create new event
+        const eventData = {
+          title: newEvent.title,
+          description: newEvent.description,
+          location: newEvent.location,
+          startDate: startDateTime.toISOString(),
+          endDate: endDateTime.toISOString(),
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          isInviteOnly: newEvent.type === 'private',
+          organizerId: userProfile?.userId || userProfile?.name || 'user1',
+          participantIds: selectedConnectionIds,
+          inviteeEmails: newEvent.invitees,
+        }
 
-      const response = await fetch('/api/events', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(eventData),
-      })
+        const response = await fetch('/api/events', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(eventData),
+        })
 
-      if (!response.ok) {
-        throw new Error('Failed to create event')
+        if (!response.ok) {
+          throw new Error('Failed to create event')
+        }
       }
 
       // Refresh events list
@@ -3005,16 +3057,46 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <button
-              onClick={(e) => {
-                e.preventDefault()
-                window.scrollTo({ top: 0, behavior: 'smooth' })
-              }}
-              className="text-2xl font-black tracking-tighter cursor-pointer hover:opacity-80 transition-opacity"
-              style={{ color: 'var(--text-primary)', background: 'none', border: 'none', padding: 0 }}
-            >
-              VibeCheck
-            </button>
+            <div className="relative">
+              <button
+                onClick={handleLogoClick}
+                className="text-2xl font-black tracking-tighter cursor-pointer hover:opacity-80 transition-opacity select-none"
+                style={{ color: 'var(--text-primary)', background: 'none', border: 'none', padding: 0 }}
+              >
+                VibeCheck
+              </button>
+              <AnimatePresence>
+                {easterEggParticles.length > 0 && (
+                  <div className="fixed inset-0 pointer-events-none z-[9999] overflow-hidden">
+                    {easterEggParticles.map((p) => (
+                      <motion.div
+                        key={p.id}
+                        initial={{ opacity: 1, x: 0, y: 0, scale: 1, rotate: 0 }}
+                        animate={{
+                          opacity: 0,
+                          x: p.x * 4,
+                          y: p.y * 4 + 100,
+                          scale: 0.3,
+                          rotate: p.angle + 720,
+                          transition: { duration: 2, ease: 'easeOut' },
+                        }}
+                        exit={{ opacity: 0 }}
+                        className="absolute rounded-full"
+                        style={{
+                          left: '50%',
+                          top: 80,
+                          width: p.size,
+                          height: p.size,
+                          backgroundColor: p.color,
+                          marginLeft: -p.size / 2,
+                          marginTop: -p.size / 2,
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
+              </AnimatePresence>
+            </div>
 
             {/* Center Tabs */}
             <div 
