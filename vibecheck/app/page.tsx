@@ -3514,9 +3514,22 @@ export default function Home() {
                       }`}>
                         {getStatusLabel(event.status)}
               </span>
-                      {event.type === 'private' && (
-                        <span className="text-xs text-[var(--text-muted)]">Private</span>
-              )}
+                      <div className="flex items-center gap-1">
+                        {(event.organizerId === 'me' || event.organizerId === currentUserId || event.organizerId === userProfile?.name || event.organizerId === userProfile?.userId) && (
+                          <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); openEditModal(event) }}
+                            className="p-1.5 rounded-lg transition-colors opacity-70 hover:opacity-100"
+                            style={{ color: 'var(--accent-primary)', backgroundColor: 'var(--accent-light)' }}
+                            title={t.edit}
+                          >
+                            <PencilIcon className="w-4 h-4" />
+                          </button>
+                        )}
+                        {event.type === 'private' && (
+                          <span className="text-xs text-[var(--text-muted)]">Private</span>
+                        )}
+                      </div>
                 </div>
 
                     {/* Title */}
@@ -3651,9 +3664,22 @@ export default function Home() {
                           }`}>
                             {getStatusLabel(event.status)}
       </span>
-                          {event.type === 'private' && (
-                            <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Private</span>
-              )}
+                          <div className="flex items-center gap-1">
+                            {(event.organizerId === 'me' || event.organizerId === currentUserId || event.organizerId === userProfile?.name || event.organizerId === userProfile?.userId) && (
+                              <button
+                                type="button"
+                                onClick={(e) => { e.stopPropagation(); openEditModal(event) }}
+                                className="p-1.5 rounded-lg transition-colors opacity-70 hover:opacity-100"
+                                style={{ color: 'var(--accent-primary)', backgroundColor: 'var(--accent-light)' }}
+                                title={t.edit}
+                              >
+                                <PencilIcon className="w-4 h-4" />
+                              </button>
+                            )}
+                            {event.type === 'private' && (
+                              <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Private</span>
+                            )}
+                          </div>
             </div>
 
                         {/* Title */}
@@ -4107,6 +4133,19 @@ export default function Home() {
                 {/* Description */}
                 {selectedEvent.description && (
                   <p className="mb-6" style={{ color: 'var(--text-secondary)' }}>{selectedEvent.description}</p>
+                )}
+
+                {/* Edit button for organizers - next to event details */}
+                {(selectedEvent.organizerId === 'me' || selectedEvent.organizerId === currentUserId || selectedEvent.organizerId === userProfile?.name || selectedEvent.organizerId === userProfile?.userId) && (
+                  <button
+                    type="button"
+                    onClick={() => openEditModal(selectedEvent)}
+                    className="flex items-center gap-2 mb-4 px-3 py-2 rounded-lg text-sm font-medium w-fit"
+                    style={{ color: 'var(--accent-primary)', backgroundColor: 'var(--accent-light)' }}
+                  >
+                    <PencilIcon className="w-4 h-4" />
+                    {t.edit}
+                  </button>
                 )}
 
                 {/* Event Info Grid */}
