@@ -33,14 +33,14 @@ export async function POST(req: NextRequest) {
             {
               role: 'system',
               content:
-                'You write short, friendly event descriptions. Output exactly 2-3 sentences. No markdown, no bullet points. Warm and inviting tone.',
+                'You write short, friendly event descriptions. Output exactly 3-5 sentences. No markdown, no bullet points. Warm and inviting tone.',
             },
             {
               role: 'user',
-              content: `Generate a 2-3 sentence event description based on these keywords/context: ${context}`,
+              content: `Generate a 3-5 sentence event description based on these keywords/context: ${context}`,
             },
           ],
-          max_tokens: 150,
+          max_tokens: 220,
           temperature: 0.7,
         }),
       })
@@ -79,23 +79,16 @@ function fallbackDescription(
     .map((w) => w.trim())
   const kw = words.length > 0 ? words.join(', ') : keywords
 
-  const intros = [
-    'Join us for a memorable experience.',
-    'Come together for an unforgettable time.',
-    'A special gathering awaits.',
-    'An event you won’t want to miss.',
-  ]
-  const intro = intros[Math.floor(Math.random() * intros.length)]
-
-  const mid = kw
+  const s1 = 'Join us for a memorable experience.'
+  const s2 = kw
     ? `This event will feature ${kw}.`
     : 'Connect, share, and create memories together.'
+  const s3 = 'Bring your friends and make it happen.'
+  const s4 = category || title
+    ? 'Perfect for anyone looking for a great time.'
+    : 'We look forward to seeing you there.'
+  const s5 = "Don't miss out—save the date!"
 
-  const outro =
-    category || title
-      ? `Perfect for anyone looking for a great time.`
-      : 'Bring your friends and make it happen!'
-
-  const description = [intro, mid, outro].join(' ')
+  const description = [s1, s2, s3, s4, s5].join(' ')
   return NextResponse.json({ description })
 }
