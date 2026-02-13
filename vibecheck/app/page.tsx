@@ -832,11 +832,11 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
           delay: 0.35,
           ease: [0.16, 1, 0.3, 1] 
         }}
-        className="absolute bottom-[32%] sm:bottom-[30%] text-xs sm:text-sm tracking-[0.2em] uppercase z-10"
+        className="absolute bottom-[32%] sm:bottom-[30%] text-sm sm:text-base tracking-[0.15em] uppercase z-10 font-medium"
         style={{ 
-          color: 'var(--text-muted)',
+          color: 'var(--text-secondary)',
           willChange: 'transform, opacity',
-          textShadow: '0 1px 8px rgba(0,0,0,0.3)'
+          textShadow: '0 1px 12px rgba(0,0,0,0.15)'
         }}
       >
         Collaborative Event Management
@@ -856,7 +856,7 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
             background: 'var(--btn-primary-bg)',
             color: 'var(--btn-primary-text)',
             fontWeight: 600,
-            fontSize: '0.95rem',
+            fontSize: '1rem',
             letterSpacing: '0.01em',
             boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25), 0 0 24px rgba(13, 148, 136, 0.2)'
           }}
@@ -882,10 +882,8 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
         </motion.button>
         
         <motion.p
-          animate={{ opacity: [0.4, 0.7, 0.4] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          className="text-xs tracking-wide"
-          style={{ color: 'var(--text-muted)' }}
+          className="text-sm tracking-wide font-medium"
+          style={{ color: 'var(--text-secondary)' }}
         >
           or click anywhere to continue
         </motion.p>

@@ -45,8 +45,8 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-4 text-sm tracking-widest uppercase"
-          style={{ color: 'var(--text-muted)' }}
+          className="mt-4 text-base sm:text-lg tracking-[0.2em] uppercase font-medium"
+          style={{ color: 'var(--text-secondary)' }}
         >
           Collaborative Event Management
         </motion.p>
@@ -75,7 +75,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
               <h3 className="font-semibold text-lg" style={{ color: 'var(--text-primary)' }}>
                 {item.title}
               </h3>
-              <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
+              <p className="text-base mt-1" style={{ color: 'var(--text-secondary)' }}>
                 {item.desc}
               </p>
             </motion.div>
@@ -93,7 +93,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
             transition: { duration: 0.35 }
           }}
           whileTap={{ scale: 0.97 }}
-          className="mt-12 px-8 py-4 rounded-full font-semibold text-white animate-pulse-glow"
+          className="mt-12 px-10 py-4 rounded-full text-lg font-semibold text-white animate-pulse-glow"
           style={{
             background: 'var(--btn-primary-bg)',
             boxShadow: 'var(--shadow-glow), 0 0 24px rgba(13, 148, 136, 0.15)',

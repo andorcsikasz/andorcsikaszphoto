@@ -13,6 +13,7 @@ import FlatMateHome from "./pages/FlatMateHome";
 import Properties from "./pages/Properties";
 import PropertyDetails from "./pages/PropertyDetails";
 import Login from "./pages/Login";
+import LandlordDashboard from "./pages/LandlordDashboard";
 
 function Router() {
   return (
@@ -23,6 +24,7 @@ function Router() {
         <Route path="/template" component={Home} />
         <Route path="/properties" component={Properties} />
         <Route path="/properties/:id" component={PropertyDetails} />
+        <Route path="/landlord/dashboard" component={LandlordDashboard} />
         <Route path="/login" component={Login} />
         <Route path="/showcase" component={ComponentShowcase} />
         <Route component={NotFound} />
