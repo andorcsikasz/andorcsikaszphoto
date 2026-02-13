@@ -732,10 +732,11 @@ const demoEvents: Event[] = [
   },
 ]
 
-// Pre-Landing Page Component with Aurora Background - Click to continue
-function PreLandingPage({ onComplete }: { onComplete: () => void }) {
+// Pre-Landing Page Component with Aurora Background - Scroll or click to continue
+function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; lang?: 'en' | 'hu' }) {
   const [stage, setStage] = useState(0)
   const [exiting, setExiting] = useState(false)
+  const touchStartY = useRef<number>(0)
   // Stage 0: Initial
   // Stage 1: "Vibe" appears
   // Stage 2: "Vibe" moves, "Check" appears
@@ -751,23 +752,55 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
     return () => timers.forEach(clearTimeout)
   }, [])
 
+  const hasCompletedRef = useRef(false)
   const handleContinue = () => {
+    if (hasCompletedRef.current || exiting) return
+    hasCompletedRef.current = true
     setExiting(true)
-    setTimeout(() => onComplete(), 600)
+    setTimeout(() => onComplete(), 950)
+  }
+
+  useEffect(() => {
+    if (stage < 3) return
+    const onWheel = (e: WheelEvent) => {
+      if (e.deltaY > 20) {
+        e.preventDefault()
+        handleContinue()
+      }
+    }
+    window.addEventListener('wheel', onWheel, { passive: false })
+    return () => window.removeEventListener('wheel', onWheel)
+  }, [stage])
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartY.current = e.touches[0].clientY
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (stage < 3) return
+    const dy = touchStartY.current - e.touches[0].clientY
+    if (dy > 50) {
+      handleContinue()
+    }
   }
 
   const easeElite = [0.16, 1, 0.3, 1] as const
   return (
     <motion.div
       initial={{ opacity: 1 }}
-      animate={{ opacity: exiting ? 0 : 1 }}
-      transition={{ duration: 1, ease: easeElite }}
+      animate={{ 
+        opacity: exiting ? 0 : 1,
+        y: exiting ? -40 : 0,
+      }}
+      transition={{ duration: 0.9, ease: easeElite }}
       className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden cursor-pointer"
       style={{ 
         backgroundColor: 'var(--bg-primary)',
-        willChange: 'opacity'
+        willChange: 'opacity, transform'
       }}
       onClick={stage >= 3 ? handleContinue : undefined}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
     >
       {/* Aurora Background - very subtle */}
       <div className="absolute inset-0 opacity-[0.2]">
@@ -903,7 +936,7 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
           className="text-sm tracking-wide font-medium"
           style={{ color: 'var(--accent-primary)' }}
         >
-          or click anywhere to continue
+          {lang === 'en' ? 'or scroll or click to continue' : 'vagy görgess vagy kattints a folytatáshoz'}
         </motion.p>
         </motion.div>
       </div>
@@ -2143,7 +2176,7 @@ export default function Home() {
       {/* Pre-Landing Page with Aurora Background */}
       <AnimatePresence>
         {showSplash && (
-          <PreLandingPage onComplete={handleSplashComplete} />
+          <PreLandingPage onComplete={handleSplashComplete} lang={lang} />
         )}
         
         {/* Landing Page */}
