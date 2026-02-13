@@ -3980,7 +3980,7 @@ export default function Home() {
                     <div>
                 {/* Description */}
                 {selectedEvent.description && (
-                  <p className="mb-6" style={{ color: 'var(--accent-primary)' }}>{selectedEvent.description}</p>
+                  <p className="mb-6" style={{ color: 'var(--text-secondary)' }}>{selectedEvent.description}</p>
                 )}
 
                 {/* Event Info Grid */}
@@ -4406,7 +4406,7 @@ export default function Home() {
                     >
                       {/* Title with auto-icon */}
                       <div>
-                        <label className="block text-sm font-medium mb-2" style={{ color: 'var(--accent-primary)' }}>
+                        <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
                           {lang === 'en' ? 'Event Title' : 'Esemény neve'} *
                         </label>
                         <div className="flex gap-3">
