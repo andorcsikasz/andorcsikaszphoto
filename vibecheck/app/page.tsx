@@ -748,13 +748,13 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
       }}
       onClick={stage >= 3 ? handleContinue : undefined}
     >
-      {/* Aurora Background - subtle, doesn't overwhelm */}
-      <div className="absolute inset-0 opacity-[0.4]">
+      {/* Aurora Background - very subtle */}
+      <div className="absolute inset-0 opacity-[0.2]">
         <Aurora 
           colorStops={['#0f4c75', '#1e5f8e', '#0d9488', '#3d7ba8', '#0f4c75']}
-          amplitude={1}
-          blend={0.4}
-          speed={0.5}
+          amplitude={0.6}
+          blend={0.3}
+          speed={0.3}
         />
       </div>
 
@@ -762,7 +762,7 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse 90% 80% at 50% 45%, transparent 15%, rgba(248,250,252,0.15) 45%, var(--bg-primary) 100%)',
+          background: 'radial-gradient(ellipse 90% 80% at 50% 45%, transparent 20%, rgba(248,250,252,0.08) 50%, var(--bg-primary) 100%)',
         }}
       />
 
@@ -787,13 +787,13 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
             color: 'var(--text-primary)',
             letterSpacing: '-0.03em',
             willChange: 'transform, opacity',
-            textShadow: '0 2px 24px rgba(0,0,0,0.4), 0 0 40px rgba(0,0,0,0.2)'
+            textShadow: '0 1px 4px rgba(0,0,0,0.12)'
           }}
         >
           Vibe
         </motion.span>
 
-        {/* "Check" text - gradient + glow */}
+        {/* "Check" text - solid accent, no glow */}
         <motion.span
           initial={{ opacity: 0, x: 30 }}
           animate={{ 
@@ -807,13 +807,10 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
           className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold"
           style={{ 
             fontFamily: "'Sora', system-ui, sans-serif",
-            background: 'linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 50%, var(--accent-tertiary) 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
+            color: 'var(--accent-primary)',
             letterSpacing: '-0.03em',
             willChange: 'transform, opacity',
-            filter: 'drop-shadow(0 2px 12px rgba(13, 148, 136, 0.35))'
+            textShadow: '0 1px 4px rgba(0,0,0,0.08)'
           }}
         >
           Check
@@ -836,7 +833,6 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
         style={{ 
           color: 'var(--text-secondary)',
           willChange: 'transform, opacity',
-          textShadow: '0 1px 12px rgba(0,0,0,0.15)'
         }}
       >
         Collaborative Event Management
