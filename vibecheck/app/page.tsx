@@ -3108,14 +3108,15 @@ export default function Home() {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className="relative px-5 py-2 text-sm font-medium rounded-lg flex items-center gap-2 z-10"
+                  className="relative px-5 py-2 text-sm font-medium rounded-lg flex items-center gap-2 z-10 transition-colors duration-200"
                 >
                   {activeTab === tab && (
                     <motion.div
                       layoutId="tabIndicator"
                       className="absolute inset-0 rounded-lg"
                       style={{ backgroundColor: 'var(--accent-primary)' }}
-                      transition={{ type: 'tween', duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+                      transition={{ type: 'spring', stiffness: 380, damping: 35 }}
+                      layout
                     />
                   )}
                   <span 
@@ -3270,18 +3271,19 @@ export default function Home() {
       </nav>
 
       {/* Main Content */}
-      <main className={`max-w-7xl mx-auto px-6 flex-1 min-h-0 w-full flex flex-col ${
-        activeTab === 'calendar' ? 'py-4 overflow-hidden' : 'py-8'
+      <main className={`max-w-7xl mx-auto px-6 flex-1 min-h-0 w-full flex flex-col py-6 ${
+        activeTab === 'calendar' ? 'overflow-hidden' : ''
       }`}>
-        <AnimatePresence mode="wait">
+        <div className="flex-1 min-h-0 flex flex-col">
+        <AnimatePresence mode="wait" initial={false}>
           {/* Calendar View */}
           {activeTab === 'calendar' && (
             <motion.div
               key="calendar"
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
               className="flex flex-col min-h-0 flex-1"
             >
               <div className="flex-shrink-0 mb-3">
@@ -3328,10 +3330,10 @@ export default function Home() {
                   <AnimatePresence>
                     {showIntegrateMenu && (
                       <motion.div
-                        initial={{ opacity: 0, y: -8 }}
+                        initial={{ opacity: 0, y: -6 }}
                         animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -8 }}
-                        transition={{ duration: 0.15 }}
+                        exit={{ opacity: 0, y: -6 }}
+                        transition={{ duration: 0.22, ease: [0.32, 0.72, 0, 1] }}
                         className="absolute right-0 top-full mt-1 py-1 rounded-xl border shadow-lg z-50 min-w-[200px]"
                         style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
                       >
@@ -3476,10 +3478,10 @@ export default function Home() {
           {activeTab === 'events' && (
             <motion.div
               key="events"
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
             >
               <div className="mb-8">
                 <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>{t.allEvents}</h2>
@@ -3575,10 +3577,10 @@ export default function Home() {
           {activeTab === 'dashboard' && (
             <motion.div
               key="dashboard"
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
             >
               {/* Header with back button when filtered */}
               <div className="mb-8">
@@ -3967,6 +3969,7 @@ export default function Home() {
             </motion.div>
           )}
         </AnimatePresence>
+        </div>
       </main>
 
       {/* Event Detail Modal */}
