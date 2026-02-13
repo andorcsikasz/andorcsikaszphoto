@@ -8,6 +8,7 @@ import {
   XMarkIcon,
   MagnifyingGlassIcon,
   EnvelopeIcon,
+  PaperAirplaneIcon,
 } from '@heroicons/react/24/outline'
 
 export interface Connection {
@@ -44,6 +45,7 @@ const translations = {
     selectAll: 'Select all',
     deselectAll: 'Deselect all',
     sendEmail: 'Send email',
+    send: 'Send',
   },
   hu: {
     title: 'Kapcsolatok',
@@ -57,6 +59,7 @@ const translations = {
     selectAll: 'Összes kijelölése',
     deselectAll: 'Kijelölés törlése',
     sendEmail: 'Email küldése',
+    send: 'Küldés',
   },
 }
 
@@ -237,21 +240,57 @@ export default function ConnectionsManager({
               animate={{ opacity: 1, height: 'auto' }}
               className="space-y-2"
             >
-              <div className="relative">
-                <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5" style={{ color: 'var(--text-muted)' }} />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder={t.searchPlaceholder}
-                  className="w-full pl-10 pr-4 py-2 rounded-lg border text-sm"
-                  style={{
-                    borderColor: 'var(--border-primary)',
-                    backgroundColor: 'var(--bg-input)',
-                    color: 'var(--text-primary)',
+              <div className="flex gap-2">
+                <div className="relative flex-1">
+                  <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5" style={{ color: 'var(--text-muted)' }} />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder={t.searchPlaceholder}
+                    className="w-full pl-10 pr-4 py-2 rounded-lg border text-sm"
+                    style={{
+                      borderColor: 'var(--border-primary)',
+                      backgroundColor: 'var(--bg-input)',
+                      color: 'var(--text-primary)',
+                    }}
+                    autoFocus
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault()
+                        if (searchResults.length > 0) {
+                          const match = searchResults.find((u) => u.email.toLowerCase() === searchQuery.trim().toLowerCase()) ?? searchResults[0]
+                          addConnection(match.id, 'friend')
+                        } else if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(searchQuery.trim())) {
+                          window.location.href = `mailto:${searchQuery.trim()}?subject=${encodeURIComponent(lang === 'en' ? 'Join me on VibeCheck' : 'Csatlakozz hozzám a VibeCheck-en')}`
+                        }
+                      }
+                    }}
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (searchResults.length > 0) {
+                      const match = searchResults.find((u) => u.email.toLowerCase() === searchQuery.trim().toLowerCase()) ?? searchResults[0]
+                      addConnection(match.id, 'friend')
+                    } else if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(searchQuery.trim())) {
+                      window.location.href = `mailto:${searchQuery.trim()}?subject=${encodeURIComponent(lang === 'en' ? 'Join me on VibeCheck' : 'Csatlakozz hozzám a VibeCheck-en')}`
+                    }
                   }}
-                  autoFocus
-                />
+                  disabled={
+                    searchQuery.trim().length < 2 ||
+                    (searchResults.length === 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(searchQuery.trim()))
+                  }
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{
+                    color: 'var(--btn-primary-text)',
+                    background: 'var(--btn-primary-bg)',
+                  }}
+                >
+                  <PaperAirplaneIcon className="w-4 h-4" />
+                  {t.send}
+                </button>
               </div>
               {searching && <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Searching...</p>}
               {searchResults.length > 0 && (
