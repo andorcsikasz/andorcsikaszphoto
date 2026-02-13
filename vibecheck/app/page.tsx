@@ -1323,14 +1323,15 @@ export default function Home() {
 
   const openEditModal = (event: Event) => {
     const dateStr = event.date || new Date().toISOString().split('T')[0]
+    const hasTime = event.time && event.time !== '12:00 AM'
     setNewEvent({
       title: event.title,
       description: event.description || '',
       startDate: dateStr,
       endDate: dateStr,
-      startTime: event.time || '00:00',
-      endTime: event.time ? `${event.time.slice(0, 2)}:${String(parseInt(event.time.slice(3, 5) || '0') + 2).padStart(2, '0')}` : '23:59',
-      allDay: !event.time || event.time === '12:00 AM',
+      startTime: hasTime ? event.time! : '00:00',
+      endTime: hasTime ? '23:59' : '23:59',
+      allDay: !hasTime,
       location: event.location || '',
       type: event.type || 'public',
       category: event.category || 'friends',
@@ -4024,6 +4025,17 @@ export default function Home() {
                   </div>
                   <div className="flex flex-col items-end gap-2">
                     <div className="flex items-center gap-2">
+                      {(selectedEvent.organizerId === 'me' || selectedEvent.organizerId === userProfile?.userId || selectedEvent.organizerId === userProfile?.name) && (
+                        <button
+                          type="button"
+                          onClick={() => openEditModal(selectedEvent)}
+                          className="p-2 rounded-lg transition-colors"
+                          style={{ color: 'var(--accent-primary)', backgroundColor: 'var(--accent-light)' }}
+                          title={t.edit}
+                        >
+                          <PencilIcon className="w-4 h-4" />
+                        </button>
+                      )}
                       <a
                         href={`${typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3003'}/?eventId=${selectedEvent.id}`}
                         target="_blank"
@@ -4473,7 +4485,9 @@ export default function Home() {
                   <div>
                     <h2 className="text-2xl font-bold flex items-center gap-3" style={{ color: 'var(--text-primary)' }}>
                       <SparklesIcon className="w-7 h-7 text-blue-400" />
-                      {lang === 'en' ? 'Create Event' : 'Esemény létrehozása'}
+                      {editingEvent
+                        ? (lang === 'en' ? 'Edit Event' : 'Esemény szerkesztése')
+                        : (lang === 'en' ? 'Create Event' : 'Esemény létrehozása')}
                     </h2>
                     <p className="mt-1" style={{ color: 'var(--text-muted)' }}>
                       {lang === 'en' ? 'Step' : 'Lépés'} {createStep} / 5
