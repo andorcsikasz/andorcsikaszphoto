@@ -889,7 +889,7 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
         
         <motion.p
           className="text-sm tracking-wide font-medium"
-          style={{ color: 'var(--text-secondary)' }}
+          style={{ color: 'var(--accent-primary)' }}
         >
           or click anywhere to continue
         </motion.p>
@@ -989,7 +989,7 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
                 : 'Szervezz eseményeket, hozz döntéseket, ünnepelj együtt'}
             </h1>
             <p className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto"
-              style={{ color: 'var(--text-secondary)' }}>
+              style={{ color: 'var(--accent-primary)' }}>
               {lang === 'en'
                 ? 'Google Calendar, events, groups & Revolut — connected. Easy to use.'
                 : 'Google Naptár, események, csoportok és Revolut — egy helyen. Egyszerű használat.'}
@@ -1049,7 +1049,7 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
               >
                 <div className="text-4xl mb-4">{feature.icon}</div>
                 <h3 className="text-xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>{feature.title}</h3>
-                <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>{feature.desc}</p>
+                <p className="text-sm" style={{ color: 'var(--accent-primary)' }}>{feature.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -1085,7 +1085,7 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
                     className="p-2 rounded-lg hover:bg-opacity-80 transition-colors"
                     style={{ backgroundColor: 'var(--bg-secondary)' }}
                   >
-                    <XMarkIcon className="w-5 h-5" style={{ color: 'var(--text-secondary)' }} />
+                    <XMarkIcon className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
                   </button>
                 </div>
               </div>
@@ -1215,7 +1215,7 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
               <h4 className="font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>
                 {lang === 'en' ? 'Product' : 'Termék'}
               </h4>
-              <ul className="space-y-2 text-sm" style={{ color: 'var(--text-secondary)' }}>
+              <ul className="space-y-2 text-sm" style={{ color: 'var(--accent-primary)' }}>
                 <li><a href="#" className="hover:underline">{lang === 'en' ? 'Features' : 'Funkciók'}</a></li>
                 <li><a href="#" className="hover:underline">{lang === 'en' ? 'Pricing' : 'Árazás'}</a></li>
                 <li><a href="#" className="hover:underline">{lang === 'en' ? 'Updates' : 'Frissítések'}</a></li>
@@ -1225,7 +1225,7 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
               <h4 className="font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>
                 {lang === 'en' ? 'Company' : 'Cég'}
               </h4>
-              <ul className="space-y-2 text-sm" style={{ color: 'var(--text-secondary)' }}>
+              <ul className="space-y-2 text-sm" style={{ color: 'var(--accent-primary)' }}>
                 <li><a href="#" className="hover:underline">{lang === 'en' ? 'About' : 'Rólunk'}</a></li>
                 <li><a href="#" className="hover:underline">{lang === 'en' ? 'Blog' : 'Blog'}</a></li>
                 <li><a href="#" className="hover:underline">{lang === 'en' ? 'Careers' : 'Karrier'}</a></li>
@@ -1235,7 +1235,7 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
               <h4 className="font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>
                 {lang === 'en' ? 'Legal' : 'Jogi'}
               </h4>
-              <ul className="space-y-2 text-sm" style={{ color: 'var(--text-secondary)' }}>
+              <ul className="space-y-2 text-sm" style={{ color: 'var(--accent-primary)' }}>
                 <li><a href="#" className="hover:underline">{lang === 'en' ? 'Terms & Conditions' : 'Felhasználási feltételek'}</a></li>
                 <li><a href="#" className="hover:underline">{lang === 'en' ? 'Privacy Policy' : 'Adatvédelmi irányelvek'}</a></li>
                 <li><a href="#" className="hover:underline">{lang === 'en' ? 'Cookie Policy' : 'Cookie szabályzat'}</a></li>
@@ -2320,7 +2320,7 @@ export default function Home() {
                   <button
                     onClick={() => setShowProfileModal(false)}
                     className="p-2 rounded-lg transition-colors"
-                    style={{ color: 'var(--text-secondary)' }}
+                    style={{ color: 'var(--accent-primary)' }}
                   >
                     <XMarkIcon className="w-5 h-5" />
                   </button>
@@ -2374,7 +2374,7 @@ export default function Home() {
                         onChange={(e) => setTempProfile({ ...tempProfile, revolutTag: e.target.value.replace('@', '') })}
                         placeholder={lang === 'en' ? 'revolut tag' : 'revolut azonosító'}
                         className="flex-1 bg-transparent focus:outline-none text-sm"
-                        style={{ color: 'var(--text-secondary)' }}
+                        style={{ color: 'var(--accent-primary)' }}
                       />
                     </div>
                     
@@ -2390,7 +2390,7 @@ export default function Home() {
                         >
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                         </svg>
-                        <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+                        <span className="text-sm" style={{ color: 'var(--accent-primary)' }}>
                           {tempProfile.email}
                         </span>
                       </div>
@@ -2609,7 +2609,7 @@ export default function Home() {
                                   setShowGroupsModal(true)
                                 }}
                                 className="p-1.5 rounded hover:bg-black/10 transition-colors"
-                                style={{ color: 'var(--text-secondary)' }}
+                                style={{ color: 'var(--accent-primary)' }}
                               >
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -2650,7 +2650,7 @@ export default function Home() {
                 <button
                     onClick={() => setShowProfileModal(false)}
                     className="px-4 py-2 rounded-lg transition-colors"
-                    style={{ color: 'var(--text-secondary)' }}
+                    style={{ color: 'var(--accent-primary)' }}
                   >
                     {lang === 'en' ? 'Cancel' : 'Mégse'}
                 </button>
@@ -2718,7 +2718,7 @@ export default function Home() {
                     className="p-2 rounded-lg hover:bg-opacity-80 transition-colors"
                     style={{ backgroundColor: 'var(--bg-secondary)' }}
                   >
-                    <XMarkIcon className="w-5 h-5" style={{ color: 'var(--text-secondary)' }} />
+                    <XMarkIcon className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
                   </button>
                 </div>
               </div>
@@ -2930,7 +2930,7 @@ export default function Home() {
                     setEditingGroup(null)
                   }}
                   className="px-4 py-2 rounded-lg transition-colors"
-                  style={{ color: 'var(--text-secondary)' }}
+                  style={{ color: 'var(--accent-primary)' }}
                 >
                   {lang === 'en' ? 'Cancel' : 'Mégse'}
                 </button>
@@ -3185,7 +3185,7 @@ export default function Home() {
                   <button
                     onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))}
                     className="p-2 rounded-lg transition-colors"
-                    style={{ color: 'var(--text-secondary)' }}
+                    style={{ color: 'var(--accent-primary)' }}
                   >
                     <ChevronLeftIcon className="w-5 h-5" />
                   </button>
@@ -3195,7 +3195,7 @@ export default function Home() {
               <button
                     onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))}
                     className="p-2 rounded-lg transition-colors"
-                    style={{ color: 'var(--text-secondary)' }}
+                    style={{ color: 'var(--accent-primary)' }}
               >
                     <ChevronRightIcon className="w-5 h-5" />
               </button>
@@ -3411,7 +3411,7 @@ export default function Home() {
                     </h3>
 
                     {/* Organizer */}
-                    <p className="text-sm mb-2" style={{ color: 'var(--text-secondary)' }}>
+                    <p className="text-sm mb-2" style={{ color: 'var(--accent-primary)' }}>
                       {event.organizerName}
                     </p>
 
@@ -3477,7 +3477,7 @@ export default function Home() {
             <button
                       onClick={() => setDashboardFilter(null)}
                       className="p-2 rounded-lg transition-colors"
-                      style={{ color: 'var(--text-secondary)' }}
+                      style={{ color: 'var(--accent-primary)' }}
                     >
                       <ChevronLeftIcon className="w-5 h-5" />
                     </button>
@@ -3548,7 +3548,7 @@ export default function Home() {
                         </h3>
 
                         {/* Organizer */}
-                        <p className="text-sm mb-2" style={{ color: 'var(--text-secondary)' }}>
+                        <p className="text-sm mb-2" style={{ color: 'var(--accent-primary)' }}>
                           {event.organizerName}
                         </p>
 
@@ -3586,7 +3586,7 @@ export default function Home() {
                       style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
                     >
                       <div className="flex items-center gap-3 mb-2">
-                        <CalendarIcon className="w-5 h-5 text-blue-500 flex-shrink-0" />
+                        <CalendarIcon className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--accent-primary)' }} />
                         <span className="text-sm" style={{ color: 'var(--text-muted)' }}>
                           {lang === 'en' ? 'Total Events' : 'Összes esemény'}
                         </span>
@@ -3599,7 +3599,7 @@ export default function Home() {
                       style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
                     >
                       <div className="flex items-center gap-3 mb-2">
-                        <UserGroupIcon className="w-5 h-5 text-purple-500 flex-shrink-0" />
+                        <UserGroupIcon className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--accent-primary)' }} />
                         <span className="text-sm" style={{ color: 'var(--text-muted)' }}>
                           {lang === 'en' ? 'Total Attendees' : 'Összes résztvevő'}
                         </span>
@@ -3612,7 +3612,7 @@ export default function Home() {
                       style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
                     >
                       <div className="flex items-center gap-3 mb-2">
-                        <ArrowTrendingUpIcon className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                        <ArrowTrendingUpIcon className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--accent-primary)' }} />
                         <span className="text-sm" style={{ color: 'var(--text-muted)' }}>
                           {lang === 'en' ? 'Avg Readiness' : 'Átl. készültség'}
                         </span>
@@ -3625,7 +3625,7 @@ export default function Home() {
                       style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
                     >
                       <div className="flex items-center gap-3 mb-2">
-                        <FireIcon className="w-5 h-5 text-orange-500 flex-shrink-0" />
+                        <FireIcon className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--accent-primary)' }} />
                         <span className="text-sm" style={{ color: 'var(--text-muted)' }}>
                           {lang === 'en' ? 'Upcoming' : 'Közelgő'}
                         </span>
@@ -3644,7 +3644,7 @@ export default function Home() {
                       style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
                     >
                       <div className="flex items-center gap-4">
-                        <CheckCircleIcon className="w-6 h-6 text-emerald-500 flex-shrink-0 group-hover:text-emerald-600 transition-colors" />
+                        <CheckCircleIcon className="w-6 h-6 flex-shrink-0 transition-colors group-hover:opacity-80" style={{ color: 'var(--accent-primary)' }} />
                         <div>
                           <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.fixed}</p>
                           <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{events.filter(e => e.status === 'fixed').length}</p>
@@ -3663,7 +3663,7 @@ export default function Home() {
                       style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
                     >
                       <div className="flex items-center gap-4">
-                        <ClockIcon className="w-6 h-6 text-orange-500 flex-shrink-0 group-hover:text-orange-600 transition-colors" />
+                        <ClockIcon className="w-6 h-6 flex-shrink-0 transition-colors group-hover:opacity-80" style={{ color: 'var(--accent-primary)' }} />
                         <div>
                           <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.inProgress}</p>
                           <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{events.filter(e => e.status === 'in-progress').length}</p>
@@ -3682,7 +3682,7 @@ export default function Home() {
                       style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
                     >
                       <div className="flex items-center gap-4">
-                        <UserGroupIcon className="w-6 h-6 text-slate-500 flex-shrink-0" />
+                        <UserGroupIcon className="w-6 h-6 flex-shrink-0" style={{ color: 'var(--accent-primary)' }} />
                         <div>
                           <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.optimal}</p>
                           <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{events.filter(e => e.status === 'optimal').length}</p>
@@ -3707,7 +3707,7 @@ export default function Home() {
                         }`}
                       >
                         <div className="flex items-center gap-3">
-                          <StarIcon className="w-5 h-5 text-blue-500" />
+                          <StarIcon className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
                           <h3 className="text-lg font-semibold" style={{ fontFamily: 'var(--font-sans)' }}>{lang === 'en' ? 'Events I Organize' : 'Általam szervezett'}</h3>
                         </div>
                         <div className="flex items-center gap-2">
@@ -3769,7 +3769,7 @@ export default function Home() {
                         }`}
                       >
                         <div className="flex items-center gap-3">
-                          <UserGroupIcon className="w-5 h-5 text-purple-500" />
+                          <UserGroupIcon className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
                           <h3 className="text-lg font-semibold" style={{ fontFamily: 'var(--font-sans)' }}>{lang === 'en' ? "Events I'm Invited To" : 'Meghívásaim'}</h3>
                         </div>
                         <div className="flex items-center gap-2">
@@ -3971,7 +3971,7 @@ export default function Home() {
                         <LockClosedIcon className="w-12 h-12 mx-auto mb-4" style={{ color: 'var(--text-muted)' }} />
                         <p className="text-lg font-medium mb-2" style={{ color: 'var(--text-primary)' }}>{selectedEvent.title}</p>
                         <p className="text-sm mb-4" style={{ color: 'var(--text-muted)' }}>{selectedEvent.organizerName}</p>
-                        <p className="text-sm max-w-md mx-auto" style={{ color: 'var(--text-secondary)' }}>{t.privateEventRestricted}</p>
+                        <p className="text-sm max-w-md mx-auto" style={{ color: 'var(--accent-primary)' }}>{t.privateEventRestricted}</p>
                       </div>
                     )
                   }
@@ -3980,7 +3980,7 @@ export default function Home() {
                     <div>
                 {/* Description */}
                 {selectedEvent.description && (
-                  <p className="mb-6" style={{ color: 'var(--text-secondary)' }}>{selectedEvent.description}</p>
+                  <p className="mb-6" style={{ color: 'var(--accent-primary)' }}>{selectedEvent.description}</p>
                 )}
 
                 {/* Event Info Grid */}
@@ -4406,7 +4406,7 @@ export default function Home() {
                     >
                       {/* Title with auto-icon */}
                       <div>
-                        <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
+                        <label className="block text-sm font-medium mb-2" style={{ color: 'var(--accent-primary)' }}>
                           {lang === 'en' ? 'Event Title' : 'Esemény neve'} *
                         </label>
                         <div className="flex gap-3">
