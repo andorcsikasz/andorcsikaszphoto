@@ -92,10 +92,14 @@ const amenitiesList = [
 
 export default function Properties() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [priceRange, setPriceRange] = useState([0, 10000]);
+  const [priceRange, setPriceRange] = useState([50000, 800000]); // HUF price range
   const [bedrooms, setBedrooms] = useState<string>("");
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState("featured");
+
+  // For editable price inputs
+  const [minPriceInput, setMinPriceInput] = useState(priceRange[0].toString());
+  const [maxPriceInput, setMaxPriceInput] = useState(priceRange[1].toString());
 
   const toggleAmenity = (amenity: string) => {
     setSelectedAmenities((prev) =>
@@ -105,23 +109,87 @@ export default function Properties() {
     );
   };
 
+  const handleMinPriceChange = (value: string) => {
+    setMinPriceInput(value);
+    const numValue = parseInt(value) || 0;
+    if (numValue >= 0 && numValue <= priceRange[1]) {
+      setPriceRange([numValue, priceRange[1]]);
+    }
+  };
+
+  const handleMaxPriceChange = (value: string) => {
+    setMaxPriceInput(value);
+    const numValue = parseInt(value) || 800000;
+    if (numValue >= priceRange[0] && numValue <= 1000000) {
+      setPriceRange([priceRange[0], numValue]);
+    }
+  };
+
+  const handleSliderChange = (values: number[]) => {
+    setPriceRange(values);
+    setMinPriceInput(values[0].toString());
+    setMaxPriceInput(values[1].toString());
+  };
+
   const FilterPanel = () => (
     <div className="space-y-6">
       {/* Price Range */}
       <div>
-        <Label className="text-base font-semibold mb-3 block">Price Range</Label>
+        <Label className="text-base font-semibold mb-3 block">Price Range (HUF/month)</Label>
         <div className="px-2">
           <Slider
             min={0}
-            max={10000}
-            step={100}
+            max={1000000}
+            step={10000}
             value={priceRange}
-            onValueChange={setPriceRange}
+            onValueChange={handleSliderChange}
             className="mb-4"
           />
-          <div className="flex justify-between text-sm text-muted-foreground">
-            <span>${priceRange[0]}</span>
-            <span>${priceRange[1]}</span>
+          <div className="grid grid-cols-2 gap-3 mt-4">
+            <div>
+              <Label htmlFor="minPrice" className="text-xs text-muted-foreground mb-1 block">
+                Min Price
+              </Label>
+              <div className="relative">
+                <Input
+                  id="minPrice"
+                  type="number"
+                  value={minPriceInput}
+                  onChange={(e) => handleMinPriceChange(e.target.value)}
+                  onBlur={() => setMinPriceInput(priceRange[0].toString())}
+                  className="pr-12"
+                  min={0}
+                  max={priceRange[1]}
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+                  HUF
+                </span>
+              </div>
+            </div>
+            <div>
+              <Label htmlFor="maxPrice" className="text-xs text-muted-foreground mb-1 block">
+                Max Price
+              </Label>
+              <div className="relative">
+                <Input
+                  id="maxPrice"
+                  type="number"
+                  value={maxPriceInput}
+                  onChange={(e) => handleMaxPriceChange(e.target.value)}
+                  onBlur={() => setMaxPriceInput(priceRange[1].toString())}
+                  className="pr-12"
+                  min={priceRange[0]}
+                  max={1000000}
+                />
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+                  HUF
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-between text-xs text-muted-foreground mt-2">
+            <span>{priceRange[0].toLocaleString()} HUF</span>
+            <span>{priceRange[1].toLocaleString()} HUF</span>
           </div>
         </div>
       </div>
@@ -175,7 +243,9 @@ export default function Properties() {
         variant="outline"
         className="w-full"
         onClick={() => {
-          setPriceRange([0, 10000]);
+          setPriceRange([50000, 800000]);
+          setMinPriceInput("50000");
+          setMaxPriceInput("800000");
           setBedrooms("");
           setSelectedAmenities([]);
         }}

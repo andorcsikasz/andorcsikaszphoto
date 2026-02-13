@@ -11,6 +11,7 @@
     "format": "prettier --write .",
     "test": "vitest run",
     "db:push": "drizzle-kit generate && drizzle-kit migrate",
+    "db:seed:hungary": "NODE_ENV=development tsx server/seed-hungary.ts",
     "docker:up": "docker compose -f docker/docker-compose.yml --env-file docker/.env up -d",
     "docker:down": "docker compose -f docker/docker-compose.yml --env-file docker/.env down",
     "docker:logs": "docker compose -f docker/docker-compose.yml --env-file docker/.env logs -f"
