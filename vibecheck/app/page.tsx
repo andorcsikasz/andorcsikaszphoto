@@ -30,6 +30,8 @@ import {
   LockClosedIcon,
   SparklesIcon,
   LinkIcon,
+  ClipboardDocumentIcon,
+  ArrowUpOnSquareIcon,
   CurrencyDollarIcon,
   HeartIcon,
   UserPlusIcon,
@@ -4046,7 +4048,7 @@ export default function Home() {
                         className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
                         style={{ color: 'var(--accent-primary)', backgroundColor: 'var(--accent-light)' }}
                       >
-                        <LinkIcon className="w-4 h-4 flex-shrink-0" />
+                        <ArrowUpOnSquareIcon className="w-4 h-4 flex-shrink-0" />
                         {t.openLink}
                       </a>
                       <button
@@ -4061,7 +4063,7 @@ export default function Home() {
                         style={{ color: 'var(--accent-primary)', backgroundColor: 'var(--accent-light)' }}
                         title={linkCopiedFeedback ? t.linkCopied : t.copyLink}
                       >
-                        <LinkIcon className="w-4 h-4" />
+                        <ClipboardDocumentIcon className="w-4 h-4" />
                       </button>
                     </div>
                     <button
