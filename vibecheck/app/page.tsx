@@ -3940,7 +3940,7 @@ export default function Home() {
                         style={{ color: 'var(--accent-primary)', backgroundColor: 'var(--accent-light)' }}
                       >
                         <LinkIcon className="w-4 h-4 flex-shrink-0" />
-                        Open link
+                        {t.openLink}
                       </a>
                       <button
                         type="button"
