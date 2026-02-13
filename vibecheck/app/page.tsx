@@ -320,6 +320,7 @@ const translations = {
     googleCalendar: 'Google Calendar',
     appleCalendar: 'Apple Calendar',
     copyLink: 'Copy link',
+    openLink: 'Open link',
     linkCopied: 'Link copied!',
     privateEventRestricted: 'This event is private. Only the organizer and invited participants can view the details.',
   },
@@ -357,6 +358,7 @@ const translations = {
     googleCalendar: 'Google Naptár',
     appleCalendar: 'Apple Naptár',
     copyLink: 'Link másolása',
+    openLink: 'Link megnyitása',
     linkCopied: 'Link másolva!',
     privateEventRestricted: 'Ez az esemény privát. Csak a szervező és a meghívott résztvevők láthatják a részleteket.',
   },
@@ -3928,21 +3930,33 @@ export default function Home() {
                       <p className="mt-1" style={{ color: 'var(--text-muted)' }}>{selectedEvent.organizerName}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={async () => {
-                        const url = `${typeof window !== 'undefined' ? window.location.origin : ''}/?eventId=${selectedEvent.id}`
-                        await navigator.clipboard.writeText(url)
-                        setLinkCopiedFeedback(true)
-                        setTimeout(() => setLinkCopiedFeedback(false), 2000)
-                      }}
-                      className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
-                      style={{ color: 'var(--accent-primary)', backgroundColor: 'var(--accent-light)' }}
-                    >
-                      <LinkIcon className="w-4 h-4" />
-                      {linkCopiedFeedback ? t.linkCopied : t.copyLink}
-                    </button>
+                  <div className="flex flex-col items-end gap-2">
+                    <div className="flex items-center gap-2">
+                      <a
+                        href={`${typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3003'}/?eventId=${selectedEvent.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+                        style={{ color: 'var(--accent-primary)', backgroundColor: 'var(--accent-light)' }}
+                      >
+                        <LinkIcon className="w-4 h-4 flex-shrink-0" />
+                        Open link
+                      </a>
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          const url = `${typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3003'}/?eventId=${selectedEvent.id}`
+                          await navigator.clipboard.writeText(url)
+                          setLinkCopiedFeedback(true)
+                          setTimeout(() => setLinkCopiedFeedback(false), 2000)
+                        }}
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+                        style={{ color: 'var(--accent-primary)', backgroundColor: 'var(--accent-light)' }}
+                      >
+                        <LinkIcon className="w-4 h-4" />
+                        {linkCopiedFeedback ? t.linkCopied : t.copyLink}
+                      </button>
+                    </div>
                     <button
                       onClick={() => {
                         setSelectedEvent(null)
