@@ -3979,7 +3979,7 @@ export default function Home() {
                   }
 
                   return (
-                    <>
+                    <div>
                 {/* Description */}
                 {selectedEvent.description && (
                   <p className="mb-6" style={{ color: 'var(--text-secondary)' }}>{selectedEvent.description}</p>
@@ -4208,7 +4208,7 @@ export default function Home() {
                     )}
                   </div>
                 )}
-                    </>
+                    </div>
                   )
                 })()}
               </div>
