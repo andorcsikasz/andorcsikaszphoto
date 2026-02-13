@@ -268,6 +268,80 @@ export default function FlatMateHome() {
         </div>
       </section>
 
+      {/* Built for Modern Living Section */}
+      <section className="py-20 sm:py-28 bg-gray-950 text-white">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl sm:text-5xl font-bold mb-6">
+              Built for Modern Living
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Whether you're staying 3 months or 3 years, FlatMate adapts to your lifestyle.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+            {[
+              {
+                icon: "🌍",
+                title: "Digital Nomads",
+                description: "3-6 month flexible stays with no hassle",
+                color: "from-teal-600 to-cyan-700",
+              },
+              {
+                icon: "👥",
+                title: "Erasmus & Students",
+                description: "Semester-length rentals, roommate matching",
+                color: "from-purple-600 to-pink-600",
+              },
+              {
+                icon: "🏠",
+                title: "Temporary Housing",
+                description: "Home renovation, relocation, transitions",
+                color: "from-amber-600 to-orange-700",
+              },
+              {
+                icon: "📅",
+                title: "Workation & Seasonal",
+                description: "Project-based stays, seasonal workers",
+                color: "from-green-700 to-emerald-800",
+              },
+              {
+                icon: "🔑",
+                title: "Long-Term Rentals",
+                description: "12+ month stays, stable housing solutions",
+                color: "from-rose-700 to-red-800",
+              },
+            ].map((category, index) => (
+              <motion.div
+                key={category.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <Card className={`h-full bg-gradient-to-br ${category.color} border-0 text-white hover:scale-105 transition-transform duration-300`}>
+                  <CardHeader className="text-center pb-4">
+                    <div className="text-5xl mb-4">{category.icon}</div>
+                    <CardTitle className="text-xl text-white">{category.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-center">
+                    <p className="text-white/90 text-sm leading-relaxed">
+                      {category.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* SaaS Features Section - CRM & Automation */}
       <section className="py-20 sm:py-28 bg-white">
         <div className="container">
