@@ -781,7 +781,7 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
             y: { duration: 1.1, ease: [0.16, 1, 0.3, 1] },
             x: { duration: 1.3, ease: [0.16, 1, 0.3, 1] },
           }}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold"
+          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"
           style={{ 
             fontFamily: "'Sora', system-ui, sans-serif",
             color: 'var(--text-primary)',
@@ -804,7 +804,7 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
             duration: 1.1,
             ease: [0.16, 1, 0.3, 1],
           }}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold"
+          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"
           style={{ 
             fontFamily: "'Sora', system-ui, sans-serif",
             color: 'var(--accent-primary)',
