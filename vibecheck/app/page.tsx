@@ -2882,7 +2882,7 @@ export default function Home() {
                       layoutId="tabIndicator"
                       className="absolute inset-0 rounded-lg"
                       style={{ backgroundColor: 'var(--accent-primary)' }}
-                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                      transition={{ type: 'spring', stiffness: 280, damping: 38 }}
                     />
                   )}
                   <span 
@@ -2966,7 +2966,7 @@ export default function Home() {
                     animate={{
                       x: isDarkTheme() ? 24 : 0
                     }}
-                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                    transition={{ type: 'spring', stiffness: 320, damping: 36 }}
                   />
                 </button>
                 <span 
