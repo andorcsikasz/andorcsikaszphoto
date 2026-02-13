@@ -741,13 +741,13 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
       }}
       onClick={stage >= 3 ? handleContinue : undefined}
     >
-      {/* Aurora Background - Deep blue elite fade */}
-      <div className="absolute inset-0 opacity-[0.55]">
+      {/* Aurora Background - deep blue + teal flow */}
+      <div className="absolute inset-0 opacity-[0.6]">
         <Aurora 
-          colorStops={['#0f4c75', '#3d7ba8', '#1e5f8e', '#0f4c75']}
-          amplitude={0.7}
-          blend={0.4}
-          speed={0.4}
+          colorStops={['#0f4c75', '#1e5f8e', '#0d9488', '#3d7ba8', '#0f4c75']}
+          amplitude={1}
+          blend={0.5}
+          speed={0.55}
         />
       </div>
 
@@ -786,7 +786,7 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
           Vibe
         </motion.span>
 
-        {/* "Check" text */}
+        {/* "Check" text - gradient + glow */}
         <motion.span
           initial={{ opacity: 0, x: 30 }}
           animate={{ 
@@ -800,10 +800,13 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
           className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold"
           style={{ 
             fontFamily: "'Sora', system-ui, sans-serif",
-            color: 'var(--accent-primary)',
+            background: 'linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 50%, var(--accent-tertiary) 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
             letterSpacing: '-0.03em',
             willChange: 'transform, opacity',
-            textShadow: '0 2px 16px rgba(107, 143, 163, 0.25)'
+            filter: 'drop-shadow(0 2px 12px rgba(13, 148, 136, 0.35))'
           }}
         >
           Check
@@ -840,21 +843,21 @@ function PreLandingPage({ onComplete }: { onComplete: () => void }) {
       >
         <motion.button
           onClick={handleContinue}
-          className="group flex items-center gap-2 px-8 py-3.5 rounded-full transition-all"
+          className="group flex items-center gap-2 px-8 py-3.5 rounded-full transition-all animate-pulse-glow"
           style={{
             background: 'var(--btn-primary-bg)',
             color: 'var(--btn-primary-text)',
             fontWeight: 600,
             fontSize: '0.95rem',
             letterSpacing: '0.01em',
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)'
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25), 0 0 24px rgba(13, 148, 136, 0.2)'
           }}
           whileHover={{ 
-            scale: 1.02,
-            boxShadow: '0 6px 28px rgba(0, 0, 0, 0.3)',
-            transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
+            scale: 1.05,
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 40px rgba(13, 148, 136, 0.35)',
+            transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] }
           }}
-          whileTap={{ scale: 0.99, transition: { duration: 0.2 } }}
+          whileTap={{ scale: 0.98, transition: { duration: 0.15 } }}
         >
           Get Started
           <motion.svg 
@@ -1024,7 +1027,7 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="p-6 rounded-2xl border transition-all hover:scale-[1.02]"
+                className="p-6 rounded-2xl border card-shine hover-lift"
                 style={{ 
                   backgroundColor: 'var(--bg-card)', 
                   borderColor: 'var(--border-primary)',
@@ -1885,7 +1888,10 @@ export default function Home() {
   if (!mounted) {
     return (
       <div className="min-h-screen bg-[#000000] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+        <div 
+          className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin" 
+          style={{ borderColor: 'var(--accent-primary)', borderTopColor: 'var(--accent-tertiary)' }}
+        />
     </div>
     )
   }
@@ -2867,11 +2873,15 @@ export default function Home() {
                   </select>
               
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: 1.04, boxShadow: 'var(--shadow-glow-teal)' }}
+                whileTap={{ scale: 0.97 }}
                 onClick={() => setShowCreateModal(true)}
-                className="flex items-center gap-2 px-4 py-2 font-semibold rounded-lg transition-colors"
-                style={{ backgroundColor: 'var(--btn-primary-bg)', color: 'var(--btn-primary-text)' }}
+                className="flex items-center gap-2 px-4 py-2 font-semibold rounded-lg transition-all"
+                style={{ 
+                  background: 'var(--btn-primary-bg)', 
+                  color: 'var(--btn-primary-text)',
+                  boxShadow: 'var(--shadow-sm)'
+                }}
               >
                 <PlusIcon className="w-4 h-4" />
                 {t.createEvent}

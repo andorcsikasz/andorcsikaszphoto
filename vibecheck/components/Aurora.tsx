@@ -10,10 +10,10 @@ interface AuroraProps {
 }
 
 export default function Aurora({
-  colorStops = ['#0f4c75', '#3d7ba8', '#1e5f8e', '#0f4c75'],
-  amplitude = 1,
-  blend = 0.5,
-  speed = 0.5,
+  colorStops = ['#0f4c75', '#1e5f8e', '#0d9488', '#3d7ba8', '#0f4c75'],
+  amplitude = 1.2,
+  blend = 0.55,
+  speed = 0.6,
 }: AuroraProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -41,15 +41,17 @@ export default function Aurora({
     const draw = () => {
       const w = window.innerWidth
       const h = window.innerHeight
-      time += 0.0012 * speed
+      time += 0.0015 * speed
 
+      const cx = w * (0.5 + Math.sin(time) * amplitude * 0.08)
+      const cy = h * (0.35 + Math.cos(time * 0.8) * amplitude * 0.1)
       const gradient = ctx.createRadialGradient(
-        w * (0.5 + Math.sin(time) * amplitude * 0.1),
-        h * (0.3 + Math.cos(time * 0.7) * amplitude * 0.1),
+        cx,
+        cy,
         0,
         w * 0.5,
         h * 0.5,
-        w * 0.8
+        w * 0.85
       )
       colorStops.forEach((color, i) => {
         const pos = (i / (colorStops.length - 1)) * 0.5 + Math.sin(time + i) * 0.1

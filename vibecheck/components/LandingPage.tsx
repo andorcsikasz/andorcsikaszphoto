@@ -63,9 +63,9 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 * i, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="p-4 rounded-xl border cursor-pointer"
-              whileHover={{ y: -2, boxShadow: 'var(--shadow-lg)' }}
-              whileTap={{ scale: 0.99 }}
+              className="p-4 rounded-xl border cursor-pointer hover-lift card-shine"
+              whileHover={{ y: -4, transition: { duration: 0.3 } }}
+              whileTap={{ scale: 0.98 }}
               style={{
                 backgroundColor: 'var(--bg-card)',
                 borderColor: 'var(--border-primary)',
@@ -87,12 +87,16 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.55, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
           onClick={onGetStarted}
-          whileHover={{ scale: 1.02, boxShadow: '0 0 32px rgba(15, 76, 117, 0.25)' }}
-          whileTap={{ scale: 0.98 }}
-          className="mt-12 px-8 py-4 rounded-full font-semibold text-white"
+          whileHover={{ 
+            scale: 1.05, 
+            boxShadow: '0 0 40px rgba(15, 76, 117, 0.3), 0 0 60px rgba(13, 148, 136, 0.2)',
+            transition: { duration: 0.35 }
+          }}
+          whileTap={{ scale: 0.97 }}
+          className="mt-12 px-8 py-4 rounded-full font-semibold text-white animate-pulse-glow"
           style={{
             background: 'var(--btn-primary-bg)',
-            boxShadow: 'var(--shadow-glow)',
+            boxShadow: 'var(--shadow-glow), 0 0 24px rgba(13, 148, 136, 0.15)',
           }}
         >
           Get Started
