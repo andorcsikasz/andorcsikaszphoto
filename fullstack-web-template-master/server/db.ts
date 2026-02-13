@@ -1,7 +1,7 @@
-import { eq, sql, and, gte, lte, inArray, like, or } from "drizzle-orm";
+import { eq, sql, and, gte, lte, inArray, like, or, count, sum, avg, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { globalCounter, InsertUser, users, properties, InsertProperty, Property } from "../drizzle/schema";
+import { globalCounter, InsertUser, users, properties, InsertProperty, Property, bookings, inquiries, reviews, propertyViews, transactions, favorites } from "../drizzle/schema";
 import { ENV } from "./lib/env";
 import { logger } from "./lib/logSession";
 
