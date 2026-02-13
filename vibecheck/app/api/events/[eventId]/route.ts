@@ -161,6 +161,31 @@ export async function PATCH(
   }
 }
 
+// DELETE /api/events/[eventId] - Delete event
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ eventId: string }> }
+) {
+  try {
+    const { eventId } = await params
+    const existing = await prisma.event.findUnique({ where: { id: eventId } })
+    if (!existing) {
+      return NextResponse.json({ error: 'Event not found' }, { status: 404 })
+    }
+
+    await prisma.event.delete({
+      where: { id: eventId },
+    })
+
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error('Error deleting event:', error)
+    return NextResponse.json(
+      { error: 'Failed to delete event' },
+      { status: 500 }
+    )
+  }
+}
 
 
 

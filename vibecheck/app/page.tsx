@@ -326,6 +326,10 @@ const translations = {
     linkCopied: 'Link copied!',
     privateEventRestricted: 'This event is private. Only the organizer and invited participants can view the details.',
     edit: 'Edit',
+    delete: 'Delete',
+    deleteEvent: 'Delete event',
+    deleteConfirm: 'Are you sure you want to delete this event? This cannot be undone.',
+    deleteEventSuccess: 'Event deleted successfully.',
   },
   hu: {
     calendar: 'Naptár',
@@ -365,6 +369,10 @@ const translations = {
     linkCopied: 'Link másolva!',
     privateEventRestricted: 'Ez az esemény privát. Csak a szervező és a meghívott résztvevők láthatják a részleteket.',
     edit: 'Szerkesztés',
+    delete: 'Törlés',
+    deleteEvent: 'Esemény törlése',
+    deleteConfirm: 'Biztosan törölni szeretnéd az eseményt? Ez visszavonhatatlan.',
+    deleteEventSuccess: 'Esemény sikeresen törölve.',
   },
 }
 
@@ -1319,6 +1327,7 @@ export default function Home() {
   const [locationSuggestions, setLocationSuggestions] = useState<string[]>([])
   const [locationSuggestionsOpen, setLocationSuggestionsOpen] = useState(false)
   const [linkCopiedFeedback, setLinkCopiedFeedback] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const locationSuggestDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const t = translations[lang]
@@ -4078,11 +4087,11 @@ export default function Home() {
                         href={`${typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3003'}/?eventId=${selectedEvent.id}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+                        className="p-2 rounded-lg transition-colors"
                         style={{ color: 'var(--accent-primary)', backgroundColor: 'var(--accent-light)' }}
+                        title={t.openLink}
                       >
-                        <ArrowUpOnSquareIcon className="w-4 h-4 flex-shrink-0" />
-                        {t.openLink}
+                        <ArrowUpOnSquareIcon className="w-4 h-4" />
                       </a>
                       <button
                         type="button"
@@ -4098,6 +4107,54 @@ export default function Home() {
                       >
                         <ClipboardDocumentIcon className="w-4 h-4" />
                       </button>
+                      {(selectedEvent.organizerId === 'me' || selectedEvent.organizerId === currentUserId || selectedEvent.organizerId === userProfile?.name || selectedEvent.organizerId === userProfile?.userId) && (
+                        showDeleteConfirm ? (
+                          <div className="flex items-center gap-2 px-2 py-1 rounded-lg" style={{ backgroundColor: 'rgba(185, 28, 28, 0.12)' }}>
+                            <span className="text-xs font-medium" style={{ color: 'var(--text-primary)' }}>{t.deleteConfirm}</span>
+                            <button
+                              type="button"
+                              onClick={() => setShowDeleteConfirm(false)}
+                              className="text-xs px-2 py-1 rounded"
+                              style={{ color: 'var(--text-muted)', backgroundColor: 'var(--bg-tertiary)' }}
+                            >
+                              {lang === 'en' ? 'Cancel' : 'Mégse'}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={async () => {
+                                try {
+                                  const res = await fetch(`/api/events/${selectedEvent.id}`, { method: 'DELETE' })
+                                  if (res.ok) {
+                                    setSelectedEvent(null)
+                                    setShowDeleteConfirm(false)
+                                    setShowParticipantsModal(false)
+                                    await fetchEvents()
+                                    alert(t.deleteEventSuccess)
+                                  } else {
+                                    throw new Error('Delete failed')
+                                  }
+                                } catch {
+                                  alert(lang === 'en' ? 'Failed to delete event' : 'Nem sikerült törölni az eseményt')
+                                }
+                              }}
+                              className="text-xs px-2 py-1 rounded font-medium"
+                              style={{ color: '#fff', backgroundColor: '#b91c1c' }}
+                            >
+                              {t.delete}
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => setShowDeleteConfirm(true)}
+                            className="p-2 rounded-lg transition-colors"
+                            style={{ color: '#b91c1c', backgroundColor: 'rgba(185, 28, 28, 0.12)' }}
+                            title={t.deleteEvent}
+                          >
+                            <TrashIcon className="w-4 h-4" />
+                          </button>
+                        )
+                      )}
                     </div>
                     <button
                       onClick={() => {
