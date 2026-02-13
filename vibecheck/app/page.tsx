@@ -4036,7 +4036,7 @@ export default function Home() {
               exit={{ opacity: 0, scale: 0.96, y: 12 }}
               transition={{ type: 'tween', duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
               onClick={(e) => e.stopPropagation()}
-              className="rounded-2xl border w-full max-w-3xl max-h-[90vh] overflow-hidden"
+              className="rounded-2xl border w-full max-w-3xl max-h-[90vh] overflow-hidden relative"
               style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)', willChange: 'transform' }}
             >
               {/* Modal Header */}
@@ -4108,52 +4108,15 @@ export default function Home() {
                         <ClipboardDocumentIcon className="w-4 h-4" />
                       </button>
                       {(selectedEvent.organizerId === 'me' || selectedEvent.organizerId === currentUserId || selectedEvent.organizerId === userProfile?.name || selectedEvent.organizerId === userProfile?.userId) && (
-                        showDeleteConfirm ? (
-                          <div className="flex items-center gap-2 px-2 py-1 rounded-lg" style={{ backgroundColor: 'rgba(185, 28, 28, 0.12)' }}>
-                            <span className="text-xs font-medium" style={{ color: 'var(--text-primary)' }}>{t.deleteConfirm}</span>
-                            <button
-                              type="button"
-                              onClick={() => setShowDeleteConfirm(false)}
-                              className="text-xs px-2 py-1 rounded"
-                              style={{ color: 'var(--text-muted)', backgroundColor: 'var(--bg-tertiary)' }}
-                            >
-                              {lang === 'en' ? 'Cancel' : 'Mégse'}
-                            </button>
-                            <button
-                              type="button"
-                              onClick={async () => {
-                                try {
-                                  const res = await fetch(`/api/events/${selectedEvent.id}`, { method: 'DELETE' })
-                                  if (res.ok) {
-                                    setSelectedEvent(null)
-                                    setShowDeleteConfirm(false)
-                                    setShowParticipantsModal(false)
-                                    await fetchEvents()
-                                    alert(t.deleteEventSuccess)
-                                  } else {
-                                    throw new Error('Delete failed')
-                                  }
-                                } catch {
-                                  alert(lang === 'en' ? 'Failed to delete event' : 'Nem sikerült törölni az eseményt')
-                                }
-                              }}
-                              className="text-xs px-2 py-1 rounded font-medium"
-                              style={{ color: '#fff', backgroundColor: '#b91c1c' }}
-                            >
-                              {t.delete}
-                            </button>
-                          </div>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={() => setShowDeleteConfirm(true)}
-                            className="p-2 rounded-lg transition-colors"
-                            style={{ color: '#b91c1c', backgroundColor: 'rgba(185, 28, 28, 0.12)' }}
-                            title={t.deleteEvent}
-                          >
-                            <TrashIcon className="w-4 h-4" />
-                          </button>
-                        )
+                        <button
+                          type="button"
+                          onClick={() => setShowDeleteConfirm(true)}
+                          className="p-2 rounded-lg transition-colors"
+                          style={{ color: '#b91c1c', backgroundColor: 'rgba(185, 28, 28, 0.12)' }}
+                          title={t.deleteEvent}
+                        >
+                          <TrashIcon className="w-4 h-4" />
+                        </button>
                       )}
                     </div>
                     <button
@@ -4161,6 +4124,7 @@ export default function Home() {
                         setSelectedEvent(null)
                         setShowParticipantsModal(false)
                         setLinkCopiedFeedback(false)
+                        setShowDeleteConfirm(false)
                       }}
                       className="p-2 rounded-lg transition-colors"
                       style={{ color: 'var(--text-muted)' }}
@@ -4448,6 +4412,53 @@ export default function Home() {
                   )
                 })()}
               </div>
+
+              {/* Delete confirmation overlay */}
+              {showDeleteConfirm && (
+                <div
+                  className="absolute inset-0 flex items-center justify-center p-6 rounded-2xl z-10"
+                  style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}
+                >
+                  <div className="rounded-xl p-6 max-w-md w-full" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)', borderWidth: 1 }}>
+                    <TrashIcon className="w-12 h-12 mb-4" style={{ color: '#b91c1c' }} />
+                    <h3 className="text-lg font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>{t.deleteEvent}</h3>
+                    <p className="text-sm mb-6" style={{ color: 'var(--text-muted)' }}>{t.deleteConfirm}</p>
+                    <div className="flex gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setShowDeleteConfirm(false)}
+                        className="flex-1 py-2.5 rounded-lg font-medium transition-colors"
+                        style={{ color: 'var(--text-secondary)', backgroundColor: 'var(--bg-tertiary)' }}
+                      >
+                        {lang === 'en' ? 'Cancel' : 'Mégse'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          try {
+                            const res = await fetch(`/api/events/${selectedEvent.id}`, { method: 'DELETE' })
+                            if (res.ok) {
+                              setSelectedEvent(null)
+                              setShowDeleteConfirm(false)
+                              setShowParticipantsModal(false)
+                              await fetchEvents()
+                              alert(t.deleteEventSuccess)
+                            } else {
+                              throw new Error('Delete failed')
+                            }
+                          } catch {
+                            alert(lang === 'en' ? 'Failed to delete event' : 'Nem sikerült törölni az eseményt')
+                          }
+                        }}
+                        className="flex-1 py-2.5 rounded-lg font-medium transition-colors"
+                        style={{ color: '#fff', backgroundColor: '#b91c1c' }}
+                      >
+                        {t.delete}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </motion.div>
           </motion.div>
         )}
