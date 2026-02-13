@@ -266,6 +266,7 @@ interface Event {
   iconId?: IconId
   attendees: number
   confirmedAttendees: number
+  readiness?: number
   location: string
   description?: string
   hasVoting: boolean
