@@ -241,21 +241,21 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
 const footerLinks = {
   product: [
-    { label: "Browse Properties", href: "/properties" },
-    { label: "How It Works", href: "#" },
-    { label: "For Business", href: "#" },
-    { label: "For Students", href: "#" },
+    { label: "Find FlatMates", href: "/properties" },
+    { label: "How AI Works", href: "#" },
+    { label: "For Landlords", href: "#" },
+    { label: "CRM Platform", href: "#" },
   ],
   company: [
-    { label: "About Us", href: "#" },
-    { label: "Our Story", href: "#" },
+    { label: "About FlatMate", href: "#" },
+    { label: "Our Technology", href: "#" },
     { label: "Careers", href: "#" },
-    { label: "Contact", href: "#" },
+    { label: "Contact Us", href: "#" },
   ],
   legal: [
     { label: "Privacy Policy", href: "#" },
     { label: "Terms of Service", href: "#" },
-    { label: "Cookie Policy", href: "#" },
+    { label: "Data Protection", href: "#" },
   ],
 };
 
@@ -275,13 +275,13 @@ function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center">
-                <House className="text-white h-5 w-5" />
+              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center shadow-lg">
+                <Users className="text-white h-5 w-5" weight="bold" />
               </div>
-              <span className="font-semibold text-lg">StayHub</span>
+              <span className="font-bold text-lg bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">FlatMate</span>
             </Link>
             <p className="text-sm text-muted-foreground mb-4 max-w-xs">
-              Find your perfect home for mid and long-term stays. Fully furnished, move-in ready properties worldwide.
+              AI-powered shared living ecosystem. Smart matching, integrated CRM, and end-to-end tenant management.
             </p>
             <div className="flex gap-3">
               {socialLinks.map((social) => (
@@ -354,10 +354,10 @@ function Footer() {
         {/* Bottom bar */}
         <div className="mt-12 pt-8 border-t flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © {currentYear} StayHub. All rights reserved.
+            © {currentYear} FlatMate. All rights reserved.
           </p>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            <span>Trusted by thousands worldwide</span>
+            <span>🤖 AI-Powered  •  📊 SaaS-Enabled  •  🚀 Vertically Integrated</span>
           </div>
         </div>
       </div>

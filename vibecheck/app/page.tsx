@@ -1258,7 +1258,7 @@ export default function Home() {
   const [editingGroup, setEditingGroup] = useState<UserGroup | null>(null)
   
   // Theme state - supports light, dark, and system preference
-  const [theme, setTheme] = useState<'dark' | 'light' | 'system'>('dark')
+  const [theme, setTheme] = useState<'dark' | 'light' | 'system'>('system')
   
   const [lang, setLang] = useState<Language>('en')
   const [activeTab, setActiveTab] = useState<'calendar' | 'events' | 'dashboard'>('events')
@@ -1915,12 +1915,18 @@ export default function Home() {
 
   if (!mounted) {
     return (
-      <div className="min-h-screen bg-[#000000] flex items-center justify-center">
+      <div 
+        className="min-h-screen flex items-center justify-center" 
+        style={{ backgroundColor: 'var(--bg-primary)' }}
+      >
         <div 
-          className="w-8 h-8 border-2 border-t-transparent rounded-full animate-spin" 
-          style={{ borderColor: 'var(--accent-primary)', borderTopColor: 'var(--accent-tertiary)' }}
+          className="w-10 h-10 border-2 border-t-transparent rounded-full animate-spin" 
+          style={{ 
+            borderColor: 'rgba(15, 76, 117, 0.25)', 
+            borderTopColor: 'var(--accent-primary)' 
+          }}
         />
-    </div>
+      </div>
     )
   }
 
