@@ -25,6 +25,7 @@ import {
   PhotoIcon,
   FolderIcon,
   ClipboardDocumentListIcon,
+  ClipboardDocumentIcon,
   TrashIcon,
   GlobeAltIcon,
   LockClosedIcon,
@@ -318,6 +319,9 @@ const translations = {
     integrateCalendar: 'Integrate to calendar',
     googleCalendar: 'Google Calendar',
     appleCalendar: 'Apple Calendar',
+    copyLink: 'Copy link',
+    linkCopied: 'Link copied!',
+    privateEventRestricted: 'This event is private. Only the organizer and invited participants can view the details.',
   },
   hu: {
     calendar: 'Naptár',
@@ -352,6 +356,9 @@ const translations = {
     integrateCalendar: 'Naptár csatlakoztatása',
     googleCalendar: 'Google Naptár',
     appleCalendar: 'Apple Naptár',
+    copyLink: 'Link másolása',
+    linkCopied: 'Link másolva!',
+    privateEventRestricted: 'Ez az esemény privát. Csak a szervező és a meghívott résztvevők láthatják a részleteket.',
   },
 }
 
@@ -1299,6 +1306,7 @@ export default function Home() {
   const [generatingDescription, setGeneratingDescription] = useState(false)
   const [locationSuggestions, setLocationSuggestions] = useState<string[]>([])
   const [locationSuggestionsOpen, setLocationSuggestionsOpen] = useState(false)
+  const [linkCopiedFeedback, setLinkCopiedFeedback] = useState(false)
   const locationSuggestDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const t = translations[lang]
@@ -3873,23 +3881,58 @@ export default function Home() {
                       <p className="mt-1" style={{ color: 'var(--text-muted)' }}>{selectedEvent.organizerName}</p>
                     </div>
                   </div>
-                  <button
-                    onClick={() => {
-                      setSelectedEvent(null)
-                      setShowParticipantsModal(false)
-                    }}
-                    className="p-2 rounded-lg transition-colors"
-                    style={{ color: 'var(--text-muted)' }}
-                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-hover)'}
-                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                  >
-                    <XMarkIcon className="w-5 h-5" />
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        const url = `${typeof window !== 'undefined' ? window.location.origin : ''}/?eventId=${selectedEvent.id}`
+                        await navigator.clipboard.writeText(url)
+                        setLinkCopiedFeedback(true)
+                        setTimeout(() => setLinkCopiedFeedback(false), 2000)
+                      }}
+                      className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+                      style={{ color: 'var(--accent-primary)', backgroundColor: 'var(--accent-light)' }}
+                    >
+                      <LinkIcon className="w-4 h-4" />
+                      {linkCopiedFeedback ? t.linkCopied : t.copyLink}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSelectedEvent(null)
+                        setShowParticipantsModal(false)
+                      }}
+                      className="p-2 rounded-lg transition-colors"
+                      style={{ color: 'var(--text-muted)' }}
+                      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--bg-hover)' }}
+                      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+                    >
+                      <XMarkIcon className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
               </div>
 
               {/* Modal Content */}
               <div className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
+                {(() => {
+                  const isPrivate = selectedEvent.type === 'private'
+                  const isOrganizer = selectedEvent.organizerId === 'me' || selectedEvent.organizerId === currentUserId || selectedEvent.organizerId === userProfile?.name || selectedEvent.organizerId === userProfile?.userId
+                  const isParticipant = selectedEvent.participants?.some((p) => p.id === currentUserId || p.name === userProfile?.name)
+                  const canViewFullDetails = !isPrivate || isOrganizer || isParticipant
+
+                  if (isPrivate && !canViewFullDetails) {
+                    return (
+                      <div className="py-8 text-center">
+                        <LockClosedIcon className="w-12 h-12 mx-auto mb-4" style={{ color: 'var(--text-muted)' }} />
+                        <p className="text-lg font-medium mb-2" style={{ color: 'var(--text-primary)' }}>{selectedEvent.title}</p>
+                        <p className="text-sm mb-4" style={{ color: 'var(--text-muted)' }}>{selectedEvent.organizerName}</p>
+                        <p className="text-sm max-w-md mx-auto" style={{ color: 'var(--text-secondary)' }}>{t.privateEventRestricted}</p>
+                      </div>
+                    )
+                  }
+
+                  return (
+                    <>
                 {/* Description */}
                 {selectedEvent.description && (
                   <p className="mb-6" style={{ color: 'var(--text-secondary)' }}>{selectedEvent.description}</p>
@@ -4118,6 +4161,9 @@ export default function Home() {
                     )}
                   </div>
                 )}
+                    </>
+                  )
+                })()}
               </div>
             </motion.div>
           </motion.div>
