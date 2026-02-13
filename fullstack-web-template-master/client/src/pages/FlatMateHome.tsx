@@ -116,17 +116,6 @@ export default function FlatMateHome() {
             transition={{ duration: 0.8 }}
             className="max-w-6xl mx-auto text-center"
           >
-            {/* AI Badge */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-8"
-            >
-              <Sparkle className="h-4 w-4 text-yellow-400" weight="fill" />
-              <span className="text-sm font-semibold text-white">AI-Powered Smart Matching</span>
-            </motion.div>
-
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
