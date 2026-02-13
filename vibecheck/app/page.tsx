@@ -793,12 +793,11 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
         y: exiting ? -40 : 0,
       }}
       transition={{ duration: 0.9, ease: easeElite }}
-      className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden cursor-pointer"
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden"
       style={{ 
         backgroundColor: 'var(--bg-primary)',
         willChange: 'opacity, transform'
       }}
-      onClick={stage >= 3 ? handleContinue : undefined}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
     >
@@ -894,52 +893,38 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
           Collaborative Event Management
         </motion.p>
 
-        {/* Click to continue CTA */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: stage >= 3 ? 1 : 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex flex-col items-center gap-4"
-        >
-        <motion.button
-          onClick={handleContinue}
-          className="group flex items-center gap-2 px-10 py-4 rounded-full transition-all animate-pulse-glow text-lg"
-          style={{
-            background: 'var(--btn-primary-bg)',
-            color: 'var(--btn-primary-text)',
-            fontWeight: 600,
-            letterSpacing: '0.01em',
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25), 0 0 24px rgba(13, 148, 136, 0.2)'
-          }}
-          whileHover={{ 
-            scale: 1.05,
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 40px rgba(13, 148, 136, 0.35)',
-            transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] }
-          }}
-          whileTap={{ scale: 0.98, transition: { duration: 0.15 } }}
-        >
-          Get Started
-          <motion.svg 
-            className="w-5 h-5" 
-            fill="none" 
-            viewBox="0 0 24 24" 
-            stroke="currentColor"
-            strokeWidth={2.5}
-            animate={{ x: [0, 4, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: [0.45, 0, 0.55, 1] }}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </motion.svg>
-        </motion.button>
-        
+      </div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: stage >= 3 ? 1 : 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-10"
+      >
         <motion.p
           className="text-sm tracking-wide font-medium"
           style={{ color: 'var(--accent-primary)' }}
         >
-          {lang === 'en' ? 'or scroll or click to continue' : 'vagy görgess vagy kattints a folytatáshoz'}
+          {lang === 'en' ? 'Scroll to continue' : 'Görgess tovább'}
         </motion.p>
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: [0.4, 0, 0.6, 1] }}
+          className="flex flex-col items-center"
+        >
+          <svg
+            className="w-8 h-8"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2.5}
+            style={{ color: 'var(--accent-primary)' }}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+          </svg>
         </motion.div>
-      </div>
+      </motion.div>
     </motion.div>
   )
 }
