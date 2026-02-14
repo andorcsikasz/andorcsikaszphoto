@@ -65,38 +65,43 @@ export default function WarpTwister({
       const h = window.innerHeight
       const cx = w / 2
       const cy = h / 2
-      const maxR = Math.max(w, h) * 0.75
+      const maxR = Math.max(w, h) * 0.6
 
-      time += 0.006 * rotSpeed
+      time += 0.008 * rotSpeed
 
       ctx.clearRect(0, 0, w, h)
 
-      // Twisting warp tunnel - concentric elliptical rings with spiral
-      const rings = 60
-      for (let i = rings; i >= 0; i--) {
-        const t = i / rings
-        const scale = Math.pow(t, narrow)
-        const r = maxR * scale
-        const twist = time * spiralTight * 8 + (1 - t) * Math.PI * 3
-        const tiltX = Math.sin(twist) * 0.2
-        const tiltY = Math.cos(twist * 0.8) * 0.2
+      // Twister: radial strands that spiral + rotate as a whole (circular rotation)
+      const strands = 36
+      const segments = 80
 
-        ctx.save()
-        ctx.translate(cx, cy)
-        ctx.rotate(twist * 0.5)
-        ctx.scale(1 + tiltX, 1 + tiltY)
+      ctx.save()
+      ctx.translate(cx, cy)
+      ctx.rotate(time * spiralTight * 6)
 
-        const colorIdx = Math.floor(((t + time * 0.08) % 1) * colorStops.length)
+      for (let s = 0; s < strands; s++) {
+        const baseAngle = (s / strands) * Math.PI * 2
+        const colorIdx = Math.floor(((s / strands + time * 0.05) % 1) * colorStops.length)
         const color = colorStops[colorIdx]
-        ctx.strokeStyle = hexToRgba(color, opacity * (1 - t * 0.8))
-        ctx.lineWidth = 1.5
-        ctx.beginPath()
-        ctx.ellipse(0, 0, r, r * 0.5, 0, 0, Math.PI * 2)
-        ctx.stroke()
 
-        ctx.restore()
+        ctx.beginPath()
+        for (let i = 0; i <= segments; i++) {
+          const t = i / segments
+          const r = maxR * Math.pow(t, narrow)
+          const twist = t * Math.PI * 4 + time * 8
+          const angle = baseAngle + twist
+          const x = Math.cos(angle) * r
+          const y = Math.sin(angle) * r * 0.5
+
+          if (i === 0) ctx.moveTo(x, y)
+          else ctx.lineTo(x, y)
+        }
+        ctx.strokeStyle = hexToRgba(color, opacity * 0.9)
+        ctx.lineWidth = 1.2
+        ctx.stroke()
       }
 
+      ctx.restore()
       ctx.globalAlpha = 1
     }
 
