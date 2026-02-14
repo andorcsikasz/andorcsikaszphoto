@@ -1314,6 +1314,9 @@ export default function Home() {
   const [showIntegrateMenu, setShowIntegrateMenu] = useState(false)
   const integrateMenuRef = useRef<HTMLDivElement>(null)
   const logoClickTimesRef = useRef<number[]>([])
+  const tabBarRef = useRef<HTMLDivElement>(null)
+  const tabRefsMap = useRef<Record<string, HTMLButtonElement | null>>({})
+  const [tabIndicator, setTabIndicator] = useState({ left: 0, width: 0 })
   const [easterEggParticles, setEasterEggParticles] = useState<{ id: string; x: number; y: number; angle: number; color: string; size: number }[]>([])
   const [mounted, setMounted] = useState(false)
   const [dashboardFilter, setDashboardFilter] = useState<EventStatus | null>(null)
@@ -1851,6 +1854,30 @@ export default function Home() {
 
   useEffect(() => {
     if (activeTab !== 'calendar') setShowIntegrateMenu(false)
+  }, [activeTab])
+
+  // Tab indicator position - measure for smooth sliding (not jump)
+  useEffect(() => {
+    const updateIndicator = () => {
+      const btn = tabRefsMap.current[activeTab]
+      const container = tabBarRef.current
+      if (!btn || !container) return
+      const containerRect = container.getBoundingClientRect()
+      const btnRect = btn.getBoundingClientRect()
+      setTabIndicator({
+        left: btnRect.left - containerRect.left + container.scrollLeft,
+        width: btnRect.width,
+      })
+    }
+    const id = setTimeout(updateIndicator, 0)
+    window.addEventListener('resize', updateIndicator)
+    const obs = new ResizeObserver(updateIndicator)
+    if (tabBarRef.current) obs.observe(tabBarRef.current)
+    return () => {
+      clearTimeout(id)
+      window.removeEventListener('resize', updateIndicator)
+      obs.disconnect()
+    }
   }, [activeTab])
 
   useEffect(() => {
