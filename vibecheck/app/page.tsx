@@ -4,7 +4,7 @@
 'use client'
 
 import { useState, useEffect, useRef, type CSSProperties } from 'react'
-import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   CalendarIcon,
   ChartBarIcon,
@@ -1858,21 +1858,22 @@ export default function Home() {
 
   // Tab indicator position - measure for smooth sliding (not jump)
   useEffect(() => {
+    const container = tabBarRef.current
     const updateIndicator = () => {
       const btn = tabRefsMap.current[activeTab]
-      const container = tabBarRef.current
-      if (!btn || !container) return
-      const containerRect = container.getBoundingClientRect()
+      const cont = tabBarRef.current
+      if (!btn || !cont) return
+      const containerRect = cont.getBoundingClientRect()
       const btnRect = btn.getBoundingClientRect()
       setTabIndicator({
-        left: btnRect.left - containerRect.left + container.scrollLeft,
+        left: btnRect.left - containerRect.left + cont.scrollLeft,
         width: btnRect.width,
       })
     }
-    const id = setTimeout(updateIndicator, 0)
+    const id = setTimeout(updateIndicator, 10)
     window.addEventListener('resize', updateIndicator)
     const obs = new ResizeObserver(updateIndicator)
-    if (tabBarRef.current) obs.observe(tabBarRef.current)
+    if (container) obs.observe(container)
     return () => {
       clearTimeout(id)
       window.removeEventListener('resize', updateIndicator)
@@ -3172,45 +3173,47 @@ export default function Home() {
             </div>
 
             {/* Center Tabs */}
-            <LayoutGroup>
-              <div 
-                className="relative flex items-center gap-1 rounded-xl p-1 border"
-                style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-primary)' }}
-              >
-                {(['calendar', 'events', 'dashboard'] as const).map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    className="relative px-5 py-2 text-sm font-medium rounded-lg flex items-center gap-2 z-10 transition-colors duration-200"
+            <div
+              ref={tabBarRef}
+              className="relative flex items-center gap-1 rounded-xl p-1 border"
+              style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-primary)' }}
+            >
+              {/* Sliding indicator - single element, animates position */}
+              {tabIndicator.width > 0 && (
+                <motion.div
+                  className="absolute top-1 bottom-1 rounded-lg pointer-events-none z-0"
+                  style={{ backgroundColor: 'var(--accent-primary)' }}
+                  initial={false}
+                  animate={{
+                    left: tabIndicator.left,
+                    width: tabIndicator.width,
+                  }}
+                  transition={{
+                    type: 'tween',
+                    duration: 0.35,
+                    ease: [0.32, 0.72, 0, 1],
+                  }}
+                />
+              )}
+              {(['calendar', 'events', 'dashboard'] as const).map((tab) => (
+                <button
+                  key={tab}
+                  ref={(el) => { tabRefsMap.current[tab] = el }}
+                  onClick={() => setActiveTab(tab)}
+                  className="relative px-5 py-2 text-sm font-medium rounded-lg flex items-center gap-2 z-10 transition-colors duration-200"
+                >
+                  <span
+                    className="relative z-10 flex items-center gap-2"
+                    style={{ color: activeTab === tab ? 'var(--text-inverse)' : 'var(--text-muted)' }}
                   >
-                    {activeTab === tab && (
-                      <motion.div
-                        layoutId="tabIndicator"
-                        className="absolute inset-0 rounded-lg"
-                        style={{ 
-                          backgroundColor: 'var(--accent-primary)',
-                        }}
-                        transition={{ 
-                          type: 'tween',
-                          duration: 0.35,
-                          ease: [0.32, 0.72, 0, 1],
-                        }}
-                        layout
-                      />
-                    )}
-                    <span 
-                      className="relative z-10 flex items-center gap-2"
-                      style={{ color: activeTab === tab ? 'var(--text-inverse)' : 'var(--text-muted)' }}
-                    >
-                      {tab === 'calendar' && <CalendarIcon className="w-4 h-4" />}
-                      {tab === 'events' && <Squares2X2Icon className="w-4 h-4" />}
-                      {tab === 'dashboard' && <ChartBarIcon className="w-4 h-4" />}
-                      {t[tab]}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </LayoutGroup>
+                    {tab === 'calendar' && <CalendarIcon className="w-4 h-4" />}
+                    {tab === 'events' && <Squares2X2Icon className="w-4 h-4" />}
+                    {tab === 'dashboard' && <ChartBarIcon className="w-4 h-4" />}
+                    {t[tab]}
+                  </span>
+                </button>
+              ))}
+            </div>
 
             {/* Right side */}
             <div className="flex items-center gap-4">
