@@ -2188,7 +2188,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="w-full max-w-md"
+              className="w-full max-w-md text-white"
             >
               {/* Progress indicator */}
               <div className="flex items-center justify-center gap-2 mb-8">
@@ -2213,10 +2213,10 @@ export default function Home() {
                     exit={{ opacity: 0, x: -20 }}
                     className="text-center"
                   >
-                    <h2 className="text-3xl font-bold mb-2">
+                    <h2 className="text-3xl font-bold mb-2 text-white">
                       {lang === 'en' ? "What's your name?" : 'Mi a neved?'}
                     </h2>
-                    <p className="text-[var(--text-muted)] mb-8">
+                    <p className="text-white/80 mb-8">
                       {lang === 'en' ? "Let's get you set up" : 'Kezdjük a beállítást'}
                     </p>
                     
@@ -2225,7 +2225,7 @@ export default function Home() {
                       value={tempProfile.name}
                       onChange={(e) => setTempProfile({ ...tempProfile, name: e.target.value })}
                       placeholder={lang === 'en' ? 'Your name' : 'A neved'}
-                      className="w-full px-6 py-4 bg-transparent border-b-2 border-white/20 focus:border-white text-center text-2xl font-light text-[var(--text-primary)] placeholder-gray-600 focus:outline-none transition-colors"
+                      className="w-full px-6 py-4 bg-transparent border-b-2 border-white/20 focus:border-white text-center text-2xl font-light text-white placeholder-white/50 focus:outline-none transition-colors"
                       autoFocus
                     />
                     
@@ -2249,25 +2249,25 @@ export default function Home() {
                     className="text-center"
                   >
                     <div className="flex items-center justify-center gap-3 mb-2">
-                      <RevolutLogo className="w-8 h-8 text-[var(--text-primary)]" />
-                      <h2 className="text-3xl font-bold">
+                      <RevolutLogo className="w-8 h-8 text-white" />
+                      <h2 className="text-3xl font-bold text-white">
                         {lang === 'en' ? 'Revolut Tag' : 'Revolut azonosító'}
                       </h2>
                     </div>
-                    <p className="text-[var(--text-muted)] mb-8">
+                    <p className="text-white/80 mb-8">
                       {lang === 'en' ? 'For easy payments (optional)' : 'Könnyű fizetéshez (opcionális)'}
                     </p>
                     
     <div className="relative">
                       <span className="absolute left-6 top-1/2 -translate-y-1/2">
-                        <CurrencyDollarIcon className="w-6 h-6 text-[var(--text-muted)]" />
+                        <CurrencyDollarIcon className="w-6 h-6 text-white/70" />
                       </span>
                       <input
                         type="text"
                         value={tempProfile.revolutTag}
                         onChange={(e) => setTempProfile({ ...tempProfile, revolutTag: e.target.value.replace('@', '') })}
                         placeholder={lang === 'en' ? 'yourtag' : 'teazonosítód'}
-                        className="w-full px-6 pl-12 py-4 bg-transparent border-b-2 border-white/20 focus:border-white text-center text-2xl font-light text-[var(--text-primary)] placeholder-gray-600 focus:outline-none transition-colors"
+                        className="w-full px-6 pl-12 py-4 bg-transparent border-b-2 border-white/20 focus:border-white text-center text-2xl font-light text-white placeholder-white/50 focus:outline-none transition-colors"
                         autoFocus
             />
           </div>
@@ -2275,7 +2275,7 @@ export default function Home() {
                     <div className="flex items-center justify-center gap-4 mt-12">
       <button
                         onClick={() => setOnboardingStep(1)}
-                        className="px-6 py-3 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+                        className="px-6 py-3 text-white/80 hover:text-white transition-colors"
               >
                         {lang === 'en' ? 'Back' : 'Vissza'}
               </button>
@@ -2298,10 +2298,10 @@ export default function Home() {
                     exit={{ opacity: 0, x: -20 }}
                     className="text-center"
                   >
-                    <h2 className="text-3xl font-bold mb-2">
+                    <h2 className="text-3xl font-bold mb-2 text-white">
                       {lang === 'en' ? 'Choose your avatar' : 'Válassz avatart'}
                     </h2>
-                    <p className="text-[var(--text-muted)] mb-8">
+                    <p className="text-white/80 mb-8">
                       {lang === 'en' ? 'Pick one that represents you' : 'Válassz egyet ami illik hozzád'}
                     </p>
                     
@@ -2317,7 +2317,7 @@ export default function Home() {
                           }`}
                         >
                           <div
-                            className="w-full h-full text-[var(--text-primary)]"
+                            className="w-full h-full text-white"
                             dangerouslySetInnerHTML={{ __html: avatar }}
                           />
                 </button>
@@ -2328,14 +2328,14 @@ export default function Home() {
                     <div className="flex items-center justify-center gap-4 mb-8 p-4 bg-white/5 rounded-xl">
                       <div className="w-16 h-16 rounded-full bg-white/10 p-2">
                         <div
-                          className="w-full h-full text-[var(--text-primary)]"
+                          className="w-full h-full text-white"
                           dangerouslySetInnerHTML={{ __html: AVATARS[tempProfile.avatarIndex] }}
             />
           </div>
                       <div className="text-left">
-                        <p className="font-semibold text-lg">{tempProfile.name}</p>
+                        <p className="font-semibold text-lg text-white">{tempProfile.name}</p>
                         {tempProfile.revolutTag && (
-                          <p className="text-[var(--text-muted)] text-sm">@{tempProfile.revolutTag}</p>
+                          <p className="text-white/70 text-sm">@{tempProfile.revolutTag}</p>
       )}
         </div>
     </div>
