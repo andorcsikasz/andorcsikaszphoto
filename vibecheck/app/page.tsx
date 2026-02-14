@@ -65,6 +65,7 @@ import { RevolutLogo, GoogleLogo, AppleLogo } from '@/components/PaymentLogos'
 import LandingPageComponent from '@/components/LandingPage'
 import Aurora from '@/components/Aurora'
 import ConnectionsManager from '@/components/ConnectionsManager'
+import StarBorder from '@/components/StarBorder'
 
 type Language = 'en' | 'hu'
 type EventStatus = 'fixed' | 'optimal' | 'in-progress'
@@ -2229,13 +2230,15 @@ export default function Home() {
                       autoFocus
                     />
                     
-              <button 
+              <StarBorder className="mt-12" disabled={!tempProfile.name}>
+                <button
                       onClick={() => tempProfile.name && setOnboardingStep(2)}
                       disabled={!tempProfile.name}
-                      className="mt-12 px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 disabled:bg-gray-700 disabled:text-white/60 disabled:cursor-not-allowed transition-all"
+                      className="w-full px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 disabled:bg-gray-700 disabled:text-white/60 disabled:cursor-not-allowed transition-all"
                     >
                       {lang === 'en' ? 'Continue' : 'Tovább'}
-              </button>
+                </button>
+              </StarBorder>
                   </motion.div>
                 )}
 
@@ -2279,12 +2282,14 @@ export default function Home() {
               >
                         {lang === 'en' ? 'Back' : 'Vissza'}
               </button>
-              <button 
+              <StarBorder>
+                <button
                         onClick={() => setOnboardingStep(3)}
-                        className="px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-all"
+                        className="w-full px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-all"
                       >
                         {lang === 'en' ? 'Continue' : 'Tovább'}
-                  </button>
+                </button>
+              </StarBorder>
                 </div>
                   </motion.div>
                 )}
@@ -2347,12 +2352,14 @@ export default function Home() {
                       >
                         {lang === 'en' ? 'Back' : 'Vissza'}
                       </button>
-                      <button
-                        onClick={completeOnboarding}
-                        className="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-full hover:opacity-90 transition-all"
-                      >
-                        {lang === 'en' ? "Let's go!" : 'Kezdjük!'}
-                  </button>
+                      <StarBorder>
+                        <button
+                          onClick={completeOnboarding}
+                          className="w-full px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-full hover:opacity-90 transition-all"
+                        >
+                          {lang === 'en' ? "Let's go!" : 'Kezdjük!'}
+                        </button>
+                      </StarBorder>
     </div>
                   </motion.div>
                 )}

@@ -55,6 +55,8 @@ module.exports = {
         'glitch': 'glitch 8s infinite',
         'glow-pulse': 'glowPulse 2s ease-in-out infinite',
         'spin-slow': 'spin 8s linear infinite',
+        'star-movement-bottom': 'starMovementBottom 2.5s ease-in-out infinite alternate',
+        'star-movement-top': 'starMovementTop 2.5s ease-in-out infinite alternate',
       },
       keyframes: {
         fadeIn: {
@@ -109,6 +111,14 @@ module.exports = {
         glowPulse: {
           '0%, 100%': { boxShadow: '0 0 20px rgba(91, 163, 214, 0.3)' },
           '50%': { boxShadow: '0 0 40px rgba(91, 163, 214, 0.6)' },
+        },
+        starMovementBottom: {
+          '0%': { transform: 'translate(0%, 0%)', opacity: '1' },
+          '100%': { transform: 'translate(-100%, 0%)', opacity: '0.3' },
+        },
+        starMovementTop: {
+          '0%': { transform: 'translate(0%, 0%)', opacity: '1' },
+          '100%': { transform: 'translate(100%, 0%)', opacity: '0.3' },
         },
       },
       letterSpacing: {
