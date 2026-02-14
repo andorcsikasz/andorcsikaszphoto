@@ -4097,7 +4097,7 @@ export default function Home() {
                   </div>
                   <div className="flex flex-col items-end gap-2">
                     <div className="flex items-center gap-2">
-                      {(selectedEvent.organizerId === 'me' || selectedEvent.organizerId === userProfile?.userId || selectedEvent.organizerId === userProfile?.name) && (
+                      {(selectedEvent.organizerId === 'me' || selectedEvent.organizerId === userProfile?.userId || selectedEvent.organizerId === userProfile?.name || selectedEvent.organizerName === userProfile?.name) && (
                         <button
                           type="button"
                           onClick={() => openEditModal(selectedEvent)}
@@ -4132,7 +4132,7 @@ export default function Home() {
                       >
                         <ClipboardDocumentIcon className="w-4 h-4" />
                       </button>
-                      {(selectedEvent.organizerId === 'me' || selectedEvent.organizerId === currentUserId || selectedEvent.organizerId === userProfile?.name || selectedEvent.organizerId === userProfile?.userId) && (
+                      {(selectedEvent.organizerId === 'me' || selectedEvent.organizerId === currentUserId || selectedEvent.organizerId === userProfile?.name || selectedEvent.organizerId === userProfile?.userId || selectedEvent.organizerName === userProfile?.name) && (
                         <button
                           type="button"
                           onClick={() => setShowDeleteConfirm(true)}
@@ -4166,7 +4166,7 @@ export default function Home() {
               <div className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
                 {(() => {
                   const isPrivate = selectedEvent.type === 'private'
-                  const isOrganizer = selectedEvent.organizerId === 'me' || selectedEvent.organizerId === currentUserId || selectedEvent.organizerId === userProfile?.name || selectedEvent.organizerId === userProfile?.userId
+                  const isOrganizer = selectedEvent.organizerId === 'me' || selectedEvent.organizerId === currentUserId || selectedEvent.organizerId === userProfile?.name || selectedEvent.organizerId === userProfile?.userId || selectedEvent.organizerName === userProfile?.name
                   const isParticipant = selectedEvent.participants?.some((p) => p.id === currentUserId || p.name === userProfile?.name)
                   const canViewFullDetails = !isPrivate || isOrganizer || isParticipant
 
@@ -4189,7 +4189,7 @@ export default function Home() {
                 )}
 
                 {/* Edit button for organizers - next to event details */}
-                {(selectedEvent.organizerId === 'me' || selectedEvent.organizerId === currentUserId || selectedEvent.organizerId === userProfile?.name || selectedEvent.organizerId === userProfile?.userId) && (
+                {(selectedEvent.organizerId === 'me' || selectedEvent.organizerId === currentUserId || selectedEvent.organizerId === userProfile?.name || selectedEvent.organizerId === userProfile?.userId || selectedEvent.organizerName === userProfile?.name) && (
                   <button
                     type="button"
                     onClick={() => openEditModal(selectedEvent)}
