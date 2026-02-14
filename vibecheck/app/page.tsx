@@ -4059,7 +4059,7 @@ export default function Home() {
             >
               {/* Modal Header */}
               <div className="p-6 border-b relative" style={{ borderColor: 'var(--border-primary)' }}>
-                <div className={`absolute top-0 left-0 right-0 h-1 ${getStatusColor(selectedEvent.status)}`} />
+                <div className={`absolute top-0 left-0 right-0 h-1 rounded-t-2xl ${getStatusColor(selectedEvent.status)}`} />
                 <div className="flex items-start justify-between pt-2">
                   <div className="flex items-start gap-4">
                     {/* Event Icon */}
