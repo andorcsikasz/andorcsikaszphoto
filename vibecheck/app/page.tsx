@@ -2225,7 +2225,7 @@ export default function Home() {
                       value={tempProfile.name}
                       onChange={(e) => setTempProfile({ ...tempProfile, name: e.target.value })}
                       placeholder={lang === 'en' ? 'Your name' : 'A neved'}
-                      className="w-full px-6 py-4 bg-transparent border-b-2 border-white/20 focus:border-white text-center text-2xl font-light text-white placeholder-white/50 focus:outline-none transition-colors"
+                      className="w-full px-6 py-4 bg-transparent border-b-2 border-white/20 focus:border-white text-center text-2xl font-light text-white placeholder-white/80 placeholder:font-semibold focus:outline-none transition-colors"
                       autoFocus
                     />
                     
@@ -2267,7 +2267,7 @@ export default function Home() {
                         value={tempProfile.revolutTag}
                         onChange={(e) => setTempProfile({ ...tempProfile, revolutTag: e.target.value.replace('@', '') })}
                         placeholder={lang === 'en' ? 'yourtag' : 'teazonosítód'}
-                        className="w-full px-6 pl-12 py-4 bg-transparent border-b-2 border-white/20 focus:border-white text-center text-2xl font-light text-white placeholder-white/50 focus:outline-none transition-colors"
+                        className="w-full px-6 pl-12 py-4 bg-transparent border-b-2 border-white/20 focus:border-white text-center text-2xl font-light text-white placeholder-white/80 placeholder:font-semibold focus:outline-none transition-colors"
                         autoFocus
             />
           </div>
