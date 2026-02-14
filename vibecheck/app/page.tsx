@@ -3164,9 +3164,9 @@ export default function Home() {
                           backgroundColor: 'var(--accent-primary)',
                         }}
                         transition={{ 
-                          type: 'spring',
-                          stiffness: 400,
-                          damping: 30,
+                          type: 'tween',
+                          duration: 0.35,
+                          ease: [0.32, 0.72, 0, 1],
                         }}
                         layout
                       />
