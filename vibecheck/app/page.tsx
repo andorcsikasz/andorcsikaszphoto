@@ -2232,7 +2232,7 @@ export default function Home() {
               <button 
                       onClick={() => tempProfile.name && setOnboardingStep(2)}
                       disabled={!tempProfile.name}
-                      className="mt-12 px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 disabled:bg-gray-700 disabled:text-[var(--text-muted)] disabled:cursor-not-allowed transition-all"
+                      className="mt-12 px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 disabled:bg-gray-700 disabled:text-white/60 disabled:cursor-not-allowed transition-all"
                     >
                       {lang === 'en' ? 'Continue' : 'Tovább'}
               </button>
@@ -2343,13 +2343,13 @@ export default function Home() {
                     <div className="flex items-center justify-center gap-4">
                       <button
                         onClick={() => setOnboardingStep(2)}
-                        className="px-6 py-3 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+                        className="px-6 py-3 text-white/80 hover:text-white transition-colors"
                       >
                         {lang === 'en' ? 'Back' : 'Vissza'}
                       </button>
                       <button
                         onClick={completeOnboarding}
-                        className="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-[var(--text-primary)] font-semibold rounded-full hover:opacity-90 transition-all"
+                        className="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-full hover:opacity-90 transition-all"
                       >
                         {lang === 'en' ? "Let's go!" : 'Kezdjük!'}
                   </button>
