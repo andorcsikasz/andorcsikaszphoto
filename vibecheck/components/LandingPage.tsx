@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import WarpTwister from './WarpTwister'
 
 interface LandingPageProps {
   onGetStarted: () => void
@@ -19,10 +20,18 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center bg-[var(--bg-primary)] px-4"
+      className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden bg-[var(--bg-primary)] px-4"
       style={{ fontFamily: 'var(--font-sans)' }}
     >
-      <div className="text-center">
+      <WarpTwister
+        colorStops={['#0f4c75', '#1e5f8e', '#0d9488', '#134e6a', '#0a3d5c']}
+        narrow={1.6}
+        rotSpeed={0.12}
+        spiralTight={0.6}
+        opacity={0.35}
+        className="z-0"
+      />
+      <div className="text-center relative z-10">
         <motion.h1
           className="text-6xl sm:text-7xl md:text-8xl font-bold tracking-tight cursor-pointer select-none"
           whileHover={{ scale: 1.015 }}
