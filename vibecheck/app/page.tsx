@@ -4,7 +4,7 @@
 'use client'
 
 import { useState, useEffect, useRef, type CSSProperties } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import {
   CalendarIcon,
   ChartBarIcon,
@@ -64,6 +64,7 @@ import {
 import { RevolutLogo, GoogleLogo, AppleLogo } from '@/components/PaymentLogos'
 import LandingPageComponent from '@/components/LandingPage'
 import Aurora from '@/components/Aurora'
+import WarpTwister from '@/components/WarpTwister'
 import ConnectionsManager from '@/components/ConnectionsManager'
 import StarBorder from '@/components/StarBorder'
 
@@ -802,21 +803,29 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
     >
-      {/* Aurora Background - very subtle */}
-      <div className="absolute inset-0 opacity-[0.2]">
-        <Aurora 
+      {/* Dynamic background - WarpTwister (funky) + Aurora (soft color flow) */}
+      <WarpTwister
+        colorStops={['#0f4c75', '#1e5f8e', '#0d9488', '#134e6a', '#0a3d5c']}
+        narrow={1.5}
+        rotSpeed={0.08}
+        spiralTight={0.4}
+        opacity={0.22}
+        className="opacity-90"
+      />
+      <div className="absolute inset-0 opacity-[0.5]">
+        <Aurora
           colorStops={['#0f4c75', '#1e5f8e', '#0d9488', '#3d7ba8', '#0f4c75']}
-          amplitude={0.6}
-          blend={0.3}
-          speed={0.3}
+          amplitude={1.0}
+          blend={0.45}
+          speed={0.5}
         />
       </div>
 
-      {/* Radial fade - keeps center readable */}
-      <div 
+      {/* Radial vignette - soft edges, center stays readable */}
+      <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse 90% 80% at 50% 45%, transparent 20%, rgba(248,250,252,0.08) 50%, var(--bg-primary) 100%)',
+          background: 'radial-gradient(ellipse 90% 80% at 50% 45%, transparent 25%, rgba(10,10,12,0.3) 60%, rgba(10,10,12,0.7) 100%)',
         }}
       />
 
@@ -3136,44 +3145,45 @@ export default function Home() {
             </div>
 
             {/* Center Tabs */}
-            <div 
-              className="relative flex items-center gap-1 rounded-xl p-1 border"
-              style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-primary)' }}
-            >
-              {(['calendar', 'events', 'dashboard'] as const).map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className="relative px-5 py-2 text-sm font-medium rounded-lg flex items-center gap-2 z-10 transition-colors duration-200"
-                >
-                  {activeTab === tab && (
-                    <motion.div
-                      layoutId="tabIndicator"
-                      className="absolute inset-0 rounded-lg"
-                      style={{ 
-                        backgroundColor: 'var(--accent-primary)',
-                        willChange: 'transform',
-                      }}
-                      transition={{ 
-                        type: 'tween',
-                        duration: 0.4,
-                        ease: [0.25, 0.46, 0.45, 0.94],
-                      }}
-                      layout
-                    />
-                  )}
-                  <span 
-                    className="relative z-10 flex items-center gap-2"
-                    style={{ color: activeTab === tab ? 'var(--text-inverse)' : 'var(--text-muted)' }}
+            <LayoutGroup>
+              <div 
+                className="relative flex items-center gap-1 rounded-xl p-1 border"
+                style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-primary)' }}
+              >
+                {(['calendar', 'events', 'dashboard'] as const).map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className="relative px-5 py-2 text-sm font-medium rounded-lg flex items-center gap-2 z-10 transition-colors duration-200"
                   >
-                    {tab === 'calendar' && <CalendarIcon className="w-4 h-4" />}
-                    {tab === 'events' && <Squares2X2Icon className="w-4 h-4" />}
-                    {tab === 'dashboard' && <ChartBarIcon className="w-4 h-4" />}
-                    {t[tab]}
-                  </span>
-                </button>
-              ))}
-            </div>
+                    {activeTab === tab && (
+                      <motion.div
+                        layoutId="tabIndicator"
+                        className="absolute inset-0 rounded-lg"
+                        style={{ 
+                          backgroundColor: 'var(--accent-primary)',
+                        }}
+                        transition={{ 
+                          type: 'spring',
+                          stiffness: 400,
+                          damping: 30,
+                        }}
+                        layout
+                      />
+                    )}
+                    <span 
+                      className="relative z-10 flex items-center gap-2"
+                      style={{ color: activeTab === tab ? 'var(--text-inverse)' : 'var(--text-muted)' }}
+                    >
+                      {tab === 'calendar' && <CalendarIcon className="w-4 h-4" />}
+                      {tab === 'events' && <Squares2X2Icon className="w-4 h-4" />}
+                      {tab === 'dashboard' && <ChartBarIcon className="w-4 h-4" />}
+                      {t[tab]}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </LayoutGroup>
 
             {/* Right side */}
             <div className="flex items-center gap-4">
