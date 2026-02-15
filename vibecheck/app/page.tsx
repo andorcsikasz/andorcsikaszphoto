@@ -496,6 +496,9 @@ const translations = {
     deleteGroupConfirm2: 'Utolsó megerősítés: Véglegesen törölni? Ez visszavonhatatlan.',
     deleteGroup: 'Törlés',
     permanentlyDelete: 'Végleges törlés',
+    eventsOrganized: 'Szervezett események',
+    totalAttendees: 'Összes résztvevő',
+    avgAttendees: 'Átl. résztvevő',
   },
 }
 
@@ -1448,6 +1451,8 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<'calendar' | 'events' | 'dashboard'>('events')
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const [showParticipantsModal, setShowParticipantsModal] = useState(false)
+  const [showOrganizerStatsModal, setShowOrganizerStatsModal] = useState(false)
+  const [selectedOrganizer, setSelectedOrganizer] = useState<{ id: string; name: string } | null>(null)
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [showIntegrateMenu, setShowIntegrateMenu] = useState(false)
   const integrateMenuRef = useRef<HTMLDivElement>(null)
@@ -3873,26 +3878,14 @@ export default function Home() {
                         </div>
                       </div>
                       <h3 className="text-lg font-extrabold mb-3 line-clamp-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>{event.title}</h3>
-                      <p className="text-sm font-bold mb-2" style={{ color: 'var(--accent-primary)' }}>{event.organizerName}</p>
-                      <div className="flex items-center gap-2 text-sm mb-2" style={{ color: 'var(--text-muted)' }}>
-                        <CalendarIcon className="w-4 h-4" />
-                        <span>{new Date(event.date).toLocaleDateString(lang === 'hu' ? 'hu-HU' : 'en-US', { month: 'short', day: 'numeric' })} • {event.time}</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm mb-4" style={{ color: 'var(--text-muted)' }}>
-                        <MapPinIcon className="w-4 h-4" />
-                        <span className="truncate">{event.location}</span>
-                      </div>
-                      {(event.hasVoting || event.hasTasks || event.hasPayment) && (
-                        <div className="flex flex-wrap gap-2 pt-3 border-t" style={{ borderColor: 'var(--border-primary)' }}>
-                          {event.hasVoting && <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-purple-500/20 text-purple-400"><ChatBubbleLeftRightIcon className="w-3 h-3" />Voting</span>}
-                          {event.hasTasks && <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-blue-500/20 text-blue-400"><CheckCircleIcon className="w-3 h-3" />Tasks</span>}
-                          {event.hasPayment && <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-emerald-500/20 text-emerald-400"><CreditCardIcon className="w-3 h-3" />{event.currency === 'HUF' ? 'Ft' : event.currency === 'USD' ? '$' : '€'}{event.paymentAmount}</span>}
-                        </div>
-                      )}
-                    </motion.div>
-                  ))}
-                  </div>
-                  {myEvents.length === 0 && (
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); setSelectedOrganizer({ id: event.organizerId, name: event.organizerName }); setShowOrganizerStatsModal(true) }}
+                        className="text-sm font-bold mb-2 text-left hover:underline cursor-pointer"
+                        style={{ color: 'var(--accent-primary)' }}
+                      >
+                        {event.organizerName}
+                      </button>
                     <div className="rounded-xl py-8 px-4 flex items-center justify-center gap-4" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
                       <CalendarIcon className="w-10 h-10 flex-shrink-0" style={{ color: 'var(--text-muted)' }} />
                       <p style={{ color: 'var(--text-muted)' }}>{lang === 'en' ? 'No events you organize yet' : 'Még nincs szervezett eseményed'}</p>
@@ -4688,7 +4681,14 @@ export default function Home() {
                         )}
                       </div>
                       <h2 className="text-2xl font-extrabold" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>{selectedEvent.title}</h2>
-                      <p className="mt-1 font-bold" style={{ color: 'var(--text-muted)' }}>{selectedEvent.organizerName}</p>
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); setSelectedOrganizer({ id: selectedEvent.organizerId, name: selectedEvent.organizerName }); setShowOrganizerStatsModal(true) }}
+                        className="mt-1 font-bold text-left hover:underline cursor-pointer transition-opacity hover:opacity-80"
+                        style={{ color: 'var(--accent-primary)' }}
+                      >
+                        {selectedEvent.organizerName}
+                      </button>
                     </div>
                   </div>
                   <div className="flex flex-col items-end gap-2">
@@ -4771,7 +4771,14 @@ export default function Home() {
                       <div className="py-8 text-center">
                         <LockClosedIcon className="w-12 h-12 mx-auto mb-4" style={{ color: 'var(--text-muted)' }} />
                         <p className="text-lg font-bold mb-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>{selectedEvent.title}</p>
-                        <p className="text-sm font-bold mb-4" style={{ color: 'var(--text-muted)' }}>{selectedEvent.organizerName}</p>
+                        <button
+                          type="button"
+                          onClick={() => { setSelectedOrganizer({ id: selectedEvent.organizerId, name: selectedEvent.organizerName }); setShowOrganizerStatsModal(true) }}
+                          className="text-sm font-bold mb-4 text-left hover:underline cursor-pointer"
+                          style={{ color: 'var(--accent-primary)' }}
+                        >
+                          {selectedEvent.organizerName}
+                        </button>
                         <p className="text-sm max-w-md mx-auto" style={{ color: 'var(--accent-primary)' }}>{t.privateEventRestricted}</p>
                       </div>
                     )
@@ -5160,10 +5167,11 @@ export default function Home() {
                   {selectedEvent.participants.map((p) => (
                     <div
                       key={p.id}
-                      className="rounded-xl p-4 flex items-center justify-between transition-colors"
+                      className="rounded-xl p-4 flex items-center justify-between transition-colors cursor-pointer"
                       style={{ backgroundColor: 'var(--bg-tertiary)' }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-hover)'}
-                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-tertiary)'}
+                      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--bg-hover)' }}
+                      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'var(--bg-tertiary)' }}
+                      onClick={() => { setSelectedOrganizer({ id: p.id, name: p.name }); setShowOrganizerStatsModal(true) }}
                     >
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--bg-secondary)' }}>
@@ -5172,7 +5180,7 @@ export default function Home() {
                           </span>
                         </div>
                         <div>
-                          <div className="font-medium" style={{ color: 'var(--text-primary)' }}>{p.name}</div>
+                          <div className="font-medium hover:underline" style={{ color: 'var(--text-primary)' }}>{p.name}</div>
                           <div className="text-sm" style={{ color: 'var(--text-muted)' }}>
                             {p.status === 'confirmed' 
                               ? (lang === 'en' ? 'Confirmed attendance' : 'Megerősített részvétel')
@@ -5193,6 +5201,78 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Organizer Stats Modal */}
+      <AnimatePresence>
+        {showOrganizerStatsModal && selectedOrganizer && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
+            onClick={() => { setShowOrganizerStatsModal(false); setSelectedOrganizer(null) }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 12 }}
+              transition={{ type: 'tween', duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              onClick={(e) => e.stopPropagation()}
+              className="rounded-2xl border w-full max-w-md overflow-hidden"
+              style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
+            >
+              <div className="p-6 border-b" style={{ borderColor: 'var(--border-primary)' }}>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>{selectedOrganizer.name}</h2>
+                    <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
+                      {lang === 'en' ? 'Organizer statistics' : 'Szervezői statisztikák'}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => { setShowOrganizerStatsModal(false); setSelectedOrganizer(null) }}
+                    className="p-2 rounded-lg transition-colors"
+                    style={{ color: 'var(--text-muted)' }}
+                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--bg-hover)' }}
+                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+                  >
+                    <XMarkIcon className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+              <div className="p-6">
+                {(() => {
+                  const isMe = selectedOrganizer.id === 'me' || selectedOrganizer.id === currentUserId || selectedOrganizer.name === userProfile?.name || selectedOrganizer.name === userProfile?.userId
+                  const organizedEvents = events.filter(e =>
+                    e.organizerId === selectedOrganizer.id ||
+                    e.organizerName === selectedOrganizer.name ||
+                    (isMe && (e.organizerId === 'me' || e.organizerId === currentUserId || e.organizerId === userProfile?.name || e.organizerId === userProfile?.userId))
+                  )
+                  const totalAttendees = organizedEvents.reduce((sum, e) => sum + (e.attendees || 0), 0)
+                  const avgAttendees = organizedEvents.length > 0 ? Math.round(totalAttendees / organizedEvents.length) : 0
+                  return (
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div className="rounded-xl p-4 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                        <div className="text-2xl font-bold" style={{ color: 'var(--accent-primary)' }}>{organizedEvents.length}</div>
+                        <div className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{t.eventsOrganized}</div>
+                      </div>
+                      <div className="rounded-xl p-4 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                        <div className="text-2xl font-bold text-emerald-400">{totalAttendees}</div>
+                        <div className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{t.totalAttendees}</div>
+                      </div>
+                      <div className="rounded-xl p-4 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                        <div className="text-2xl font-bold text-amber-400">{avgAttendees}</div>
+                        <div className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{t.avgAttendees}</div>
+                      </div>
+                    </div>
+                  )
+                })()}
               </div>
             </motion.div>
           </motion.div>
