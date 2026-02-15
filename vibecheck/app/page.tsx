@@ -127,39 +127,8 @@ const EventIcon = ({ iconId, className = "w-6 h-6", style }: EventIconProps) => 
   return <Icon className={className} style={style} />
 }
 
-// Simplified profile icons: Car, Ball, Sun, Flower, Tree, Cat, Dog, Star, Moon, Fish, House, Book, Apple, Train, Heart — outline only, currentColor
-const AVATARS = [
-  // Car
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M25 55 L35 35 L65 35 L75 55 L75 70 L25 70 Z" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="30" cy="78" r="8" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="70" cy="78" r="8" fill="none" stroke="currentColor" stroke-width="3"/></svg>`,
-  // Ball
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="4"/><ellipse cx="50" cy="50" rx="8" ry="42" fill="none" stroke="currentColor" stroke-width="3"/></svg>`,
-  // Sun
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="25" fill="none" stroke="currentColor" stroke-width="4"/><path d="M50 5 L50 25 M50 75 L50 95 M5 50 L25 50 M75 50 L95 50 M18 18 L32 32 M68 68 L82 82 M82 18 L68 32 M18 82 L32 68" stroke="currentColor" stroke-width="3" fill="none"/></svg>`,
-  // Flower
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="10" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="50" cy="28" r="12" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="72" cy="42" r="12" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="72" cy="58" r="12" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="50" cy="72" r="12" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="28" cy="58" r="12" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="28" cy="42" r="12" fill="none" stroke="currentColor" stroke-width="3"/></svg>`,
-  // Tree
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M45 70 L45 90 L55 90 L55 70" fill="none" stroke="currentColor" stroke-width="4"/><path d="M50 70 L20 70 L40 45 L50 20 L60 45 L80 70 Z" fill="none" stroke="currentColor" stroke-width="3"/></svg>`,
-  // Cat
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="38" fill="none" stroke="currentColor" stroke-width="4"/><path d="M28 25 L22 12 L36 20 M72 25 L78 12 L64 20" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="38" cy="48" r="5" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="62" cy="48" r="5" fill="none" stroke="currentColor" stroke-width="3"/><path d="M42 60 Q50 68 58 60" fill="none" stroke="currentColor" stroke-width="2"/></svg>`,
-  // Dog
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="55" rx="35" ry="30" fill="none" stroke="currentColor" stroke-width="4"/><ellipse cx="82" cy="48" rx="8" ry="10" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="40" cy="50" r="5" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="60" cy="50" r="5" fill="none" stroke="currentColor" stroke-width="3"/><path d="M45 62 Q50 68 55 62" fill="none" stroke="currentColor" stroke-width="2"/></svg>`,
-  // Star
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 12 L58 40 L88 40 L64 54 L72 82 L50 68 L28 82 L36 54 L12 40 L42 40 Z" fill="none" stroke="currentColor" stroke-width="3"/></svg>`,
-  // Moon
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 15 A35 35 0 1 1 50 85 A25 25 0 1 0 50 15" fill="none" stroke="currentColor" stroke-width="4"/></svg>`,
-  // Fish
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="55" cy="50" rx="35" ry="22" fill="none" stroke="currentColor" stroke-width="4"/><path d="M92 50 L68 35 L68 65 Z" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="62" cy="48" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M25 35 Q15 50 25 65" stroke="currentColor" stroke-width="3" fill="none"/></svg>`,
-  // House
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 12 L15 50 L25 50 L25 88 L75 88 L75 50 L85 50 Z" fill="none" stroke="currentColor" stroke-width="4"/><rect x="42" y="58" width="16" height="30" fill="none" stroke="currentColor" stroke-width="3"/></svg>`,
-  // Book
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M25 15 L25 88 L75 88 L75 15 L25 15 M50 15 L50 88" fill="none" stroke="currentColor" stroke-width="4"/></svg>`,
-  // Apple
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M55 18 C42 12 28 28 28 45 C28 68 50 88 50 88 C50 88 72 68 72 45 C72 28 58 12 55 18 Z M50 18 L50 10" fill="none" stroke="currentColor" stroke-width="3"/></svg>`,
-  // Train
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="12" y="28" width="76" height="42" rx="6" fill="none" stroke="currentColor" stroke-width="4"/><rect x="18" y="36" width="28" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="32" cy="78" r="8" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="68" cy="78" r="8" fill="none" stroke="currentColor" stroke-width="3"/><path d="M58 28 L80 18 L80 38 L58 28" fill="none" stroke="currentColor" stroke-width="3"/></svg>`,
-  // Heart
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 82 C22 58 12 38 28 24 C38 14 50 24 50 24 C50 24 62 14 72 24 C88 38 78 58 50 82 Z" fill="none" stroke="currentColor" stroke-width="4"/></svg>`,
-]
+// 12 profile emojis for registration
+const AVATARS = ['🚗', '⚽', '☀️', '🌸', '🌳', '🐱', '🐕', '⭐', '🌙', '🐟', '🏠', '❤️']
 
 // Event Categories
 type EventCategory = 'family' | 'friends' | 'holiday' | 'work' | 'sports' | 'none'
@@ -2602,27 +2571,21 @@ export default function Home() {
                 <button
                           key={index}
                           onClick={() => setTempProfile({ ...tempProfile, avatarIndex: index })}
-                          className={`aspect-square p-3 rounded-xl border-2 transition-all ${
+                          className={`aspect-square p-3 rounded-xl border-2 transition-all flex items-center justify-center ${
                             tempProfile.avatarIndex === index
                               ? 'border-white bg-white/10 scale-110'
                               : 'border-white/10 hover:border-white/30 hover:bg-white/5'
                           }`}
                         >
-                          <div
-                            className="w-full h-full text-white"
-                            dangerouslySetInnerHTML={{ __html: avatar }}
-                          />
+                          <span className="text-3xl">{avatar}</span>
                 </button>
               ))}
         </div>
 
                     {/* Preview */}
                     <div className="flex items-center justify-center gap-4 mb-8 p-4 bg-white/5 rounded-xl">
-                      <div className="w-16 h-16 rounded-full bg-white/10 p-2">
-                        <div
-                          className="w-full h-full text-white"
-                          dangerouslySetInnerHTML={{ __html: AVATARS[tempProfile.avatarIndex] }}
-            />
+                      <div className="w-16 h-16 rounded-full bg-white/10 p-2 flex items-center justify-center">
+                        <span className="text-3xl">{AVATARS[tempProfile.avatarIndex % AVATARS.length]}</span>
           </div>
                       <div className="text-left">
                         <p className="font-semibold text-lg text-white">{tempProfile.name}</p>
@@ -2747,11 +2710,9 @@ export default function Home() {
                       setTempProfile({ ...tempProfile, avatarIndex: nextIndex })
                     }}
                   >
-                    <div
-                      className="w-full h-full transition-transform group-hover:scale-110"
-                      style={{ color: 'var(--text-primary)' }}
-                      dangerouslySetInnerHTML={{ __html: AVATARS[tempProfile.avatarIndex] }}
-                    />
+                    <span className="text-3xl transition-transform group-hover:scale-110" style={{ color: 'var(--text-primary)' }}>
+                      {AVATARS[tempProfile.avatarIndex % AVATARS.length]}
+                    </span>
                     <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity bg-black/10 flex items-center justify-center">
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: 'var(--text-primary)' }}>
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -2927,7 +2888,7 @@ export default function Home() {
                       <button
                         key={index}
                         onClick={() => setTempProfile({ ...tempProfile, avatarIndex: index })}
-                        className="aspect-square p-2 rounded-lg border transition-all hover:scale-105"
+                        className="aspect-square p-2 rounded-lg border transition-all hover:scale-105 flex items-center justify-center"
                         style={{
                           borderColor: tempProfile.avatarIndex === index ? 'var(--accent-primary)' : 'var(--border-primary)',
                           backgroundColor: tempProfile.avatarIndex === index ? 'var(--accent-light)' : 'transparent',
@@ -2935,11 +2896,7 @@ export default function Home() {
                           borderWidth: tempProfile.avatarIndex === index ? '2px' : '1px'
                         }}
                       >
-                        <div
-                          className="w-full h-full"
-                          style={{ color: 'var(--text-primary)' }}
-                          dangerouslySetInnerHTML={{ __html: avatar }}
-                        />
+                        <span className="text-xl">{avatar}</span>
                       </button>
                     ))}
                   </div>
@@ -3604,10 +3561,10 @@ export default function Home() {
                   style={{ borderColor: 'var(--border-primary)', backgroundColor: 'var(--bg-card)', color: 'var(--text-primary)' }}
                 >
                   <div 
-                    className="w-7 h-7 rounded-full overflow-hidden flex-shrink-0 p-1"
+                    className="w-7 h-7 rounded-full overflow-hidden flex-shrink-0 p-1 flex items-center justify-center"
                     style={{ backgroundColor: 'var(--bg-tertiary)' }}
                   >
-                    <div className="w-full h-full" dangerouslySetInnerHTML={{ __html: AVATARS[userProfile.avatarIndex] }} />
+                    <span className="text-lg leading-none">{AVATARS[userProfile.avatarIndex % AVATARS.length]}</span>
                   </div>
                   <span className="text-sm font-medium">{userProfile.name.split(' ')[0]}</span>
                 </button>
@@ -5936,11 +5893,8 @@ export default function Home() {
                                               : 'border-[var(--border-primary)] hover:border-[var(--border-hover)] text-[var(--text-muted)]'
                                           }`}
                                         >
-                                          <div className="w-5 h-5 rounded-full overflow-hidden bg-white/10 p-0.5">
-                                            <div
-                                              className="w-full h-full text-[var(--text-primary)]"
-                                              dangerouslySetInnerHTML={{ __html: AVATARS[userProfile.avatarIndex] }}
-                                            />
+                                          <div className="w-5 h-5 rounded-full overflow-hidden bg-white/10 p-0.5 flex items-center justify-center">
+                                            <span className="text-sm leading-none">{AVATARS[userProfile.avatarIndex % AVATARS.length]}</span>
                                           </div>
                                           <span className="text-sm">{lang === 'en' ? 'Me' : 'Én'}</span>
                                         </button>
@@ -5957,11 +5911,8 @@ export default function Home() {
                                               : 'border-[var(--border-primary)] hover:border-[var(--border-hover)] text-[var(--text-muted)]'
                                           }`}
                                         >
-                                          <div className="w-5 h-5 rounded-full overflow-hidden bg-white/10 p-0.5">
-                                            <div
-                                              className="w-full h-full text-[var(--text-primary)]"
-                                              dangerouslySetInnerHTML={{ __html: AVATARS[i % AVATARS.length] }}
-                                            />
+                                          <div className="w-5 h-5 rounded-full overflow-hidden bg-white/10 p-0.5 flex items-center justify-center">
+                                            <span className="text-sm leading-none">{AVATARS[i % AVATARS.length]}</span>
                                           </div>
                                           <span className="text-sm">{invitee.split('@')[0]}</span>
           </button>
