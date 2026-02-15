@@ -2260,6 +2260,26 @@ export default function Home() {
     : 0
 
   // Get status color
+  const getMyRsvp = (event: Event): 'confirmed' | 'pending' | 'declined' => {
+    const me = userProfile?.name || 'Me'
+    const p = (event.participants || []).find(p => p.id === 'me' || p.id === (userProfile?.userId || 'me') || p.name === me)
+    return p?.status ?? 'pending'
+  }
+
+  const handleRsvp = (eventId: number | string, status: 'confirmed' | 'pending' | 'declined') => {
+    const me = userProfile?.name || 'Me'
+    const myId = userProfile?.userId || 'me'
+    setEvents(prev => prev.map(e => {
+      if (e.id !== eventId) return e
+      const participants = [...(e.participants || [])]
+      const idx = participants.findIndex(p => p.id === 'me' || p.id === myId || p.name === me)
+      const updated = { ...participants[idx] ?? { id: myId, name: me, status: 'pending' as const }, status }
+      if (idx >= 0) participants[idx] = updated
+      else participants.push(updated)
+      return { ...e, participants }
+    }))
+  }
+
   const getStatusColor = (status: EventStatus) => {
     switch (status) {
       case 'fixed':
@@ -4292,24 +4312,53 @@ export default function Home() {
                             </p>
                           </div>
                         ) : (
-                          (showAllInvitedEvents ? filteredInvitedEvents : filteredInvitedEvents.slice(0, 4)).map((event) => (
-                            <button
-              key={event.id}
-                              onClick={() => setSelectedEvent(event)}
-                              className={`w-full p-4 transition-colors flex items-center gap-4 text-left ${
-                                theme === 'light' ? 'hover:bg-[var(--bg-hover)]' : 'hover:bg-[var(--bg-tertiary)]'
-                              }`}
-                            >
-                              <div className={`w-2 h-10 rounded-full ${getStatusColor(event.status)}`} />
-                              <div className="flex-1 min-w-0">
-                                <p className="font-medium truncate">{event.title}</p>
-                                <p className={`text-sm ${theme === 'light' ? 'text-[var(--text-muted)]' : 'text-[var(--text-muted)]'}`}>
-                                  {lang === 'en' ? 'by' : 'szervező:'} {event.organizerName}
-                                </p>
+                          (showAllInvitedEvents ? filteredInvitedEvents : filteredInvitedEvents.slice(0, 4)).map((event) => {
+                            const myRsvp = getMyRsvp(event)
+                            return (
+                              <div
+                                key={event.id}
+                                className={`flex items-center gap-4 p-4 ${
+                                  theme === 'light' ? 'hover:bg-[var(--bg-hover)]' : 'hover:bg-[var(--bg-tertiary)]'
+                                }`}
+                              >
+                                <button
+                                  onClick={() => setSelectedEvent(event)}
+                                  className="flex flex-1 items-center gap-4 text-left min-w-0"
+                                >
+                                  <div className={`w-2 h-10 rounded-full flex-shrink-0 ${getStatusColor(event.status)}`} />
+                                  <div className="flex-1 min-w-0">
+                                    <p className="font-medium truncate">{event.title}</p>
+                                    <p className={`text-sm ${theme === 'light' ? 'text-[var(--text-muted)]' : 'text-[var(--text-muted)]'}`}>
+                                      {lang === 'en' ? 'by' : 'szervező:'} {event.organizerName}
+                                    </p>
+                                  </div>
+                                  <ChevronRightIcon className={`w-4 h-4 flex-shrink-0 ${theme === 'light' ? 'text-[var(--text-muted)]' : 'text-[var(--text-muted)]'}`} />
+                                </button>
+                                <div className="flex gap-1 flex-shrink-0" onClick={e => e.stopPropagation()}>
+                                  {(['confirmed', 'pending', 'declined'] as const).map((status) => (
+                                    <button
+                                      key={status}
+                                      onClick={() => handleRsvp(event.id, status)}
+                                      className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+                                        myRsvp === status
+                                          ? status === 'confirmed'
+                                            ? 'bg-emerald-600 text-white'
+                                            : status === 'pending'
+                                              ? 'bg-amber-500/80 text-white'
+                                              : 'bg-red-500/80 text-white'
+                                          : theme === 'light'
+                                            ? 'bg-[var(--bg-secondary)] text-[var(--text-muted)] hover:bg-[var(--border-primary)]'
+                                            : 'bg-white/5 text-[var(--text-muted)] hover:bg-white/10'
+                                      }`}
+                                      title={status === 'confirmed' ? t.rsvpGoing : status === 'pending' ? t.rsvpThinking : t.rsvpNotGoing}
+                                    >
+                                      {status === 'confirmed' ? t.rsvpGoing : status === 'pending' ? t.rsvpThinking : t.rsvpNotGoing}
+                                    </button>
+                                  ))}
+                                </div>
                               </div>
-                              <ChevronRightIcon className={`w-4 h-4 ${theme === 'light' ? 'text-[var(--text-muted)]' : 'text-[var(--text-muted)]'}`} />
-                            </button>
-                          ))
+                            )
+                          })
                         )}
                       </div>
                     </div>
