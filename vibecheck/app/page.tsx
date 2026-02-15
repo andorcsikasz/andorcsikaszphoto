@@ -444,6 +444,10 @@ const translations = {
     deleteEvent: 'Delete event',
     deleteConfirm: 'Are you sure you want to delete this event? This cannot be undone.',
     deleteEventSuccess: 'Event deleted successfully.',
+    deleteGroupConfirm: 'Delete this group? This will remove the group and its members.',
+    deleteGroupConfirm2: 'Final confirmation: Permanently delete this group? This cannot be undone.',
+    deleteGroup: 'Delete',
+    permanentlyDelete: 'Permanently Delete',
   },
   hu: {
     calendar: 'Naptár',
@@ -490,6 +494,10 @@ const translations = {
     deleteEvent: 'Esemény törlése',
     deleteConfirm: 'Biztosan törölni szeretnéd az eseményt? Ez visszavonhatatlan.',
     deleteEventSuccess: 'Esemény sikeresen törölve.',
+    deleteGroupConfirm: 'Törölni szeretnéd ezt a csoportot? A csoport és tagjai eltávolítódnak.',
+    deleteGroupConfirm2: 'Utolsó megerősítés: Véglegesen törölni? Ez visszavonhatatlan.',
+    deleteGroup: 'Törlés',
+    permanentlyDelete: 'Végleges törlés',
   },
 }
 
@@ -1203,7 +1211,9 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
               { Icon: EnvelopeIcon, title: lang === 'en' ? 'Events & Invites' : 'Események és meghívók', desc: lang === 'en' ? 'Create events, invite groups, track RSVPs' : 'Hozz létre eseményeket, hívj meg csoportokat' },
               { Icon: UserGroupIcon, title: lang === 'en' ? 'Social & Groups' : 'Közösség és csoportok', desc: lang === 'en' ? 'Family, friends, work — manage groups in one place' : 'Család, barátok, munka — minden egy helyen' },
               { Icon: CreditCardIcon, title: lang === 'en' ? 'Revolut Pay' : 'Revolut Pay', desc: lang === 'en' ? 'Split costs, collect payments with Revolut integration' : 'Oszd meg a költségeket Revolut segítségével' },
-            ].map((feature, i) => (
+            ].map((feature, i) => {
+              const Icon = feature.Icon
+              return (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
@@ -1216,11 +1226,11 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
                   boxShadow: 'var(--shadow-md)'
                 }}
               >
-                {(() => { const Icon = feature.Icon; return <Icon className="w-10 h-10 mb-4" style={{ color: 'var(--accent-primary)' }} /> })()}
+                <Icon className="w-10 h-10 mb-4" style={{ color: 'var(--accent-primary)' }} />
                 <h3 className="text-xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>{feature.title}</h3>
                 <p className="text-sm" style={{ color: 'var(--accent-primary)' }}>{feature.desc}</p>
               </motion.div>
-            ))}
+            )})}
           </div>
         </div>
       </section>
@@ -1431,6 +1441,8 @@ export default function Home() {
   const [tempProfile, setTempProfile] = useState<UserProfile>({ name: '', revolutTag: '', avatarIndex: 0, groups: [] })
   const [showGroupsModal, setShowGroupsModal] = useState(false)
   const [editingGroup, setEditingGroup] = useState<UserGroup | null>(null)
+  const [groupToDelete, setGroupToDelete] = useState<UserGroup | null>(null)
+  const [groupDeleteStep, setGroupDeleteStep] = useState<1 | 2>(1)
   
   // Theme state - supports light, dark, and system preference
   const [theme, setTheme] = useState<'dark' | 'light' | 'system'>('system')
