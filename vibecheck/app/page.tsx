@@ -2550,6 +2550,18 @@ export default function Home() {
             />
           </div>
 
+                    <p className="mt-6 text-white/70 text-sm">
+                      {lang === 'en' ? "Don't have Revolut yet? " : 'Még nincs Revolut fiókod? '}
+                      <a
+                        href="https://www.revolut.com/hu-HU/referral/?referral-code=andor2tst%21FEB1-26-AR"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline hover:text-white transition-colors"
+                      >
+                        {lang === 'en' ? 'First register an account' : 'Regisztrálj először'}
+                      </a>
+                    </p>
+
                     <div className="flex items-center justify-center gap-4 mt-12">
       <button
                         onClick={() => setOnboardingStep(1)}
