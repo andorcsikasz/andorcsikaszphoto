@@ -949,6 +949,7 @@ export default function ManagePage() {
               style={{ 
                 color: '#000',
                 letterSpacing: '-0.02em',
+                fontFamily: 'var(--font-logo)',
               }}
             >
               GatherGo

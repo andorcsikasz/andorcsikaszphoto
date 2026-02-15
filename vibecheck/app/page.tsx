@@ -1014,14 +1014,15 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
 
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator - fixed position, never jumps */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: stage >= 3 ? 1 : 0 }}
         transition={{ duration: 0.8, delay: 0.3 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10 cursor-pointer group"
+        className="fixed bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-[101] cursor-pointer group"
+        style={{ pointerEvents: stage >= 3 ? 'auto' : 'none' }}
         whileHover={{ scale: 1.08 }}
-        whileTap={{ scale: 0.95, y: 4 }}
+        whileTap={{ scale: 0.95 }}
         onClick={() => window.scrollBy({ top: window.innerHeight, behavior: 'smooth' })}
       >
         <motion.p
@@ -1375,7 +1376,7 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <h3 className="font-bold mb-4" style={{ color: 'var(--text-primary)' }}>GatherGo</h3>
+              <h3 className="font-bold mb-4" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-logo)' }}>GatherGo</h3>
               <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
                 {lang === 'en' 
                   ? 'Collaborative event management made simple.'
@@ -3432,7 +3433,7 @@ export default function Home() {
               <button
                 onClick={handleLogoClick}
                 className="text-2xl font-black tracking-tighter cursor-pointer hover:opacity-80 transition-opacity select-none"
-                style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)', background: 'none', border: 'none', padding: 0 }}
+                style={{ fontFamily: 'var(--font-logo)', color: 'var(--text-primary)', background: 'none', border: 'none', padding: 0 }}
               >
                 GatherGo
               </button>
