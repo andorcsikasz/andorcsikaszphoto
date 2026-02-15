@@ -4698,7 +4698,7 @@ export default function Home() {
                         </button>
                       )}
                       <a
-                        href={`${typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3003'}/?eventId=${selectedEvent.id}`}
+                        href={`${typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3001'}/?eventId=${selectedEvent.id}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="p-2 rounded-lg transition-colors"
@@ -4710,7 +4710,7 @@ export default function Home() {
                       <button
                         type="button"
                         onClick={async () => {
-                          const url = `${typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3003'}/?eventId=${selectedEvent.id}`
+                          const url = `${typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3001'}/?eventId=${selectedEvent.id}`
                           await navigator.clipboard.writeText(url)
                           setLinkCopiedFeedback(true)
                           setTimeout(() => setLinkCopiedFeedback(false), 2000)
