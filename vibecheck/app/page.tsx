@@ -5187,7 +5187,11 @@ export default function Home() {
                                 type="text"
                                 value={q.question}
                                 onChange={(e) => updateVotingQuestion(q.id, 'question', e.target.value)}
-                                placeholder={lang === 'en' ? 'e.g. Pizza or pasta?' : 'pl. Pizza vagy tészta?'}
+                                placeholder={
+                                  lang === 'en'
+                                    ? q.type === 'MULTIPLE_CHOICE' ? 'e.g. Pizza or pasta?' : q.type === 'TEXT' ? 'e.g. Any restaurant recommendations?' : q.type === 'DATE' ? 'e.g. When should we meet?' : 'e.g. Which dates work for you?'
+                                    : q.type === 'MULTIPLE_CHOICE' ? 'pl. Pizza vagy tészta?' : q.type === 'TEXT' ? 'pl. Van étterem ajánlatod?' : q.type === 'DATE' ? 'pl. Mikor találkozzunk?' : 'pl. Melyik napok jók neked?'
+                                }
                                 className="w-full px-3 py-2 bg-[var(--bg-primary)] border border-[var(--border-primary)] rounded-lg text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-purple-500 transition-colors mb-3"
                               />
 
