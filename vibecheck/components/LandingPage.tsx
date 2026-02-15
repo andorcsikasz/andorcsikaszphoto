@@ -28,10 +28,10 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
         nodeColors={['#0d9488', '#5eead4', '#5b9fd4', '#7bb4e0', '#c084fc', '#f472b6']}
         waveColors={['#0d9488', '#5b9fd4', '#7c3aed', '#ec4899']}
         nodeCount={55}
-        connectionDistance={150}
+        connectionDistance={160}
         speed={0.8}
         opacity={0.5}
-        showWaves={true}
+        showDendrites={true}
         showPulses={true}
         className="z-0"
       />

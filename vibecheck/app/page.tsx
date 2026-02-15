@@ -4175,7 +4175,7 @@ export default function Home() {
                         borderColor: 'var(--border-primary)',
                       }}
                     >
-                      <StarIcon className="w-5 h-5 mb-1" style={{ color: 'var(--accent-primary)' }} />
+                      <StarIcon className="w-5 h-5 mb-1 text-blue-400" />
                       <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>
                         {lang === 'en' ? 'My events' : 'Eseményeim'}
                       </p>
@@ -4213,7 +4213,7 @@ export default function Home() {
                         borderColor: 'var(--border-primary)',
                       }}
                     >
-                      <ClipboardDocumentListIcon className="w-5 h-5 mb-1" style={{ color: 'var(--text-muted)' }} />
+                      <ClipboardDocumentListIcon className="w-5 h-5 mb-1 text-amber-400/90" />
                       <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>
                         {lang === 'en' ? 'Not assigned' : 'Nincs kiosztva'}
                       </p>
@@ -4248,7 +4248,7 @@ export default function Home() {
                         borderColor: 'var(--border-primary)',
                       }}
                     >
-                      <CheckCircleIcon className="w-5 h-5 mb-1" style={{ color: 'var(--accent-primary)' }} />
+                      <CheckCircleIcon className="w-5 h-5 mb-1 text-emerald-400" />
                       <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>
                         {lang === 'en' ? 'Tasks assigned' : 'Kiosztott feladatok'}
                       </p>

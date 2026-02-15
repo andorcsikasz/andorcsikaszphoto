@@ -3,70 +3,78 @@
 import { useEffect, useRef, useCallback } from 'react'
 
 interface VibeNetworkProps {
-  /** Node/dot colors */
+  /** Neuron body colors */
   nodeColors?: string[]
-  /** Wave/flow accent colors */
+  /** Axon / synapse accent colors */
   waveColors?: string[]
-  /** Number of floating nodes */
+  /** Number of neurons */
   nodeCount?: number
-  /** Max connection distance (px) */
+  /** Max axon connection distance (px) */
   connectionDistance?: number
   /** Animation speed multiplier */
   speed?: number
   /** Overall opacity */
   opacity?: number
-  /** Show flowing wave layer */
-  showWaves?: boolean
-  /** Show pulse rings on nodes */
+  /** Show synaptic signal pulses traveling along axons */
   showPulses?: boolean
+  /** Show dendrite branches from neurons */
+  showDendrites?: boolean
   className?: string
 }
 
-interface Node {
+interface Neuron {
   x: number
   y: number
   vx: number
   vy: number
-  radius: number
+  baseRadius: number
   color: string
-  pulsePhase: number
-  pulseSpeed: number
-  /** 0 = regular, 1 = hub (larger, more connections) */
+  phase: number
+  /** 0 = interneuron (small), 1 = pyramidal (medium hub), 2 = motor (large hub) */
   type: number
+  /** Depth layer 0..1 — affects size, opacity, speed (parallax) */
+  depth: number
+  /** Number of dendrite arms */
+  dendriteCount: number
+  /** Dendrite angles (radians) */
+  dendriteAngles: number[]
+  /** Dendrite lengths */
+  dendriteLengths: number[]
 }
 
-interface WavePoint {
-  phase: number
-  amplitude: number
-  frequency: number
+interface SynapticPulse {
+  fromIdx: number
+  toIdx: number
+  progress: number  // 0..1 along the axon
   speed: number
   color: string
-  yOffset: number
+  size: number
 }
 
 /**
- * VibeNetwork - Funky animated background with connected floating nodes,
- * organic flowing waves, and pulse effects.
+ * VibeNetwork — Neural network / brain-inspired animated background.
  *
- * Themes: event, vibe, gathering, youth, network
+ * Neurons float organically, connected by curved axon paths.
+ * Synaptic signal pulses travel along connections.
+ * Dendrite branches extend from neuron bodies.
+ * Depth layers create parallax.
  */
 export default function VibeNetwork({
   nodeColors = ['#0d9488', '#5eead4', '#5b9fd4', '#7bb4e0', '#c084fc', '#f472b6'],
   waveColors = ['#0d9488', '#5b9fd4', '#7c3aed', '#ec4899'],
   nodeCount = 50,
-  connectionDistance = 160,
+  connectionDistance = 180,
   speed = 1,
   opacity = 0.6,
-  showWaves = true,
   showPulses = true,
+  showDendrites = true,
   className = '',
 }: VibeNetworkProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const nodesRef = useRef<Node[]>([])
-  const wavesRef = useRef<WavePoint[]>([])
+  const neuronsRef = useRef<Neuron[]>([])
+  const pulsesRef = useRef<SynapticPulse[]>([])
   const mouseRef = useRef({ x: -1000, y: -1000, active: false })
   const timeRef = useRef(0)
-  const frameRef = useRef(0)
 
   const hexToRgba = useCallback((hex: string, a: number): string => {
     const r = parseInt(hex.slice(1, 3), 16)
@@ -75,23 +83,9 @@ export default function VibeNetwork({
     return `rgba(${r},${g},${b},${a})`
   }, [])
 
-  const lerpColor = useCallback((hex1: string, hex2: string, t: number): string => {
-    const r1 = parseInt(hex1.slice(1, 3), 16)
-    const g1 = parseInt(hex1.slice(3, 5), 16)
-    const b1 = parseInt(hex1.slice(5, 7), 16)
-    const r2 = parseInt(hex2.slice(1, 3), 16)
-    const g2 = parseInt(hex2.slice(3, 5), 16)
-    const b2 = parseInt(hex2.slice(5, 7), 16)
-    const r = Math.round(r1 + (r2 - r1) * t)
-    const g = Math.round(g1 + (g2 - g1) * t)
-    const b = Math.round(b1 + (b2 - b1) * t)
-    return `rgb(${r},${g},${b})`
-  }, [])
-
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
-
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
@@ -112,45 +106,41 @@ export default function VibeNetwork({
       ctx.scale(dpr, dpr)
     }
 
-    // --- Initialize nodes ---
-    const initNodes = () => {
-      const nodes: Node[] = []
-      const count = Math.min(nodeCount, Math.floor((w * h) / 12000)) // scale with screen
+    // --- Initialize neurons ---
+    const initNeurons = () => {
+      const neurons: Neuron[] = []
+      const count = Math.min(nodeCount, Math.floor((w * h) / 14000))
       for (let i = 0; i < count; i++) {
-        const isHub = Math.random() < 0.12
-        nodes.push({
+        const rand = Math.random()
+        const type = rand < 0.08 ? 2 : rand < 0.25 ? 1 : 0
+        const depth = 0.3 + Math.random() * 0.7 // 0.3 = far, 1.0 = near
+        const dendriteCount = type === 2 ? 5 + Math.floor(Math.random() * 4) : type === 1 ? 3 + Math.floor(Math.random() * 3) : 1 + Math.floor(Math.random() * 3)
+        const dendriteAngles: number[] = []
+        const dendriteLengths: number[] = []
+        const baseAngle = Math.random() * Math.PI * 2
+        for (let d = 0; d < dendriteCount; d++) {
+          dendriteAngles.push(baseAngle + (d / dendriteCount) * Math.PI * 2 + (Math.random() - 0.5) * 0.6)
+          dendriteLengths.push((type === 2 ? 25 : type === 1 ? 18 : 10) + Math.random() * 15)
+        }
+        neurons.push({
           x: Math.random() * w,
           y: Math.random() * h,
-          vx: (Math.random() - 0.5) * 0.6 * speed,
-          vy: (Math.random() - 0.5) * 0.6 * speed,
-          radius: isHub ? 3 + Math.random() * 2.5 : 1.5 + Math.random() * 1.5,
+          vx: (Math.random() - 0.5) * 0.3 * speed * depth,
+          vy: (Math.random() - 0.5) * 0.3 * speed * depth,
+          baseRadius: type === 2 ? 4.5 + Math.random() * 2 : type === 1 ? 2.5 + Math.random() * 1.5 : 1.2 + Math.random() * 1,
           color: nodeColors[Math.floor(Math.random() * nodeColors.length)],
-          pulsePhase: Math.random() * Math.PI * 2,
-          pulseSpeed: 0.02 + Math.random() * 0.03,
-          type: isHub ? 1 : 0,
-        })
-      }
-      nodesRef.current = nodes
-    }
-
-    // --- Initialize waves ---
-    const initWaves = () => {
-      const waves: WavePoint[] = []
-      const waveCount = 4
-      for (let i = 0; i < waveCount; i++) {
-        waves.push({
           phase: Math.random() * Math.PI * 2,
-          amplitude: 30 + Math.random() * 50,
-          frequency: 0.002 + Math.random() * 0.003,
-          speed: (0.005 + Math.random() * 0.01) * speed,
-          color: waveColors[i % waveColors.length],
-          yOffset: 0.3 + (i / waveCount) * 0.5,
+          type,
+          depth,
+          dendriteCount,
+          dendriteAngles,
+          dendriteLengths,
         })
       }
-      wavesRef.current = waves
+      neuronsRef.current = neurons
     }
 
-    // --- Mouse interaction ---
+    // --- Mouse ---
     const onMouseMove = (e: MouseEvent) => {
       mouseRef.current = { x: e.clientX, y: e.clientY, active: true }
     }
@@ -158,287 +148,329 @@ export default function VibeNetwork({
       mouseRef.current = { ...mouseRef.current, active: false }
     }
 
-    // --- Draw flowing waves ---
-    const drawWaves = () => {
-      if (!showWaves) return
-      const waves = wavesRef.current
+    // --- Bezier control point for curved axons ---
+    const getAxonControl = (n1: Neuron, n2: Neuron, t: number): { cx: number; cy: number } => {
+      const mx = (n1.x + n2.x) / 2
+      const my = (n1.y + n2.y) / 2
+      const dx = n2.x - n1.x
+      const dy = n2.y - n1.y
+      const dist = Math.sqrt(dx * dx + dy * dy)
+      // Perpendicular offset — organic curve
+      const curvature = 0.25 + Math.sin(t * 0.3 + n1.phase + n2.phase) * 0.1
+      const nx = -dy / dist * dist * curvature
+      const ny = dx / dist * dist * curvature
+      // Alternate direction based on index parity for variety
+      const sign = ((Math.round(n1.phase * 10) % 2) === 0) ? 1 : -1
+      return { cx: mx + nx * sign * 0.15, cy: my + ny * sign * 0.15 }
+    }
 
-      for (const wave of waves) {
-        wave.phase += wave.speed
-
-        ctx.beginPath()
-        const baseY = h * wave.yOffset
-
-        for (let x = 0; x <= w; x += 4) {
-          const y =
-            baseY +
-            Math.sin(x * wave.frequency + wave.phase) * wave.amplitude +
-            Math.sin(x * wave.frequency * 0.5 + wave.phase * 1.3) * wave.amplitude * 0.5 +
-            Math.cos(x * wave.frequency * 0.3 + wave.phase * 0.7) * wave.amplitude * 0.3
-
-          if (x === 0) ctx.moveTo(x, y)
-          else ctx.lineTo(x, y)
-        }
-
-        ctx.strokeStyle = hexToRgba(wave.color, opacity * 0.2)
-        ctx.lineWidth = 2
-        ctx.stroke()
-
-        // Fill below wave with subtle gradient
-        ctx.lineTo(w, h)
-        ctx.lineTo(0, h)
-        ctx.closePath()
-        const grad = ctx.createLinearGradient(0, baseY, 0, h)
-        grad.addColorStop(0, hexToRgba(wave.color, opacity * 0.04))
-        grad.addColorStop(1, 'transparent')
-        ctx.fillStyle = grad
-        ctx.fill()
+    // --- Point on quadratic bezier ---
+    const bezierPoint = (
+      x0: number, y0: number,
+      cx: number, cy: number,
+      x1: number, y1: number,
+      t: number
+    ) => {
+      const mt = 1 - t
+      return {
+        x: mt * mt * x0 + 2 * mt * t * cx + t * t * x1,
+        y: mt * mt * y0 + 2 * mt * t * cy + t * t * y1,
       }
     }
 
-    // --- Draw connections between close nodes ---
-    const drawConnections = () => {
-      const nodes = nodesRef.current
+    // --- Draw dendrites from neuron bodies ---
+    const drawDendrites = (t: number) => {
+      if (!showDendrites) return
+      const neurons = neuronsRef.current
+
+      for (const n of neurons) {
+        const depthAlpha = 0.3 + n.depth * 0.7
+        const pulse = Math.sin(t * 1.5 + n.phase) * 0.15
+
+        for (let d = 0; d < n.dendriteCount; d++) {
+          const angle = n.dendriteAngles[d] + Math.sin(t * 0.4 + n.phase + d) * 0.15
+          const len = n.dendriteLengths[d] * n.depth * (1 + pulse * 0.3)
+
+          // Main dendrite arm
+          const endX = n.x + Math.cos(angle) * len
+          const endY = n.y + Math.sin(angle) * len
+          // Slight curve via control point
+          const ctrlAngle = angle + (Math.sin(t * 0.6 + d + n.phase) * 0.4)
+          const ctrlLen = len * 0.6
+          const ctrlX = n.x + Math.cos(ctrlAngle) * ctrlLen
+          const ctrlY = n.y + Math.sin(ctrlAngle) * ctrlLen
+
+          ctx.beginPath()
+          ctx.moveTo(n.x, n.y)
+          ctx.quadraticCurveTo(ctrlX, ctrlY, endX, endY)
+          ctx.strokeStyle = hexToRgba(n.color, opacity * 0.18 * depthAlpha)
+          ctx.lineWidth = (n.type === 2 ? 1.2 : n.type === 1 ? 0.9 : 0.6) * n.depth
+          ctx.stroke()
+
+          // Fork at end (secondary branches)
+          if (n.type >= 1 && len > 15) {
+            for (let f = -1; f <= 1; f += 2) {
+              const forkAngle = angle + f * (0.4 + Math.sin(t * 0.3 + d) * 0.15)
+              const forkLen = len * 0.4
+              const forkEndX = endX + Math.cos(forkAngle) * forkLen
+              const forkEndY = endY + Math.sin(forkAngle) * forkLen
+
+              ctx.beginPath()
+              ctx.moveTo(endX, endY)
+              ctx.lineTo(forkEndX, forkEndY)
+              ctx.strokeStyle = hexToRgba(n.color, opacity * 0.1 * depthAlpha)
+              ctx.lineWidth = 0.5 * n.depth
+              ctx.stroke()
+
+              // Tiny synapse bulb at fork tip
+              ctx.beginPath()
+              ctx.arc(forkEndX, forkEndY, 0.8 * n.depth, 0, Math.PI * 2)
+              ctx.fillStyle = hexToRgba(n.color, opacity * 0.2 * depthAlpha)
+              ctx.fill()
+            }
+          }
+
+          // Synapse bulb at dendrite tip
+          ctx.beginPath()
+          ctx.arc(endX, endY, (n.type >= 1 ? 1.2 : 0.8) * n.depth, 0, Math.PI * 2)
+          ctx.fillStyle = hexToRgba(n.color, opacity * 0.25 * depthAlpha)
+          ctx.fill()
+        }
+      }
+    }
+
+    // --- Draw curved axon connections ---
+    const drawAxons = (t: number) => {
+      const neurons = neuronsRef.current
       const maxDist = connectionDistance
       const maxDistSq = maxDist * maxDist
 
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const dx = nodes[i].x - nodes[j].x
-          const dy = nodes[i].y - nodes[j].y
+      for (let i = 0; i < neurons.length; i++) {
+        for (let j = i + 1; j < neurons.length; j++) {
+          const dx = neurons[i].x - neurons[j].x
+          const dy = neurons[i].y - neurons[j].y
           const distSq = dx * dx + dy * dy
 
           if (distSq < maxDistSq) {
             const dist = Math.sqrt(distSq)
-            const alpha = (1 - dist / maxDist) * opacity * 0.35
+            const proximity = 1 - dist / maxDist
+            const avgDepth = (neurons[i].depth + neurons[j].depth) / 2
+            const alpha = proximity * opacity * 0.3 * avgDepth
 
-            // Gradient line between the two node colors
-            const gradient = ctx.createLinearGradient(
-              nodes[i].x,
-              nodes[i].y,
-              nodes[j].x,
-              nodes[j].y
-            )
-            gradient.addColorStop(0, hexToRgba(nodes[i].color, alpha))
-            gradient.addColorStop(1, hexToRgba(nodes[j].color, alpha))
+            const { cx, cy } = getAxonControl(neurons[i], neurons[j], t)
 
+            // Axon line — curved
             ctx.beginPath()
-            ctx.moveTo(nodes[i].x, nodes[i].y)
-            ctx.lineTo(nodes[j].x, nodes[j].y)
-            ctx.strokeStyle = gradient
-            ctx.lineWidth = (nodes[i].type === 1 || nodes[j].type === 1) ? 1.2 : 0.7
+            ctx.moveTo(neurons[i].x, neurons[i].y)
+            ctx.quadraticCurveTo(cx, cy, neurons[j].x, neurons[j].y)
+
+            const grad = ctx.createLinearGradient(neurons[i].x, neurons[i].y, neurons[j].x, neurons[j].y)
+            grad.addColorStop(0, hexToRgba(neurons[i].color, alpha))
+            grad.addColorStop(1, hexToRgba(neurons[j].color, alpha))
+            ctx.strokeStyle = grad
+            ctx.lineWidth = (neurons[i].type >= 1 || neurons[j].type >= 1 ? 1.0 : 0.6) * avgDepth
             ctx.stroke()
+
+            // Spawn synaptic pulses occasionally
+            if (showPulses && Math.random() < 0.0012 * speed * proximity) {
+              const fromIdx = Math.random() < 0.5 ? i : j
+              const toIdx = fromIdx === i ? j : i
+              pulsesRef.current.push({
+                fromIdx,
+                toIdx,
+                progress: 0,
+                speed: (0.004 + Math.random() * 0.008) * speed,
+                color: waveColors[Math.floor(Math.random() * waveColors.length)],
+                size: 1.5 + Math.random() * 2,
+              })
+            }
           }
         }
       }
     }
 
-    // --- Draw nodes ---
-    const drawNodes = () => {
-      const nodes = nodesRef.current
-      const t = timeRef.current
+    // --- Draw and update synaptic pulses ---
+    const drawPulses = (t: number) => {
+      if (!showPulses) return
+      const neurons = neuronsRef.current
+      const pulses = pulsesRef.current
+      const alive: SynapticPulse[] = []
 
-      for (const node of nodes) {
-        // Pulse animation
-        const pulse = Math.sin(t * node.pulseSpeed * 60 + node.pulsePhase)
-        const currentRadius = node.radius + pulse * (node.type === 1 ? 1.5 : 0.5)
+      for (const p of pulses) {
+        p.progress += p.speed
 
-        // Node glow
-        if (node.type === 1 || showPulses) {
-          const glowRadius = currentRadius * (node.type === 1 ? 4 : 2.5)
-          const glow = ctx.createRadialGradient(
-            node.x,
-            node.y,
-            0,
-            node.x,
-            node.y,
-            glowRadius
-          )
-          glow.addColorStop(0, hexToRgba(node.color, opacity * 0.3))
-          glow.addColorStop(1, 'transparent')
+        if (p.progress >= 1) continue // done
+        alive.push(p)
+
+        const n1 = neurons[p.fromIdx]
+        const n2 = neurons[p.toIdx]
+        if (!n1 || !n2) continue
+
+        const { cx, cy } = getAxonControl(n1, n2, t)
+        const pos = bezierPoint(n1.x, n1.y, cx, cy, n2.x, n2.y, p.progress)
+
+        const avgDepth = (n1.depth + n2.depth) / 2
+        // Pulse brightness peaks in the middle of travel
+        const intensity = Math.sin(p.progress * Math.PI)
+        const pulseRadius = p.size * avgDepth * (0.6 + intensity * 0.4)
+
+        // Outer glow
+        const glow = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, pulseRadius * 4)
+        glow.addColorStop(0, hexToRgba(p.color, opacity * 0.35 * intensity * avgDepth))
+        glow.addColorStop(1, 'transparent')
+        ctx.beginPath()
+        ctx.arc(pos.x, pos.y, pulseRadius * 4, 0, Math.PI * 2)
+        ctx.fillStyle = glow
+        ctx.fill()
+
+        // Core pulse dot
+        ctx.beginPath()
+        ctx.arc(pos.x, pos.y, pulseRadius, 0, Math.PI * 2)
+        ctx.fillStyle = hexToRgba(p.color, opacity * 0.9 * intensity * avgDepth)
+        ctx.fill()
+      }
+
+      pulsesRef.current = alive
+      // Cap max pulses
+      if (pulsesRef.current.length > 60) {
+        pulsesRef.current = pulsesRef.current.slice(-60)
+      }
+    }
+
+    // --- Draw neuron cell bodies ---
+    const drawNeurons = (t: number) => {
+      const neurons = neuronsRef.current
+
+      for (const n of neurons) {
+        const depthAlpha = 0.3 + n.depth * 0.7
+        const pulse = Math.sin(t * 1.2 + n.phase)
+        const breathe = 1 + pulse * (n.type === 2 ? 0.15 : 0.08)
+        const r = n.baseRadius * n.depth * breathe
+
+        // Soma glow — soft radial
+        const glowR = r * (n.type === 2 ? 6 : n.type === 1 ? 4.5 : 3)
+        const glow = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, glowR)
+        glow.addColorStop(0, hexToRgba(n.color, opacity * 0.25 * depthAlpha))
+        glow.addColorStop(0.5, hexToRgba(n.color, opacity * 0.08 * depthAlpha))
+        glow.addColorStop(1, 'transparent')
+        ctx.beginPath()
+        ctx.arc(n.x, n.y, glowR, 0, Math.PI * 2)
+        ctx.fillStyle = glow
+        ctx.fill()
+
+        // Membrane ring (subtle outline for larger neurons)
+        if (n.type >= 1) {
+          const ringPulse = (t * 0.6 + n.phase) % (Math.PI * 2)
+          const ringProgress = ringPulse / (Math.PI * 2)
+          const ringR = r + ringProgress * (n.type === 2 ? 20 : 12)
+          const ringAlpha = (1 - ringProgress) * opacity * 0.12 * depthAlpha
+
           ctx.beginPath()
-          ctx.arc(node.x, node.y, glowRadius, 0, Math.PI * 2)
-          ctx.fillStyle = glow
-          ctx.fill()
-        }
-
-        // Pulse ring (expanding ring from hubs)
-        if (showPulses && node.type === 1) {
-          const ringPhase = (t * 0.8 + node.pulsePhase) % (Math.PI * 2)
-          const ringProgress = ringPhase / (Math.PI * 2)
-          const ringRadius = currentRadius + ringProgress * 35
-          const ringAlpha = (1 - ringProgress) * opacity * 0.25
-
-          ctx.beginPath()
-          ctx.arc(node.x, node.y, ringRadius, 0, Math.PI * 2)
-          ctx.strokeStyle = hexToRgba(node.color, ringAlpha)
-          ctx.lineWidth = 1.2
+          ctx.arc(n.x, n.y, ringR, 0, Math.PI * 2)
+          ctx.strokeStyle = hexToRgba(n.color, ringAlpha)
+          ctx.lineWidth = 0.8 * n.depth
           ctx.stroke()
         }
 
-        // Core dot
+        // Soma core — slightly irregular for organic feel
         ctx.beginPath()
-        ctx.arc(node.x, node.y, Math.max(currentRadius, 0.5), 0, Math.PI * 2)
-        ctx.fillStyle = hexToRgba(node.color, opacity * 0.85)
+        const segments = n.type === 2 ? 8 : 6
+        for (let s = 0; s <= segments; s++) {
+          const a = (s / segments) * Math.PI * 2
+          const wobble = 1 + Math.sin(a * 3 + t * 0.8 + n.phase) * 0.12
+          const px = n.x + Math.cos(a) * r * wobble
+          const py = n.y + Math.sin(a) * r * wobble
+          if (s === 0) ctx.moveTo(px, py)
+          else ctx.lineTo(px, py)
+        }
+        ctx.closePath()
+        ctx.fillStyle = hexToRgba(n.color, opacity * 0.7 * depthAlpha)
         ctx.fill()
+
+        // Nucleus highlight
+        if (n.type >= 1) {
+          ctx.beginPath()
+          ctx.arc(n.x - r * 0.2, n.y - r * 0.2, r * 0.35, 0, Math.PI * 2)
+          ctx.fillStyle = hexToRgba('#ffffff', opacity * 0.12 * depthAlpha)
+          ctx.fill()
+        }
       }
     }
 
-    // --- Update node positions ---
-    const updateNodes = () => {
-      const nodes = nodesRef.current
+    // --- Update neuron positions ---
+    const updateNeurons = () => {
+      const neurons = neuronsRef.current
       const mouse = mouseRef.current
-      const padding = 50
+      const padding = 60
+      const t = timeRef.current
 
-      for (const node of nodes) {
-        // Organic drift
-        node.vx += (Math.random() - 0.5) * 0.02 * speed
-        node.vy += (Math.random() - 0.5) * 0.02 * speed
+      for (const n of neurons) {
+        // Organic micro-drift
+        n.vx += (Math.random() - 0.5) * 0.012 * speed * n.depth
+        n.vy += (Math.random() - 0.5) * 0.012 * speed * n.depth
 
         // Damping
-        node.vx *= 0.995
-        node.vy *= 0.995
+        n.vx *= 0.997
+        n.vy *= 0.997
 
-        // Clamp velocity
-        const maxV = 1.2 * speed
-        node.vx = Math.max(-maxV, Math.min(maxV, node.vx))
-        node.vy = Math.max(-maxV, Math.min(maxV, node.vy))
+        const maxV = 0.8 * speed * n.depth
+        n.vx = Math.max(-maxV, Math.min(maxV, n.vx))
+        n.vy = Math.max(-maxV, Math.min(maxV, n.vy))
 
-        // Gentle sine drift for organic motion
-        const t = timeRef.current
-        node.x += node.vx + Math.sin(t * 0.3 + node.pulsePhase) * 0.15 * speed
-        node.y += node.vy + Math.cos(t * 0.25 + node.pulsePhase * 1.3) * 0.12 * speed
+        // Organic sine drift (parallax: deeper = slower)
+        n.x += n.vx + Math.sin(t * 0.2 + n.phase) * 0.1 * speed * n.depth
+        n.y += n.vy + Math.cos(t * 0.18 + n.phase * 1.3) * 0.08 * speed * n.depth
 
-        // Mouse attraction/repulsion
+        // Mouse interaction — neurons gently respond
         if (mouse.active) {
-          const dx = mouse.x - node.x
-          const dy = mouse.y - node.y
+          const dx = mouse.x - n.x
+          const dy = mouse.y - n.y
           const dist = Math.sqrt(dx * dx + dy * dy)
-          if (dist < 200 && dist > 1) {
-            const force = (200 - dist) / 200 * 0.015
-            node.vx += (dx / dist) * force
-            node.vy += (dy / dist) * force
+          if (dist < 220 && dist > 1) {
+            const force = (220 - dist) / 220 * 0.008 * n.depth
+            n.vx += (dx / dist) * force
+            n.vy += (dy / dist) * force
           }
         }
 
-        // Wrap around edges with padding
-        if (node.x < -padding) node.x = w + padding
-        if (node.x > w + padding) node.x = -padding
-        if (node.y < -padding) node.y = h + padding
-        if (node.y > h + padding) node.y = -padding
-      }
-    }
-
-    // --- Draw funky accent: floating geometric shapes ---
-    const drawAccents = () => {
-      const t = timeRef.current
-
-      // Floating rings
-      for (let i = 0; i < 3; i++) {
-        const x = w * (0.2 + i * 0.3) + Math.sin(t * 0.4 + i * 2) * 60
-        const y = h * (0.3 + i * 0.15) + Math.cos(t * 0.3 + i * 1.5) * 40
-        const radius = 40 + Math.sin(t * 0.5 + i) * 15
-        const rotation = t * 0.3 + i * (Math.PI / 3)
-
-        ctx.save()
-        ctx.translate(x, y)
-        ctx.rotate(rotation)
-
-        // Dashed ring
-        ctx.beginPath()
-        ctx.arc(0, 0, radius, 0, Math.PI * 1.5)
-        ctx.strokeStyle = hexToRgba(waveColors[i % waveColors.length], opacity * 0.12)
-        ctx.lineWidth = 1.5
-        ctx.setLineDash([8, 12])
-        ctx.stroke()
-        ctx.setLineDash([])
-
-        ctx.restore()
-      }
-
-      // Floating plus signs (gathering/connection symbol)
-      for (let i = 0; i < 5; i++) {
-        const x = w * (0.1 + i * 0.2) + Math.sin(t * 0.25 + i * 1.8) * 30
-        const y = h * (0.6 + (i % 3) * 0.12) + Math.cos(t * 0.2 + i * 2.1) * 25
-        const size = 6 + Math.sin(t * 0.6 + i) * 2
-        const alpha = opacity * (0.08 + Math.sin(t * 0.4 + i) * 0.04)
-
-        ctx.save()
-        ctx.translate(x, y)
-        ctx.rotate(t * 0.15 + i)
-
-        ctx.beginPath()
-        ctx.moveTo(-size, 0)
-        ctx.lineTo(size, 0)
-        ctx.moveTo(0, -size)
-        ctx.lineTo(0, size)
-        ctx.strokeStyle = hexToRgba(nodeColors[i % nodeColors.length], alpha)
-        ctx.lineWidth = 1.5
-        ctx.lineCap = 'round'
-        ctx.stroke()
-
-        ctx.restore()
-      }
-
-      // Diamond shapes
-      for (let i = 0; i < 4; i++) {
-        const x = w * (0.15 + i * 0.22) + Math.cos(t * 0.35 + i * 2.5) * 45
-        const y = h * (0.15 + (i % 2) * 0.6) + Math.sin(t * 0.28 + i * 1.7) * 35
-        const size = 8 + Math.sin(t * 0.45 + i * 0.8) * 3
-        const alpha = opacity * (0.06 + Math.sin(t * 0.35 + i * 1.2) * 0.03)
-
-        ctx.save()
-        ctx.translate(x, y)
-        ctx.rotate(Math.PI / 4 + t * 0.1)
-
-        ctx.beginPath()
-        ctx.moveTo(0, -size)
-        ctx.lineTo(size, 0)
-        ctx.lineTo(0, size)
-        ctx.lineTo(-size, 0)
-        ctx.closePath()
-        ctx.strokeStyle = hexToRgba(waveColors[(i + 1) % waveColors.length], alpha)
-        ctx.lineWidth = 1
-        ctx.stroke()
-
-        ctx.restore()
+        // Wrap
+        if (n.x < -padding) n.x = w + padding
+        if (n.x > w + padding) n.x = -padding
+        if (n.y < -padding) n.y = h + padding
+        if (n.y > h + padding) n.y = -padding
       }
     }
 
     // --- Main render loop ---
     const render = () => {
-      timeRef.current += 0.016 * speed
-      frameRef.current++
+      const t = timeRef.current += 0.016 * speed
 
       ctx.clearRect(0, 0, w, h)
 
-      // Layer 1: Flowing waves (background energy)
-      drawWaves()
+      // Layer 1: Dendrite branches (behind everything)
+      drawDendrites(t)
 
-      // Layer 2: Geometric accents
-      drawAccents()
+      // Layer 2: Axon connections (curved lines)
+      drawAxons(t)
 
-      // Layer 3: Connection lines
-      drawConnections()
+      // Layer 3: Synaptic pulses traveling along axons
+      drawPulses(t)
 
-      // Layer 4: Nodes (on top)
-      drawNodes()
+      // Layer 4: Neuron cell bodies (on top)
+      drawNeurons(t)
 
       // Update physics
-      updateNodes()
+      updateNeurons()
 
       animationId = requestAnimationFrame(render)
     }
 
     // Init
     resize()
-    initNodes()
-    initWaves()
+    initNeurons()
 
-    window.addEventListener('resize', () => {
-      resize()
-      initNodes()
-    })
+    const handleResize = () => { resize(); initNeurons() }
+    window.addEventListener('resize', handleResize)
     window.addEventListener('mousemove', onMouseMove)
     window.addEventListener('mouseleave', onMouseLeave)
 
@@ -446,22 +478,11 @@ export default function VibeNetwork({
 
     return () => {
       cancelAnimationFrame(animationId)
-      window.removeEventListener('resize', resize)
+      window.removeEventListener('resize', handleResize)
       window.removeEventListener('mousemove', onMouseMove)
       window.removeEventListener('mouseleave', onMouseLeave)
     }
-  }, [
-    nodeColors,
-    waveColors,
-    nodeCount,
-    connectionDistance,
-    speed,
-    opacity,
-    showWaves,
-    showPulses,
-    hexToRgba,
-    lerpColor,
-  ])
+  }, [nodeColors, waveColors, nodeCount, connectionDistance, speed, opacity, showPulses, showDendrites, hexToRgba])
 
   return (
     <canvas
