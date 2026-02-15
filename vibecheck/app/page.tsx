@@ -153,6 +153,40 @@ const EVENT_CATEGORIES: { id: EventCategory; labelEn: string; labelHu: string; c
   { id: 'none', labelEn: 'Other', labelHu: 'Egyéb', color: 'gray', iconId: 'calendar' },
 ]
 
+// Task suggestions per category - first 3 shown; click to add as task
+const TASK_SUGGESTIONS: Record<EventCategory, { en: string; hu: string }[]> = {
+  family: [
+    { en: 'Bring a dish to share', hu: 'Hozz ételt osztani' },
+    { en: 'Coordinate decorations', hu: 'Szereljünk díszeket' },
+    { en: 'Set up seating', hu: 'Rakjunk ki ülőhelyeket' },
+  ],
+  friends: [
+    { en: 'Order food', hu: 'Rendeljünk ételt' },
+    { en: 'Bring drinks', hu: 'Hozz italokat' },
+    { en: 'Handle music', hu: 'Foglalkozz a zenével' },
+  ],
+  holiday: [
+    { en: 'Book accommodation', hu: 'Foglalj szállást' },
+    { en: 'Plan activities', hu: 'Tervezz programot' },
+    { en: 'Organize transport', hu: 'Szervezd a közlekedést' },
+  ],
+  work: [
+    { en: 'Prepare slides', hu: 'Készíts prezentációt' },
+    { en: 'Send calendar invite', hu: 'Küldj naptármeghívást' },
+    { en: 'Order refreshments', hu: 'Rendelj frissítőket' },
+  ],
+  sports: [
+    { en: 'Bring equipment', hu: 'Hozd a felszerelést' },
+    { en: 'Book court / venue', hu: 'Foglalj pályát / helyet' },
+    { en: 'Organize team list', hu: 'Szervezd a csapatlistát' },
+  ],
+  none: [
+    { en: 'Task 1', hu: 'Feladat 1' },
+    { en: 'Task 2', hu: 'Feladat 2' },
+    { en: 'Task 3', hu: 'Feladat 3' },
+  ],
+}
+
 // Auto-suggest icons based on title keywords
 const EVENT_ICONS: { keywords: string[]; iconId: IconId }[] = [
   { keywords: ['bbq', 'grill', 'barbecue', 'grillezés'], iconId: 'bbq' },
@@ -1671,6 +1705,14 @@ export default function Home() {
     setNewEvent({
       ...newEvent,
       tasks: [...newEvent.tasks, { id: Date.now().toString(), title: '', assigneeId: '', assigneeName: '' }]
+    })
+  }
+
+  // Add task from suggestion (click converts 80% suggestion → full task)
+  const addTaskFromSuggestion = (title: string) => {
+    setNewEvent({
+      ...newEvent,
+      tasks: [...newEvent.tasks, { id: Date.now().toString(), title, assigneeId: '', assigneeName: '' }]
     })
   }
   
@@ -5332,6 +5374,35 @@ export default function Home() {
                           {lang === 'en' ? 'Add Task' : 'Feladat hozzáadása'}
                         </button>
                       </div>
+
+                      {/* Category-based suggestions - first 3, 80% opacity, click to add as task */}
+                      {(() => {
+                        const suggestions = TASK_SUGGESTIONS[newEvent.category] || TASK_SUGGESTIONS.none
+                        const existingTitles = newEvent.tasks.map(t => t.title)
+                        const available = suggestions.filter(s => !existingTitles.includes(lang === 'en' ? s.en : s.hu))
+                        const toShow = available.slice(0, 3)
+                        if (toShow.length === 0) return null
+                        return (
+                          <div className="space-y-2">
+                            <p className="text-xs font-medium text-[var(--text-muted)]">
+                              {lang === 'en' ? 'Suggested tasks — click to add' : 'Javasolt feladatok — kattints a hozzáadáshoz'}
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                              {toShow.map((s, i) => (
+                                <button
+                                  key={i}
+                                  type="button"
+                                  onClick={() => addTaskFromSuggestion(lang === 'en' ? s.en : s.hu)}
+                                  className="px-4 py-2 rounded-lg border border-[var(--border-primary)] hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all text-left text-sm"
+                                  style={{ opacity: 0.8 }}
+                                >
+                                  {lang === 'en' ? s.en : s.hu}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )
+                      })()}
 
                       {newEvent.tasks.length === 0 ? (
                         <div className="text-center py-12 bg-[var(--bg-card)] rounded-xl border border-dashed border-[var(--border-primary)]">
