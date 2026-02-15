@@ -2696,12 +2696,12 @@ export default function Home() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="w-full max-w-md rounded-2xl border overflow-hidden"
+              className="w-full max-w-md max-h-[90vh] rounded-2xl border flex flex-col overflow-hidden"
               style={{ backgroundColor: 'var(--bg-modal)', borderColor: 'var(--border-primary)' }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header */}
-              <div className="p-6 border-b" style={{ borderColor: 'var(--border-primary)' }}>
+              <div className="p-6 border-b flex-shrink-0" style={{ borderColor: 'var(--border-primary)' }}>
         <div className="flex items-center justify-between">
                   <h2 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>
                     {lang === 'en' ? 'My Profile' : 'Profilom'}
@@ -2716,8 +2716,8 @@ export default function Home() {
         </div>
       </div>
               
-              {/* Profile Content */}
-              <div className="p-6 space-y-6">
+              {/* Profile Content - scrollable when many groups */}
+              <div className="p-6 space-y-6 flex-1 min-h-0 overflow-y-auto">
                 {/* Avatar & Name */}
                 <div className="flex items-center gap-4">
                   <div 
@@ -3030,8 +3030,8 @@ export default function Home() {
                 </div>
               </div>
               
-              {/* Footer */}
-              <div className="p-6 border-t" style={{ borderColor: 'var(--border-primary)', backgroundColor: 'var(--bg-secondary)' }}>
+              {/* Footer - always visible at bottom */}
+              <div className="p-6 border-t flex-shrink-0" style={{ borderColor: 'var(--border-primary)', backgroundColor: 'var(--bg-secondary)' }}>
                 <div className="flex items-center justify-between">
                 <button
                     onClick={() => setShowProfileModal(false)}
