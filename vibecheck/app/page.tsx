@@ -2997,17 +2997,14 @@ export default function Home() {
                               </button>
                               <button
                                 onClick={() => {
-                                  setTempProfile({
-                                    ...tempProfile,
-                                    groups: tempProfile.groups?.filter(g => g.id !== group.id) || []
-                                  })
+                                  setGroupToDelete(group)
+                                  setGroupDeleteStep(1)
                                 }}
                                 className="p-1.5 rounded hover:bg-red-500/20 transition-colors"
                                 style={{ color: 'var(--error-text)' }}
+                                title={t.delete}
                               >
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                </svg>
+                                <TrashIcon className="w-4 h-4" />
                               </button>
                             </div>
                           </div>
@@ -3057,6 +3054,73 @@ export default function Home() {
                   </button>
             </div>
           </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Delete Group - Double verification */}
+      <AnimatePresence>
+        {groupToDelete && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[210] flex items-center justify-center p-4"
+            style={{ backgroundColor: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)' }}
+            onClick={() => { setGroupToDelete(null); setGroupDeleteStep(1) }}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              onClick={e => e.stopPropagation()}
+              className="rounded-xl p-6 max-w-sm w-full"
+              style={{ backgroundColor: 'var(--bg-card)', border: '1px solid var(--border-primary)' }}
+            >
+              <TrashIcon className="w-10 h-10 mb-4" style={{ color: '#b91c1c' }} />
+              <h3 className="text-lg font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
+                {lang === 'en' ? 'Delete group' : 'Csoport törlése'}
+              </h3>
+              <p className="text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
+                {groupDeleteStep === 1 ? t.deleteGroupConfirm : t.deleteGroupConfirm2}
+              </p>
+              <p className="text-sm font-medium mb-4" style={{ color: 'var(--text-primary)' }}>
+                {groupToDelete.name || (groupToDelete.type === 'family' ? (lang === 'en' ? 'Family' : 'Család') : groupToDelete.type === 'friends' ? (lang === 'en' ? 'Friends' : 'Barátok') : (lang === 'en' ? 'Company' : 'Cég'))}
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => { setGroupToDelete(null); setGroupDeleteStep(1) }}
+                  className="flex-1 py-2.5 rounded-lg font-medium transition-colors"
+                  style={{ color: 'var(--text-secondary)', backgroundColor: 'var(--bg-tertiary)' }}
+                >
+                  {lang === 'en' ? 'Cancel' : 'Mégse'}
+                </button>
+                {groupDeleteStep === 1 ? (
+                  <button
+                    onClick={() => setGroupDeleteStep(2)}
+                    className="flex-1 py-2.5 rounded-lg font-medium transition-colors"
+                    style={{ color: 'white', backgroundColor: '#b91c1c' }}
+                  >
+                    {t.deleteGroup}
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setTempProfile({
+                        ...tempProfile,
+                        groups: tempProfile.groups?.filter(g => g.id !== groupToDelete.id) || []
+                      })
+                      setGroupToDelete(null)
+                      setGroupDeleteStep(1)
+                    }}
+                    className="flex-1 py-2.5 rounded-lg font-medium transition-colors"
+                    style={{ color: 'white', backgroundColor: '#b91c1c' }}
+                  >
+                    {t.permanentlyDelete}
+                  </button>
+                )}
+              </div>
             </motion.div>
           </motion.div>
         )}
