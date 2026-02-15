@@ -846,15 +846,15 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
   const [exiting, setExiting] = useState(false)
   const touchStartY = useRef<number>(0)
   // Stage 0: Initial
-  // Stage 1: "Vibe" appears
-  // Stage 2: "Vibe" moves, "Check" appears
+  // Stage 1: "Gather" appears
+  // Stage 2: "Gather" moves, "Go" appears
   // Stage 3: Tagline and CTA visible
 
   useEffect(() => {
     // Animation to reveal content (no auto-transition)
     const timers = [
-      setTimeout(() => setStage(1), 300),     // Show "Vibe"
-      setTimeout(() => setStage(2), 1200),    // Move + Show "Check"
+      setTimeout(() => setStage(1), 300),     // Show "Gather"
+      setTimeout(() => setStage(2), 1200),    // Move + Show "Go"
       setTimeout(() => setStage(3), 2400),    // Tagline + CTA visible
     ]
     return () => timers.forEach(clearTimeout)
@@ -939,7 +939,7 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
       <div className="relative flex flex-col items-center justify-center gap-6 z-10 px-4">
         {/* Logo */}
         <div className="flex items-center justify-center">
-        {/* "Vibe" text */}
+        {/* "Gather" text */}
         <motion.span
           initial={{ opacity: 0, y: 20 }}
           animate={{ 
@@ -961,10 +961,10 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
             textShadow: '0 1px 4px rgba(0,0,0,0.12)'
           }}
         >
-          Vibe
+          Gather
         </motion.span>
 
-        {/* "Check" text - solid accent, no glow */}
+        {/* "Go" text - solid accent, no glow */}
         <motion.span
           initial={{ opacity: 0, x: 30 }}
           animate={{ 
@@ -984,7 +984,7 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
             textShadow: '0 1px 4px rgba(0,0,0,0.08)'
           }}
         >
-          Check
+          Go
         </motion.span>
         </div>
 
