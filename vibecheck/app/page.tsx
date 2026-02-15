@@ -3965,6 +3965,9 @@ export default function Home() {
                       {t.suggestedOpenNearMe}
                     </h3>
                   </div>
+                  <div className="mb-6">
+                    <LocationMap />
+                  </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {openSuggestedEvents.map((event, index) => (
                     <motion.div

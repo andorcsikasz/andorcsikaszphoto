@@ -2288,3 +2288,8 @@ fatal: Unable to create '/Users/andorcsikasz/x_prog/.git/index.lock': No space l
 [main 5920988] auto: 2026-02-15 23:35
  4 files changed, 11 insertions(+), 6 deletions(-)
 [23:35:21] Committed: auto: 2026-02-15 23:35
+[main ede7574] auto: 2026-02-15 23:36
+ 6 files changed, 202 insertions(+), 1 deletion(-)
+ create mode 100644 vibecheck/components/LocationMap.tsx
+ create mode 100644 vibecheck/components/LocationMapInner.tsx
+[23:36:21] Committed: auto: 2026-02-15 23:36
