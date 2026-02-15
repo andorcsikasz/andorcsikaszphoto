@@ -4120,8 +4120,12 @@ export default function Home() {
                     </motion.button>
                   </div>
 
-                  {/* Task Control Cells - between status row and event cards */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                  {/* Task Control Cells — THINGS TO DO (emerald) */}
+                  <div className="mb-2 flex items-center gap-2">
+                    <ClipboardDocumentCheckIcon className="w-4 h-4 text-emerald-400" />
+                    <span className="text-sm font-medium text-emerald-400">{lang === 'en' ? 'Things to do' : 'Tennivalók'}</span>
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6 pl-1 border-l-2 border-emerald-500/40">
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
@@ -4136,7 +4140,7 @@ export default function Home() {
                         borderColor: 'var(--border-primary)',
                       }}
                     >
-                      <ClipboardDocumentListIcon className="w-5 h-5 mb-1" style={{ color: 'var(--accent-primary)' }} />
+                      <ClipboardDocumentListIcon className="w-5 h-5 mb-1 text-emerald-400" />
                       <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>
                         {lang === 'en' ? 'Assigned to me' : 'Rám bízva'}
                       </p>
@@ -4361,9 +4365,9 @@ export default function Home() {
                       </div>
       </div>
 
-                    {/* Events I'm Invited To */}
+                    {/* Events I'm Invited To — PURPLE */}
                     <div className={`rounded-xl border overflow-hidden ${
-                      theme === 'light' ? 'bg-[var(--bg-card)] border-[var(--border-primary)]' : 'bg-[var(--bg-card)] border-[var(--border-primary)]'
+                      theme === 'light' ? 'bg-[var(--bg-card)] border-purple-300/50' : 'bg-[var(--bg-card)] border-purple-500/30'
                     }`}>
                       <button
                         onClick={() => setShowAllInvitedEvents(!showAllInvitedEvents)}
@@ -4372,8 +4376,8 @@ export default function Home() {
                         }`}
                       >
                         <div className="flex items-center gap-3">
-                          <UserGroupIcon className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
-                          <h3 className="text-lg font-semibold" style={{ fontFamily: 'var(--font-sans)' }}>{lang === 'en' ? "Events I'm Invited To" : 'Meghívásaim'}</h3>
+                          <UserGroupIcon className="w-5 h-5 text-purple-400" />
+                          <h3 className="text-lg font-semibold text-purple-400" style={{ fontFamily: 'var(--font-sans)' }}>{lang === 'en' ? "Events I'm Invited To" : 'Meghívásaim'}</h3>
                         </div>
                         <div className="flex items-center gap-2">
                           <span className={`text-sm px-2 py-1 rounded-full ${
@@ -4412,7 +4416,7 @@ export default function Home() {
                                   onClick={() => setSelectedEvent(event)}
                                   className="flex flex-1 items-center gap-4 text-left min-w-0"
                                 >
-                                  <div className={`w-2 h-10 rounded-full flex-shrink-0 ${getStatusColor(event.status)}`} />
+                                  <div className="w-2 h-10 rounded-full flex-shrink-0 bg-purple-500" />
                                   <div className="flex-1 min-w-0">
                                     <p className="font-medium truncate">{event.title}</p>
                                     <p className={`text-sm ${theme === 'light' ? 'text-[var(--text-muted)]' : 'text-[var(--text-muted)]'}`}>
