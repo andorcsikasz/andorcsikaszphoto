@@ -3820,21 +3820,25 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
+              className="w-full"
             >
-              <div className="mb-8">
-                <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>{t.allEvents}</h2>
-                <p style={{ color: 'var(--text-muted)' }}>{events.length} {t.events.toLowerCase()}</p>
-              </div>
-
-              {/* 1. My events */}
-              <section className="mb-10">
-                <div className="flex items-center gap-2 mb-4">
-                  <StarIcon className="w-5 h-5 text-blue-400" />
-                  <h3 className="text-xl font-semibold text-blue-400" style={{ fontFamily: 'var(--font-sans)' }}>
-                    {t.myEvents}
-                  </h3>
+              {/* Unified card container */}
+              <div className="rounded-2xl border overflow-hidden w-full" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}>
+                {/* Header */}
+                <div className="px-6 py-5 border-b flex items-baseline justify-between flex-wrap gap-2" style={{ borderColor: 'var(--border-primary)' }}>
+                  <h2 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{t.allEvents}</h2>
+                  <span className="text-sm" style={{ color: 'var(--text-muted)' }}>{events.length} {t.events.toLowerCase()}</span>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+
+                {/* 1. My events */}
+                <section className="p-6 border-b" style={{ borderColor: 'var(--border-primary)' }}>
+                  <div className="flex items-center gap-2 mb-4">
+                    <StarIcon className="w-5 h-5 text-blue-400" />
+                    <h3 className="text-lg font-semibold text-blue-400" style={{ fontFamily: 'var(--font-sans)' }}>
+                      {t.myEvents}
+                    </h3>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {myEvents.map((event, index) => (
                     <motion.div
                       key={event.id}
@@ -3881,24 +3885,24 @@ export default function Home() {
                       )}
                     </motion.div>
                   ))}
-                </div>
-                {myEvents.length === 0 && (
-                  <div className="rounded-xl border p-8 text-center" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}>
-                    <CalendarIcon className="w-12 h-12 mx-auto mb-3" style={{ color: 'var(--text-muted)' }} />
-                    <p style={{ color: 'var(--text-muted)' }}>{lang === 'en' ? 'No events you organize yet' : 'Még nincs szervezett eseményed'}</p>
                   </div>
-                )}
-              </section>
+                  {myEvents.length === 0 && (
+                    <div className="rounded-xl py-8 px-4 flex items-center justify-center gap-4" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                      <CalendarIcon className="w-10 h-10 flex-shrink-0" style={{ color: 'var(--text-muted)' }} />
+                      <p style={{ color: 'var(--text-muted)' }}>{lang === 'en' ? 'No events you organize yet' : 'Még nincs szervezett eseményed'}</p>
+                    </div>
+                  )}
+                </section>
 
-              {/* 2. Friends / Family / Company */}
-              <section className="mb-10">
-                <div className="flex items-center gap-2 mb-4">
-                  <UserGroupIcon className="w-5 h-5 text-purple-400" />
-                  <h3 className="text-xl font-semibold text-purple-400" style={{ fontFamily: 'var(--font-sans)' }}>
-                    {t.friendsFamilyCompany}
-                  </h3>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {/* 2. Friends / Family / Company */}
+                <section className="p-6 border-b" style={{ borderColor: 'var(--border-primary)' }}>
+                  <div className="flex items-center gap-2 mb-4">
+                    <UserGroupIcon className="w-5 h-5 text-purple-400" />
+                    <h3 className="text-lg font-semibold text-purple-400" style={{ fontFamily: 'var(--font-sans)' }}>
+                      {t.friendsFamilyCompany}
+                    </h3>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {friendsFamilyCompanyEvents.map((event, index) => (
                     <motion.div
                       key={event.id}
@@ -3937,24 +3941,24 @@ export default function Home() {
                       )}
                     </motion.div>
                   ))}
-                </div>
-                {friendsFamilyCompanyEvents.length === 0 && (
-                  <div className="rounded-xl border p-8 text-center" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}>
-                    <UserGroupIcon className="w-12 h-12 mx-auto mb-3" style={{ color: 'var(--text-muted)' }} />
-                    <p style={{ color: 'var(--text-muted)' }}>{lang === 'en' ? 'No invitations from your network yet' : 'Még nincs meghívás a hálózatodból'}</p>
                   </div>
-                )}
-              </section>
+                  {friendsFamilyCompanyEvents.length === 0 && (
+                    <div className="rounded-xl py-8 px-4 flex items-center justify-center gap-4" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                      <UserGroupIcon className="w-10 h-10 flex-shrink-0" style={{ color: 'var(--text-muted)' }} />
+                      <p style={{ color: 'var(--text-muted)' }}>{lang === 'en' ? 'No invitations from your network yet' : 'Még nincs meghívás a hálózatodból'}</p>
+                    </div>
+                  )}
+                </section>
 
-              {/* 3. Suggested open events near me */}
-              <section>
-                <div className="flex items-center gap-2 mb-4">
-                  <MapPinIcon className="w-5 h-5 text-amber-400" />
-                  <h3 className="text-xl font-semibold text-amber-400" style={{ fontFamily: 'var(--font-sans)' }}>
-                    {t.suggestedOpenNearMe}
-                  </h3>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                {/* 3. Suggested open events near me */}
+                <section className="p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <MapPinIcon className="w-5 h-5 text-amber-400" />
+                    <h3 className="text-lg font-semibold text-amber-400" style={{ fontFamily: 'var(--font-sans)' }}>
+                      {t.suggestedOpenNearMe}
+                    </h3>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {openSuggestedEvents.map((event, index) => (
                     <motion.div
                       key={event.id}
@@ -3985,17 +3989,20 @@ export default function Home() {
                       )}
                     </motion.div>
                   ))}
-                </div>
-                {openSuggestedEvents.length === 0 && (
-                  <div className="rounded-xl border p-8 text-center" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}>
-                    <MapPinIcon className="w-12 h-12 mx-auto mb-3" style={{ color: 'var(--text-muted)' }} />
-                    <p style={{ color: 'var(--text-muted)' }}>{t.noOpenEventsNearby}</p>
-                    <p className="text-sm mt-2" style={{ color: 'var(--text-muted)' }}>
-                      {lang === 'en' ? 'Public events in your city will appear here — e.g. dinner nights, meetups' : 'A városod nyilvános eseményei itt fognak megjelenni — pl. vacsorák, találkozók'}
-                    </p>
                   </div>
-                )}
-              </section>
+                  {openSuggestedEvents.length === 0 && (
+                    <div className="rounded-xl py-8 px-4 flex items-center justify-center gap-4" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                      <MapPinIcon className="w-10 h-10 flex-shrink-0" style={{ color: 'var(--text-muted)' }} />
+                      <div>
+                        <p style={{ color: 'var(--text-muted)' }}>{t.noOpenEventsNearby}</p>
+                        <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
+                          {lang === 'en' ? 'Public events in your city will appear here' : 'A városod nyilvános eseményei itt fognak megjelenni'}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </section>
+              </div>
             </motion.div>
           )}
 
