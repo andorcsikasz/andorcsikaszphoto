@@ -1036,47 +1036,8 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
           {lang === 'en' ? 'Scroll to continue' : 'Görgess tovább'}
         </motion.p>
 
-        {/* Mouse outline icon */}
-        <motion.div
-          className="relative flex flex-col items-center"
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 2.4, repeat: Infinity, ease: [0.4, 0, 0.6, 1] }}
-        >
-          {/* Glow ring behind */}
-          <motion.div
-            className="absolute rounded-full"
-            style={{
-              width: 44,
-              height: 44,
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              background: 'radial-gradient(circle, var(--accent-glow) 0%, transparent 70%)',
-            }}
-            animate={{ scale: [1, 1.4, 1], opacity: [0.4, 0.15, 0.4] }}
-            transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-          />
-
-          {/* Mouse body */}
-          <svg width="28" height="42" viewBox="0 0 28 42" fill="none" style={{ position: 'relative', zIndex: 1 }}>
-            <rect
-              x="1.5" y="1.5" width="25" height="39" rx="12.5"
-              stroke="var(--accent-primary)"
-              strokeWidth="2"
-              opacity="0.7"
-            />
-            {/* Scroll wheel dot - animated */}
-            <motion.circle
-              cx="14" cy="12" r="2.5"
-              fill="var(--accent-tertiary)"
-              animate={{ cy: [10, 18, 10], opacity: [1, 0.3, 1] }}
-              transition={{ duration: 2, repeat: Infinity, ease: [0.4, 0, 0.6, 1] }}
-            />
-          </svg>
-        </motion.div>
-
         {/* Stacked chevrons */}
-        <div className="flex flex-col items-center -mt-1" style={{ gap: '2px' }}>
+        <div className="flex flex-col items-center mt-1" style={{ gap: '2px' }}>
           {[0, 1, 2].map((i) => (
             <motion.svg
               key={i}
