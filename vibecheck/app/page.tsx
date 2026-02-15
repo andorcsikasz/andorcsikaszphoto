@@ -3886,6 +3886,25 @@ export default function Home() {
                       >
                         {event.organizerName}
                       </button>
+                      <div className="flex items-center gap-2 text-sm mb-2" style={{ color: 'var(--text-muted)' }}>
+                        <CalendarIcon className="w-4 h-4" />
+                        <span>{new Date(event.date).toLocaleDateString(lang === 'hu' ? 'hu-HU' : 'en-US', { month: 'short', day: 'numeric' })} • {event.time}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm mb-4" style={{ color: 'var(--text-muted)' }}>
+                        <MapPinIcon className="w-4 h-4" />
+                        <span className="truncate">{event.location}</span>
+                      </div>
+                      {(event.hasVoting || event.hasTasks || event.hasPayment) && (
+                        <div className="flex flex-wrap gap-2 pt-3 border-t" style={{ borderColor: 'var(--border-primary)' }}>
+                          {event.hasVoting && <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-purple-500/20 text-purple-400"><ChatBubbleLeftRightIcon className="w-3 h-3" />Voting</span>}
+                          {event.hasTasks && <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-blue-500/20 text-blue-400"><CheckCircleIcon className="w-3 h-3" />Tasks</span>}
+                          {event.hasPayment && <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-emerald-500/20 text-emerald-400"><CreditCardIcon className="w-3 h-3" />{event.currency === 'HUF' ? 'Ft' : event.currency === 'USD' ? '$' : '€'}{event.paymentAmount}</span>}
+                        </div>
+                      )}
+                    </motion.div>
+                  ))}
+                  </div>
+                  {myEvents.length === 0 && (
                     <div className="rounded-xl py-8 px-4 flex items-center justify-center gap-4" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
                       <CalendarIcon className="w-10 h-10 flex-shrink-0" style={{ color: 'var(--text-muted)' }} />
                       <p style={{ color: 'var(--text-muted)' }}>{lang === 'en' ? 'No events you organize yet' : 'Még nincs szervezett eseményed'}</p>
@@ -3922,7 +3941,14 @@ export default function Home() {
                         {event.type === 'private' && <span className="text-xs text-[var(--text-muted)]">Private</span>}
                       </div>
                       <h3 className="text-lg font-extrabold mb-3 line-clamp-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>{event.title}</h3>
-                      <p className="text-sm font-bold mb-2" style={{ color: 'var(--accent-primary)' }}>{event.organizerName}</p>
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); setSelectedOrganizer({ id: event.organizerId, name: event.organizerName }); setShowOrganizerStatsModal(true) }}
+                        className="text-sm font-bold mb-2 text-left hover:underline cursor-pointer"
+                        style={{ color: 'var(--accent-primary)' }}
+                      >
+                        {event.organizerName}
+                      </button>
                       <div className="flex items-center gap-2 text-sm mb-2" style={{ color: 'var(--text-muted)' }}>
                         <CalendarIcon className="w-4 h-4" />
                         <span>{new Date(event.date).toLocaleDateString(lang === 'hu' ? 'hu-HU' : 'en-US', { month: 'short', day: 'numeric' })} • {event.time}</span>
@@ -3973,7 +3999,14 @@ export default function Home() {
                     >
                       <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-400 mb-4 inline-block">Open</span>
                       <h3 className="text-lg font-extrabold mb-3 line-clamp-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>{event.title}</h3>
-                      <p className="text-sm font-bold mb-2" style={{ color: 'var(--accent-primary)' }}>{event.organizerName}</p>
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); setSelectedOrganizer({ id: event.organizerId, name: event.organizerName }); setShowOrganizerStatsModal(true) }}
+                        className="text-sm font-bold mb-2 text-left hover:underline cursor-pointer"
+                        style={{ color: 'var(--accent-primary)' }}
+                      >
+                        {event.organizerName}
+                      </button>
                       <div className="flex items-center gap-2 text-sm mb-2" style={{ color: 'var(--text-muted)' }}>
                         <CalendarIcon className="w-4 h-4" />
                         <span>{new Date(event.date).toLocaleDateString(lang === 'hu' ? 'hu-HU' : 'en-US', { month: 'short', day: 'numeric' })} • {event.time}</span>
