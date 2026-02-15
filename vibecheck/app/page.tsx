@@ -65,6 +65,7 @@ import { RevolutLogo, GoogleLogo, AppleLogo } from '@/components/PaymentLogos'
 import LandingPageComponent from '@/components/LandingPage'
 import Aurora from '@/components/Aurora'
 import WarpTwister from '@/components/WarpTwister'
+import VibeNetwork from '@/components/VibeNetwork'
 import ConnectionsManager from '@/components/ConnectionsManager'
 import StarBorder from '@/components/StarBorder'
 
