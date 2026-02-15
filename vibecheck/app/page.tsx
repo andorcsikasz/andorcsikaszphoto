@@ -2212,8 +2212,44 @@ export default function Home() {
   // Calculate metrics
   // Events I organize: organizerId is 'me' or matches userProfile name
   const currentUserId = userProfile?.userId || userProfile?.name || 'me'
+  const myName = userProfile?.name || 'Me'
   const myEvents = events.filter(e => e.organizerId === 'me' || e.organizerId === currentUserId || e.organizerId === userProfile?.name || e.organizerId === userProfile?.userId)
   const invitedEvents = events.filter(e => !myEvents.includes(e))
+
+  // Task metrics for control cells
+  const allTasks = events.flatMap(e => (e.tasks || []).map(t => ({ ...t, eventId: e.id })))
+  const tasksAssignedToMe = allTasks.filter(t => (t.assignee === 'Me' || t.assignee === myName) && t.assignee)
+  const tasksNotAssigned = allTasks.filter(t => !t.assignee || t.assignee === '')
+  const tasksAssigned = allTasks.filter(t => t.assignee && t.assignee !== '')
+
+  const eventHasTasksAssignedToMe = (e: Event) => (e.tasks || []).some(t => t.assignee === 'Me' || t.assignee === myName)
+  const eventHasUnassignedTasks = (e: Event) => (e.tasks || []).some(t => !t.assignee || t.assignee === '')
+  const eventHasAssignedTasks = (e: Event) => (e.tasks || []).some(t => t.assignee && t.assignee !== '')
+
+  // Filtered lists based on taskViewFilter (applies to both columns when set)
+  const filteredMyEvents = !taskViewFilter
+    ? myEvents
+    : taskViewFilter === 'assigned-to-me'
+      ? myEvents.filter(eventHasTasksAssignedToMe)
+      : taskViewFilter === 'my-events'
+        ? myEvents
+        : taskViewFilter === 'not-assigned'
+          ? myEvents.filter(eventHasUnassignedTasks)
+          : myEvents.filter(eventHasAssignedTasks)
+  const filteredInvitedEvents = !taskViewFilter
+    ? invitedEvents
+    : taskViewFilter === 'assigned-to-me'
+      ? invitedEvents.filter(eventHasTasksAssignedToMe)
+      : taskViewFilter === 'my-events'
+        ? [] // my-events shows only my events
+        : taskViewFilter === 'not-assigned'
+          ? invitedEvents.filter(eventHasUnassignedTasks)
+          : invitedEvents.filter(eventHasAssignedTasks)
+
+  // Split my events into 2 parts: (a) events with tasks assigned to me, (b) other events I organize
+  const myEventsWithMyTasks = myEvents.filter(eventHasTasksAssignedToMe)
+  const myEventsOther = myEvents.filter(e => !eventHasTasksAssignedToMe(e))
+
   const totalAttendees = events.reduce((sum, e) => sum + e.confirmedAttendees, 0)
   const totalEvents = events.length
   const upcomingCount = events.filter(e => new Date(e.date) >= new Date()).length
@@ -4037,6 +4073,90 @@ export default function Home() {
                       </p>
                     </motion.button>
                   </div>
+
+                  {/* Task Control Cells - between status row and event cards */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setTaskViewFilter(v => v === 'assigned-to-me' ? null : 'assigned-to-me')}
+                      className={`rounded-lg border p-4 text-left transition-all ${
+                        taskViewFilter === 'assigned-to-me'
+                          ? 'ring-2 ring-emerald-500/50'
+                          : ''
+                      }`}
+                      style={{
+                        backgroundColor: taskViewFilter === 'assigned-to-me' ? 'var(--bg-tertiary)' : 'var(--bg-card)',
+                        borderColor: 'var(--border-primary)',
+                      }}
+                    >
+                      <ClipboardDocumentListIcon className="w-5 h-5 mb-1" style={{ color: 'var(--accent-primary)' }} />
+                      <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>
+                        {lang === 'en' ? 'Assigned to me' : 'Rám bízva'}
+                      </p>
+                      <p className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>{tasksAssignedToMe.length}</p>
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setTaskViewFilter(v => v === 'my-events' ? null : 'my-events')}
+                      className={`rounded-lg border p-4 text-left transition-all ${
+                        taskViewFilter === 'my-events'
+                          ? 'ring-2 ring-blue-500/50'
+                          : ''
+                      }`}
+                      style={{
+                        backgroundColor: taskViewFilter === 'my-events' ? 'var(--bg-tertiary)' : 'var(--bg-card)',
+                        borderColor: 'var(--border-primary)',
+                      }}
+                    >
+                      <StarIcon className="w-5 h-5 mb-1" style={{ color: 'var(--accent-primary)' }} />
+                      <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>
+                        {lang === 'en' ? 'My events' : 'Eseményeim'}
+                      </p>
+                      <p className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>{myEvents.length}</p>
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setTaskViewFilter(v => v === 'not-assigned' ? null : 'not-assigned')}
+                      className={`rounded-lg border p-4 text-left transition-all ${
+                        taskViewFilter === 'not-assigned'
+                          ? 'ring-2 ring-amber-500/50'
+                          : ''
+                      }`}
+                      style={{
+                        backgroundColor: taskViewFilter === 'not-assigned' ? 'var(--bg-tertiary)' : 'var(--bg-card)',
+                        borderColor: 'var(--border-primary)',
+                      }}
+                    >
+                      <ClipboardDocumentListIcon className="w-5 h-5 mb-1" style={{ color: 'var(--text-muted)' }} />
+                      <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>
+                        {lang === 'en' ? 'Not assigned' : 'Nincs kiosztva'}
+                      </p>
+                      <p className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>{tasksNotAssigned.length}</p>
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setTaskViewFilter(v => v === 'tasks-assigned' ? null : 'tasks-assigned')}
+                      className={`rounded-lg border p-4 text-left transition-all ${
+                        taskViewFilter === 'tasks-assigned'
+                          ? 'ring-2 ring-purple-500/50'
+                          : ''
+                      }`}
+                      style={{
+                        backgroundColor: taskViewFilter === 'tasks-assigned' ? 'var(--bg-tertiary)' : 'var(--bg-card)',
+                        borderColor: 'var(--border-primary)',
+                      }}
+                    >
+                      <CheckCircleIcon className="w-5 h-5 mb-1" style={{ color: 'var(--accent-primary)' }} />
+                      <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>
+                        {lang === 'en' ? 'Tasks assigned' : 'Kiosztott feladatok'}
+                      </p>
+                      <p className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>{tasksAssigned.length}</p>
+                    </motion.button>
+                  </div>
                   
                   {/* Two Column Layout: My Events + Invited Events */}
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
@@ -4058,9 +4178,9 @@ export default function Home() {
                           <span className={`text-sm px-2 py-1 rounded-full ${
                             theme === 'light' ? 'bg-blue-100 text-blue-600' : 'bg-blue-500/20 text-blue-400'
                           }`}>
-                            {myEvents.length}
+                            {filteredMyEvents.length}
                           </span>
-                          {myEvents.length > 4 && (
+                          {filteredMyEvents.length > 4 && (
                             showAllOrganizedEvents ? (
                               <ChevronUpIcon className={`w-4 h-4 ${theme === 'light' ? 'text-blue-600' : 'text-blue-400'}`} />
                             ) : (
@@ -4070,7 +4190,7 @@ export default function Home() {
                         </div>
                       </button>
                       <div className={`divide-y ${theme === 'light' ? 'divide-[var(--border-primary)]' : 'divide-[#1F1F1F]'}`}>
-                        {myEvents.length === 0 ? (
+                        {filteredMyEvents.length === 0 ? (
                           <div className="p-8 text-center">
                             <CalendarIcon className={`w-12 h-12 mx-auto mb-3 ${theme === 'light' ? 'text-[var(--text-secondary)]' : 'text-[var(--text-muted)]'}`} />
                             <p className={theme === 'light' ? 'text-[var(--text-muted)]' : 'text-[var(--text-muted)]'}>
@@ -4078,26 +4198,56 @@ export default function Home() {
                             </p>
                           </div>
                         ) : (
-                          (showAllOrganizedEvents ? myEvents : myEvents.slice(0, 4)).map((event) => (
-          <button
-                              key={event.id}
-                              onClick={() => setSelectedEvent(event)}
-                              className={`w-full p-4 transition-colors flex items-center gap-4 text-left ${
-                                theme === 'light' ? 'hover:bg-[var(--bg-hover)]' : 'hover:bg-[var(--bg-tertiary)]'
-                              }`}
-                            >
-                              <div className={`w-2 h-10 rounded-full ${getStatusColor(event.status)}`} />
-                              <div className="flex-1 min-w-0">
-                                <p className="font-medium truncate">{event.title}</p>
-                                <p className={`text-sm ${theme === 'light' ? 'text-[var(--text-muted)]' : 'text-[var(--text-muted)]'}`}>
-                                  {new Date(event.date).toLocaleDateString(lang === 'hu' ? 'hu-HU' : 'en-US', {
-                                    month: 'short', day: 'numeric',
-                                  })} • {event.confirmedAttendees}/{event.attendees}
-                                </p>
-                              </div>
-                              <ChevronRightIcon className={`w-4 h-4 ${theme === 'light' ? 'text-[var(--text-muted)]' : 'text-[var(--text-muted)]'}`} />
-          </button>
-                          ))
+                          <>
+                            {(() => {
+                              const withMyTasks = filteredMyEvents.filter(eventHasTasksAssignedToMe)
+                              const other = filteredMyEvents.filter(e => !eventHasTasksAssignedToMe(e))
+                              const showPart1 = withMyTasks.length > 0
+                              const showPart2 = other.length > 0
+                              const slice1 = showAllOrganizedEvents ? withMyTasks : withMyTasks.slice(0, 2)
+                              const slice2 = showAllOrganizedEvents ? other : other.slice(0, 4 - slice1.length)
+                              const renderEvent = (event: Event) => (
+                                <button
+                                  key={event.id}
+                                  onClick={() => setSelectedEvent(event)}
+                                  className={`w-full p-4 transition-colors flex items-center gap-4 text-left ${
+                                    theme === 'light' ? 'hover:bg-[var(--bg-hover)]' : 'hover:bg-[var(--bg-tertiary)]'
+                                  }`}
+                                >
+                                  <div className={`w-2 h-10 rounded-full ${getStatusColor(event.status)}`} />
+                                  <div className="flex-1 min-w-0">
+                                    <p className="font-medium truncate">{event.title}</p>
+                                    <p className={`text-sm ${theme === 'light' ? 'text-[var(--text-muted)]' : 'text-[var(--text-muted)]'}`}>
+                                      {new Date(event.date).toLocaleDateString(lang === 'hu' ? 'hu-HU' : 'en-US', {
+                                        month: 'short', day: 'numeric',
+                                      })} • {event.confirmedAttendees}/{event.attendees}
+                                    </p>
+                                  </div>
+                                  <ChevronRightIcon className={`w-4 h-4 ${theme === 'light' ? 'text-[var(--text-muted)]' : 'text-[var(--text-muted)]'}`} />
+                                </button>
+                              )
+                              return (
+                                <>
+                                  {showPart1 && (
+                                    <>
+                                      <div className="px-4 py-2 text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--text-muted)', backgroundColor: 'var(--bg-tertiary)' }}>
+                                        {lang === 'en' ? 'Tasks assigned to me' : 'Rám bízott feladatok'}
+                                      </div>
+                                      {slice1.map(renderEvent)}
+                                    </>
+                                  )}
+                                  {showPart2 && (
+                                    <>
+                                      <div className="px-4 py-2 text-xs font-medium uppercase tracking-wider" style={{ color: 'var(--text-muted)', backgroundColor: 'var(--bg-tertiary)' }}>
+                                        {lang === 'en' ? 'Other events I organize' : 'Egyéb szervezett eseményeim'}
+                                      </div>
+                                      {slice2.map(renderEvent)}
+                                    </>
+                                  )}
+                                </>
+                              )
+                            })()}
+                          </>
                         )}
                       </div>
       </div>
