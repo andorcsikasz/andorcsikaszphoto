@@ -348,7 +348,7 @@ export default function VibeNetwork({
             const isIdea = Math.random() < 0.12 + avgAct * 0.2
             pulsesRef.current.push({
               fromIdx, toIdx, progress: 0,
-              speed: isIdea ? (0.003 + Math.random() * 0.005) * speed : (0.007 + Math.random() * 0.012) * speed,
+              speed: isIdea ? (0.0015 + Math.random() * 0.003) * speed : (0.003 + Math.random() * 0.006) * speed,
               color: isIdea ? '#ffffff' : waveColors[Math.floor(Math.random() * waveColors.length)],
               size: isIdea ? 4 + Math.random() * 3 : 1.5 + Math.random() * 1.8,
               isIdea,
@@ -515,13 +515,13 @@ export default function VibeNetwork({
       const t = timeRef.current
       const pad = 80
 
-      // Smooth mouse lerp
+      // Smooth mouse lerp — slow, dreamy tracking
       if (raw.active) {
-        sm.x += (raw.x - sm.x) * 0.08
-        sm.y += (raw.y - sm.y) * 0.08
+        sm.x += (raw.x - sm.x) * 0.035
+        sm.y += (raw.y - sm.y) * 0.035
       } else {
-        sm.x += (-9999 - sm.x) * 0.02
-        sm.y += (-9999 - sm.y) * 0.02
+        sm.x += (-9999 - sm.x) * 0.01
+        sm.y += (-9999 - sm.y) * 0.01
       }
 
       const cursorRadius = 300
@@ -531,14 +531,14 @@ export default function VibeNetwork({
         const cdx = sm.x - n.x, cdy = sm.y - n.y
         const cdist = Math.sqrt(cdx * cdx + cdy * cdy)
         const targetAct = cdist < cursorRadius ? Math.pow(1 - cdist / cursorRadius, 1.5) : 0
-        n.activation += (targetAct - n.activation) * 0.06 // smooth lerp
+        n.activation += (targetAct - n.activation) * 0.025 // slow smooth lerp
 
-        n.vx += (Math.random() - 0.5) * 0.008 * speed * n.depth
-        n.vy += (Math.random() - 0.5) * 0.008 * speed * n.depth
-        n.vx *= 0.998
-        n.vy *= 0.998
+        n.vx += (Math.random() - 0.5) * 0.004 * speed * n.depth
+        n.vy += (Math.random() - 0.5) * 0.004 * speed * n.depth
+        n.vx *= 0.996
+        n.vy *= 0.996
 
-        const maxV = 0.5 * speed * n.depth
+        const maxV = 0.3 * speed * n.depth
         n.vx = Math.max(-maxV, Math.min(maxV, n.vx))
         n.vy = Math.max(-maxV, Math.min(maxV, n.vy))
 

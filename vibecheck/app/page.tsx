@@ -926,7 +926,7 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
         waveColors={['#5eead4', '#38bdf8', '#c084fc', '#fb923c', '#f472b6']}
         nodeCount={90}
         connectionDistance={220}
-        speed={0.9}
+        speed={0.4}
         opacity={0.45}
         showDendrites={true}
         showPulses={true}

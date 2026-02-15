@@ -29,7 +29,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
         waveColors={['#5eead4', '#38bdf8', '#c084fc', '#fb923c', '#f472b6']}
         nodeCount={85}
         connectionDistance={210}
-        speed={0.9}
+        speed={0.4}
         opacity={0.4}
         showDendrites={true}
         showPulses={true}
