@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
+import { useEffect, useState, useRef } from 'react'
 import L from 'leaflet'
 
-// Fix Leaflet default icon in Next.js/webpack
+const defaultCenter: [number, number] = [47.4979, 19.0402] // Budapest fallback
+
 const createCustomIcon = () =>
   L.divIcon({
     className: 'custom-marker',
@@ -21,20 +21,12 @@ const createCustomIcon = () =>
     iconAnchor: [12, 36],
   })
 
-const defaultCenter: [number, number] = [47.4979, 19.0402] // Budapest fallback
-
-function MapController({ center, zoom }: { center: [number, number]; zoom: number }) {
-  const map = useMap()
-  useEffect(() => {
-    map.setView(center, zoom)
-  }, [map, center, zoom])
-  return null
-}
-
 export default function LocationMapInner() {
   const [position, setPosition] = useState<[number, number] | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const mapRef = useRef<L.Map | null>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!navigator.geolocation) {
@@ -58,38 +50,49 @@ export default function LocationMapInner() {
     )
   }, [])
 
-  const center = position ?? defaultCenter
-  const zoom = 13
+  useEffect(() => {
+    if (loading || !containerRef.current) return
+    if (mapRef.current) return
+
+    const center = position ?? defaultCenter
+    const map = L.map(containerRef.current).setView(center, 13)
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(map)
+
+    L.marker(center, { icon: createCustomIcon() })
+      .addTo(map)
+      .bindPopup('You are here')
+
+    mapRef.current = map
+
+    return () => {
+      map.remove()
+      mapRef.current = null
+    }
+  }, [loading, position])
+
+  if (loading) {
+    return (
+      <div
+        className="w-full h-full flex items-center justify-center"
+        style={{ height: 280, backgroundColor: 'var(--bg-tertiary)' }}
+      >
+        <div className="animate-pulse text-sm" style={{ color: 'var(--text-muted)' }}>
+          Getting your location…
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="w-full h-full relative" style={{ minHeight: 280 }}>
-      {loading ? (
-        <div
-          className="w-full h-full flex items-center justify-center"
-          style={{ backgroundColor: 'var(--bg-tertiary)' }}
-        >
-          <div className="animate-pulse text-sm" style={{ color: 'var(--text-muted)' }}>
-            Getting your location…
-          </div>
-        </div>
-      ) : (
-        <MapContainer
-          center={center}
-          zoom={zoom}
-          className="w-full h-full"
-          style={{ height: 280, background: 'var(--bg-tertiary)' }}
-          zoomControl={true}
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <MapController center={center} zoom={zoom} />
-          <Marker position={center} icon={createCustomIcon()}>
-            <Popup>You are here</Popup>
-          </Marker>
-        </MapContainer>
-      )}
+      <div
+        ref={containerRef}
+        className="w-full"
+        style={{ height: 280, backgroundColor: 'var(--bg-tertiary)' }}
+      />
       {error && (
         <div
           className="absolute bottom-2 left-2 right-2 text-xs py-2 px-3 rounded-lg"
