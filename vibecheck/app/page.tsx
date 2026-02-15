@@ -957,7 +957,7 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
           }}
           className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"
           style={{ 
-            fontFamily: "var(--font-heading)",
+            fontFamily: "var(--font-logo)",
             color: 'var(--text-primary)',
             letterSpacing: '-0.03em',
             willChange: 'transform, opacity',
@@ -980,7 +980,7 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
           }}
           className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"
           style={{ 
-            fontFamily: "var(--font-heading)",
+            fontFamily: "var(--font-logo)",
             color: 'var(--accent-primary)',
             letterSpacing: '-0.03em',
             willChange: 'transform, opacity',

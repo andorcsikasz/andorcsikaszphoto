@@ -1,5 +1,5 @@
-/* Public Sans - body text | Nunito - rounded bold for headings (must be first) */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Public+Sans:wght@400;500;600;700;800&display=swap');
+/* Public Sans - body | Nunito - headings | Space Grotesk - logo (angular) */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Public+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -8,6 +8,7 @@
 :root {
   --font-sans: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-heading: 'Nunito', 'Public Sans', sans-serif;
+  --font-logo: 'Space Grotesk', 'Public Sans', sans-serif;
   --ease-elite: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-out-smooth: cubic-bezier(0.33, 1, 0.68, 1);
