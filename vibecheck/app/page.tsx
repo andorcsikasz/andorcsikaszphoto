@@ -3425,7 +3425,7 @@ export default function Home() {
         className="border-b backdrop-blur-xl sticky top-0 z-40 flex-shrink-0"
         style={{ backgroundColor: 'var(--bg-nav)', borderColor: 'var(--border-primary)' }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+        <div className="max-w-7xl mx-auto pl-4 pr-4 sm:pl-6 sm:pr-6 py-4">
           <div className="flex items-center justify-between gap-4">
             {/* Logo + Page title - same line, logo near corner */}
             <div className="flex items-center gap-4 min-w-0 flex-shrink-0">
@@ -3616,7 +3616,7 @@ export default function Home() {
       </nav>
 
       {/* Main Content */}
-      <main className={`max-w-7xl mx-auto px-6 flex-1 min-h-0 min-w-0 w-full max-w-[100vw] flex flex-col py-6 overflow-x-hidden ${
+      <main className={`max-w-7xl mx-auto px-4 sm:px-6 flex-1 min-h-0 min-w-0 w-full max-w-[100vw] flex flex-col py-6 overflow-x-hidden ${
         activeTab === 'calendar' ? 'overflow-hidden' : ''
       }`}>
         <div className="flex-1 min-h-0 flex flex-col">
@@ -3831,12 +3831,6 @@ export default function Home() {
             >
               {/* Unified card container */}
               <div className="rounded-2xl border overflow-hidden w-full" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}>
-                {/* Header */}
-                <div className="px-6 py-5 border-b flex items-baseline justify-between flex-wrap gap-2" style={{ borderColor: 'var(--border-primary)' }}>
-                  <h2 className="text-2xl font-extrabold" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>{t.allEvents}</h2>
-                  <span className="text-sm" style={{ color: 'var(--text-muted)' }}>{events.length} {t.events.toLowerCase()}</span>
-                </div>
-
                 {/* 1. My events */}
                 <section className="p-6 border-b" style={{ borderColor: 'var(--border-primary)' }}>
                   <div className="flex items-center gap-2 mb-4">
