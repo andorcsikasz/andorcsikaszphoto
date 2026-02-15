@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import WarpTwister from './WarpTwister'
 import VibeNetwork from './VibeNetwork'
@@ -11,6 +11,43 @@ interface LandingPageProps {
 
 export default function LandingPage({ onGetStarted }: LandingPageProps) {
   const [hovered, setHovered] = useState(false)
+  const hasContinuedRef = useRef(false)
+
+  // Lock body scroll - landing fits viewport only
+  useEffect(() => {
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = prev }
+  }, [])
+
+  // Scroll down / swipe up → switch to next site (no page scroll)
+  const touchStartY = useRef(0)
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      if (e.deltaY > 15 && !hasContinuedRef.current) {
+        e.preventDefault()
+        hasContinuedRef.current = true
+        onGetStarted()
+      }
+    }
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY.current = e.touches[0].clientY
+    }
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!hasContinuedRef.current && touchStartY.current - e.touches[0].clientY > 60) {
+        hasContinuedRef.current = true
+        onGetStarted()
+      }
+    }
+    window.addEventListener('wheel', handleWheel, { passive: false })
+    window.addEventListener('touchstart', handleTouchStart, { passive: true })
+    window.addEventListener('touchmove', handleTouchMove, { passive: true })
+    return () => {
+      window.removeEventListener('wheel', handleWheel)
+      window.removeEventListener('touchstart', handleTouchStart)
+      window.removeEventListener('touchmove', handleTouchMove)
+    }
+  }, [onGetStarted])
 
   const valueProps = [
     { title: 'Google Calendar', desc: 'Sync events seamlessly' },
@@ -21,7 +58,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden bg-[var(--bg-primary)] px-4"
+      className="fixed inset-0 h-screen w-screen flex flex-col items-center justify-center overflow-hidden overscroll-none bg-[var(--bg-primary)] px-4"
       style={{ fontFamily: 'var(--font-sans)' }}
     >
       <VibeNetwork
@@ -35,7 +72,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
         showPulses={true}
         className="z-0"
       />
-      <div className="text-center relative z-10">
+      <div className="text-center relative z-10 max-h-[90vh] overflow-hidden flex flex-col items-center">
         <motion.h1
           className="text-6xl sm:text-7xl md:text-8xl font-bold tracking-tight cursor-pointer select-none"
           whileHover={{ scale: 1.015 }}
@@ -68,7 +105,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: hovered ? 1 : 0.7 }}
           transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-16 grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto"
+          className="mt-6 sm:mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 max-w-2xl mx-auto"
         >
           {valueProps.map((item, i) => (
             <motion.div
@@ -106,7 +143,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
             transition: { duration: 0.35 }
           }}
           whileTap={{ scale: 0.97 }}
-          className="mt-12 px-12 py-5 rounded-full text-xl font-semibold text-white animate-pulse-glow"
+          className="mt-6 sm:mt-10 px-10 sm:px-12 py-4 sm:py-5 rounded-full text-lg sm:text-xl font-semibold text-white animate-pulse-glow"
           style={{
             background: 'var(--btn-primary-bg)',
             boxShadow: 'var(--shadow-glow), 0 0 24px rgba(13, 148, 136, 0.15)',
@@ -114,6 +151,16 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
         >
           Get Started
         </motion.button>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 0.5 }}
+          className="mt-6 sm:mt-8 text-xs tracking-widest uppercase font-medium"
+          style={{ color: 'var(--text-muted)' }}
+        >
+          Scroll to continue
+        </motion.p>
       </div>
     </div>
   )
