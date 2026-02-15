@@ -79,7 +79,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
           transition={{ type: 'tween', duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           style={{
             color: 'var(--text-primary)',
-            fontFamily: "'Public Sans', sans-serif",
+            fontFamily: 'var(--font-heading)',
             letterSpacing: '-0.03em',
           }}
           onMouseEnter={() => setHovered(true)}

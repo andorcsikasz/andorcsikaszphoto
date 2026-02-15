@@ -959,7 +959,7 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
           }}
           className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"
           style={{ 
-            fontFamily: "'Sora', system-ui, sans-serif",
+            fontFamily: "var(--font-heading)",
             color: 'var(--text-primary)',
             letterSpacing: '-0.03em',
             willChange: 'transform, opacity',
@@ -982,7 +982,7 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
           }}
           className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"
           style={{ 
-            fontFamily: "'Sora', system-ui, sans-serif",
+            fontFamily: "var(--font-heading)",
             color: 'var(--accent-primary)',
             letterSpacing: '-0.03em',
             willChange: 'transform, opacity',
@@ -3430,7 +3430,7 @@ export default function Home() {
               <button
                 onClick={handleLogoClick}
                 className="text-2xl font-black tracking-tighter cursor-pointer hover:opacity-80 transition-opacity select-none"
-                style={{ color: 'var(--text-primary)', background: 'none', border: 'none', padding: 0 }}
+                style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-primary)', background: 'none', border: 'none', padding: 0 }}
               >
                 GatherGo
               </button>
@@ -3834,7 +3834,7 @@ export default function Home() {
                 <section className="p-6 border-b" style={{ borderColor: 'var(--border-primary)' }}>
                   <div className="flex items-center gap-2 mb-4">
                     <StarIcon className="w-5 h-5 text-blue-400" />
-                    <h3 className="text-lg font-semibold text-blue-400" style={{ fontFamily: 'var(--font-sans)' }}>
+                    <h3 className="text-lg font-semibold text-blue-400" style={{ fontFamily: 'var(--font-heading)' }}>
                       {t.myEvents}
                     </h3>
                   </div>
@@ -3898,7 +3898,7 @@ export default function Home() {
                 <section className="p-6 border-b" style={{ borderColor: 'var(--border-primary)' }}>
                   <div className="flex items-center gap-2 mb-4">
                     <UserGroupIcon className="w-5 h-5 text-purple-400" />
-                    <h3 className="text-lg font-semibold text-purple-400" style={{ fontFamily: 'var(--font-sans)' }}>
+                    <h3 className="text-lg font-semibold text-purple-400" style={{ fontFamily: 'var(--font-heading)' }}>
                       {t.friendsFamilyCompany}
                     </h3>
                   </div>
@@ -3954,7 +3954,7 @@ export default function Home() {
                 <section className="p-6">
                   <div className="flex items-center gap-2 mb-4">
                     <MapPinIcon className="w-5 h-5 text-amber-400" />
-                    <h3 className="text-lg font-semibold text-amber-400" style={{ fontFamily: 'var(--font-sans)' }}>
+                    <h3 className="text-lg font-semibold text-amber-400" style={{ fontFamily: 'var(--font-heading)' }}>
                       {t.suggestedOpenNearMe}
                     </h3>
                   </div>
@@ -4417,7 +4417,7 @@ export default function Home() {
                       >
                         <div className="flex items-center gap-3">
                           <StarIcon className="w-5 h-5 text-blue-400" />
-                          <h3 className="text-lg font-semibold text-blue-400" style={{ fontFamily: 'var(--font-sans)' }}>{lang === 'en' ? 'Events I Organize' : 'Általam szervezett'}</h3>
+                          <h3 className="text-lg font-semibold text-blue-400" style={{ fontFamily: 'var(--font-heading)' }}>{lang === 'en' ? 'Events I Organize' : 'Általam szervezett'}</h3>
                         </div>
                         <div className="flex items-center gap-2">
                           <span className={`text-sm px-2 py-1 rounded-full ${
@@ -4509,7 +4509,7 @@ export default function Home() {
                       >
                         <div className="flex items-center gap-3">
                           <UserGroupIcon className="w-5 h-5 text-purple-400" />
-                          <h3 className="text-lg font-semibold text-purple-400" style={{ fontFamily: 'var(--font-sans)' }}>{lang === 'en' ? "Events I'm Invited To" : 'Meghívásaim'}</h3>
+                          <h3 className="text-lg font-semibold text-purple-400" style={{ fontFamily: 'var(--font-heading)' }}>{lang === 'en' ? "Events I'm Invited To" : 'Meghívásaim'}</h3>
                         </div>
                         <div className="flex items-center gap-2">
                           <span className={`text-sm px-2 py-1 rounded-full ${
@@ -4592,7 +4592,7 @@ export default function Home() {
                     theme === 'light' ? 'bg-[var(--bg-card)] border-[var(--border-primary)]' : 'bg-[var(--bg-card)] border-[var(--border-primary)]'
                   }`}>
                     <div className={`p-6 border-b ${theme === 'light' ? 'border-[var(--border-primary)]' : 'border-[var(--border-primary)]'}`}>
-                      <h3 className="text-lg font-semibold" style={{ fontFamily: 'var(--font-sans)' }}>{t.upcomingEvents}</h3>
+                      <h3 className="text-lg font-semibold" style={{ fontFamily: 'var(--font-heading)' }}>{t.upcomingEvents}</h3>
                     </div>
                     <div className={`divide-y ${theme === 'light' ? 'divide-[var(--border-primary)]' : 'divide-[#1F1F1F]'}`}>
                       {events.slice(0, 5).map((event) => (
