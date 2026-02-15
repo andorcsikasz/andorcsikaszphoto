@@ -927,7 +927,7 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
         nodeCount={90}
         connectionDistance={220}
         speed={0.9}
-        opacity={0.85}
+        opacity={0.45}
         showDendrites={true}
         showPulses={true}
       />

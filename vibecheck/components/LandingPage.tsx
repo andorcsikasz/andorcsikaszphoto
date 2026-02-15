@@ -30,7 +30,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
         nodeCount={85}
         connectionDistance={210}
         speed={0.9}
-        opacity={0.8}
+        opacity={0.4}
         showDendrites={true}
         showPulses={true}
         className="z-0"
