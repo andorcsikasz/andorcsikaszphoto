@@ -3627,7 +3627,7 @@ export default function Home() {
               className="flex flex-col min-h-0 flex-1"
             >
               <div className="flex-shrink-0 mb-3">
-                <h2 className="text-2xl font-bold mb-1" style={{ color: 'var(--text-primary)' }}>{t.myCalendar}</h2>
+                <h2 className="text-2xl font-extrabold mb-1" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>{t.myCalendar}</h2>
                 <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.upcomingEvents}</p>
               </div>
           
@@ -3828,7 +3828,7 @@ export default function Home() {
               <div className="rounded-2xl border overflow-hidden w-full" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}>
                 {/* Header */}
                 <div className="px-6 py-5 border-b flex items-baseline justify-between flex-wrap gap-2" style={{ borderColor: 'var(--border-primary)' }}>
-                  <h2 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{t.allEvents}</h2>
+                  <h2 className="text-2xl font-extrabold" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>{t.allEvents}</h2>
                   <span className="text-sm" style={{ color: 'var(--text-muted)' }}>{events.length} {t.events.toLowerCase()}</span>
                 </div>
 
@@ -3836,7 +3836,7 @@ export default function Home() {
                 <section className="p-6 border-b" style={{ borderColor: 'var(--border-primary)' }}>
                   <div className="flex items-center gap-2 mb-4">
                     <StarIcon className="w-5 h-5 text-blue-400" />
-                    <h3 className="text-lg font-semibold text-blue-400" style={{ fontFamily: 'var(--font-heading)' }}>
+                    <h3 className="text-lg font-bold text-blue-400" style={{ fontFamily: 'var(--font-heading)' }}>
                       {t.myEvents}
                     </h3>
                   </div>
@@ -3868,8 +3868,8 @@ export default function Home() {
                           {event.type === 'private' && <span className="text-xs text-[var(--text-muted)]">Private</span>}
                         </div>
                       </div>
-                      <h3 className="text-lg font-bold mb-3 line-clamp-2" style={{ color: 'var(--text-primary)' }}>{event.title}</h3>
-                      <p className="text-sm mb-2" style={{ color: 'var(--accent-primary)' }}>{event.organizerName}</p>
+                      <h3 className="text-lg font-extrabold mb-3 line-clamp-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>{event.title}</h3>
+                      <p className="text-sm font-bold mb-2" style={{ color: 'var(--accent-primary)' }}>{event.organizerName}</p>
                       <div className="flex items-center gap-2 text-sm mb-2" style={{ color: 'var(--text-muted)' }}>
                         <CalendarIcon className="w-4 h-4" />
                         <span>{new Date(event.date).toLocaleDateString(lang === 'hu' ? 'hu-HU' : 'en-US', { month: 'short', day: 'numeric' })} • {event.time}</span>
@@ -3900,7 +3900,7 @@ export default function Home() {
                 <section className="p-6 border-b" style={{ borderColor: 'var(--border-primary)' }}>
                   <div className="flex items-center gap-2 mb-4">
                     <UserGroupIcon className="w-5 h-5 text-purple-400" />
-                    <h3 className="text-lg font-semibold text-purple-400" style={{ fontFamily: 'var(--font-heading)' }}>
+                    <h3 className="text-lg font-bold text-purple-400" style={{ fontFamily: 'var(--font-heading)' }}>
                       {t.friendsFamilyCompany}
                     </h3>
                   </div>
@@ -3924,8 +3924,8 @@ export default function Home() {
                         }`}>{getStatusLabel(event.status)}</span>
                         {event.type === 'private' && <span className="text-xs text-[var(--text-muted)]">Private</span>}
                       </div>
-                      <h3 className="text-lg font-bold mb-3 line-clamp-2" style={{ color: 'var(--text-primary)' }}>{event.title}</h3>
-                      <p className="text-sm mb-2" style={{ color: 'var(--accent-primary)' }}>{event.organizerName}</p>
+                      <h3 className="text-lg font-extrabold mb-3 line-clamp-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>{event.title}</h3>
+                      <p className="text-sm font-bold mb-2" style={{ color: 'var(--accent-primary)' }}>{event.organizerName}</p>
                       <div className="flex items-center gap-2 text-sm mb-2" style={{ color: 'var(--text-muted)' }}>
                         <CalendarIcon className="w-4 h-4" />
                         <span>{new Date(event.date).toLocaleDateString(lang === 'hu' ? 'hu-HU' : 'en-US', { month: 'short', day: 'numeric' })} • {event.time}</span>
@@ -3956,7 +3956,7 @@ export default function Home() {
                 <section className="p-6">
                   <div className="flex items-center gap-2 mb-4">
                     <MapPinIcon className="w-5 h-5 text-amber-400" />
-                    <h3 className="text-lg font-semibold text-amber-400" style={{ fontFamily: 'var(--font-heading)' }}>
+                    <h3 className="text-lg font-bold text-amber-400" style={{ fontFamily: 'var(--font-heading)' }}>
                       {t.suggestedOpenNearMe}
                     </h3>
                   </div>
@@ -3972,8 +3972,8 @@ export default function Home() {
                       style={{ backgroundColor: 'var(--bg-card)', backfaceVisibility: 'hidden' }}
                     >
                       <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-400 mb-4 inline-block">Open</span>
-                      <h3 className="text-lg font-bold mb-3 line-clamp-2" style={{ color: 'var(--text-primary)' }}>{event.title}</h3>
-                      <p className="text-sm mb-2" style={{ color: 'var(--accent-primary)' }}>{event.organizerName}</p>
+                      <h3 className="text-lg font-extrabold mb-3 line-clamp-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>{event.title}</h3>
+                      <p className="text-sm font-bold mb-2" style={{ color: 'var(--accent-primary)' }}>{event.organizerName}</p>
                       <div className="flex items-center gap-2 text-sm mb-2" style={{ color: 'var(--text-muted)' }}>
                         <CalendarIcon className="w-4 h-4" />
                         <span>{new Date(event.date).toLocaleDateString(lang === 'hu' ? 'hu-HU' : 'en-US', { month: 'short', day: 'numeric' })} • {event.time}</span>
@@ -4040,7 +4040,7 @@ export default function Home() {
                 ) : (
                   <div className="flex items-center justify-between">
                     <div>
-                      <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>{t.dashboard}</h2>
+                      <h2 className="text-3xl font-extrabold mb-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>{t.dashboard}</h2>
                       <p style={{ color: 'var(--text-muted)' }}>
                         {lang === 'en' ? 'Overview and analytics' : 'Áttekintés és statisztikák'}
                       </p>
@@ -4103,12 +4103,12 @@ export default function Home() {
             </div>
 
                         {/* Title */}
-                        <h3 className="text-lg font-bold mb-3 transition-colors line-clamp-2" style={{ color: 'var(--text-primary)' }}>
+                        <h3 className="text-lg font-extrabold mb-3 transition-colors line-clamp-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>
                           {event.title}
                         </h3>
 
                         {/* Organizer */}
-                        <p className="text-sm mb-2" style={{ color: 'var(--accent-primary)' }}>
+                        <p className="text-sm font-bold mb-2" style={{ color: 'var(--accent-primary)' }}>
                           {event.organizerName}
                         </p>
 
@@ -4419,7 +4419,7 @@ export default function Home() {
                       >
                         <div className="flex items-center gap-3">
                           <StarIcon className="w-5 h-5 text-blue-400" />
-                          <h3 className="text-lg font-semibold text-blue-400" style={{ fontFamily: 'var(--font-heading)' }}>{lang === 'en' ? 'Events I Organize' : 'Általam szervezett'}</h3>
+                          <h3 className="text-lg font-bold text-blue-400" style={{ fontFamily: 'var(--font-heading)' }}>{lang === 'en' ? 'Events I Organize' : 'Általam szervezett'}</h3>
                         </div>
                         <div className="flex items-center gap-2">
                           <span className={`text-sm px-2 py-1 rounded-full ${
@@ -4463,7 +4463,7 @@ export default function Home() {
                                 >
                                   <div className="w-2 h-10 rounded-full flex-shrink-0 bg-blue-500" />
                                   <div className="flex-1 min-w-0">
-                                    <p className="font-medium truncate">{event.title}</p>
+                                    <p className="font-bold truncate">{event.title}</p>
                                     <p className={`text-sm ${theme === 'light' ? 'text-[var(--text-muted)]' : 'text-[var(--text-muted)]'}`}>
                                       {new Date(event.date).toLocaleDateString(lang === 'hu' ? 'hu-HU' : 'en-US', {
                                         month: 'short', day: 'numeric',
@@ -4511,7 +4511,7 @@ export default function Home() {
                       >
                         <div className="flex items-center gap-3">
                           <UserGroupIcon className="w-5 h-5 text-purple-400" />
-                          <h3 className="text-lg font-semibold text-purple-400" style={{ fontFamily: 'var(--font-heading)' }}>{lang === 'en' ? "Events I'm Invited To" : 'Meghívásaim'}</h3>
+                          <h3 className="text-lg font-bold text-purple-400" style={{ fontFamily: 'var(--font-heading)' }}>{lang === 'en' ? "Events I'm Invited To" : 'Meghívásaim'}</h3>
                         </div>
                         <div className="flex items-center gap-2">
                           <span className={`text-sm px-2 py-1 rounded-full ${
@@ -4552,7 +4552,7 @@ export default function Home() {
                                 >
                                   <div className="w-2 h-10 rounded-full flex-shrink-0 bg-purple-500" />
                                   <div className="flex-1 min-w-0">
-                                    <p className="font-medium truncate">{event.title}</p>
+                                    <p className="font-bold truncate">{event.title}</p>
                                     <p className={`text-sm ${theme === 'light' ? 'text-[var(--text-muted)]' : 'text-[var(--text-muted)]'}`}>
                                       {lang === 'en' ? 'by' : 'szervező:'} {event.organizerName}
                                     </p>
@@ -4607,7 +4607,7 @@ export default function Home() {
                         >
                           <div className={`w-3 h-3 rounded-full ${getStatusColor(event.status)}`} />
                           <div className="flex-1 min-w-0">
-                            <p className="font-medium truncate">{event.title}</p>
+                            <p className="font-bold truncate">{event.title}</p>
                             <p className={`text-sm ${theme === 'light' ? 'text-[var(--text-muted)]' : 'text-[var(--text-muted)]'}`}>
                               {new Date(event.date).toLocaleDateString(lang === 'hu' ? 'hu-HU' : 'en-US', {
                                 month: 'short',
@@ -4680,8 +4680,8 @@ export default function Home() {
                           </span>
                         )}
                       </div>
-                      <h2 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{selectedEvent.title}</h2>
-                      <p className="mt-1" style={{ color: 'var(--text-muted)' }}>{selectedEvent.organizerName}</p>
+                      <h2 className="text-2xl font-extrabold" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>{selectedEvent.title}</h2>
+                      <p className="mt-1 font-bold" style={{ color: 'var(--text-muted)' }}>{selectedEvent.organizerName}</p>
                     </div>
                   </div>
                   <div className="flex flex-col items-end gap-2">
@@ -4763,8 +4763,8 @@ export default function Home() {
                     return (
                       <div className="py-8 text-center">
                         <LockClosedIcon className="w-12 h-12 mx-auto mb-4" style={{ color: 'var(--text-muted)' }} />
-                        <p className="text-lg font-medium mb-2" style={{ color: 'var(--text-primary)' }}>{selectedEvent.title}</p>
-                        <p className="text-sm mb-4" style={{ color: 'var(--text-muted)' }}>{selectedEvent.organizerName}</p>
+                        <p className="text-lg font-bold mb-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>{selectedEvent.title}</p>
+                        <p className="text-sm font-bold mb-4" style={{ color: 'var(--text-muted)' }}>{selectedEvent.organizerName}</p>
                         <p className="text-sm max-w-md mx-auto" style={{ color: 'var(--accent-primary)' }}>{t.privateEventRestricted}</p>
                       </div>
                     )

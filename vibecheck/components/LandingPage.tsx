@@ -75,7 +75,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
       />
       <div className="text-center relative z-10">
         <motion.h1
-          className="text-6xl sm:text-7xl md:text-8xl font-bold tracking-tight cursor-pointer select-none"
+          className="text-6xl sm:text-7xl md:text-8xl font-extrabold tracking-tight cursor-pointer select-none"
           whileHover={{ scale: 1.015 }}
           transition={{ type: 'tween', duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           style={{
