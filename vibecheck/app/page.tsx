@@ -892,15 +892,13 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
   }, [stage])
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartY.current = e.touches[0].clientY
+    if (e.touches[0]) touchStartY.current = e.touches[0].clientY
   }
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (stage < 3) return
+    if (stage < 3 || !e.touches[0]) return
     const dy = touchStartY.current - e.touches[0].clientY
-    if (dy > 50) {
-      handleContinue()
-    }
+    if (dy > 50) handleContinue()
   }
 
   const easeElite = [0.16, 1, 0.3, 1] as const
@@ -2045,8 +2043,12 @@ export default function Home() {
     // Check for saved profile
     const savedProfile = localStorage.getItem('vibecheck_profile')
     if (savedProfile) {
-      const profile = JSON.parse(savedProfile)
-      setUserProfile({ ...profile, groups: profile.groups || [] })
+      try {
+        const profile = JSON.parse(savedProfile)
+        setUserProfile({ ...profile, groups: profile.groups || [] })
+      } catch {
+        localStorage.removeItem('vibecheck_profile')
+      }
       // Fetch events after profile is loaded
       setTimeout(() => fetchEvents(), 100)
     } else {

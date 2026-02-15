@@ -31,9 +31,10 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
       }
     }
     const handleTouchStart = (e: TouchEvent) => {
-      touchStartY.current = e.touches[0].clientY
+      if (e.touches[0]) touchStartY.current = e.touches[0].clientY
     }
     const handleTouchMove = (e: TouchEvent) => {
+      if (!e.touches[0]) return
       if (!hasContinuedRef.current && touchStartY.current - e.touches[0].clientY > 60) {
         hasContinuedRef.current = true
         onGetStarted()
