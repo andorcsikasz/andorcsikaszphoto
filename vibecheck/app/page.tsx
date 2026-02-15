@@ -4178,21 +4178,20 @@ export default function Home() {
                       <p className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>{myEvents.length}</p>
                       {totalTasks > 0 && (
                         <div className="mt-2">
-                          <div className="h-2 w-full rounded-full overflow-hidden bg-white/10 flex">
-                            <motion.div
-                              className="h-full rounded-l-full bg-blue-500"
-                              initial={{ width: 0 }}
-                              animate={{ width: `${assignedPct}%` }}
-                              transition={{ duration: 0.6, ease: 'easeOut' }}
-                            />
-                            <motion.div
-                              className="h-full rounded-r-full bg-emerald-500"
-                              style={{ width: `${finishedPct}%` }}
-                            />
+                          <div className="grid grid-cols-2 gap-1.5">
+                            <div>
+                              <div className="h-1.5 w-full rounded-full overflow-hidden bg-white/10">
+                                <motion.div className="h-full rounded-full bg-blue-500" initial={{ width: 0 }} animate={{ width: `${assignedPct}%` }} transition={{ duration: 0.5 }} />
+                              </div>
+                              <p className="text-[10px]" style={{ color: 'var(--text-muted)' }}>{assignedPct}% {lang === 'en' ? 'assigned' : 'kiosztva'}</p>
+                            </div>
+                            <div>
+                              <div className="h-1.5 w-full rounded-full overflow-hidden bg-white/10">
+                                <motion.div className="h-full rounded-full bg-emerald-500" initial={{ width: 0 }} animate={{ width: `${finishedPct}%` }} transition={{ duration: 0.5 }} />
+                              </div>
+                              <p className="text-[10px]" style={{ color: 'var(--text-muted)' }}>{finishedPct}% {lang === 'en' ? 'done' : 'kész'}</p>
+                            </div>
                           </div>
-                          <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-muted)' }}>
-                            {assignedPct}% {lang === 'en' ? 'assigned' : 'ki'} • {finishedPct}% {lang === 'en' ? 'done' : 'kész'}
-                          </p>
                         </div>
                       )}
                     </motion.button>
@@ -4215,6 +4214,21 @@ export default function Home() {
                         {lang === 'en' ? 'Not assigned' : 'Nincs kiosztva'}
                       </p>
                       <p className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>{tasksNotAssigned.length}</p>
+                      {tasksNotAssigned.length > 0 && (
+                        <div className="mt-2">
+                          <div className="h-2 w-full rounded-full overflow-hidden bg-white/10">
+                            <motion.div
+                              className="h-full rounded-full bg-amber-500"
+                              initial={{ width: 0 }}
+                              animate={{ width: `${(completedNotAssigned / tasksNotAssigned.length) * 100}%` }}
+                              transition={{ duration: 0.6, ease: 'easeOut' }}
+                            />
+                          </div>
+                          <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-muted)' }}>
+                            {Math.round((completedNotAssigned / tasksNotAssigned.length) * 100)}% {lang === 'en' ? 'done' : 'kész'}
+                          </p>
+                        </div>
+                      )}
                     </motion.button>
                     <motion.button
                       whileHover={{ scale: 1.02 }}
@@ -4235,6 +4249,21 @@ export default function Home() {
                         {lang === 'en' ? 'Tasks assigned' : 'Kiosztott feladatok'}
                       </p>
                       <p className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>{tasksAssigned.length}</p>
+                      {tasksAssigned.length > 0 && (
+                        <div className="mt-2">
+                          <div className="h-2 w-full rounded-full overflow-hidden bg-white/10">
+                            <motion.div
+                              className="h-full rounded-full bg-purple-500"
+                              initial={{ width: 0 }}
+                              animate={{ width: `${(completedAssigned / tasksAssigned.length) * 100}%` }}
+                              transition={{ duration: 0.6, ease: 'easeOut' }}
+                            />
+                          </div>
+                          <p className="text-[10px] mt-0.5" style={{ color: 'var(--text-muted)' }}>
+                            {Math.round((completedAssigned / tasksAssigned.length) * 100)}% {lang === 'en' ? 'done' : 'kész'}
+                          </p>
+                        </div>
+                      )}
                     </motion.button>
                   </div>
                   
