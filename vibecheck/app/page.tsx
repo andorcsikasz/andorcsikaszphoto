@@ -442,6 +442,9 @@ const translations = {
     eventsOrganized: 'Events organized',
     totalAttendees: 'Total attendees',
     avgAttendees: 'Avg. attendees',
+    withVoting: 'With voting',
+    withPayment: 'With payment',
+    viewOrganizerStats: 'View organizer statistics',
   },
   hu: {
     calendar: 'Naptár',
@@ -499,6 +502,9 @@ const translations = {
     eventsOrganized: 'Szervezett események',
     totalAttendees: 'Összes résztvevő',
     avgAttendees: 'Átl. résztvevő',
+    withVoting: 'Szavazással',
+    withPayment: 'Fizetéssel',
+    viewOrganizerStats: 'Szervező statisztikák megtekintése',
   },
 }
 
@@ -3477,7 +3483,7 @@ export default function Home() {
                   </div>
                 )}
               </AnimatePresence>
-              <span className="text-xl font-extrabold whitespace-nowrap truncate flex items-center gap-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>
+              <span className="text-xl font-extrabold whitespace-nowrap truncate flex items-baseline gap-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>
                 {activeTab === 'calendar' && t.myCalendar}
                 {activeTab === 'events' && <><span>{t.allEvents}</span> <span className="text-sm font-normal" style={{ color: 'var(--text-muted)' }}>({events.length})</span></>}
                 {activeTab === 'dashboard' && t.dashboard}
@@ -3839,6 +3845,9 @@ export default function Home() {
               transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
               className="w-full"
             >
+              <div className="flex-shrink-0 mb-3">
+                <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.upcomingEvents}</p>
+              </div>
               {/* Unified card container */}
               <div className="rounded-2xl border overflow-hidden w-full" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}>
                 {/* 1. My events */}
@@ -4717,10 +4726,13 @@ export default function Home() {
                       <button
                         type="button"
                         onClick={(e) => { e.stopPropagation(); setSelectedOrganizer({ id: selectedEvent.organizerId, name: selectedEvent.organizerName }); setShowOrganizerStatsModal(true) }}
-                        className="mt-1 font-bold text-left hover:underline cursor-pointer transition-opacity hover:opacity-80"
+                        className="mt-1 flex items-center gap-2 font-bold text-left hover:underline cursor-pointer transition-opacity hover:opacity-80 group"
                         style={{ color: 'var(--accent-primary)' }}
+                        title={t.viewOrganizerStats}
                       >
+                        <ChartBarIcon className="w-4 h-4 opacity-70 group-hover:opacity-100" />
                         {selectedEvent.organizerName}
+                        <span className="text-xs font-normal opacity-70">({lang === 'en' ? 'view stats' : 'statisztika'})</span>
                       </button>
                     </div>
                   </div>
@@ -4807,10 +4819,12 @@ export default function Home() {
                         <button
                           type="button"
                           onClick={() => { setSelectedOrganizer({ id: selectedEvent.organizerId, name: selectedEvent.organizerName }); setShowOrganizerStatsModal(true) }}
-                          className="text-sm font-bold mb-4 text-left hover:underline cursor-pointer"
+                          className="text-sm font-bold mb-4 flex items-center gap-2 hover:underline cursor-pointer"
                           style={{ color: 'var(--accent-primary)' }}
                         >
+                          <ChartBarIcon className="w-4 h-4" />
                           {selectedEvent.organizerName}
+                          <span className="text-xs font-normal opacity-80">({lang === 'en' ? 'view stats' : 'statisztika'})</span>
                         </button>
                         <p className="text-sm max-w-md mx-auto" style={{ color: 'var(--accent-primary)' }}>{t.privateEventRestricted}</p>
                       </div>
@@ -5279,7 +5293,7 @@ export default function Home() {
                   </button>
                 </div>
               </div>
-              <div className="p-6">
+              <div className="p-6 space-y-6">
                 {(() => {
                   const isMe = selectedOrganizer.id === 'me' || selectedOrganizer.id === currentUserId || selectedOrganizer.name === userProfile?.name || selectedOrganizer.name === userProfile?.userId
                   const organizedEvents = events.filter(e =>
@@ -5289,21 +5303,54 @@ export default function Home() {
                   )
                   const totalAttendees = organizedEvents.reduce((sum, e) => sum + (e.attendees || 0), 0)
                   const avgAttendees = organizedEvents.length > 0 ? Math.round(totalAttendees / organizedEvents.length) : 0
+                  const fixedCount = organizedEvents.filter(e => e.status === 'fixed').length
+                  const optimalCount = organizedEvents.filter(e => e.status === 'optimal').length
+                  const inProgressCount = organizedEvents.filter(e => e.status === 'in-progress').length
+                  const withVoting = organizedEvents.filter(e => e.hasVoting).length
+                  const withPayment = organizedEvents.filter(e => e.hasPayment).length
                   return (
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      <div className="rounded-xl p-4 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
-                        <div className="text-2xl font-bold" style={{ color: 'var(--accent-primary)' }}>{organizedEvents.length}</div>
-                        <div className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{t.eventsOrganized}</div>
+                    <>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div className="rounded-xl p-4 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                          <div className="text-2xl font-bold" style={{ color: 'var(--accent-primary)' }}>{organizedEvents.length}</div>
+                          <div className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{t.eventsOrganized}</div>
+                        </div>
+                        <div className="rounded-xl p-4 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                          <div className="text-2xl font-bold text-emerald-400">{totalAttendees}</div>
+                          <div className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{t.totalAttendees}</div>
+                        </div>
+                        <div className="rounded-xl p-4 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                          <div className="text-2xl font-bold text-amber-400">{avgAttendees}</div>
+                          <div className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{t.avgAttendees}</div>
+                        </div>
                       </div>
-                      <div className="rounded-xl p-4 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
-                        <div className="text-2xl font-bold text-emerald-400">{totalAttendees}</div>
-                        <div className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{t.totalAttendees}</div>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div className="rounded-xl p-3 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                          <div className="text-lg font-bold text-emerald-400">{fixedCount}</div>
+                          <div className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>{t.fixed}</div>
+                        </div>
+                        <div className="rounded-xl p-3 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                          <div className="text-lg font-bold" style={{ color: 'var(--text-muted)' }}>{optimalCount}</div>
+                          <div className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>{t.optimal}</div>
+                        </div>
+                        <div className="rounded-xl p-3 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                          <div className="text-lg font-bold text-orange-400">{inProgressCount}</div>
+                          <div className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>{t.inProgress}</div>
+                        </div>
                       </div>
-                      <div className="rounded-xl p-4 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
-                        <div className="text-2xl font-bold text-amber-400">{avgAttendees}</div>
-                        <div className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{t.avgAttendees}</div>
+                      <div className="flex flex-wrap gap-4">
+                        <div className="rounded-xl px-4 py-2 flex items-center gap-2" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                          <ChatBubbleLeftRightIcon className="w-4 h-4 text-purple-400" />
+                          <span className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.withVoting}:</span>
+                          <span className="font-bold text-purple-400">{withVoting}</span>
+                        </div>
+                        <div className="rounded-xl px-4 py-2 flex items-center gap-2" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                          <CreditCardIcon className="w-4 h-4 text-emerald-400" />
+                          <span className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.withPayment}:</span>
+                          <span className="font-bold text-emerald-400">{withPayment}</span>
+                        </div>
                       </div>
-                    </div>
+                    </>
                   )
                 })()}
               </div>
