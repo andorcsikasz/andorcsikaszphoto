@@ -2008,6 +2008,13 @@ export default function Home() {
     if (activeTab !== 'calendar') setShowIntegrateMenu(false)
   }, [activeTab])
 
+  // Events view always starts at top when opened
+  useEffect(() => {
+    if (activeTab === 'events') {
+      window.scrollTo(0, 0)
+    }
+  }, [activeTab])
+
   // Tab indicator position - measure for smooth sliding (not jump)
   useEffect(() => {
     const container = tabBarRef.current
