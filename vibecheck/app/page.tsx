@@ -915,23 +915,17 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
     >
-      {/* Dynamic background - WarpTwister (funky) + Aurora (soft color flow) */}
-      <WarpTwister
-        colorStops={['#0f4c75', '#1e5f8e', '#0d9488', '#134e6a', '#0a3d5c']}
-        narrow={1.5}
-        rotSpeed={0.08}
-        spiralTight={0.4}
-        opacity={0.22}
-        className="opacity-90"
+      {/* Dynamic background - VibeNetwork (funky connected nodes + waves) */}
+      <VibeNetwork
+        nodeColors={['#0d9488', '#5eead4', '#5b9fd4', '#7bb4e0', '#c084fc', '#f472b6']}
+        waveColors={['#0d9488', '#5b9fd4', '#7c3aed', '#ec4899']}
+        nodeCount={60}
+        connectionDistance={160}
+        speed={0.7}
+        opacity={0.55}
+        showWaves={true}
+        showPulses={true}
       />
-      <div className="absolute inset-0 opacity-[0.5]">
-        <Aurora
-          colorStops={['#0f4c75', '#1e5f8e', '#0d9488', '#3d7ba8', '#0f4c75']}
-          amplitude={1.0}
-          blend={0.45}
-          speed={0.5}
-        />
-      </div>
 
       {/* Radial vignette - soft edges, center stays readable */}
       <div
