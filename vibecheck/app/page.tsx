@@ -127,21 +127,32 @@ const EventIcon = ({ iconId, className = "w-6 h-6", style }: EventIconProps) => 
   return <Icon className={className} style={style} />
 }
 
-// Minimalist B&W Avatar options - Premium with thicker borders
+// Kindergarten-style avatar options - playful, colorful, friendly
 const AVATARS = [
-  // Simple geometric shapes with thicker borders (stroke-width="5")
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="50" cy="40" r="15" fill="currentColor"/><path d="M25 85 Q50 55 75 85" fill="none" stroke="currentColor" stroke-width="5"/></svg>`,
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="7" y="7" width="86" height="86" rx="10" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="50" cy="38" r="12" fill="currentColor"/><ellipse cx="50" cy="75" rx="25" ry="15" fill="currentColor"/></svg>`,
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><polygon points="50,7 93,93 7,93" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="50" cy="50" r="10" fill="currentColor"/></svg>`,
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="5"/><line x1="50" y1="25" x2="50" y2="75" stroke="currentColor" stroke-width="5"/><line x1="25" y1="50" x2="75" y2="50" stroke="currentColor" stroke-width="5"/></svg>`,
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="35" cy="40" r="5" fill="currentColor"/><circle cx="65" cy="40" r="5" fill="currentColor"/><path d="M35 65 Q50 80 65 65" fill="none" stroke="currentColor" stroke-width="5"/></svg>`,
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="12" y="12" width="76" height="76" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="35" cy="40" r="8" fill="currentColor"/><circle cx="65" cy="40" r="8" fill="currentColor"/><rect x="35" y="60" width="30" height="5" fill="currentColor"/></svg>`,
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="42" fill="currentColor" stroke="currentColor" stroke-width="5"/><circle cx="50" cy="50" r="35" fill="black"/><circle cx="50" cy="50" r="15" fill="currentColor"/></svg>`,
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 7 L93 50 L50 93 L7 50 Z" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="50" cy="50" r="15" fill="currentColor"/></svg>`,
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" stroke-width="5"/><path d="M30 30 L70 70 M70 30 L30 70" stroke="currentColor" stroke-width="5"/></svg>`,
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="18" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="70" cy="30" r="18" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="50" cy="70" r="18" fill="none" stroke="currentColor" stroke-width="5"/></svg>`,
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect x="22" y="22" width="56" height="56" rx="28" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="40" cy="45" r="5" fill="currentColor"/><circle cx="60" cy="45" r="5" fill="currentColor"/><circle cx="50" cy="60" r="3" fill="currentColor"/></svg>`,
-  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 12 L88 88 L12 88 Z" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="50" cy="60" r="15" fill="none" stroke="currentColor" stroke-width="4"/></svg>`,
+  // Happy sun with rays
+  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="28" fill="#fbbf24"/><path d="M50 8 L52 38 L50 40 L48 38 Z M92 50 L62 52 L60 50 L62 48 Z M50 92 L48 62 L50 60 L52 62 Z M8 50 L38 48 L40 50 L38 52 Z M75 25 L55 42 L52 40 L72 23 Z M75 75 L52 58 L55 56 L78 73 Z M25 75 L42 55 L40 52 L23 72 Z M25 25 L45 42 L42 45 L22 28 Z" fill="#fbbf24"/><circle cx="35" cy="42" r="4" fill="#1f2937"/><circle cx="65" cy="42" r="4" fill="#1f2937"/><path d="M40 58 Q50 68 60 58" stroke="#1f2937" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`,
+  // Moon (full moon with smile)
+  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" fill="#e0e7ff"/><circle cx="38" cy="45" r="4" fill="#4f46e5"/><circle cx="62" cy="45" r="4" fill="#4f46e5"/><path d="M40 58 Q50 68 60 58" stroke="#4f46e5" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`,
+  // Five-pointed star
+  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 12 L58 38 L86 38 L64 54 L72 80 L50 66 L28 80 L36 54 L14 38 L42 38 Z" fill="#f59e0b"/><circle cx="42" cy="52" r="3" fill="#1f2937"/><circle cx="58" cy="52" r="3" fill="#1f2937"/><path d="M45 62 Q50 68 55 62" stroke="#1f2937" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`,
+  // Heart
+  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 85 C20 60 10 40 25 25 C35 15 50 25 50 25 C50 25 65 15 75 25 C90 40 80 60 50 85 Z" fill="#ef4444"/></svg>`,
+  // Daisy flower
+  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="15" fill="#fbbf24"/><circle cx="50" cy="28" r="12" fill="#fef3c7"/><circle cx="70" cy="38" r="12" fill="#fef3c7"/><circle cx="72" cy="58" r="12" fill="#fef3c7"/><circle cx="50" cy="72" r="12" fill="#fef3c7"/><circle cx="28" cy="58" r="12" fill="#fef3c7"/><circle cx="28" cy="38" r="12" fill="#fef3c7"/><circle cx="50" cy="50" r="8" fill="#f59e0b"/></svg>`,
+  // Butterfly
+  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="55" rx="8" ry="20" fill="#7c3aed"/><path d="M42 45 Q20 25 15 35 Q25 50 42 55 Z" fill="#a78bfa"/><path d="M58 45 Q80 25 85 35 Q75 50 58 55 Z" fill="#a78bfa"/><path d="M42 55 Q20 75 15 65 Q25 55 42 50 Z" fill="#c4b5fd"/><path d="M58 55 Q80 75 85 65 Q75 55 58 50 Z" fill="#c4b5fd"/><circle cx="48" cy="52" r="2" fill="#1f2937"/><circle cx="52" cy="52" r="2" fill="#1f2937"/></svg>`,
+  // Apple
+  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M55 15 C40 12 28 25 28 42 C28 65 50 88 50 88 C50 88 72 65 72 42 C72 25 60 12 55 15 Z" fill="#dc2626"/><path d="M50 15 L50 8 L48 12 L50 15" stroke="#22c55e" stroke-width="3" fill="none"/></svg>`,
+  // Soccer ball
+  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="42" fill="#22c55e" stroke="#15803d" stroke-width="3"/><path d="M50 8 L50 50 L20 78 L50 50 L80 78 L50 50 L50 92 L78 60 L50 50 L22 60 L50 50 Z" stroke="#fff" stroke-width="4" fill="none"/></svg>`,
+  // Cat face
+  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" fill="#f97316"/><path d="M30 25 L25 15 L35 22 M70 25 L75 15 L65 22" stroke="#1f2937" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="38" cy="48" r="6" fill="#1f2937"/><circle cx="62" cy="48" r="6" fill="#1f2937"/><circle cx="40" cy="46" r="2" fill="#fff"/><circle cx="64" cy="46" r="2" fill="#fff"/><path d="M50 58 Q42 68 50 72 Q58 68 50 58" fill="#1f2937"/><path d="M35 52 Q30 48 35 48 M65 52 Q70 48 65 48" stroke="#1f2937" stroke-width="2" fill="none"/></svg>`,
+  // Dog face
+  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="55" rx="38" ry="35" fill="#eab308"/><ellipse cx="75" cy="45" rx="12" ry="14" fill="#eab308"/><circle cx="40" cy="48" r="6" fill="#1f2937"/><circle cx="60" cy="48" r="6" fill="#1f2937"/><circle cx="42" cy="46" r="2" fill="#fff"/><circle cx="62" cy="46" r="2" fill="#fff"/><path d="M50 62 Q42 72 50 76 Q58 72 50 62" fill="#1f2937"/><path d="M28 42 Q22 38 25 42 M72 42 Q78 38 75 42" stroke="#1f2937" stroke-width="2" fill="none"/></svg>`,
+  // Bear face
+  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="38" fill="#a16207"/><circle cx="38" cy="42" r="10" fill="#a16207"/><circle cx="62" cy="42" r="10" fill="#a16207"/><circle cx="38" cy="42" r="5" fill="#1f2937"/><circle cx="62" cy="42" r="5" fill="#1f2937"/><circle cx="50" cy="58" r="8" fill="#1f2937"/><ellipse cx="50" cy="55" rx="4" ry="3" fill="#78350f"/><path d="M30 35 L22 28 M70 35 L78 28" stroke="#1f2937" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`,
+  // Bird
+  `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><ellipse cx="55" cy="55" rx="30" ry="28" fill="#0ea5e9"/><path d="M25 45 Q15 55 25 65 Q35 55 25 45" fill="#38bdf8"/><path d="M55 30 Q75 35 85 25 Q80 45 60 40" fill="#38bdf8"/><circle cx="62" cy="52" r="5" fill="#1f2937"/><circle cx="64" cy="50" r="2" fill="#fff"/><path d="M75 38 L85 32" stroke="#f59e0b" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`,
 ]
 
 // Event Categories
