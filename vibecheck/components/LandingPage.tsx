@@ -25,12 +25,12 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
       style={{ fontFamily: 'var(--font-sans)' }}
     >
       <VibeNetwork
-        nodeColors={['#0d9488', '#5eead4', '#5b9fd4', '#7bb4e0', '#c084fc', '#f472b6']}
-        waveColors={['#0d9488', '#5b9fd4', '#7c3aed', '#ec4899']}
-        nodeCount={55}
-        connectionDistance={160}
+        nodeColors={['#0d9488', '#5eead4', '#5b9fd4', '#38bdf8', '#c084fc', '#f472b6', '#fb923c', '#34d399']}
+        waveColors={['#5eead4', '#38bdf8', '#c084fc', '#fb923c', '#f472b6']}
+        nodeCount={75}
+        connectionDistance={190}
         speed={0.8}
-        opacity={0.5}
+        opacity={0.65}
         showDendrites={true}
         showPulses={true}
         className="z-0"

@@ -916,15 +916,15 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
     >
-      {/* Dynamic background - VibeNetwork (funky connected nodes + waves) */}
+      {/* Dynamic background - Neural brain map */}
       <VibeNetwork
-        nodeColors={['#0d9488', '#5eead4', '#5b9fd4', '#7bb4e0', '#c084fc', '#f472b6']}
-        waveColors={['#0d9488', '#5b9fd4', '#7c3aed', '#ec4899']}
-        nodeCount={60}
-        connectionDistance={160}
-        speed={0.7}
-        opacity={0.55}
-        showWaves={true}
+        nodeColors={['#0d9488', '#5eead4', '#5b9fd4', '#38bdf8', '#c084fc', '#f472b6', '#fb923c', '#34d399']}
+        waveColors={['#5eead4', '#38bdf8', '#c084fc', '#fb923c', '#f472b6']}
+        nodeCount={80}
+        connectionDistance={200}
+        speed={0.8}
+        opacity={0.7}
+        showDendrites={true}
         showPulses={true}
       />
 
