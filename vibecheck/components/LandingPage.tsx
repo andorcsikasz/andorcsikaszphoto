@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import WarpTwister from './WarpTwister'
+import VibeNetwork from './VibeNetwork'
 
 interface LandingPageProps {
   onGetStarted: () => void
@@ -23,12 +24,15 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
       className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden bg-[var(--bg-primary)] px-4"
       style={{ fontFamily: 'var(--font-sans)' }}
     >
-      <WarpTwister
-        colorStops={['#0f4c75', '#1e5f8e', '#0d9488', '#134e6a', '#0a3d5c']}
-        narrow={1.6}
-        rotSpeed={0.12}
-        spiralTight={0.6}
-        opacity={0.35}
+      <VibeNetwork
+        nodeColors={['#0d9488', '#5eead4', '#5b9fd4', '#7bb4e0', '#c084fc', '#f472b6']}
+        waveColors={['#0d9488', '#5b9fd4', '#7c3aed', '#ec4899']}
+        nodeCount={55}
+        connectionDistance={150}
+        speed={0.8}
+        opacity={0.5}
+        showWaves={true}
+        showPulses={true}
         className="z-0"
       />
       <div className="text-center relative z-10">
