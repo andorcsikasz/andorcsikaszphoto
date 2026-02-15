@@ -2698,7 +2698,7 @@ export default function Home() {
                 {/* Avatar & Name */}
                 <div className="flex items-center gap-4">
                   <div 
-                    className="w-24 h-24 rounded-full p-2 relative group cursor-pointer transition-all hover:scale-105"
+                    className="w-24 h-24 rounded-full p-2 relative group cursor-pointer transition-all hover:scale-105 flex items-center justify-center"
                     style={{ 
                       backgroundColor: 'var(--bg-tertiary)',
                       border: '4px solid var(--accent-primary)',
@@ -2710,7 +2710,7 @@ export default function Home() {
                       setTempProfile({ ...tempProfile, avatarIndex: nextIndex })
                     }}
                   >
-                    <span className="text-3xl transition-transform group-hover:scale-110" style={{ color: 'var(--text-primary)' }}>
+                    <span className="text-5xl leading-none transition-transform group-hover:scale-110 select-none" style={{ color: 'var(--text-primary)' }}>
                       {AVATARS[tempProfile.avatarIndex % AVATARS.length]}
                     </span>
                     <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity bg-black/10 flex items-center justify-center">
