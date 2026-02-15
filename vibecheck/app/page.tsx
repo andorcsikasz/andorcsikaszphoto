@@ -4269,9 +4269,9 @@ export default function Home() {
                   
                   {/* Two Column Layout: My Events + Invited Events */}
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                    {/* Events I Organize */}
+                    {/* Events I Organize — BLUE */}
                     <div className={`rounded-xl border overflow-hidden ${
-                      theme === 'light' ? 'bg-[var(--bg-card)] border-[var(--border-primary)]' : 'bg-[var(--bg-card)] border-[var(--border-primary)]'
+                      theme === 'light' ? 'bg-[var(--bg-card)] border-blue-300/50' : 'bg-[var(--bg-card)] border-blue-500/30'
                     }`}>
                       <button
                         onClick={() => setShowAllOrganizedEvents(!showAllOrganizedEvents)}
@@ -4280,8 +4280,8 @@ export default function Home() {
                         }`}
                       >
                         <div className="flex items-center gap-3">
-                          <StarIcon className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
-                          <h3 className="text-lg font-semibold" style={{ fontFamily: 'var(--font-sans)' }}>{lang === 'en' ? 'Events I Organize' : 'Általam szervezett'}</h3>
+                          <StarIcon className="w-5 h-5 text-blue-400" />
+                          <h3 className="text-lg font-semibold text-blue-400" style={{ fontFamily: 'var(--font-sans)' }}>{lang === 'en' ? 'Events I Organize' : 'Általam szervezett'}</h3>
                         </div>
                         <div className="flex items-center gap-2">
                           <span className={`text-sm px-2 py-1 rounded-full ${
@@ -4323,7 +4323,7 @@ export default function Home() {
                                     theme === 'light' ? 'hover:bg-[var(--bg-hover)]' : 'hover:bg-[var(--bg-tertiary)]'
                                   }`}
                                 >
-                                  <div className={`w-2 h-10 rounded-full ${getStatusColor(event.status)}`} />
+                                  <div className="w-2 h-10 rounded-full flex-shrink-0 bg-blue-500" />
                                   <div className="flex-1 min-w-0">
                                     <p className="font-medium truncate">{event.title}</p>
                                     <p className={`text-sm ${theme === 'light' ? 'text-[var(--text-muted)]' : 'text-[var(--text-muted)]'}`}>
