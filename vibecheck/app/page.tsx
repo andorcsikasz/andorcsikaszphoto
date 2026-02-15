@@ -3415,7 +3415,7 @@ export default function Home() {
         initial={{ opacity: 0 }}
         animate={{ opacity: showSplash ? 0 : 1 }}
         transition={{ duration: 0.5 }}
-        className={`min-h-screen flex flex-col ${activeTab === 'calendar' ? 'h-screen overflow-hidden' : ''}`}
+        className={`min-h-screen flex flex-col w-full max-w-[100vw] overflow-x-hidden ${activeTab === 'calendar' ? 'h-screen overflow-hidden' : ''}`}
         style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}
       >
       {/* Navigation */}
@@ -3609,7 +3609,7 @@ export default function Home() {
       </nav>
 
       {/* Main Content */}
-      <main className={`max-w-7xl mx-auto px-6 flex-1 min-h-0 w-full flex flex-col py-6 ${
+      <main className={`max-w-7xl mx-auto px-6 flex-1 min-h-0 min-w-0 w-full max-w-[100vw] flex flex-col py-6 overflow-x-hidden ${
         activeTab === 'calendar' ? 'overflow-hidden' : ''
       }`}>
         <div className="flex-1 min-h-0 flex flex-col">
