@@ -424,6 +424,9 @@ const translations = {
     pending: 'Pending',
     declined: 'Declined',
     going: 'going',
+    rsvpGoing: 'Going',
+    rsvpThinking: 'Thinking',
+    rsvpNotGoing: 'Not going',
     upcomingEvents: 'Upcoming Events',
     allEvents: 'All Events',
     integrateCalendar: 'Integrate to calendar',
@@ -467,6 +470,9 @@ const translations = {
     pending: 'Függőben',
     declined: 'Elutasítva',
     going: 'megy',
+    rsvpGoing: 'Megyek',
+    rsvpThinking: 'Gondolkozom',
+    rsvpNotGoing: 'Nem megyek',
     upcomingEvents: 'Közelgő események',
     allEvents: 'Összes esemény',
     integrateCalendar: 'Naptár csatlakoztatása',
@@ -2241,14 +2247,10 @@ export default function Home() {
     : taskViewFilter === 'assigned-to-me'
       ? invitedEvents.filter(eventHasTasksAssignedToMe)
       : taskViewFilter === 'my-events'
-        ? [] // my-events shows only my events
+        ? invitedEvents // keep both columns visible; my-events highlights the left
         : taskViewFilter === 'not-assigned'
           ? invitedEvents.filter(eventHasUnassignedTasks)
           : invitedEvents.filter(eventHasAssignedTasks)
-
-  // Split my events into 2 parts: (a) events with tasks assigned to me, (b) other events I organize
-  const myEventsWithMyTasks = myEvents.filter(eventHasTasksAssignedToMe)
-  const myEventsOther = myEvents.filter(e => !eventHasTasksAssignedToMe(e))
 
   const totalAttendees = events.reduce((sum, e) => sum + e.confirmedAttendees, 0)
   const totalEvents = events.length
@@ -4270,9 +4272,9 @@ export default function Home() {
                           <span className={`text-sm px-2 py-1 rounded-full ${
                             theme === 'light' ? 'bg-purple-100 text-purple-600' : 'bg-purple-500/20 text-purple-400'
                           }`}>
-                            {invitedEvents.length}
+                            {filteredInvitedEvents.length}
                           </span>
-                          {invitedEvents.length > 4 && (
+                          {filteredInvitedEvents.length > 4 && (
                             showAllInvitedEvents ? (
                               <ChevronUpIcon className={`w-4 h-4 ${theme === 'light' ? 'text-purple-600' : 'text-purple-400'}`} />
                             ) : (
@@ -4282,15 +4284,15 @@ export default function Home() {
                         </div>
                       </button>
                       <div className={`divide-y ${theme === 'light' ? 'divide-[var(--border-primary)]' : 'divide-[#1F1F1F]'}`}>
-                        {invitedEvents.length === 0 ? (
+                        {filteredInvitedEvents.length === 0 ? (
                           <div className="p-8 text-center">
                             <UserGroupIcon className={`w-12 h-12 mx-auto mb-3 ${theme === 'light' ? 'text-[var(--text-secondary)]' : 'text-[var(--text-muted)]'}`} />
                             <p className={theme === 'light' ? 'text-[var(--text-muted)]' : 'text-[var(--text-muted)]'}>
                               {lang === 'en' ? 'No invitations yet' : 'Még nincs meghívás'}
                             </p>
-        </div>
-      ) : (
-                          (showAllInvitedEvents ? invitedEvents : invitedEvents.slice(0, 4)).map((event) => (
+                          </div>
+                        ) : (
+                          (showAllInvitedEvents ? filteredInvitedEvents : filteredInvitedEvents.slice(0, 4)).map((event) => (
                             <button
               key={event.id}
                               onClick={() => setSelectedEvent(event)}
@@ -4304,13 +4306,13 @@ export default function Home() {
                                 <p className={`text-sm ${theme === 'light' ? 'text-[var(--text-muted)]' : 'text-[var(--text-muted)]'}`}>
                                   {lang === 'en' ? 'by' : 'szervező:'} {event.organizerName}
                                 </p>
-        </div>
+                              </div>
                               <ChevronRightIcon className={`w-4 h-4 ${theme === 'light' ? 'text-[var(--text-muted)]' : 'text-[var(--text-muted)]'}`} />
                             </button>
                           ))
-      )}
-    </div>
-        </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
 
                   {/* Recent Events */}
