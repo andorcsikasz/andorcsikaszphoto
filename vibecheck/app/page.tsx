@@ -3514,25 +3514,49 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Right side */}
-            <div className="flex items-center gap-4">
-                  <select
-                    value={lang}
-                onChange={(e) => setLang(e.target.value as Language)}
-                className="bg-transparent text-sm text-[var(--text-muted)] border-none outline-none cursor-pointer"
+            {/* Right side - unified pill controls */}
+            <div className="flex items-center gap-2">
+              <div className="relative hover:opacity-90 transition-opacity">
+                <select
+                  value={lang}
+                  onChange={(e) => setLang(e.target.value as Language)}
+                  className="h-10 pl-3 pr-8 rounded-xl border text-sm font-medium cursor-pointer appearance-none transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] focus:ring-offset-1"
+                  style={{ 
+                    borderColor: 'var(--border-primary)', 
+                    backgroundColor: 'var(--bg-card)',
+                    color: 'var(--text-primary)'
+                  }}
+                >
+                  <option value="en">EN</option>
+                  <option value="hu">HU</option>
+                </select>
+                <ChevronDownIcon className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: 'var(--text-muted)' }} />
+              </div>
+
+              <button
+                onClick={toggleTheme}
+                className="h-10 px-3 rounded-xl border flex items-center gap-2 transition-colors hover:bg-[var(--bg-hover)]"
+                style={{ 
+                  borderColor: 'var(--border-primary)', 
+                  backgroundColor: 'var(--bg-card)',
+                  color: 'var(--text-secondary)'
+                }}
+                title={isDarkTheme() ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                aria-label={isDarkTheme() ? 'Dark mode' : 'Light mode'}
               >
-                    <option value="en">EN</option>
-                <option value="hu">HU</option>
-                  </select>
-              
+                {isDarkTheme() ? <MoonIcon className="w-4 h-4" /> : <SunIcon className="w-4 h-4" />}
+                <span className="text-sm font-medium hidden sm:inline">{isDarkTheme() ? 'Dark' : 'Light'}</span>
+              </button>
+
               <motion.button
-                whileHover={{ scale: 1.04, boxShadow: 'var(--shadow-glow-teal)' }}
-                whileTap={{ scale: 0.97 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => setShowCreateModal(true)}
-                className="flex items-center gap-2 px-4 py-2 font-semibold rounded-lg transition-all"
+                className="h-10 flex items-center gap-2 px-4 rounded-xl font-semibold text-sm transition-all"
                 style={{ 
                   background: 'var(--btn-primary-bg)', 
                   color: 'var(--btn-primary-text)',
+                  border: '1px solid transparent',
                   boxShadow: 'var(--shadow-sm)'
                 }}
               >
@@ -3540,108 +3564,44 @@ export default function Home() {
                 {t.createEvent}
               </motion.button>
               
-              {/* Luxury Theme Toggle - Matching Landing Page */}
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={toggleTheme}
-                  className="relative flex items-center p-0.5 rounded-full transition-all duration-300 cursor-pointer outline-none"
-                  style={{
-                    width: '52px',
-                    height: '28px',
-                    backgroundColor: isDarkTheme() ? 'var(--yellow)' : 'var(--bg-tertiary)',
-                    border: `1px solid ${isDarkTheme() ? 'var(--yellow)' : 'var(--border-primary)'}`,
-                    boxShadow: isDarkTheme() ? '0 0 0 3px var(--yellow-glow), 0 4px 12px rgba(245, 197, 24, 0.3)' : 'none'
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!isDarkTheme()) {
-                      e.currentTarget.style.borderColor = 'var(--yellow)'
-                      e.currentTarget.style.boxShadow = '0 0 0 3px var(--yellow-glow)'
-                    }
-                    e.currentTarget.style.transform = 'scale(1.02)'
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isDarkTheme()) {
-                      e.currentTarget.style.borderColor = 'var(--border-primary)'
-                      e.currentTarget.style.boxShadow = 'none'
-                    } else {
-                      e.currentTarget.style.boxShadow = '0 0 0 3px var(--yellow-glow), 0 4px 12px rgba(245, 197, 24, 0.3)'
-                    }
-                    e.currentTarget.style.transform = 'scale(1)'
-                  }}
-                  title={isDarkTheme() ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-                  aria-label={isDarkTheme() ? 'Dark mode enabled. Switch to light mode' : 'Light mode enabled. Switch to dark mode'}
-                >
-                  <motion.div
-                    className="rounded-full"
-                    style={{
-                      width: '24px',
-                      height: '24px',
-                      backgroundColor: isDarkTheme() ? '#000' : '#fff',
-                      boxShadow: isDarkTheme() ? '0 2px 6px rgba(0, 0, 0, 0.4)' : '0 2px 4px var(--shadow-sm)'
-                    }}
-                    animate={{
-                      x: isDarkTheme() ? 24 : 0
-                    }}
-                    transition={{ type: 'spring', stiffness: 320, damping: 36 }}
-                  />
-                </button>
-                <span 
-                  className="text-xs font-semibold uppercase tracking-wide transition-colors duration-300"
-                  style={{ 
-                    color: isDarkTheme() ? 'var(--yellow)' : 'var(--text-secondary)',
-                    minWidth: '40px',
-                    fontWeight: isDarkTheme() ? 700 : 600
-                  }}
-                >
-                  {isDarkTheme() ? 'DARK' : 'LIGHT'}
-                </span>
-              </div>
-              
-              {/* Connections & User Profile */}
               {userProfile ? (
-              <div className="flex items-center gap-2">
+              <>
                 <button
                   onClick={() => setShowConnectionsModal(true)}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-full border transition-colors"
-                  style={{ borderColor: 'var(--border-primary)', backgroundColor: 'var(--bg-card)' }}
+                  className="h-10 flex items-center gap-2 px-3 rounded-xl border transition-colors hover:bg-[var(--bg-hover)]"
+                  style={{ borderColor: 'var(--border-primary)', backgroundColor: 'var(--bg-card)', color: 'var(--text-primary)' }}
                   title={lang === 'en' ? 'Friends & Family' : 'Barátok és család'}
                 >
-                  <UserGroupIcon className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
-                  <span className="text-sm font-medium hidden sm:inline" style={{ color: 'var(--text-primary)' }}>
+                  <UserGroupIcon className="w-4 h-4" style={{ color: 'var(--accent-primary)' }} />
+                  <span className="text-sm font-medium hidden sm:inline">
                     {lang === 'en' ? 'Connections' : 'Kapcsolatok'}
                   </span>
                 </button>
-              <button
+                <button
                   onClick={() => {
                     setTempProfile({ ...userProfile, groups: userProfile.groups || [] })
                     setShowProfileModal(true)
                   }}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-full border transition-colors"
-                  style={{ 
-                    borderColor: 'var(--border-primary)', 
-                    backgroundColor: 'var(--bg-card)'
-                  }}
+                  className="h-10 flex items-center gap-2 px-3 rounded-xl border transition-colors hover:bg-[var(--bg-hover)]"
+                  style={{ borderColor: 'var(--border-primary)', backgroundColor: 'var(--bg-card)', color: 'var(--text-primary)' }}
                 >
                   <div 
-                    className="w-7 h-7 rounded-full overflow-hidden p-1"
+                    className="w-7 h-7 rounded-full overflow-hidden flex-shrink-0 p-1"
                     style={{ backgroundColor: 'var(--bg-tertiary)' }}
                   >
-                    <div
-                      className="w-full h-full"
-                      style={{ color: 'var(--text-primary)' }}
-                      dangerouslySetInnerHTML={{ __html: AVATARS[userProfile.avatarIndex] }}
-                    />
+                    <div className="w-full h-full" dangerouslySetInnerHTML={{ __html: AVATARS[userProfile.avatarIndex] }} />
                   </div>
-                  <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{userProfile.name.split(' ')[0]}</span>
+                  <span className="text-sm font-medium">{userProfile.name.split(' ')[0]}</span>
                 </button>
-              </div>
+              </>
               ) : (
                 <button
                   onClick={() => setShowOnboarding(true)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg border transition-colors text-sm"
+                  className="h-10 flex items-center gap-2 px-4 rounded-xl border transition-colors text-sm font-medium"
                   style={{ 
                     borderColor: 'var(--border-primary)', 
-                    color: 'var(--text-secondary)'
+                    backgroundColor: 'var(--bg-card)',
+                    color: 'var(--text-primary)'
                   }}
                 >
                   {lang === 'en' ? 'Set up profile' : 'Profil beállítás'}
