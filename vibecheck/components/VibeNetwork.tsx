@@ -341,8 +341,8 @@ export default function VibeNetwork({
 
         // Spawn pulses
         if (showPulses) {
-          const spawnRate = 0.004 * speed * (proximity + 0.1) * (1 + avgAct * 3)
-          if (Math.random() < spawnRate) {
+          const spawnRate = 0.0008 * speed * (proximity + 0.1) * (1 + avgAct * 2)
+          if (Math.random() < spawnRate && pulsesRef.current.length < 10) {
             const fromIdx = Math.random() < 0.5 ? i : j
             const toIdx = fromIdx === i ? j : i
             const isIdea = Math.random() < 0.12 + avgAct * 0.2
@@ -441,7 +441,7 @@ export default function VibeNetwork({
       }
 
       pulsesRef.current = alive
-      if (pulsesRef.current.length > 150) pulsesRef.current = pulsesRef.current.slice(-150)
+      if (pulsesRef.current.length > 10) pulsesRef.current = pulsesRef.current.slice(-10)
     }
 
     // =========== DRAW NEURONS ===========
