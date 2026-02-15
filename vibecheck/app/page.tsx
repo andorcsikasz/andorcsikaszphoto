@@ -153,37 +153,109 @@ const EVENT_CATEGORIES: { id: EventCategory; labelEn: string; labelHu: string; c
   { id: 'none', labelEn: 'Other', labelHu: 'Egyéb', color: 'gray', iconId: 'calendar' },
 ]
 
-// Task suggestions per category - first 3 shown; click to add as task
+// Task suggestions per category - 10 visible in 2x5 grid; click to collect (add to tasks), new one appears
 const TASK_SUGGESTIONS: Record<EventCategory, { en: string; hu: string }[]> = {
   family: [
     { en: 'Bring a dish to share', hu: 'Hozz ételt osztani' },
     { en: 'Coordinate decorations', hu: 'Szereljünk díszeket' },
     { en: 'Set up seating', hu: 'Rakjunk ki ülőhelyeket' },
+    { en: 'Welcome guests', hu: 'Fogadd a vendégeket' },
+    { en: 'Prepare drinks', hu: 'Készítsd elő az italokat' },
+    { en: 'Take photos', hu: 'Csinálj fotókat' },
+    { en: 'Clean up afterwards', hu: 'Takarékolj utána' },
+    { en: 'Arrange gifts', hu: 'Rendezd az ajándékokat' },
+    { en: 'Order cake', hu: 'Rendelj tortát' },
+    { en: 'Send thank-you notes', hu: 'Küldj köszönő üzeneteket' },
+    { en: 'Set the table', hu: 'Teríts asztalt' },
+    { en: 'Coordinate timing', hu: 'Szervezd az időzítést' },
+    { en: 'Book entertainment', hu: 'Foglalj szórakozást' },
+    { en: 'Manage parking', hu: 'Intézd a parkolást' },
+    { en: 'Create playlist', hu: 'Készíts lejátszási listát' },
   ],
   friends: [
     { en: 'Order food', hu: 'Rendeljünk ételt' },
     { en: 'Bring drinks', hu: 'Hozz italokat' },
     { en: 'Handle music', hu: 'Foglalkozz a zenével' },
+    { en: 'Organize games', hu: 'Szervezz játékokat' },
+    { en: 'Set up venue', hu: 'Állítsd fel a helyszínt' },
+    { en: 'Coordinate arrival', hu: 'Szervezd a megérkezést' },
+    { en: 'Prepare snacks', hu: 'Készíts elő snackeket' },
+    { en: 'Document the event', hu: 'Dokumentáld az eseményt' },
+    { en: 'Manage cleanup', hu: 'Intézd a takarítást' },
+    { en: 'Send invites', hu: 'Küldd el a meghívókat' },
+    { en: 'Create seating plan', hu: 'Készíts ülésrendet' },
+    { en: 'Book restaurant', hu: 'Foglalj éttermet' },
+    { en: 'Arrange transport', hu: 'Szervezz közlekedést' },
+    { en: 'Prepare icebreakers', hu: 'Készíts jégtörőket' },
+    { en: 'Handle reservations', hu: 'Intézd a foglalásokat' },
   ],
   holiday: [
     { en: 'Book accommodation', hu: 'Foglalj szállást' },
     { en: 'Plan activities', hu: 'Tervezz programot' },
     { en: 'Organize transport', hu: 'Szervezd a közlekedést' },
+    { en: 'Research destinations', hu: 'Kutass a célállomásokról' },
+    { en: 'Create itinerary', hu: 'Készíts programot' },
+    { en: 'Book flights/trains', hu: 'Foglalj járatokat' },
+    { en: 'Pack essentials', hu: 'Csomagolj be' },
+    { en: 'Check travel docs', hu: 'Ellenőrizd az iratokat' },
+    { en: 'Arrange insurance', hu: 'Intézd a biztosítást' },
+    { en: 'Notify banks', hu: 'Értesítsd a bankot' },
+    { en: 'Book local tours', hu: 'Foglalj helyi túrákat' },
+    { en: 'Reserve restaurants', hu: 'Foglalj éttermeket' },
+    { en: 'Share itinerary', hu: 'Oszd meg a programot' },
+    { en: 'Prepare emergency contacts', hu: 'Készíts vészhelyzeti kontaktlistát' },
+    { en: 'Exchange currency', hu: 'Válts valutát' },
   ],
   work: [
     { en: 'Prepare slides', hu: 'Készíts prezentációt' },
     { en: 'Send calendar invite', hu: 'Küldj naptármeghívást' },
     { en: 'Order refreshments', hu: 'Rendelj frissítőket' },
+    { en: 'Book meeting room', hu: 'Foglalj meeting szobát' },
+    { en: 'Prepare agenda', hu: 'Készíts napirendet' },
+    { en: 'Send pre-read materials', hu: 'Küldd el az előzetes anyagokat' },
+    { en: 'Set up equipment', hu: 'Állítsd fel a felszerelést' },
+    { en: 'Take minutes', hu: 'Készíts jegyzőkönyvet' },
+    { en: 'Follow up on action items', hu: 'Követeld a feladatokat' },
+    { en: 'Coordinate with catering', hu: 'Egyeztess a cateringgel' },
+    { en: 'Print handouts', hu: 'Nyomtatts ki anyagokat' },
+    { en: 'Test AV setup', hu: 'Teszteld az AV-t' },
+    { en: 'Send reminders', hu: 'Küldj emlékeztetőket' },
+    { en: 'Reserve parking', hu: 'Intézd a parkolást' },
+    { en: 'Prepare feedback form', hu: 'Készíts visszajelzési űrlapot' },
   ],
   sports: [
     { en: 'Bring equipment', hu: 'Hozd a felszerelést' },
     { en: 'Book court / venue', hu: 'Foglalj pályát / helyet' },
     { en: 'Organize team list', hu: 'Szervezd a csapatlistát' },
+    { en: 'Coordinate jerseys', hu: 'Szervezd a mezeket' },
+    { en: 'Arrange referee', hu: 'Intézd a játékvezetőt' },
+    { en: 'Prepare first aid', hu: 'Készíts elő első segélyt' },
+    { en: 'Order water/snacks', hu: 'Rendelj vizet/snackeket' },
+    { en: 'Share logistics', hu: 'Oszd meg a logisztikát' },
+    { en: 'Confirm attendance', hu: 'Erősítsd meg a részvételt' },
+    { en: 'Organize carpool', hu: 'Szervezz közös utazást' },
+    { en: 'Set match schedule', hu: 'Állítsd be a mérkőzés időpontját' },
+    { en: 'Prepare score sheet', hu: 'Készíts pontozólapot' },
+    { en: 'Book changing rooms', hu: 'Foglalj öltözőt' },
+    { en: 'Arrange storage', hu: 'Intézd a tárolást' },
+    { en: 'Send results recap', hu: 'Küldd el az eredményeket' },
   ],
   none: [
-    { en: 'Task 1', hu: 'Feladat 1' },
-    { en: 'Task 2', hu: 'Feladat 2' },
-    { en: 'Task 3', hu: 'Feladat 3' },
+    { en: 'Prepare materials', hu: 'Készítsd elő az anyagokat' },
+    { en: 'Send invites', hu: 'Küldd el a meghívókat' },
+    { en: 'Book venue', hu: 'Foglalj helyet' },
+    { en: 'Coordinate schedule', hu: 'Szervezd az időpontot' },
+    { en: 'Arrange catering', hu: 'Intézd a cateringet' },
+    { en: 'Set up equipment', hu: 'Állítsd fel a felszerelést' },
+    { en: 'Handle registration', hu: 'Intézd a regisztrációt' },
+    { en: 'Prepare signage', hu: 'Készíts táblákat' },
+    { en: 'Manage parking', hu: 'Intézd a parkolást' },
+    { en: 'Follow up', hu: 'Kövesd nyomon' },
+    { en: 'Document event', hu: 'Dokumentáld az eseményt' },
+    { en: 'Send thank-yous', hu: 'Küldj köszönőket' },
+    { en: 'Clean up', hu: 'Takarékolj' },
+    { en: 'Gather feedback', hu: 'Gyűjts visszajelzést' },
+    { en: 'Archive materials', hu: 'Archiváld az anyagokat' },
   ],
 }
 
@@ -1363,6 +1435,7 @@ export default function Home() {
   const [editingEvent, setEditingEvent] = useState<Event | null>(null)
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [createStep, setCreateStep] = useState(1)
+  const [collectingSuggestion, setCollectingSuggestion] = useState<string | null>(null)
   const [newEvent, setNewEvent] = useState<NewEventData>({
     title: '',
     description: '',
@@ -1708,12 +1781,17 @@ export default function Home() {
     })
   }
 
-  // Add task from suggestion (click converts 80% suggestion → full task)
-  const addTaskFromSuggestion = (title: string) => {
-    setNewEvent({
-      ...newEvent,
-      tasks: [...newEvent.tasks, { id: Date.now().toString(), title, assigneeId: '', assigneeName: '' }]
-    })
+  // Add task from suggestion (collectable - color change then move to confirmed list)
+  const collectSuggestion = (title: string) => {
+    if (collectingSuggestion) return
+    setCollectingSuggestion(title)
+    setTimeout(() => {
+      setNewEvent(prev => ({
+        ...prev,
+        tasks: [...prev.tasks, { id: Date.now().toString(), title, assigneeId: '', assigneeName: '' }]
+      }))
+      setCollectingSuggestion(null)
+    }, 220)
   }
   
   // Update task
@@ -5378,60 +5456,87 @@ export default function Home() {
                       {newEvent.tasks.length === 0 ? (
                         (() => {
                           const suggestions = TASK_SUGGESTIONS[newEvent.category] || TASK_SUGGESTIONS.none
-                          const toShow = suggestions.slice(0, 3)
+                          const existingTitles = newEvent.tasks.map(t => t.title)
+                          const available = suggestions.filter(s => !existingTitles.includes(lang === 'en' ? s.en : s.hu))
+                          const toShow = available.slice(0, 10)
                           return (
-                            <div className="text-center py-12 bg-[var(--bg-card)] rounded-xl border border-dashed border-[var(--border-primary)]">
-                              <ClipboardDocumentCheckIcon className="w-12 h-12 mx-auto mb-4" style={{ color: 'var(--text-muted)' }} />
-                              <p className="text-[var(--text-muted)] mb-2">{lang === 'en' ? 'No tasks yet' : 'Még nincs feladat'}</p>
-                              <p className="text-sm text-[var(--text-muted)] mb-6">{lang === 'en' ? 'Add tasks or click a suggestion below' : 'Adj hozzá feladatokat vagy kattints egy javaslatra'}</p>
-                              {/* Suggested tasks - 80% opacity, click to add as task */}
-                              <div className="space-y-3 max-w-sm mx-auto">
-                                <p className="text-xs font-medium text-[var(--text-muted)]">
-                                  {lang === 'en' ? 'Suggested for this category — click to add' : 'Javasolt a kategóriához — kattints a hozzáadáshoz'}
-                                </p>
-                                <div className="flex flex-col gap-2">
-                                  {toShow.map((s, i) => (
-                                    <button
-                                      key={i}
-                                      type="button"
-                                      onClick={() => addTaskFromSuggestion(lang === 'en' ? s.en : s.hu)}
-                                      className="w-full px-4 py-3 rounded-lg border border-[var(--border-primary)] hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all text-left text-sm"
-                                      style={{ opacity: 0.85 }}
-                                    >
-                                      {lang === 'en' ? s.en : s.hu}
-                                    </button>
-                                  ))}
-                                </div>
+                            <div className="text-center py-8 bg-[var(--bg-card)] rounded-xl border border-dashed border-[var(--border-primary)]">
+                              <ClipboardDocumentCheckIcon className="w-12 h-12 mx-auto mb-3" style={{ color: 'var(--text-muted)' }} />
+                              <p className="text-[var(--text-muted)] mb-1">{lang === 'en' ? 'No tasks yet' : 'Még nincs feladat'}</p>
+                              <p className="text-sm text-[var(--text-muted)] mb-4">{lang === 'en' ? 'Click suggestions to collect — they move to your task list' : 'Kattints a javaslatokra — átkerülnek a feladatlistádba'}</p>
+                              {/* 2x5 collectable suggestions - click: color change → disappear → new one appears */}
+                              <div className="grid grid-cols-2 gap-2 max-w-2xl mx-auto px-4">
+                                <AnimatePresence mode="popLayout">
+                                  {toShow.map((s, i) => {
+                                    const title = lang === 'en' ? s.en : s.hu
+                                    const isCollecting = collectingSuggestion === title
+                                    return (
+                                      <motion.button
+                                        key={title}
+                                        type="button"
+                                        onClick={() => collectSuggestion(title)}
+                                        disabled={!!collectingSuggestion}
+                                        initial={{ opacity: 0.85, scale: 1 }}
+                                        animate={{
+                                          opacity: isCollecting ? 1 : 0.85,
+                                          scale: isCollecting ? 1.02 : 1,
+                                          backgroundColor: isCollecting ? 'rgba(16, 185, 129, 0.25)' : 'transparent',
+                                          borderColor: isCollecting ? 'rgb(16, 185, 129)' : 'var(--border-primary)',
+                                        }}
+                                        exit={{ opacity: 0, scale: 0.95 }}
+                                        transition={{ duration: 0.2 }}
+                                        className="px-4 py-3 rounded-lg border text-left text-sm disabled:pointer-events-none"
+                                      >
+                                        {title}
+                                      </motion.button>
+                                    )
+                                  })}
+                                </AnimatePresence>
                               </div>
                             </div>
                           )
                         })()
                       ) : (
                         <div className="space-y-4">
-                          {/* Show remaining suggestions above task list when tasks exist */}
+                          {/* Show remaining suggestions above task list when tasks exist — 2x5 collectable */}
                           {(() => {
                             const suggestions = TASK_SUGGESTIONS[newEvent.category] || TASK_SUGGESTIONS.none
                             const existingTitles = newEvent.tasks.map(t => t.title)
                             const available = suggestions.filter(s => !existingTitles.includes(lang === 'en' ? s.en : s.hu))
-                            const toShow = available.slice(0, 3)
+                            const toShow = available.slice(0, 10)
                             if (toShow.length === 0) return null
                             return (
                               <div className="space-y-2">
                                 <p className="text-xs font-medium text-[var(--text-muted)]">
-                                  {lang === 'en' ? 'More suggestions — click to add' : 'Több javaslat — kattints a hozzáadáshoz'}
+                                  {lang === 'en' ? 'More suggestions — click to collect' : 'Több javaslat — kattints a hozzáadáshoz'}
                                 </p>
-                                <div className="flex flex-wrap gap-2">
-                                  {toShow.map((s, i) => (
-                                    <button
-                                      key={i}
-                                      type="button"
-                                      onClick={() => addTaskFromSuggestion(lang === 'en' ? s.en : s.hu)}
-                                      className="px-4 py-2 rounded-lg border border-[var(--border-primary)] hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all text-left text-sm"
-                                      style={{ opacity: 0.85 }}
-                                    >
-                                      {lang === 'en' ? s.en : s.hu}
-                                    </button>
-                                  ))}
+                                <div className="grid grid-cols-2 gap-2">
+                                  <AnimatePresence mode="popLayout">
+                                    {toShow.map((s) => {
+                                      const title = lang === 'en' ? s.en : s.hu
+                                      const isCollecting = collectingSuggestion === title
+                                      return (
+                                        <motion.button
+                                          key={title}
+                                          type="button"
+                                          onClick={() => collectSuggestion(title)}
+                                          disabled={!!collectingSuggestion}
+                                          initial={{ opacity: 0.85, scale: 1 }}
+                                          animate={{
+                                            opacity: isCollecting ? 1 : 0.85,
+                                            scale: isCollecting ? 1.02 : 1,
+                                            backgroundColor: isCollecting ? 'rgba(16, 185, 129, 0.25)' : 'transparent',
+                                            borderColor: isCollecting ? 'rgb(16, 185, 129)' : 'var(--border-primary)',
+                                          }}
+                                          exit={{ opacity: 0, scale: 0.95 }}
+                                          transition={{ duration: 0.2 }}
+                                          className="px-4 py-3 rounded-lg border text-left text-sm disabled:pointer-events-none"
+                                        >
+                                          {title}
+                                        </motion.button>
+                                      )
+                                    })}
+                                  </AnimatePresence>
                                 </div>
                               </div>
                             )
