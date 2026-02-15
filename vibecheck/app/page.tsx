@@ -1430,6 +1430,7 @@ export default function Home() {
   const [loadingEvents, setLoadingEvents] = useState(true)
   const [showAllOrganizedEvents, setShowAllOrganizedEvents] = useState(false)
   const [showAllInvitedEvents, setShowAllInvitedEvents] = useState(false)
+  const [taskViewFilter, setTaskViewFilter] = useState<'assigned-to-me' | 'my-events' | 'not-assigned' | 'tasks-assigned' | null>(null)
   
   // Create Event Modal
   const [editingEvent, setEditingEvent] = useState<Event | null>(null)
