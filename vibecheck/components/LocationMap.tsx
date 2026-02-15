@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { MapPinIcon } from '@heroicons/react/24/outline'
 
