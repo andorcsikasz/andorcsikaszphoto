@@ -70,6 +70,7 @@ import WarpTwister from '@/components/WarpTwister'
 import VibeNetwork from '@/components/VibeNetwork'
 import ConnectionsManager from '@/components/ConnectionsManager'
 import StarBorder from '@/components/StarBorder'
+import LocationMap from '@/components/LocationMap'
 
 type Language = 'en' | 'hu'
 type EventStatus = 'fixed' | 'optimal' | 'in-progress'
@@ -3470,7 +3471,7 @@ export default function Home() {
               </AnimatePresence>
               <span className="text-xl font-extrabold whitespace-nowrap truncate flex items-center gap-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>
                 {activeTab === 'calendar' && t.myCalendar}
-                {activeTab === 'events' && <>{t.allEvents} <span className="text-sm font-normal" style={{ color: 'var(--text-muted)' }}>({events.length})</span></>}
+                {activeTab === 'events' && t.events}
                 {activeTab === 'dashboard' && t.dashboard}
               </span>
             </div>
@@ -3830,6 +3831,10 @@ export default function Home() {
               transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
               className="w-full"
             >
+              <div className="flex-shrink-0 mb-3">
+                <h2 className="text-2xl font-extrabold mb-1" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>{t.allEvents} <span className="text-sm font-normal" style={{ color: 'var(--text-muted)' }}>({events.length})</span></h2>
+                <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.upcomingEvents}</p>
+              </div>
               {/* Unified card container */}
               <div className="rounded-2xl border overflow-hidden w-full" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}>
                 {/* 1. My events */}
