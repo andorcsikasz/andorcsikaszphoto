@@ -72,7 +72,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
         showPulses={true}
         className="z-0"
       />
-      <div className="text-center relative z-10 max-h-[90vh] overflow-hidden flex flex-col items-center">
+      <div className="text-center relative z-10">
         <motion.h1
           className="text-6xl sm:text-7xl md:text-8xl font-bold tracking-tight cursor-pointer select-none"
           whileHover={{ scale: 1.015 }}

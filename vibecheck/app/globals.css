@@ -235,6 +235,7 @@ html {
   overflow-x: hidden;
   width: 100%;
   max-width: 100vw;
+  scrollbar-width: none;
 }
 
 body {
@@ -251,6 +252,7 @@ body {
   overflow-x: hidden;
   width: 100%;
   max-width: 100vw;
+  scrollbar-width: none;
 }
 
 /* Input placeholders - visible contrast */
@@ -332,23 +334,10 @@ small, .text-small {
     text-wrap: balance;
   }
   
-  /* Professional scrollbar - theme aware */
+  /* Hide scrollbars - content still scrollable */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-  
-  ::-webkit-scrollbar-track {
-    background: var(--scrollbar-track);
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background: var(--scrollbar-thumb);
-    border-radius: 3px;
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--scrollbar-thumb-hover);
+    width: 0;
+    height: 0;
   }
 }
 
