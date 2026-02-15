@@ -60,6 +60,8 @@ import {
   BeakerIcon,
   LightBulbIcon,
   CloudArrowDownIcon,
+  BuildingOffice2Icon,
+  EnvelopeIcon,
 } from '@heroicons/react/24/outline'
 import { RevolutLogo, GoogleLogo, AppleLogo } from '@/components/PaymentLogos'
 import LandingPageComponent from '@/components/LandingPage'
@@ -1197,10 +1199,10 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: '📅', title: lang === 'en' ? 'Google Calendar' : 'Google Naptár', desc: lang === 'en' ? 'Sync events — connect your calendar seamlessly' : 'Szinkronizált események — naptárad egyszerűen' },
-              { icon: '📆', title: lang === 'en' ? 'Events & Invites' : 'Események és meghívók', desc: lang === 'en' ? 'Create events, invite groups, track RSVPs' : 'Hozz létre eseményeket, hívj meg csoportokat' },
-              { icon: '👥', title: lang === 'en' ? 'Social & Groups' : 'Közösség és csoportok', desc: lang === 'en' ? 'Family, friends, work — manage groups in one place' : 'Család, barátok, munka — minden egy helyen' },
-              { icon: '💳', title: lang === 'en' ? 'Revolut Pay' : 'Revolut Pay', desc: lang === 'en' ? 'Split costs, collect payments with Revolut integration' : 'Oszd meg a költségeket Revolut segítségével' },
+              { Icon: CalendarIcon, title: lang === 'en' ? 'Google Calendar' : 'Google Naptár', desc: lang === 'en' ? 'Sync events — connect your calendar seamlessly' : 'Szinkronizált események — naptárad egyszerűen' },
+              { Icon: EnvelopeIcon, title: lang === 'en' ? 'Events & Invites' : 'Események és meghívók', desc: lang === 'en' ? 'Create events, invite groups, track RSVPs' : 'Hozz létre eseményeket, hívj meg csoportokat' },
+              { Icon: UserGroupIcon, title: lang === 'en' ? 'Social & Groups' : 'Közösség és csoportok', desc: lang === 'en' ? 'Family, friends, work — manage groups in one place' : 'Család, barátok, munka — minden egy helyen' },
+              { Icon: CreditCardIcon, title: lang === 'en' ? 'Revolut Pay' : 'Revolut Pay', desc: lang === 'en' ? 'Split costs, collect payments with Revolut integration' : 'Oszd meg a költségeket Revolut segítségével' },
             ].map((feature, i) => (
               <motion.div
                 key={i}
@@ -1214,7 +1216,7 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
                   boxShadow: 'var(--shadow-md)'
                 }}
               >
-                <div className="text-4xl mb-4">{feature.icon}</div>
+                {(() => { const Icon = feature.Icon; return <Icon className="w-10 h-10 mb-4" style={{ color: 'var(--accent-primary)' }} /> })()}
                 <h3 className="text-xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>{feature.title}</h3>
                 <p className="text-sm" style={{ color: 'var(--accent-primary)' }}>{feature.desc}</p>
               </motion.div>
@@ -2197,12 +2199,13 @@ export default function Home() {
   }
 
   // Groups management functions
+  const GROUP_MAX_BY_TYPE: Record<'family' | 'friends' | 'company', number> = { family: 2, friends: 4, company: 2 }
   const getGroupCountByType = (type: 'family' | 'friends' | 'company') => {
     return tempProfile.groups?.filter(g => g.type === type).length || 0
   }
 
   const canAddGroup = (type: 'family' | 'friends' | 'company') => {
-    return getGroupCountByType(type) < 2
+    return getGroupCountByType(type) < GROUP_MAX_BY_TYPE[type]
   }
 
   const saveGroup = (group: UserGroup) => {
@@ -2210,10 +2213,11 @@ export default function Home() {
     const existingIndex = existingGroups.findIndex(g => g.id === group.id)
     
     // Check max limit
+    const max = GROUP_MAX_BY_TYPE[group.type]
     if (!canAddGroup(group.type) && existingIndex === -1) {
       alert(lang === 'en' 
-        ? `Maximum 2 ${group.type} groups allowed` 
-        : `Maximum 2 ${group.type === 'family' ? 'családi' : group.type === 'friends' ? 'baráti' : 'céges'} csoport engedélyezett`)
+        ? `Maximum ${max} ${group.type} groups allowed` 
+        : `Maximum ${max} ${group.type === 'family' ? 'családi' : group.type === 'friends' ? 'baráti' : 'céges'} csoport engedélyezett`)
       return
     }
 
@@ -2946,10 +2950,16 @@ export default function Home() {
                           >
                             <div className="flex items-center gap-3">
                               <div 
-                                className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+                                className="w-8 h-8 rounded-full flex items-center justify-center"
                                 style={{ backgroundColor: colors.text, color: 'white' }}
                               >
-                                {group.type === 'family' ? '👨‍👩‍👧' : group.type === 'friends' ? '👥' : '🏢'}
+                                {group.type === 'family' ? (
+                                  <HomeIcon className="w-4 h-4" />
+                                ) : group.type === 'friends' ? (
+                                  <UserGroupIcon className="w-4 h-4" />
+                                ) : (
+                                  <BuildingOffice2Icon className="w-4 h-4" />
+                                )}
                               </div>
                               <div>
                                 <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
@@ -3114,15 +3124,12 @@ export default function Home() {
                         friends: { en: 'Friends', hu: 'Barátok' },
                         company: { en: 'Company', hu: 'Cég' }
                       }
-                      const typeIcons = {
-                        family: '👨‍👩‍👧',
-                        friends: '👥',
-                        company: '🏢'
-                      }
+                      const TypeIcon = type === 'family' ? HomeIcon : type === 'friends' ? UserGroupIcon : BuildingOffice2Icon
                       const canSelect = editingGroup.id && tempProfile.groups?.find(g => g.id === editingGroup.id)?.type === type
                         ? true
                         : canAddGroup(type)
                       const count = getGroupCountByType(type)
+                      const max = GROUP_MAX_BY_TYPE[type]
                       
                       return (
                         <button
@@ -3141,12 +3148,12 @@ export default function Home() {
                             cursor: canSelect ? 'pointer' : 'not-allowed'
                           }}
                         >
-                          <div className="text-2xl mb-1">{typeIcons[type]}</div>
+                          <TypeIcon className="w-8 h-8 mx-auto mb-1" style={{ color: 'var(--text-primary)' }} />
                           <div className="text-xs font-medium" style={{ color: 'var(--text-primary)' }}>
                             {lang === 'en' ? typeLabels[type].en : typeLabels[type].hu}
                           </div>
                           <div className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>
-                            {count}/2
+                            {count}/{max}
                           </div>
                         </button>
                       )
