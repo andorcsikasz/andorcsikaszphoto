@@ -3425,10 +3425,10 @@ export default function Home() {
         className="border-b backdrop-blur-xl sticky top-0 z-40 flex-shrink-0"
         style={{ backgroundColor: 'var(--bg-nav)', borderColor: 'var(--border-primary)' }}
       >
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <div className="relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+          <div className="flex items-center justify-between gap-4">
+            {/* Logo + Page title - same line, logo near corner */}
+            <div className="flex items-center gap-4 min-w-0 flex-shrink-0">
               <button
                 onClick={handleLogoClick}
                 className="text-2xl font-black tracking-tighter cursor-pointer hover:opacity-80 transition-opacity select-none"
@@ -3467,6 +3467,11 @@ export default function Home() {
                   </div>
                 )}
               </AnimatePresence>
+              <span className="text-xl font-extrabold whitespace-nowrap truncate flex items-center gap-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>
+                {activeTab === 'calendar' && t.myCalendar}
+                {activeTab === 'events' && <>{t.allEvents} <span className="text-sm font-normal" style={{ color: 'var(--text-muted)' }}>({events.length})</span></>}
+                {activeTab === 'dashboard' && t.dashboard}
+              </span>
             </div>
 
             {/* Center Tabs */}
