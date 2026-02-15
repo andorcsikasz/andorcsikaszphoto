@@ -2246,6 +2246,12 @@ export default function Home() {
   const myName = userProfile?.name || 'Me'
   const myEvents = events.filter(e => e.organizerId === 'me' || e.organizerId === currentUserId || e.organizerId === userProfile?.name || e.organizerId === userProfile?.userId)
   const invitedEvents = events.filter(e => !myEvents.includes(e))
+  // Friends/family/company: invited events (from my network)
+  const friendsFamilyCompanyEvents = invitedEvents
+  // Suggested open: public events I'm not organizing and not invited to (discovery/watchlist)
+  const openSuggestedEvents = events.filter(e => 
+    e.type === 'public' && !myEvents.includes(e) && !invitedEvents.includes(e)
+  )
 
   // Task metrics for control cells
   const allTasks = events.flatMap(e => (e.tasks || []).map(t => ({ ...t, eventId: e.id })))
@@ -3811,103 +3817,178 @@ export default function Home() {
               <div className="mb-8">
                 <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>{t.allEvents}</h2>
                 <p style={{ color: 'var(--text-muted)' }}>{events.length} {t.events.toLowerCase()}</p>
-            </div>
+              </div>
 
-              {/* Events Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {events.map((event, index) => (
-                  <motion.div
-                    key={event.id}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.2, delay: index * 0.02, ease: [0.22, 1, 0.36, 1] }}
-                    onClick={() => setSelectedEvent(event)}
-                    className={`relative rounded-xl border overflow-hidden ${getStatusBorderColor(event.status)} p-5 cursor-pointer transition-all group`}
-                    style={{ backgroundColor: 'var(--bg-card)', backfaceVisibility: 'hidden' }}
-                  >
-                    {/* Status Bar - radius matches inner corner (border-radius - 1px border) */}
-                    <div className={`absolute top-0 left-0 right-0 h-1 rounded-t-[11px] ${getStatusColor(event.status)}`} />
-
-                    {/* Status Badge */}
-                    <div className="flex items-center justify-between mb-4 pt-2">
-                      <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
-                        event.status === 'fixed' ? 'bg-emerald-500/20 text-emerald-400' :
-                        event.status === 'optimal' ? 'bg-[var(--bg-tertiary)] text-[var(--text-muted)]' :
-                        'bg-orange-500/20 text-orange-400'
-                      }`}>
-                        {getStatusLabel(event.status)}
-              </span>
-                      <div className="flex items-center gap-1">
-                        {(event.organizerId === 'me' || event.organizerId === currentUserId || event.organizerId === userProfile?.name || event.organizerId === userProfile?.userId) && (
-                          <button
-                            type="button"
-                            onClick={(e) => { e.stopPropagation(); openEditModal(event) }}
+              {/* 1. My events */}
+              <section className="mb-10">
+                <div className="flex items-center gap-2 mb-4">
+                  <StarIcon className="w-5 h-5 text-blue-400" />
+                  <h3 className="text-xl font-semibold text-blue-400" style={{ fontFamily: 'var(--font-sans)' }}>
+                    {t.myEvents}
+                  </h3>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  {myEvents.map((event, index) => (
+                    <motion.div
+                      key={event.id}
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.2, delay: index * 0.02, ease: [0.22, 1, 0.36, 1] }}
+                      onClick={() => setSelectedEvent(event)}
+                      className={`relative rounded-xl border overflow-hidden ${getStatusBorderColor(event.status)} p-5 cursor-pointer transition-all group`}
+                      style={{ backgroundColor: 'var(--bg-card)', backfaceVisibility: 'hidden' }}
+                    >
+                      <div className={`absolute top-0 left-0 right-0 h-1 rounded-t-[11px] ${getStatusColor(event.status)}`} />
+                      <div className="flex items-center justify-between mb-4 pt-2">
+                        <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
+                          event.status === 'fixed' ? 'bg-emerald-500/20 text-emerald-400' :
+                          event.status === 'optimal' ? 'bg-[var(--bg-tertiary)] text-[var(--text-muted)]' :
+                          'bg-orange-500/20 text-orange-400'
+                        }`}>{getStatusLabel(event.status)}</span>
+                        <div className="flex items-center gap-1">
+                          <button type="button" onClick={(e) => { e.stopPropagation(); openEditModal(event) }}
                             className="p-1.5 rounded-lg transition-colors opacity-70 hover:opacity-100"
                             style={{ color: 'var(--accent-primary)', backgroundColor: 'var(--accent-light)' }}
-                            title={t.edit}
-                          >
+                            title={t.edit}>
                             <PencilIcon className="w-4 h-4" />
                           </button>
-                        )}
-                        {event.type === 'private' && (
-                          <span className="text-xs text-[var(--text-muted)]">Private</span>
-                        )}
+                          {event.type === 'private' && <span className="text-xs text-[var(--text-muted)]">Private</span>}
+                        </div>
                       </div>
+                      <h3 className="text-lg font-bold mb-3 line-clamp-2" style={{ color: 'var(--text-primary)' }}>{event.title}</h3>
+                      <p className="text-sm mb-2" style={{ color: 'var(--accent-primary)' }}>{event.organizerName}</p>
+                      <div className="flex items-center gap-2 text-sm mb-2" style={{ color: 'var(--text-muted)' }}>
+                        <CalendarIcon className="w-4 h-4" />
+                        <span>{new Date(event.date).toLocaleDateString(lang === 'hu' ? 'hu-HU' : 'en-US', { month: 'short', day: 'numeric' })} • {event.time}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm mb-4" style={{ color: 'var(--text-muted)' }}>
+                        <MapPinIcon className="w-4 h-4" />
+                        <span className="truncate">{event.location}</span>
+                      </div>
+                      {(event.hasVoting || event.hasTasks || event.hasPayment) && (
+                        <div className="flex flex-wrap gap-2 pt-3 border-t" style={{ borderColor: 'var(--border-primary)' }}>
+                          {event.hasVoting && <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-purple-500/20 text-purple-400"><ChatBubbleLeftRightIcon className="w-3 h-3" />Voting</span>}
+                          {event.hasTasks && <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-blue-500/20 text-blue-400"><CheckCircleIcon className="w-3 h-3" />Tasks</span>}
+                          {event.hasPayment && <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-emerald-500/20 text-emerald-400"><CreditCardIcon className="w-3 h-3" />{event.currency === 'HUF' ? 'Ft' : event.currency === 'USD' ? '$' : '€'}{event.paymentAmount}</span>}
+                        </div>
+                      )}
+                    </motion.div>
+                  ))}
                 </div>
+                {myEvents.length === 0 && (
+                  <div className="rounded-xl border p-8 text-center" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}>
+                    <CalendarIcon className="w-12 h-12 mx-auto mb-3" style={{ color: 'var(--text-muted)' }} />
+                    <p style={{ color: 'var(--text-muted)' }}>{lang === 'en' ? 'No events you organize yet' : 'Még nincs szervezett eseményed'}</p>
+                  </div>
+                )}
+              </section>
 
-                    {/* Title */}
-                    <h3 className="text-lg font-bold mb-3 transition-colors line-clamp-2" style={{ color: 'var(--text-primary)' }}>
-                      {event.title}
-                    </h3>
+              {/* 2. Friends / Family / Company */}
+              <section className="mb-10">
+                <div className="flex items-center gap-2 mb-4">
+                  <UserGroupIcon className="w-5 h-5 text-purple-400" />
+                  <h3 className="text-xl font-semibold text-purple-400" style={{ fontFamily: 'var(--font-sans)' }}>
+                    {t.friendsFamilyCompany}
+                  </h3>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  {friendsFamilyCompanyEvents.map((event, index) => (
+                    <motion.div
+                      key={event.id}
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.2, delay: index * 0.02, ease: [0.22, 1, 0.36, 1] }}
+                      onClick={() => setSelectedEvent(event)}
+                      className={`relative rounded-xl border overflow-hidden ${getStatusBorderColor(event.status)} p-5 cursor-pointer transition-all group`}
+                      style={{ backgroundColor: 'var(--bg-card)', backfaceVisibility: 'hidden' }}
+                    >
+                      <div className={`absolute top-0 left-0 right-0 h-1 rounded-t-[11px] ${getStatusColor(event.status)}`} />
+                      <div className="flex items-center justify-between mb-4 pt-2">
+                        <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
+                          event.status === 'fixed' ? 'bg-emerald-500/20 text-emerald-400' :
+                          event.status === 'optimal' ? 'bg-[var(--bg-tertiary)] text-[var(--text-muted)]' :
+                          'bg-orange-500/20 text-orange-400'
+                        }`}>{getStatusLabel(event.status)}</span>
+                        {event.type === 'private' && <span className="text-xs text-[var(--text-muted)]">Private</span>}
+                      </div>
+                      <h3 className="text-lg font-bold mb-3 line-clamp-2" style={{ color: 'var(--text-primary)' }}>{event.title}</h3>
+                      <p className="text-sm mb-2" style={{ color: 'var(--accent-primary)' }}>{event.organizerName}</p>
+                      <div className="flex items-center gap-2 text-sm mb-2" style={{ color: 'var(--text-muted)' }}>
+                        <CalendarIcon className="w-4 h-4" />
+                        <span>{new Date(event.date).toLocaleDateString(lang === 'hu' ? 'hu-HU' : 'en-US', { month: 'short', day: 'numeric' })} • {event.time}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm mb-4" style={{ color: 'var(--text-muted)' }}>
+                        <MapPinIcon className="w-4 h-4" />
+                        <span className="truncate">{event.location}</span>
+                      </div>
+                      {(event.hasVoting || event.hasTasks || event.hasPayment) && (
+                        <div className="flex flex-wrap gap-2 pt-3 border-t" style={{ borderColor: 'var(--border-primary)' }}>
+                          {event.hasVoting && <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-purple-500/20 text-purple-400"><ChatBubbleLeftRightIcon className="w-3 h-3" />Voting</span>}
+                          {event.hasTasks && <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-blue-500/20 text-blue-400"><CheckCircleIcon className="w-3 h-3" />Tasks</span>}
+                          {event.hasPayment && <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-emerald-500/20 text-emerald-400"><CreditCardIcon className="w-3 h-3" />{event.currency === 'HUF' ? 'Ft' : event.currency === 'USD' ? '$' : '€'}{event.paymentAmount}</span>}
+                        </div>
+                      )}
+                    </motion.div>
+                  ))}
+                </div>
+                {friendsFamilyCompanyEvents.length === 0 && (
+                  <div className="rounded-xl border p-8 text-center" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}>
+                    <UserGroupIcon className="w-12 h-12 mx-auto mb-3" style={{ color: 'var(--text-muted)' }} />
+                    <p style={{ color: 'var(--text-muted)' }}>{lang === 'en' ? 'No invitations from your network yet' : 'Még nincs meghívás a hálózatodból'}</p>
+                  </div>
+                )}
+              </section>
 
-                    {/* Organizer */}
-                    <p className="text-sm mb-2" style={{ color: 'var(--accent-primary)' }}>
-                      {event.organizerName}
+              {/* 3. Suggested open events near me */}
+              <section>
+                <div className="flex items-center gap-2 mb-4">
+                  <MapPinIcon className="w-5 h-5 text-amber-400" />
+                  <h3 className="text-xl font-semibold text-amber-400" style={{ fontFamily: 'var(--font-sans)' }}>
+                    {t.suggestedOpenNearMe}
+                  </h3>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  {openSuggestedEvents.map((event, index) => (
+                    <motion.div
+                      key={event.id}
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.2, delay: index * 0.02, ease: [0.22, 1, 0.36, 1] }}
+                      onClick={() => setSelectedEvent(event)}
+                      className={`relative rounded-xl border overflow-hidden ${getStatusBorderColor(event.status)} p-5 cursor-pointer transition-all group`}
+                      style={{ backgroundColor: 'var(--bg-card)', backfaceVisibility: 'hidden' }}
+                    >
+                      <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-400 mb-4 inline-block">Open</span>
+                      <h3 className="text-lg font-bold mb-3 line-clamp-2" style={{ color: 'var(--text-primary)' }}>{event.title}</h3>
+                      <p className="text-sm mb-2" style={{ color: 'var(--accent-primary)' }}>{event.organizerName}</p>
+                      <div className="flex items-center gap-2 text-sm mb-2" style={{ color: 'var(--text-muted)' }}>
+                        <CalendarIcon className="w-4 h-4" />
+                        <span>{new Date(event.date).toLocaleDateString(lang === 'hu' ? 'hu-HU' : 'en-US', { month: 'short', day: 'numeric' })} • {event.time}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm mb-4" style={{ color: 'var(--text-muted)' }}>
+                        <MapPinIcon className="w-4 h-4" />
+                        <span className="truncate">{event.location}</span>
+                      </div>
+                      {(event.hasVoting || event.hasTasks || event.hasPayment) && (
+                        <div className="flex flex-wrap gap-2 pt-3 border-t" style={{ borderColor: 'var(--border-primary)' }}>
+                          {event.hasVoting && <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-purple-500/20 text-purple-400"><ChatBubbleLeftRightIcon className="w-3 h-3" />Voting</span>}
+                          {event.hasTasks && <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-blue-500/20 text-blue-400"><CheckCircleIcon className="w-3 h-3" />Tasks</span>}
+                          {event.hasPayment && <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-emerald-500/20 text-emerald-400"><CreditCardIcon className="w-3 h-3" />{event.currency === 'HUF' ? 'Ft' : event.currency === 'USD' ? '$' : '€'}{event.paymentAmount}</span>}
+                        </div>
+                      )}
+                    </motion.div>
+                  ))}
+                </div>
+                {openSuggestedEvents.length === 0 && (
+                  <div className="rounded-xl border p-8 text-center" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}>
+                    <MapPinIcon className="w-12 h-12 mx-auto mb-3" style={{ color: 'var(--text-muted)' }} />
+                    <p style={{ color: 'var(--text-muted)' }}>{t.noOpenEventsNearby}</p>
+                    <p className="text-sm mt-2" style={{ color: 'var(--text-muted)' }}>
+                      {lang === 'en' ? 'Public events in your city will appear here — e.g. dinner nights, meetups' : 'A városod nyilvános eseményei itt fognak megjelenni — pl. vacsorák, találkozók'}
                     </p>
-
-                    {/* Date & Time */}
-                    <div className="flex items-center gap-2 text-sm mb-2" style={{ color: 'var(--text-muted)' }}>
-                      <CalendarIcon className="w-4 h-4" />
-                      <span>
-                        {new Date(event.date).toLocaleDateString(lang === 'hu' ? 'hu-HU' : 'en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                        })} • {event.time}
-        </span>
-          </div>
-
-                    {/* Location */}
-                    <div className="flex items-center gap-2 text-sm mb-4" style={{ color: 'var(--text-muted)' }}>
-                      <MapPinIcon className="w-4 h-4" />
-                      <span className="truncate">{event.location}</span>
-        </div>
-
-                    {/* Action Tags */}
-                    {(event.hasVoting || event.hasTasks || event.hasPayment) && (
-                      <div className="flex flex-wrap gap-2 pt-3 border-t" style={{ borderColor: 'var(--border-primary)' }}>
-                        {event.hasVoting && (
-                          <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-purple-500/20 text-purple-400">
-                            <ChatBubbleLeftRightIcon className="w-3 h-3" />
-                            Voting
-          </span>
-                        )}
-                        {event.hasTasks && (
-                          <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-blue-500/20 text-blue-400">
-                            <CheckCircleIcon className="w-3 h-3" />
-                            Tasks
-                          </span>
-                        )}
-                        {event.hasPayment && (
-                          <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-emerald-500/20 text-emerald-400">
-                            <CreditCardIcon className="w-3 h-3" />
-                            {event.currency === 'HUF' ? 'Ft' : event.currency === 'USD' ? '$' : '€'}{event.paymentAmount}
-                </span>
-              )}
-        </div>
-                  )}
-                  </motion.div>
-          ))}
-        </div>
+                  </div>
+                )}
+              </section>
             </motion.div>
           )}
 
