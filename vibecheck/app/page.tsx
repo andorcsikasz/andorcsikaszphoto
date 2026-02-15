@@ -5187,7 +5187,7 @@ export default function Home() {
                                 type="text"
                                 value={q.question}
                                 onChange={(e) => updateVotingQuestion(q.id, 'question', e.target.value)}
-                                placeholder={lang === 'en' ? 'e.g. What date works best?' : 'pl. Melyik dátum a legjobb?'}
+                                placeholder={lang === 'en' ? 'e.g. Pizza or pasta?' : 'pl. Pizza vagy tészta?'}
                                 className="w-full px-3 py-2 bg-[var(--bg-primary)] border border-[var(--border-primary)] rounded-lg text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-purple-500 transition-colors mb-3"
                               />
 
