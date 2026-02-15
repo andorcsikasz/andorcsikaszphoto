@@ -43,6 +43,7 @@ export default function EventCard({ event, onClick }: EventCardProps) {
           : 'linear-gradient(135deg, #0a3d5c 0%, #0f4c75 40%, #134e6a 100%)',
         color: '#fff',
         boxShadow: 'var(--shadow-md)',
+        backfaceVisibility: 'hidden',
       }}
       onClick={onClick}
     >

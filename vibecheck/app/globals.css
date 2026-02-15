@@ -988,6 +988,8 @@ html {
 .card-shine {
   position: relative;
   overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .card-shine::before {

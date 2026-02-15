@@ -3580,11 +3580,11 @@ export default function Home() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.2, delay: index * 0.02, ease: [0.22, 1, 0.36, 1] }}
                     onClick={() => setSelectedEvent(event)}
-                    className={`relative rounded-xl border ${getStatusBorderColor(event.status)} p-5 cursor-pointer transition-all group`}
-                    style={{ backgroundColor: 'var(--bg-card)' }}
+                    className={`relative rounded-xl border overflow-hidden ${getStatusBorderColor(event.status)} p-5 cursor-pointer transition-all group`}
+                    style={{ backgroundColor: 'var(--bg-card)', backfaceVisibility: 'hidden' }}
                   >
-                    {/* Status Bar */}
-                    <div className={`absolute top-0 left-0 right-0 h-1 rounded-t-xl ${getStatusColor(event.status)}`} />
+                    {/* Status Bar - radius matches inner corner (border-radius - 1px border) */}
+                    <div className={`absolute top-0 left-0 right-0 h-1 rounded-t-[11px] ${getStatusColor(event.status)}`} />
 
                     {/* Status Badge */}
                     <div className="flex items-center justify-between mb-4 pt-2">
@@ -3730,11 +3730,11 @@ export default function Home() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.2, delay: index * 0.02, ease: [0.22, 1, 0.36, 1] }}
                         onClick={() => setSelectedEvent(event)}
-                        className={`relative rounded-xl border ${getStatusBorderColor(event.status)} p-5 cursor-pointer transition-all group`}
-                        style={{ backgroundColor: 'var(--bg-card)' }}
+                        className={`relative rounded-xl border overflow-hidden ${getStatusBorderColor(event.status)} p-5 cursor-pointer transition-all group`}
+                        style={{ backgroundColor: 'var(--bg-card)', backfaceVisibility: 'hidden' }}
                       >
                         {/* Status Bar */}
-                        <div className={`absolute top-0 left-0 right-0 h-1 rounded-t-xl ${getStatusColor(event.status)}`} />
+                        <div className={`absolute top-0 left-0 right-0 h-1 rounded-t-[11px] ${getStatusColor(event.status)}`} />
 
                         {/* Status Badge */}
                         <div className="flex items-center justify-between mb-4 pt-2">
@@ -4102,11 +4102,11 @@ export default function Home() {
               transition={{ type: 'tween', duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
               onClick={(e) => e.stopPropagation()}
               className="rounded-2xl border w-full max-w-3xl max-h-[90vh] overflow-hidden relative"
-              style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)', willChange: 'transform' }}
+              style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)', backfaceVisibility: 'hidden' }}
             >
               {/* Modal Header */}
               <div className="p-6 border-b relative" style={{ borderColor: 'var(--border-primary)' }}>
-                <div className={`absolute top-0 left-0 right-0 h-1 rounded-t-2xl ${getStatusColor(selectedEvent.status)}`} />
+                <div className={`absolute top-0 left-0 right-0 h-1 rounded-t-[15px] ${getStatusColor(selectedEvent.status)}`} />
                 <div className="flex items-start justify-between pt-2">
                   <div className="flex items-start gap-4">
                     {/* Event Icon */}
