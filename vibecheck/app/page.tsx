@@ -1436,6 +1436,7 @@ export default function Home() {
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [createStep, setCreateStep] = useState(1)
   const [collectingSuggestion, setCollectingSuggestion] = useState<string | null>(null)
+  const [useSeparatePaymentLink, setUseSeparatePaymentLink] = useState(false)
   const [newEvent, setNewEvent] = useState<NewEventData>({
     title: '',
     description: '',
@@ -1603,6 +1604,7 @@ export default function Home() {
     setLocationSuggestions([])
     setLocationSuggestionsOpen(false)
     setDatePickerMonth(new Date())
+    setUseSeparatePaymentLink(false)
   }
 
   // Location autocomplete: debounced fetch when typing
@@ -5747,19 +5749,41 @@ export default function Home() {
                           )}
 
                           <div>
-                            <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
-                              {lang === 'en' ? 'Payment Link (Revolut, PayPal, etc.)' : 'Fizetési link (Revolut, PayPal, stb.)'}
-                            </label>
+                            <div className="flex items-center justify-between mb-2">
+                              <label className="block text-sm font-medium text-[var(--text-secondary)]">
+                                {lang === 'en' ? 'Payment Link (Revolut, PayPal, etc.)' : 'Fizetési link (Revolut, PayPal, stb.)'}
+                              </label>
+                              <label className="flex items-center gap-2 cursor-pointer text-sm text-[var(--text-muted)] hover:text-[var(--text-secondary)]">
+                                <input
+                                  type="checkbox"
+                                  checked={useSeparatePaymentLink}
+                                  onChange={(e) => setUseSeparatePaymentLink(e.target.checked)}
+                                  className="rounded border-[var(--border-primary)]"
+                                />
+                                {lang === 'en' ? 'Use separate link for this event' : 'Másik link ehhez az eseményhez'}
+                              </label>
+                            </div>
                             <div className="relative">
                               <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--text-muted)]" />
                               <input
                                 type="url"
-                                value={newEvent.paymentLink}
+                                value={useSeparatePaymentLink ? newEvent.paymentLink : (userProfile?.revolutTag ? `https://revolut.me/${userProfile.revolutTag}` : '')}
                                 onChange={(e) => setNewEvent({ ...newEvent, paymentLink: e.target.value })}
-                                placeholder="https://revolut.me/yourname"
-                                className="w-full pl-12 pr-4 py-3 bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-xl text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-blue-500 transition-colors"
+                                readOnly={!useSeparatePaymentLink}
+                                placeholder={useSeparatePaymentLink ? 'https://revolut.me/yourname' : ''}
+                                className={`w-full pl-12 pr-4 py-3 bg-[var(--bg-card)] border border-[var(--border-primary)] rounded-xl text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:border-blue-500 transition-colors ${!useSeparatePaymentLink ? 'opacity-90' : ''}`}
                               />
-          </div>
+                            </div>
+                            {!useSeparatePaymentLink && userProfile?.revolutTag && (
+                              <p className="text-xs text-emerald-600/80 mt-1">
+                                {lang === 'en' ? 'Using your profile payment link' : 'A profilod fizetési linkje használatban'}
+                              </p>
+                            )}
+                            {!useSeparatePaymentLink && !userProfile?.revolutTag && (
+                              <p className="text-xs text-amber-500/80 mt-1">
+                                {lang === 'en' ? 'Add Revolut tag in your profile, or check above to use a separate link' : 'Add meg a Revolut azonosítót a profilban, vagy jelöld be a fenti opciót'}
+                              </p>
+                            )}
                           </div>
                         </motion.div>
                       )}
