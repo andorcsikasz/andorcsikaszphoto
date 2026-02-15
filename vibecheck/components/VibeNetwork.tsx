@@ -111,8 +111,8 @@ export default function VibeNetwork({
           dcv.push((Math.random() - 0.5) * 1.4)
         }
         neurons.push({
-          x: Math.random() * w,
-          y: Math.random() * h,
+          x: -w * 0.15 + Math.random() * w * 1.3,
+          y: -h * 0.15 + Math.random() * h * 1.3,
           vx: (Math.random() - 0.5) * 0.2 * speed * depth,
           vy: (Math.random() - 0.5) * 0.2 * speed * depth,
           baseRadius: type === 2 ? 5.5 + Math.random() * 3 : type === 1 ? 3 + Math.random() * 2 : 1.2 + Math.random() * 1.3,
@@ -513,7 +513,7 @@ export default function VibeNetwork({
       const sm = smoothMouseRef.current
       const raw = mouseRef.current
       const t = timeRef.current
-      const pad = 80
+      const pad = Math.max(w, h) * 0.2
 
       // Smooth mouse lerp — slow, dreamy tracking
       if (raw.active) {
