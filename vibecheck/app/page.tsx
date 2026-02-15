@@ -5375,43 +5375,68 @@ export default function Home() {
                         </button>
                       </div>
 
-                      {/* Category-based suggestions - first 3, 80% opacity, click to add as task */}
-                      {(() => {
-                        const suggestions = TASK_SUGGESTIONS[newEvent.category] || TASK_SUGGESTIONS.none
-                        const existingTitles = newEvent.tasks.map(t => t.title)
-                        const available = suggestions.filter(s => !existingTitles.includes(lang === 'en' ? s.en : s.hu))
-                        const toShow = available.slice(0, 3)
-                        if (toShow.length === 0) return null
-                        return (
-                          <div className="space-y-2">
-                            <p className="text-xs font-medium text-[var(--text-muted)]">
-                              {lang === 'en' ? 'Suggested tasks — click to add' : 'Javasolt feladatok — kattints a hozzáadáshoz'}
-                            </p>
-                            <div className="flex flex-wrap gap-2">
-                              {toShow.map((s, i) => (
-                                <button
-                                  key={i}
-                                  type="button"
-                                  onClick={() => addTaskFromSuggestion(lang === 'en' ? s.en : s.hu)}
-                                  className="px-4 py-2 rounded-lg border border-[var(--border-primary)] hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all text-left text-sm"
-                                  style={{ opacity: 0.8 }}
-                                >
-                                  {lang === 'en' ? s.en : s.hu}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                        )
-                      })()}
-
                       {newEvent.tasks.length === 0 ? (
-                        <div className="text-center py-12 bg-[var(--bg-card)] rounded-xl border border-dashed border-[var(--border-primary)]">
-                          <ClipboardDocumentCheckIcon className="w-12 h-12 mx-auto mb-4" style={{ color: 'var(--text-muted)' }} />
-                          <p className="text-[var(--text-muted)] mb-2">{lang === 'en' ? 'No tasks yet' : 'Még nincs feladat'}</p>
-                          <p className="text-sm text-[var(--text-muted)]">{lang === 'en' ? 'Add tasks to delegate work' : 'Adj hozzá feladatokat'}</p>
-                        </div>
+                        (() => {
+                          const suggestions = TASK_SUGGESTIONS[newEvent.category] || TASK_SUGGESTIONS.none
+                          const toShow = suggestions.slice(0, 3)
+                          return (
+                            <div className="text-center py-12 bg-[var(--bg-card)] rounded-xl border border-dashed border-[var(--border-primary)]">
+                              <ClipboardDocumentCheckIcon className="w-12 h-12 mx-auto mb-4" style={{ color: 'var(--text-muted)' }} />
+                              <p className="text-[var(--text-muted)] mb-2">{lang === 'en' ? 'No tasks yet' : 'Még nincs feladat'}</p>
+                              <p className="text-sm text-[var(--text-muted)] mb-6">{lang === 'en' ? 'Add tasks or click a suggestion below' : 'Adj hozzá feladatokat vagy kattints egy javaslatra'}</p>
+                              {/* Suggested tasks - 80% opacity, click to add as task */}
+                              <div className="space-y-3 max-w-sm mx-auto">
+                                <p className="text-xs font-medium text-[var(--text-muted)]">
+                                  {lang === 'en' ? 'Suggested for this category — click to add' : 'Javasolt a kategóriához — kattints a hozzáadáshoz'}
+                                </p>
+                                <div className="flex flex-col gap-2">
+                                  {toShow.map((s, i) => (
+                                    <button
+                                      key={i}
+                                      type="button"
+                                      onClick={() => addTaskFromSuggestion(lang === 'en' ? s.en : s.hu)}
+                                      className="w-full px-4 py-3 rounded-lg border border-[var(--border-primary)] hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all text-left text-sm"
+                                      style={{ opacity: 0.85 }}
+                                    >
+                                      {lang === 'en' ? s.en : s.hu}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        })()
                       ) : (
-                        <div className="space-y-3">
+                        <div className="space-y-4">
+                          {/* Show remaining suggestions above task list when tasks exist */}
+                          {(() => {
+                            const suggestions = TASK_SUGGESTIONS[newEvent.category] || TASK_SUGGESTIONS.none
+                            const existingTitles = newEvent.tasks.map(t => t.title)
+                            const available = suggestions.filter(s => !existingTitles.includes(lang === 'en' ? s.en : s.hu))
+                            const toShow = available.slice(0, 3)
+                            if (toShow.length === 0) return null
+                            return (
+                              <div className="space-y-2">
+                                <p className="text-xs font-medium text-[var(--text-muted)]">
+                                  {lang === 'en' ? 'More suggestions — click to add' : 'Több javaslat — kattints a hozzáadáshoz'}
+                                </p>
+                                <div className="flex flex-wrap gap-2">
+                                  {toShow.map((s, i) => (
+                                    <button
+                                      key={i}
+                                      type="button"
+                                      onClick={() => addTaskFromSuggestion(lang === 'en' ? s.en : s.hu)}
+                                      className="px-4 py-2 rounded-lg border border-[var(--border-primary)] hover:border-emerald-500/50 hover:bg-emerald-500/10 transition-all text-left text-sm"
+                                      style={{ opacity: 0.85 }}
+                                    >
+                                      {lang === 'en' ? s.en : s.hu}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            )
+                          })()}
+                          <div className="space-y-3">
                           {newEvent.tasks.map((task, index) => (
                             <div key={task.id} className="bg-[var(--bg-card)] rounded-xl border border-[var(--border-primary)] p-4">
                               <div className="flex items-start gap-3">
@@ -5490,11 +5515,12 @@ export default function Home() {
                                   className="p-2 hover:bg-red-500/20 rounded-lg text-red-400 transition-colors mt-1"
                                 >
                                   <TrashIcon className="w-4 h-4" />
-          </button>
+                                </button>
         </div>
                             </div>
           ))}
-        </div>
+                          </div>
+                        </div>
       )}
                       
                       {/* Tip about invitees */}
