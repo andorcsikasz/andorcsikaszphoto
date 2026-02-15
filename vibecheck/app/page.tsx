@@ -1021,31 +1021,90 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: stage >= 3 ? 1 : 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-10"
+        transition={{ duration: 0.8, delay: 0.3 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10 cursor-pointer group"
+        whileHover={{ scale: 1.08 }}
+        whileTap={{ scale: 0.95, y: 4 }}
+        onClick={() => window.scrollBy({ top: window.innerHeight, behavior: 'smooth' })}
       >
         <motion.p
-          className="text-sm tracking-wide font-medium"
+          className="text-xs tracking-[0.25em] uppercase font-semibold"
           style={{ color: 'var(--accent-primary)' }}
+          animate={{ opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
         >
           {lang === 'en' ? 'Scroll to continue' : 'Görgess tovább'}
         </motion.p>
+
+        {/* Mouse outline icon */}
         <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: [0.4, 0, 0.6, 1] }}
-          className="flex flex-col items-center"
+          className="relative flex flex-col items-center"
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 2.4, repeat: Infinity, ease: [0.4, 0, 0.6, 1] }}
         >
-          <svg
-            className="w-8 h-8"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2.5}
-            style={{ color: 'var(--accent-primary)' }}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+          {/* Glow ring behind */}
+          <motion.div
+            className="absolute rounded-full"
+            style={{
+              width: 44,
+              height: 44,
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              background: 'radial-gradient(circle, var(--accent-glow) 0%, transparent 70%)',
+            }}
+            animate={{ scale: [1, 1.4, 1], opacity: [0.4, 0.15, 0.4] }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+          />
+
+          {/* Mouse body */}
+          <svg width="28" height="42" viewBox="0 0 28 42" fill="none" style={{ position: 'relative', zIndex: 1 }}>
+            <rect
+              x="1.5" y="1.5" width="25" height="39" rx="12.5"
+              stroke="var(--accent-primary)"
+              strokeWidth="2"
+              opacity="0.7"
+            />
+            {/* Scroll wheel dot - animated */}
+            <motion.circle
+              cx="14" cy="12" r="2.5"
+              fill="var(--accent-tertiary)"
+              animate={{ cy: [10, 18, 10], opacity: [1, 0.3, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: [0.4, 0, 0.6, 1] }}
+            />
           </svg>
         </motion.div>
+
+        {/* Stacked chevrons */}
+        <div className="flex flex-col items-center -mt-1" style={{ gap: '2px' }}>
+          {[0, 1, 2].map((i) => (
+            <motion.svg
+              key={i}
+              width="18"
+              height="8"
+              viewBox="0 0 18 8"
+              fill="none"
+              animate={{
+                opacity: [0.15, 0.8, 0.15],
+                y: [0, 3, 0],
+              }}
+              transition={{
+                duration: 1.6,
+                repeat: Infinity,
+                ease: 'easeInOut',
+                delay: i * 0.2,
+              }}
+            >
+              <path
+                d="M1 1L9 7L17 1"
+                stroke="var(--accent-primary)"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </motion.svg>
+          ))}
+        </div>
       </motion.div>
     </motion.div>
   )
