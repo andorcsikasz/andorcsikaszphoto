@@ -2242,6 +2242,15 @@ export default function Home() {
   const tasksNotAssigned = allTasks.filter(t => !t.assignee || t.assignee === '')
   const tasksAssigned = allTasks.filter(t => t.assignee && t.assignee !== '')
 
+  // Completed counts for progress charts
+  const completedAssignedToMe = tasksAssignedToMe.filter(t => t.completed).length
+  const completedNotAssigned = tasksNotAssigned.filter(t => t.completed).length
+  const completedAssigned = tasksAssigned.filter(t => t.completed).length
+  const totalTasks = allTasks.length
+  const completedTotal = allTasks.filter(t => t.completed).length
+  const assignedPct = totalTasks > 0 ? Math.round((tasksAssigned.length / totalTasks) * 100) : 0
+  const finishedPct = totalTasks > 0 ? Math.round((completedTotal / totalTasks) * 100) : 0
+
   const eventHasTasksAssignedToMe = (e: Event) => (e.tasks || []).some(t => t.assignee === 'Me' || t.assignee === myName)
   const eventHasUnassignedTasks = (e: Event) => (e.tasks || []).some(t => !t.assignee || t.assignee === '')
   const eventHasAssignedTasks = (e: Event) => (e.tasks || []).some(t => t.assignee && t.assignee !== '')
