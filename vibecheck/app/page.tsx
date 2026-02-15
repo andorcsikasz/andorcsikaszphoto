@@ -2008,6 +2008,13 @@ export default function Home() {
     if (activeTab !== 'calendar') setShowIntegrateMenu(false)
   }, [activeTab])
 
+  // Keep Events view scrolled to top (no jump to bottom)
+  useEffect(() => {
+    if (activeTab === 'events') {
+      window.scrollTo({ top: 0, behavior: 'auto' })
+    }
+  }, [activeTab])
+
   // Tab indicator position - measure for smooth sliding (not jump)
   useEffect(() => {
     const container = tabBarRef.current
