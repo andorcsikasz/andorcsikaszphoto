@@ -439,6 +439,9 @@ const translations = {
     deleteGroupConfirm2: 'Final confirmation: Permanently delete this group? This cannot be undone.',
     deleteGroup: 'Delete',
     permanentlyDelete: 'Permanently Delete',
+    eventsOrganized: 'Events organized',
+    totalAttendees: 'Total attendees',
+    avgAttendees: 'Avg. attendees',
   },
   hu: {
     calendar: 'Naptár',
@@ -3429,8 +3432,8 @@ export default function Home() {
       >
         <div className="max-w-7xl mx-auto pl-4 pr-4 sm:pl-6 sm:pr-6 py-4">
           <div className="flex items-center justify-between gap-4">
-            {/* Logo + Page title - same line, logo near corner */}
-            <div className="flex items-center gap-4 min-w-0 flex-shrink-0">
+            {/* Logo + Page title - same line, vertically aligned */}
+            <div className="flex items-baseline gap-4 min-w-0 flex-shrink-0">
               <button
                 onClick={handleLogoClick}
                 className="text-2xl font-black tracking-tighter cursor-pointer hover:opacity-80 transition-opacity select-none"
@@ -3471,7 +3474,7 @@ export default function Home() {
               </AnimatePresence>
               <span className="text-xl font-extrabold whitespace-nowrap truncate flex items-center gap-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>
                 {activeTab === 'calendar' && t.myCalendar}
-                {activeTab === 'events' && t.events}
+                {activeTab === 'events' && <><span>{t.allEvents}</span> <span className="text-sm font-normal" style={{ color: 'var(--text-muted)' }}>({events.length})</span></>}
                 {activeTab === 'dashboard' && t.dashboard}
               </span>
             </div>
@@ -3831,10 +3834,6 @@ export default function Home() {
               transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
               className="w-full"
             >
-              <div className="flex-shrink-0 mb-3">
-                <h2 className="text-2xl font-extrabold mb-1" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>{t.allEvents} <span className="text-sm font-normal" style={{ color: 'var(--text-muted)' }}>({events.length})</span></h2>
-                <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.upcomingEvents}</p>
-              </div>
               {/* Unified card container */}
               <div className="rounded-2xl border overflow-hidden w-full" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}>
                 {/* 1. My events */}
