@@ -1,6 +1,6 @@
-# VibeCheck Components Guide
+# GatherGo Components Guide
 
-This document describes the new components and modifications made to the VibeCheck application.
+This document describes the new components and modifications made to the GatherGo application.
 
 ## Overview
 
@@ -18,7 +18,7 @@ The application has been enhanced with a modern, interactive UI featuring:
 **Location**: `app/page.tsx` - `LandingPage` component
 
 **Features**:
-- Centered "VibeCheck" title that's interactive
+- Centered "GatherGo" title that's interactive
 - On hover/click, reveals 4 core value propositions:
   - Smart Voting
   - AI Assistant

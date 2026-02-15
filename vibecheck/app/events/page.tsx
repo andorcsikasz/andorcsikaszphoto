@@ -149,7 +149,7 @@ export default function EventsPage() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <a href="/" className="text-2xl font-black text-white tracking-tighter" style={{ fontFamily: "'Inter', system-ui, sans-serif", letterSpacing: '-0.05em', fontWeight: 900, minWidth: '140px', minHeight: '1.2em', lineHeight: '1.2' }}>
-              VibeCheck
+              GatherGo
             </a>
             <div className="flex items-center gap-4">
               <LanguageToggle lang={lang} onLangChange={setLang} />

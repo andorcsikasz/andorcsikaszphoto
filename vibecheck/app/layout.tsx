@@ -3,7 +3,7 @@ import './globals.css'
 import { ThemeProvider } from '@/components/ThemeProvider'
 
 export const metadata: Metadata = {
-  title: 'VibeCheck - Collaborative Event Management',
+  title: 'GatherGo - Collaborative Event Management',
   description: 'Plan events together. Make decisions. Get things done.',
 }
 

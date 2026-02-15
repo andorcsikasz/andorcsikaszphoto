@@ -1,4 +1,4 @@
-# Railway + GitHub Deployment Guide — VibeCheck
+# Railway + GitHub Deployment Guide — GatherGo
 
 ## Current Setup ✅
 
@@ -6,7 +6,7 @@
 |------|--------|
 | **GitHub repo** | `https://github.com/andorcsikasz/x_prog.git` |
 | **Branch** | `main` |
-| **Project** | VibeCheck — Next.js 15 |
+| **Project** | GatherGo — Next.js 15 |
 | **Location** | `vibecheck/` subdirectory (monorepo) |
 | **railway.json** | ✓ Present with build/start commands |
 | **next.config.js** | ✓ `output: 'standalone'` (Railway-friendly) |

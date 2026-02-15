@@ -1,4 +1,4 @@
-// VibeCheck - Connections (friends, family) for auto-invite
+// GatherGo - Connections (friends, family) for auto-invite
 generator client {
   provider = "prisma-client-js"
 }

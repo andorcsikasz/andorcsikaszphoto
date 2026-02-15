@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react'
 
 interface WarpTwisterProps {
-  /** Base colors - VibeCheck accent palette */
+  /** Base colors - GatherGo accent palette */
   colorStops?: string[]
   /** Tube narrowing / perspective strength */
   narrow?: number

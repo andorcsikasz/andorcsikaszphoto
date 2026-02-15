@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
     url.searchParams.set('limit', '8')
     url.searchParams.set('lang', 'en')
     const res = await fetch(url.toString(), {
-      headers: { 'User-Agent': 'VibeCheck/1.0' },
+      headers: { 'User-Agent': 'GatherGo/1.0' },
     })
     if (!res.ok) return NextResponse.json({ suggestions: [] })
 

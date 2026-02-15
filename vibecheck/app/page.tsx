@@ -1,4 +1,4 @@
-// VibeCheck - Collaborative Event Management
+// GatherGo - Collaborative Event Management
 // Clean dashboard with Calendar view, Events grid, and Dashboard features
 
 'use client'
@@ -1092,7 +1092,7 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
         style={{ backgroundColor: 'var(--bg-nav)', borderColor: 'var(--border-primary)' }}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="text-2xl font-black tracking-tighter" style={{ color: 'var(--accent-primary)' }}>
-            VibeCheck
+            GatherGo
           </div>
           <div className="flex items-center gap-4">
             <button
@@ -1350,7 +1350,7 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <h3 className="font-bold mb-4" style={{ color: 'var(--text-primary)' }}>VibeCheck</h3>
+              <h3 className="font-bold mb-4" style={{ color: 'var(--text-primary)' }}>GatherGo</h3>
               <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
                 {lang === 'en' 
                   ? 'Collaborative event management made simple.'
@@ -1389,7 +1389,7 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
             </div>
           </div>
           <div className="pt-8 border-t text-center text-sm" style={{ borderColor: 'var(--border-primary)', color: 'var(--text-muted)' }}>
-            © 2024 VibeCheck. {lang === 'en' ? 'All rights reserved.' : 'Minden jog fenntartva.'}
+            © 2024 GatherGo. {lang === 'en' ? 'All rights reserved.' : 'Minden jog fenntartva.'}
           </div>
         </div>
       </footer>
@@ -3259,7 +3259,7 @@ export default function Home() {
                 className="text-2xl font-black tracking-tighter cursor-pointer hover:opacity-80 transition-opacity select-none"
                 style={{ color: 'var(--text-primary)', background: 'none', border: 'none', padding: 0 }}
               >
-                VibeCheck
+                GatherGo
               </button>
               <AnimatePresence>
                 {easterEggParticles.length > 0 && (

@@ -280,7 +280,7 @@ export default function ConnectionsManager({
                           const match = searchResults.find((u) => u.email.toLowerCase() === searchQuery.trim().toLowerCase()) ?? searchResults[0]
                           addConnection(match.id, 'friend')
                         } else if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(searchQuery.trim())) {
-                          window.location.href = `mailto:${searchQuery.trim()}?subject=${encodeURIComponent(lang === 'en' ? 'Join me on VibeCheck' : 'Csatlakozz hozzám a VibeCheck-en')}`
+                          window.location.href = `mailto:${searchQuery.trim()}?subject=${encodeURIComponent(lang === 'en' ? 'Join me on GatherGo' : 'Csatlakozz hozzám a GatherGo-en')}`
                         }
                       }
                     }}
@@ -293,7 +293,7 @@ export default function ConnectionsManager({
                       const match = searchResults.find((u) => u.email.toLowerCase() === searchQuery.trim().toLowerCase()) ?? searchResults[0]
                       addConnection(match.id, 'friend')
                     } else if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(searchQuery.trim())) {
-                      window.location.href = `mailto:${searchQuery.trim()}?subject=${encodeURIComponent(lang === 'en' ? 'Join me on VibeCheck' : 'Csatlakozz hozzám a VibeCheck-en')}`
+                      window.location.href = `mailto:${searchQuery.trim()}?subject=${encodeURIComponent(lang === 'en' ? 'Join me on GatherGo' : 'Csatlakozz hozzám a GatherGo-en')}`
                     }
                   }}
                   disabled={

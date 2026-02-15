@@ -951,7 +951,7 @@ export default function ManagePage() {
                 letterSpacing: '-0.02em',
               }}
             >
-              VibeCheck
+              GatherGo
             </a>
             <div className="flex items-center gap-3">
               {/* Language Toggle - Pill Style */}

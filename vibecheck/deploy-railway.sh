@@ -1,5 +1,5 @@
 #!/bin/bash
-# Deploy VibeCheck to Railway
+# Deploy GatherGo to Railway
 # Project: https://railway.com/project/6defe194-1787-4889-a0c6-b2998339a87d/service/37434b64-1c69-406d-9888-abb4a6ca48d2
 #
 # First time: run `npx @railway/cli login` (opens browser)
@@ -14,7 +14,7 @@ npx @railway/cli link \
   --environment 115caffd-0ceb-4285-8fde-0c8942c79ee7
 
 echo ""
-echo "→ Deploying VibeCheck..."
+echo "→ Deploying GatherGo..."
 npx @railway/cli up --detach
 
 echo ""
