@@ -98,7 +98,7 @@ export default function SeedPage() {
                 {result.summary && (
                   <div className="text-sm text-green-700 dark:text-green-300 space-y-1">
                     <p>• Events created by you: {result.summary.eventsCreatedByMe}</p>
-                    <p>• Events where you're invited: {result.summary.eventsInvitedTo}</p>
+                    <p>• Events where you&apos;re invited: {result.summary.eventsInvitedTo}</p>
                     <p>• Total events: {result.summary.totalEvents}</p>
                   </div>
                 )}

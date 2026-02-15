@@ -4,6 +4,7 @@
 // Apple-inspired elegant UI/UX design
 
 import { useState, useEffect, useMemo } from 'react'
+import Link from 'next/link'
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import { 
   PlusIcon, 
@@ -943,7 +944,7 @@ export default function ManagePage() {
       >
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <a 
+            <Link 
               href="/" 
               className="text-xl font-bold tracking-tight" 
               style={{ 
@@ -953,7 +954,7 @@ export default function ManagePage() {
               }}
             >
               GatherGo
-            </a>
+            </Link>
             <div className="flex items-center gap-3">
               {/* Language Toggle - Pill Style */}
               <div 

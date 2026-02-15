@@ -4,6 +4,7 @@
 // Shows upcoming events and tasks in a read-only or quick-action view
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { CalendarIcon, CheckCircleIcon } from '@heroicons/react/24/outline'
 import SkeletonLoader, { SkeletonEventCard, SkeletonList } from '@/components/SkeletonLoader'
 
@@ -148,14 +149,14 @@ export default function EventsPage() {
       <nav className="border-b border-[#2A2A2A] bg-[#121212]/95 backdrop-blur-xl sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <a href="/" className="text-2xl font-black text-white tracking-tighter" style={{ fontFamily: 'var(--font-logo)', letterSpacing: '-0.05em', fontWeight: 700, minWidth: '140px', minHeight: '1.2em', lineHeight: '1.2' }}>
+            <Link href="/" className="text-2xl font-black text-white tracking-tighter" style={{ fontFamily: 'var(--font-logo)', letterSpacing: '-0.05em', fontWeight: 700, minWidth: '140px', minHeight: '1.2em', lineHeight: '1.2' }}>
               GatherGo
-            </a>
+            </Link>
             <div className="flex items-center gap-4">
               <LanguageToggle lang={lang} onLangChange={setLang} />
-              <a href="/" className="px-4 py-2 text-sm text-[#B0B0B0] hover:text-white transition-colors">
+              <Link href="/" className="px-4 py-2 text-sm text-[#B0B0B0] hover:text-white transition-colors">
                 {lang === 'en' ? 'Back to Dashboard' : 'Vissza az irányítópulthoz'}
-              </a>
+              </Link>
             </div>
           </div>
         </div>
