@@ -924,10 +924,10 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
       <VibeNetwork
         nodeColors={['#0d9488', '#5eead4', '#5b9fd4', '#38bdf8', '#c084fc', '#f472b6', '#fb923c', '#34d399']}
         waveColors={['#5eead4', '#38bdf8', '#c084fc', '#fb923c', '#f472b6']}
-        nodeCount={80}
-        connectionDistance={200}
-        speed={0.8}
-        opacity={0.7}
+        nodeCount={90}
+        connectionDistance={220}
+        speed={0.9}
+        opacity={0.85}
         showDendrites={true}
         showPulses={true}
       />
@@ -2006,13 +2006,6 @@ export default function Home() {
 
   useEffect(() => {
     if (activeTab !== 'calendar') setShowIntegrateMenu(false)
-  }, [activeTab])
-
-  // Keep Events view scrolled to top (no jump to bottom)
-  useEffect(() => {
-    if (activeTab === 'events') {
-      window.scrollTo({ top: 0, behavior: 'auto' })
-    }
   }, [activeTab])
 
   // Tab indicator position - measure for smooth sliding (not jump)
