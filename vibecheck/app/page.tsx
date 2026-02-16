@@ -70,13 +70,14 @@ import { EventIcon } from '@/components/ui/EventIcon'
 import LandingPageComponent from '@/components/LandingPage'
 import Aurora from '@/components/Aurora'
 import {
-  type Event as AppEvent,
+  type Event,
   type EventStatus,
   type EventCategory,
   type EventResource,
   type UserGroup,
   type Language,
   type PaymentType,
+  type IconId,
 } from '@/lib/types'
 import {
   AVATARS,
