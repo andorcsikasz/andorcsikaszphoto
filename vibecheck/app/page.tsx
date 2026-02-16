@@ -1712,7 +1712,7 @@ export default function Home() {
   // Events I organize: organizerId is 'me' or matches userProfile name
   const currentUserId = userProfile?.userId || userProfile?.name || 'me'
   const myName = userProfile?.name || 'Me'
-  const myEvents = events.filter(e => e.organizerId === 'me' || e.organizerId === currentUserId || e.organizerId === userProfile?.name || e.organizerId === userProfile?.userId)
+  const myEvents = events.filter(e => e.organizerId === 'me' || e.organizerId === currentUserId || e.organizerId === userProfile?.name || e.organizerId === userProfile?.userId || e.organizerName === userProfile?.name)
   const invitedEvents = events.filter(e => !myEvents.includes(e))
   // Friends/family/company: invited events (from my network)
   const friendsFamilyCompanyEvents = invitedEvents
