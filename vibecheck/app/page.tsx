@@ -467,14 +467,14 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
 
       </div>
 
-      {/* Scroll indicator - fixed position, never moves with cursor */}
+      {/* Scroll indicator - fixed position; click or scroll to continue */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: stage >= 3 ? 1 : 0 }}
         transition={{ duration: 0.8, delay: 0.3 }}
         className="fixed bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-[101] cursor-pointer"
         style={{ pointerEvents: stage >= 3 ? 'auto' : 'none' }}
-        onClick={() => window.scrollBy({ top: window.innerHeight, behavior: 'smooth' })}
+        onClick={handleContinue}
       >
         <motion.p
           className="text-xs tracking-[0.25em] uppercase font-semibold"
