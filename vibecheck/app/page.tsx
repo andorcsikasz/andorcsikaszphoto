@@ -453,6 +453,8 @@ const translations = {
     avgAttendees: 'Avg. attendees',
     withVoting: 'With voting',
     withPayment: 'With payment',
+    statsViewNumbers: 'Numbers',
+    statsViewCharts: 'Charts',
     viewOrganizerStats: 'View organizer statistics',
     buildScheme: 'Build a scheme',
   },
@@ -514,6 +516,8 @@ const translations = {
     avgAttendees: 'Átl. résztvevő',
     withVoting: 'Szavazással',
     withPayment: 'Fizetéssel',
+    statsViewNumbers: 'Számok',
+    statsViewCharts: 'Grafikonok',
     viewOrganizerStats: 'Szervező statisztikák megtekintése',
     buildScheme: 'Építs sémát',
   },
@@ -521,7 +525,7 @@ const translations = {
 
 // Demo events data
 const demoEvents: Event[] = [
-  // === EVENTS I CREATED (4) ===
+  // === EVENTS BY ANDOR (me) ===
   {
     id: 1,
     title: 'Summer BBQ Party',
@@ -538,7 +542,7 @@ const demoEvents: Event[] = [
     hasTasks: true,
     hasPayment: false,
     organizerId: 'me',
-    organizerName: 'Me',
+    organizerName: 'Andor',
     status: 'fixed',
     tasks: [
       { id: 1, title: 'Buy charcoal', completed: true, assignee: 'Bob' },
@@ -573,7 +577,7 @@ const demoEvents: Event[] = [
     hasTasks: true,
     hasPayment: false,
     organizerId: 'me',
-    organizerName: 'Me',
+    organizerName: 'Andor',
     status: 'in-progress',
     tasks: [
       { id: 1, title: 'Order cake', completed: true },
@@ -604,7 +608,7 @@ const demoEvents: Event[] = [
     paymentAmount: 180,
     currency: 'EUR',
     organizerId: 'me',
-    organizerName: 'Me',
+    organizerName: 'Andor',
     status: 'optimal',
     tasks: [
       { id: 1, title: 'Book accommodation', completed: true },
@@ -633,7 +637,7 @@ const demoEvents: Event[] = [
     hasTasks: false,
     hasPayment: false,
     organizerId: 'me',
-    organizerName: 'Me',
+    organizerName: 'Andor',
     status: 'fixed',
     participants: [
       { id: '1', name: 'Alice Johnson', status: 'confirmed' },
@@ -642,7 +646,83 @@ const demoEvents: Event[] = [
       { id: '4', name: 'Diana Prince', status: 'confirmed' },
     ],
   },
-  // === EVENTS I'M INVITED TO (8) ===
+  {
+    id: 13,
+    title: 'Normafa IV.',
+    date: '2026-02-23',
+    time: '09:00',
+    type: 'public',
+    category: 'sports',
+    iconId: 'hiking',
+    attendees: 12,
+    confirmedAttendees: 6,
+    location: 'Budapest, Normafa',
+    description: 'Group hike to Normafa, then coffee at the cabin.',
+    hasVoting: true,
+    hasTasks: true,
+    hasPayment: false,
+    organizerId: 'erik',
+    organizerName: 'Erik Kovács',
+    status: 'in-progress',
+    tasks: [
+      { id: 1, title: 'Check weather', completed: false },
+      { id: 2, title: 'Share meetup point', completed: true },
+    ],
+    participants: [
+      { id: 'me', name: 'Me', status: 'pending' },
+      { id: '1', name: 'Jane Doe', status: 'pending' },
+      { id: '2', name: 'Frank Miller', status: 'confirmed' },
+    ],
+  },
+  {
+    id: 14,
+    title: 'Team Offsite Q1',
+    date: '2026-02-18',
+    time: '10:00',
+    type: 'private',
+    category: 'work',
+    iconId: 'meeting',
+    attendees: 14,
+    confirmedAttendees: 10,
+    location: 'Office Conference Room A',
+    description: 'Quarterly planning and team building.',
+    hasVoting: true,
+    hasTasks: true,
+    hasPayment: false,
+    organizerId: 'me',
+    organizerName: 'Andor',
+    status: 'optimal',
+    participants: [
+      { id: '1', name: 'Maria Silva', status: 'confirmed' },
+      { id: '2', name: 'Tom Wilson', status: 'pending' },
+    ],
+  },
+  {
+    id: 15,
+    title: 'Pizza Night',
+    date: '2026-02-16',
+    time: '19:00',
+    type: 'private',
+    category: 'friends',
+    iconId: 'dinner',
+    attendees: 6,
+    confirmedAttendees: 4,
+    location: 'Downtown Pizzeria',
+    description: 'Casual get-together with pizza and drinks.',
+    hasVoting: true,
+    hasTasks: false,
+    hasPayment: true,
+    paymentAmount: 15,
+    currency: 'EUR',
+    organizerId: 'lisa',
+    organizerName: 'Lisa Chen',
+    status: 'in-progress',
+    participants: [
+      { id: 'me', name: 'Me', status: 'confirmed' },
+      { id: '1', name: 'Mike Ross', status: 'confirmed' },
+    ],
+  },
+  // === EVENTS BY TEST ACCOUNTS (invited to) ===
   {
     id: 5,
     title: 'Family Reunion',
@@ -1465,6 +1545,7 @@ export default function Home() {
   const [showParticipantsModal, setShowParticipantsModal] = useState(false)
   const [showOrganizerStatsModal, setShowOrganizerStatsModal] = useState(false)
   const [selectedOrganizer, setSelectedOrganizer] = useState<{ id: string; name: string } | null>(null)
+  const [organizerStatsView, setOrganizerStatsView] = useState<'numbers' | 'charts'>('numbers')
   const [showEventSuggestionModal, setShowEventSuggestionModal] = useState(false)
   const [showBuildSchemeModal, setShowBuildSchemeModal] = useState(false)
   const [currentMonth, setCurrentMonth] = useState(new Date())
