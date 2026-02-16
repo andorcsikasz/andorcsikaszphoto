@@ -5121,12 +5121,14 @@ export default function Home() {
                         ) : (
                           (showAllInvitedEvents ? filteredInvitedEvents : filteredInvitedEvents.slice(0, 4)).map((event) => {
                             const myRsvp = getMyRsvp(event)
+                            const cantAttend = myRsvp === 'declined'
                             return (
                               <div
                                 key={event.id}
-                                className={`flex items-center gap-4 p-4 ${
+                                className={`flex items-center gap-4 p-4 transition-opacity ${
                                   theme === 'light' ? 'hover:bg-[var(--bg-hover)]' : 'hover:bg-[var(--bg-tertiary)]'
                                 }`}
+                                style={{ opacity: cantAttend ? 0.5 : 1 }}
                               >
                                 <button
                                   onClick={() => setSelectedEvent(event)}
