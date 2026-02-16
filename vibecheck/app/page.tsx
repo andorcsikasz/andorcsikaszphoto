@@ -4907,6 +4907,8 @@ export default function Home() {
                           <PencilIcon className="w-4 h-4" />
                         </button>
                       )}
+                      {(selectedEvent.organizerId === 'me' || selectedEvent.organizerId === currentUserId || selectedEvent.organizerId === userProfile?.name || selectedEvent.organizerId === userProfile?.userId || selectedEvent.organizerName === userProfile?.name) && (
+                        <>
                       <a
                         href={`${typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3001'}/?eventId=${selectedEvent.id}`}
                         target="_blank"
@@ -4931,6 +4933,8 @@ export default function Home() {
                       >
                         <ClipboardDocumentIcon className="w-4 h-4" />
                       </button>
+                        </>
+                      )}
                       {(selectedEvent.organizerId === 'me' || selectedEvent.organizerId === currentUserId || selectedEvent.organizerId === userProfile?.name || selectedEvent.organizerId === userProfile?.userId || selectedEvent.organizerName === userProfile?.name) && (
                         <button
                           type="button"
@@ -4966,7 +4970,9 @@ export default function Home() {
                 {(() => {
                   const isPrivate = selectedEvent.type === 'private'
                   const isOrganizer = selectedEvent.organizerId === 'me' || selectedEvent.organizerId === currentUserId || selectedEvent.organizerId === userProfile?.name || selectedEvent.organizerId === userProfile?.userId || selectedEvent.organizerName === userProfile?.name
-                  const isParticipant = selectedEvent.participants?.some((p) => p.id === currentUserId || p.name === userProfile?.name)
+                  const isParticipant = selectedEvent.participants?.some((p) =>
+                    p.id === 'me' || p.id === currentUserId || p.name === userProfile?.name || p.name === myName
+                  )
                   const canViewFullDetails = !isPrivate || isOrganizer || isParticipant
 
                   if (isPrivate && !canViewFullDetails) {
