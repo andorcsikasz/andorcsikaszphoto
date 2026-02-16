@@ -1460,7 +1460,7 @@ export default function Home() {
   const [theme, setTheme] = useState<'dark' | 'light' | 'system'>('system')
   
   const [lang, setLang] = useState<Language>('en')
-  const [activeTab, setActiveTab] = useState<'calendar' | 'events' | 'dashboard'>('events')
+  const [activeTab, setActiveTab] = useState<'calendar' | 'events' | 'dashboard'>('calendar')
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const [showParticipantsModal, setShowParticipantsModal] = useState(false)
   const [showOrganizerStatsModal, setShowOrganizerStatsModal] = useState(false)
@@ -1574,6 +1574,7 @@ export default function Home() {
       setEasterEggParticles(particles)
       setTimeout(() => setEasterEggParticles([]), 2500)
     } else {
+      setActiveTab('calendar')
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }
