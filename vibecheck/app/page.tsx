@@ -3,7 +3,7 @@
 
 'use client'
 
-import { useState, useEffect, useRef, type CSSProperties } from 'react'
+import { useState, useEffect, useRef, useCallback, type CSSProperties } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   CalendarIcon,
@@ -976,12 +976,12 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
   }, [])
 
   const hasCompletedRef = useRef(false)
-  const handleContinue = () => {
+  const handleContinue = useCallback(() => {
     if (hasCompletedRef.current || exiting) return
     hasCompletedRef.current = true
     setExiting(true)
     setTimeout(() => onComplete(), 950)
-  }
+  }, [exiting, onComplete])
 
   useEffect(() => {
     if (stage < 3) return
@@ -993,7 +993,7 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
     }
     window.addEventListener('wheel', onWheel, { passive: false })
     return () => window.removeEventListener('wheel', onWheel)
-  }, [stage])
+  }, [stage, handleContinue])
 
   const handleTouchStart = (e: React.TouchEvent) => {
     if (e.touches[0]) touchStartY.current = e.touches[0].clientY
@@ -2045,7 +2045,7 @@ export default function Home() {
   }
 
   // Fetch events from API
-  const fetchEvents = async () => {
+  const fetchEvents = useCallback(async () => {
     try {
       const userId = userProfile?.name || 'me'
       const response = await fetch(`/api/events?organizerId=${userId}&participantId=${userId}`)
@@ -2094,7 +2094,7 @@ export default function Home() {
     } finally {
       setLoadingEvents(false)
     }
-  }
+  }, [userProfile?.name])
 
   useEffect(() => {
     if (!showIntegrateMenu) return
@@ -2166,6 +2166,7 @@ export default function Home() {
     if (savedTheme) {
       setTheme(savedTheme)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- run once on mount; fetchEvents ref not yet stable
   }, [])
 
   // Sync profile to backend on load if we have profile but no userId
@@ -2179,14 +2180,14 @@ export default function Home() {
         }
       })
     }
-  }, [mounted, userProfile?.name, userProfile?.userId])
+  }, [mounted, userProfile])
 
   // Refetch events when user profile changes
   useEffect(() => {
     if (userProfile) {
       fetchEvents()
     }
-  }, [userProfile?.name, userProfile?.userId])
+  }, [userProfile, fetchEvents])
   
   // Open event from URL (?eventId=xxx)
   useEffect(() => {
