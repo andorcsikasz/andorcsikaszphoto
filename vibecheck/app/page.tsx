@@ -454,6 +454,7 @@ const translations = {
     withVoting: 'With voting',
     withPayment: 'With payment',
     viewOrganizerStats: 'View organizer statistics',
+    rsvpCounts: 'going · not going · pending',
   },
   hu: {
     calendar: 'Naptár',
@@ -514,6 +515,7 @@ const translations = {
     withVoting: 'Szavazással',
     withPayment: 'Fizetéssel',
     viewOrganizerStats: 'Szervező statisztikák megtekintése',
+    rsvpCounts: 'megy · nem megy · függőben',
   },
 }
 
@@ -2339,6 +2341,7 @@ export default function Home() {
   const handleRsvp = (eventId: number | string, status: 'confirmed' | 'pending' | 'declined') => {
     const me = userProfile?.name || 'Me'
     const myId = userProfile?.userId || 'me'
+    let updatedEvent: Event | null = null
     setEvents(prev => prev.map(e => {
       if (e.id !== eventId) return e
       const participants = [...(e.participants || [])]
@@ -2346,8 +2349,22 @@ export default function Home() {
       const updated = { ...participants[idx] ?? { id: myId, name: me, status: 'pending' as const }, status }
       if (idx >= 0) participants[idx] = updated
       else participants.push(updated)
-      return { ...e, participants }
+      const confirmedAttendees = participants.filter(p => p.status === 'confirmed').length
+      updatedEvent = { ...e, participants, confirmedAttendees }
+      return updatedEvent
     }))
+    if (updatedEvent && selectedEvent?.id === eventId) {
+      setSelectedEvent(updatedEvent)
+    }
+  }
+
+  const getRsvpCounts = (event: Event) => {
+    const p = event.participants || []
+    return {
+      going: p.filter(x => x.status === 'confirmed').length,
+      notGoing: p.filter(x => x.status === 'declined').length,
+      pending: p.filter(x => x.status === 'pending').length,
+    }
   }
 
   const getStatusColor = (status: EventStatus) => {
