@@ -3464,10 +3464,10 @@ export default function Home() {
         className="border-b backdrop-blur-xl sticky top-0 z-40 flex-shrink-0"
         style={{ backgroundColor: 'var(--bg-nav)', borderColor: 'var(--border-primary)' }}
       >
-        <div className="max-w-7xl mx-auto pl-4 pr-4 sm:pl-6 sm:pr-6 py-4">
-          <div className="flex items-center justify-between gap-4">
-            {/* Logo + Page title - same line, vertically aligned */}
-            <div className="flex items-baseline gap-4 min-w-0 flex-shrink-0">
+        <div className="max-w-7xl mx-auto pl-4 pr-4 sm:pl-6 sm:pr-6 py-4 sm:py-5">
+          <div className="flex items-center justify-between gap-4 sm:gap-6">
+            {/* 1. Brand: Logo + Page title */}
+            <div className="flex items-baseline gap-4 min-w-0 flex-shrink-0 pr-4 sm:pr-6 border-r" style={{ borderColor: 'var(--border-primary)' }}>
               <button
                 onClick={handleLogoClick}
                 className="text-2xl font-black tracking-tighter cursor-pointer hover:opacity-80 transition-opacity select-none"
@@ -3513,10 +3513,10 @@ export default function Home() {
               </span>
             </div>
 
-            {/* Center Tabs */}
+            {/* 2. Primary Nav: Calendar, Events, Dashboard */}
             <div
               ref={tabBarRef}
-              className="relative flex items-center gap-1 rounded-xl p-1 border"
+              className="relative flex items-center gap-1 rounded-xl p-1 border flex-shrink-0 px-3 sm:px-4 py-2"
               style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-primary)' }}
             >
               {/* Sliding indicator - single element, animates position */}
@@ -3556,8 +3556,8 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Right side - unified pill controls */}
-            <div className="flex items-center gap-2">
+            {/* 3. Settings: Lang + Theme */}
+            <div className="flex items-center gap-2 pl-4 sm:pl-6 border-l" style={{ borderColor: 'var(--border-primary)' }}>
               <div className="relative hover:opacity-90 transition-opacity">
                 <select
                   value={lang}
@@ -3589,7 +3589,10 @@ export default function Home() {
                 {isDarkTheme() ? <MoonIcon className="w-4 h-4" /> : <SunIcon className="w-4 h-4" />}
                 <span className="text-sm font-medium hidden sm:inline">{isDarkTheme() ? 'Dark' : 'Light'}</span>
               </button>
+            </div>
 
+            {/* 4. User: Connections + Profile */}
+            <div className="flex items-center gap-2 pl-4 sm:pl-6 border-l" style={{ borderColor: 'var(--border-primary)' }}>
               {userProfile ? (
               <>
                 <button
