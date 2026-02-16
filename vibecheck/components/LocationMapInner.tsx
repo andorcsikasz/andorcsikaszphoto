@@ -9,16 +9,15 @@ const createCustomIcon = () =>
   L.divIcon({
     className: 'custom-marker',
     html: `<div style="
-      width: 24px;
-      height: 36px;
-      background: #0d9488;
-      border-radius: 50% 50% 50% 0;
-      transform: rotate(-45deg);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      width: 14px;
+      height: 14px;
+      background: #dc2626;
+      border-radius: 50%;
       border: 2px solid white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.35);
     "></div>`,
-    iconSize: [24, 36],
-    iconAnchor: [12, 36],
+    iconSize: [14, 14],
+    iconAnchor: [7, 7],
   })
 
 export default function LocationMapInner() {
