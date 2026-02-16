@@ -1709,10 +1709,17 @@ export default function Home() {
   }
   
   // Calculate metrics
-  // Events I organize: organizerId is 'me' or matches userProfile name
+  // Events I organize: organizerId is 'me' or organizer name matches my profile
   const currentUserId = userProfile?.userId || userProfile?.name || 'me'
   const myName = userProfile?.name || 'Me'
-  const myEvents = events.filter(e => e.organizerId === 'me' || e.organizerId === currentUserId || e.organizerId === userProfile?.name || e.organizerId === userProfile?.userId || e.organizerName === userProfile?.name)
+  const isMyEvent = (e: Event) => {
+    if (e.organizerId === 'me' || e.organizerId === currentUserId || e.organizerId === userProfile?.name || e.organizerId === userProfile?.userId) return true
+    if (!userProfile?.name || !e.organizerName) return false
+    const myFirst = userProfile.name.trim().split(/\s+/)[0]
+    const org = e.organizerName.trim()
+    return org === userProfile.name || org === myFirst || userProfile.name.startsWith(org + ' ')
+  }
+  const myEvents = events.filter(isMyEvent)
   const invitedEvents = events.filter(e => !myEvents.includes(e))
   // Friends/family/company: invited events (from my network)
   const friendsFamilyCompanyEvents = invitedEvents
@@ -3484,7 +3491,7 @@ export default function Home() {
                         <MapPinIcon className="w-4 h-4" />
                         <span className="truncate">{event.location}</span>
                       </div>
-                      {!(event.organizerId === 'me' || event.organizerId === currentUserId || event.organizerId === userProfile?.name || event.organizerId === userProfile?.userId || event.organizerName === userProfile?.name) && (() => {
+                      {!isMyEvent(event) && (() => {
                         const { going, notGoing, pending } = getRsvpCounts(event)
                         return (
                           <p className="text-xs mb-3" style={{ color: 'var(--text-muted)' }}>
@@ -3555,7 +3562,7 @@ export default function Home() {
                         <MapPinIcon className="w-4 h-4" />
                         <span className="truncate">{event.location}</span>
                       </div>
-                      {!(event.organizerId === 'me' || event.organizerId === currentUserId || event.organizerId === userProfile?.name || event.organizerId === userProfile?.userId || event.organizerName === userProfile?.name) && (() => {
+                      {!isMyEvent(event) && (() => {
                         const { going, notGoing, pending } = getRsvpCounts(event)
                         return (
                           <p className="text-xs mb-3" style={{ color: 'var(--text-muted)' }}>
@@ -3632,7 +3639,7 @@ export default function Home() {
     </div>
                     <div className="flex items-center gap-3">
                       {userProfile && (() => {
-                        const myEvts = events.filter(e => e.organizerId === 'me' || e.organizerId === currentUserId || e.organizerId === userProfile?.name || e.organizerId === userProfile?.userId || e.organizerName === userProfile?.name)
+                        const myEvts = events.filter(isMyEvent)
                         const { total: score } = computeOrganizerScore(myEvts)
                         const lvl = getOrganizerLevel(score)
                         const { progress, ptsToNext } = getOrganizerLevelProgress(score)
@@ -3702,7 +3709,7 @@ export default function Home() {
                             {getStatusLabel(event.status)}
       </span>
                           <div className="flex items-center gap-1">
-                            {(event.organizerId === 'me' || event.organizerId === currentUserId || event.organizerId === userProfile?.name || event.organizerId === userProfile?.userId || event.organizerName === userProfile?.name) && (
+                            {isMyEvent(event) && (
                               <button
                                 type="button"
                                 onClick={(e) => { e.stopPropagation(); openEditModal(event) }}
@@ -4315,7 +4322,7 @@ export default function Home() {
                   </div>
                   <div className="flex flex-col items-end gap-2">
                     <div className="flex items-center gap-2">
-                      {(selectedEvent.organizerId === 'me' || selectedEvent.organizerId === userProfile?.userId || selectedEvent.organizerId === userProfile?.name || selectedEvent.organizerName === userProfile?.name) && (
+                      {isMyEvent(selectedEvent) && (
                         <button
                           type="button"
                           onClick={() => openEditModal(selectedEvent)}
@@ -4326,7 +4333,7 @@ export default function Home() {
                           <PencilIcon className="w-4 h-4" />
                         </button>
                       )}
-                      {(selectedEvent.organizerId === 'me' || selectedEvent.organizerId === currentUserId || selectedEvent.organizerId === userProfile?.name || selectedEvent.organizerId === userProfile?.userId || selectedEvent.organizerName === userProfile?.name) && (
+                      {isMyEvent(selectedEvent) && (
                         <>
                       <a
                         href={`${typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3001'}/?eventId=${selectedEvent.id}`}
@@ -4354,7 +4361,7 @@ export default function Home() {
                       </button>
                         </>
                       )}
-                      {(selectedEvent.organizerId === 'me' || selectedEvent.organizerId === currentUserId || selectedEvent.organizerId === userProfile?.name || selectedEvent.organizerId === userProfile?.userId || selectedEvent.organizerName === userProfile?.name) && (
+                      {isMyEvent(selectedEvent) && (
                         <button
                           type="button"
                           onClick={() => setShowDeleteConfirm(true)}
@@ -4388,7 +4395,7 @@ export default function Home() {
               <div className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
                 {(() => {
                   const isPrivate = selectedEvent.type === 'private'
-                  const isOrganizer = selectedEvent.organizerId === 'me' || selectedEvent.organizerId === currentUserId || selectedEvent.organizerId === userProfile?.name || selectedEvent.organizerId === userProfile?.userId || selectedEvent.organizerName === userProfile?.name
+                  const isOrganizer = isMyEvent(selectedEvent)
                   const isParticipant = selectedEvent.participants?.some((p) =>
                     p.id === 'me' || p.id === currentUserId || p.name === userProfile?.name || p.name === myName
                   )
@@ -4422,7 +4429,7 @@ export default function Home() {
                 )}
 
                 {/* Edit button for organizers only */}
-                {(selectedEvent.organizerId === 'me' || selectedEvent.organizerId === currentUserId || selectedEvent.organizerId === userProfile?.name || selectedEvent.organizerId === userProfile?.userId || selectedEvent.organizerName === userProfile?.name) && (
+                {isMyEvent(selectedEvent) && (
                   <button
                     type="button"
                     onClick={() => openEditModal(selectedEvent)}
@@ -4435,7 +4442,7 @@ export default function Home() {
                 )}
 
                 {/* RSVP for non-organizers: send response + see counts */}
-                {!(selectedEvent.organizerId === 'me' || selectedEvent.organizerId === currentUserId || selectedEvent.organizerId === userProfile?.name || selectedEvent.organizerId === userProfile?.userId || selectedEvent.organizerName === userProfile?.name) && (
+                {!isMyEvent(selectedEvent) && (
                   <div className="mb-6">
                     <div className="flex flex-wrap items-center gap-3 mb-3">
                       {(['confirmed', 'pending', 'declined'] as const).map((status) => (
@@ -4907,7 +4914,7 @@ export default function Home() {
                     const isMeHeader = selectedOrganizer.id === 'me' || selectedOrganizer.id === currentUserId || selectedOrganizer.name === userProfile?.name || selectedOrganizer.name === userProfile?.userId
                     const oe = events.filter(e =>
                       e.organizerId === selectedOrganizer.id || e.organizerName === selectedOrganizer.name ||
-                      (isMeHeader && (e.organizerId === 'me' || e.organizerId === currentUserId || e.organizerId === userProfile?.name || e.organizerId === userProfile?.userId || e.organizerName === userProfile?.name))
+                      (isMeHeader && isMyEvent(e))
                     )
                     const { total: score } = computeOrganizerScore(oe)
                     const lvl = getOrganizerLevel(score)
@@ -4971,7 +4978,7 @@ export default function Home() {
                   const organizedEvents = events.filter(e =>
                     e.organizerId === selectedOrganizer.id ||
                     e.organizerName === selectedOrganizer.name ||
-                    (isMe && (e.organizerId === 'me' || e.organizerId === currentUserId || e.organizerId === userProfile?.name || e.organizerId === userProfile?.userId || e.organizerName === userProfile?.name))
+                    (isMe && isMyEvent(e))
                   )
                   const totalAttendees = organizedEvents.reduce((sum, e) => sum + (e.attendees || 0), 0)
                   const avgAttendees = organizedEvents.length > 0 ? Math.round(totalAttendees / organizedEvents.length) : 0
