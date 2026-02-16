@@ -2971,13 +2971,13 @@ export default function Home() {
             {/* 2. Primary Nav: Calendar, Events, Dashboard */}
             <div
               ref={tabBarRef}
-              className="relative flex items-center gap-1 rounded-xl p-1 border flex-shrink-0 px-3 sm:px-4 py-2"
-              style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-primary)' }}
+              className="relative flex items-center gap-1 rounded-xl p-0.5 flex-shrink-0 px-2.5 sm:px-3 py-1.5"
+              style={{ backgroundColor: 'var(--bg-secondary)', border: '0.5px solid var(--border-primary)' }}
             >
               {/* Sliding indicator - single element, animates position */}
               {tabIndicator.width > 0 && (
                 <motion.div
-                  className="absolute top-1 bottom-1 rounded-lg pointer-events-none z-0"
+                  className="absolute top-0.5 bottom-0.5 rounded-lg pointer-events-none z-0"
                   style={{ backgroundColor: 'var(--accent-primary)' }}
                   initial={false}
                   animate={{
