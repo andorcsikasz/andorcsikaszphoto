@@ -1037,15 +1037,13 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
 
       </div>
 
-      {/* Scroll indicator - fixed position, never jumps */}
+      {/* Scroll indicator - fixed position, never moves with cursor */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: stage >= 3 ? 1 : 0 }}
         transition={{ duration: 0.8, delay: 0.3 }}
-        className="fixed bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-[101] cursor-pointer group"
+        className="fixed bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-[101] cursor-pointer"
         style={{ pointerEvents: stage >= 3 ? 'auto' : 'none' }}
-        whileHover={{ scale: 1.08 }}
-        whileTap={{ scale: 0.95 }}
         onClick={() => window.scrollBy({ top: window.innerHeight, behavior: 'smooth' })}
       >
         <motion.p
@@ -1066,10 +1064,7 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
               height="8"
               viewBox="0 0 18 8"
               fill="none"
-              animate={{
-                opacity: [0.15, 0.8, 0.15],
-                y: [0, 3, 0],
-              }}
+              animate={{ opacity: [0.15, 0.8, 0.15] }}
               transition={{
                 duration: 1.6,
                 repeat: Infinity,
