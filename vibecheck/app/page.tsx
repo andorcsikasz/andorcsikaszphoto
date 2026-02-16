@@ -5527,9 +5527,9 @@ export default function Home() {
                             )}
                           </div>
                           <div className="flex gap-4 mt-2 text-xs">
-                            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ backgroundColor: '#10b981' }} />{t.fixed}: {fixedCount}</span>
-                            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ backgroundColor: 'var(--text-muted)' }} />{t.optimal}: {optimalCount}</span>
-                            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ backgroundColor: '#f97316' }} />{t.inProgress}: {inProgressCount}</span>
+                            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: '#10b981' }}></span>{t.fixed}: {fixedCount}</span>
+                            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: 'var(--text-muted)' }}></span>{t.optimal}: {optimalCount}</span>
+                            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: '#f97316' }}></span>{t.inProgress}: {inProgressCount}</span>
                           </div>
                         </div>
 
