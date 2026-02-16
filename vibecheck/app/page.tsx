@@ -2747,6 +2747,9 @@ export default function Home() {
   }
 
   const requestRsvpChange = (eventId: number | string, status: 'confirmed' | 'pending' | 'declined', eventTitle?: string) => {
+    const event = events.find(e => e.id === eventId)
+    const currentStatus = event ? getMyRsvp(event) : undefined
+    if (currentStatus === status) return
     setPendingRsvpConfirm({ eventId, status, eventTitle })
   }
 
