@@ -5421,7 +5421,7 @@ export default function Home() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
-            onClick={() => { setShowOrganizerStatsModal(false); setSelectedOrganizer(null) }}
+            onClick={() => { setShowOrganizerStatsModal(false); setSelectedOrganizer(null); setOrganizerStatsView('numbers') }}
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.96, y: 12 }}
@@ -5440,8 +5440,27 @@ export default function Home() {
                       {lang === 'en' ? 'Organizer statistics' : 'Szervezői statisztikák'}
                     </p>
                   </div>
-                  <button
-                    onClick={() => { setShowOrganizerStatsModal(false); setSelectedOrganizer(null) }}
+                  <div className="flex items-center gap-2">
+                    <div className="flex rounded-lg p-0.5 border" style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-primary)' }}>
+                      <button
+                        type="button"
+                        onClick={() => setOrganizerStatsView('numbers')}
+                        className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${organizerStatsView === 'numbers' ? '' : ''}`}
+                        style={organizerStatsView === 'numbers' ? { backgroundColor: 'var(--accent-primary)', color: 'var(--text-inverse)' } : { color: 'var(--text-muted)' }}
+                      >
+                        {t.statsViewNumbers}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setOrganizerStatsView('charts')}
+                        className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${organizerStatsView === 'charts' ? '' : ''}`}
+                        style={organizerStatsView === 'charts' ? { backgroundColor: 'var(--accent-primary)', color: 'var(--text-inverse)' } : { color: 'var(--text-muted)' }}
+                      >
+                        {t.statsViewCharts}
+                      </button>
+                    </div>
+                    <button
+                    onClick={() => { setShowOrganizerStatsModal(false); setSelectedOrganizer(null); setOrganizerStatsView('numbers') }}
                     className="p-2 rounded-lg transition-colors"
                     style={{ color: 'var(--text-muted)' }}
                     onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--bg-hover)' }}
@@ -5449,6 +5468,7 @@ export default function Home() {
                   >
                     <XMarkIcon className="w-5 h-5" />
                   </button>
+                  </div>
                 </div>
               </div>
               <div className="p-6 space-y-6">
@@ -5466,6 +5486,124 @@ export default function Home() {
                   const inProgressCount = organizedEvents.filter(e => e.status === 'in-progress').length
                   const withVoting = organizedEvents.filter(e => e.hasVoting).length
                   const withPayment = organizedEvents.filter(e => e.hasPayment).length
+                  const statusTotal = fixedCount + optimalCount + inProgressCount
+                  const maxAttendees = Math.max(...organizedEvents.map(e => e.attendees || 0), 1)
+
+                  if (organizerStatsView === 'charts') {
+                    return (
+                      <>
+                        {/* Status breakdown bar */}
+                        <div>
+                          <div className="text-sm font-medium mb-2" style={{ color: 'var(--text-muted)' }}>
+                            {t.eventsOrganized} {organizedEvents.length}
+                          </div>
+                          <div className="h-8 rounded-lg overflow-hidden flex" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                            {fixedCount > 0 && (
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${statusTotal > 0 ? (fixedCount / statusTotal) * 100 : 0}%` }}
+                                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                                className="h-full"
+                                style={{ backgroundColor: '#10b981' }}
+                              />
+                            )}
+                            {optimalCount > 0 && (
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${statusTotal > 0 ? (optimalCount / statusTotal) * 100 : 0}%` }}
+                                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
+                                className="h-full"
+                                style={{ backgroundColor: 'var(--text-muted)' }}
+                              />
+                            )}
+                            {inProgressCount > 0 && (
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${statusTotal > 0 ? (inProgressCount / statusTotal) * 100 : 0}%` }}
+                                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+                                className="h-full"
+                                style={{ backgroundColor: '#f97316' }}
+                              />
+                            )}
+                          </div>
+                          <div className="flex gap-4 mt-2 text-xs">
+                            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ backgroundColor: '#10b981' }} />{t.fixed}: {fixedCount}</span>
+                            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ backgroundColor: 'var(--text-muted)' }} />{t.optimal}: {optimalCount}</span>
+                            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full" style={{ backgroundColor: '#f97316' }} />{t.inProgress}: {inProgressCount}</span>
+                          </div>
+                        </div>
+
+                        {/* Attendees per event bar chart */}
+                        {organizedEvents.length > 0 && (
+                          <div>
+                            <div className="text-sm font-medium mb-3" style={{ color: 'var(--text-muted)' }}>
+                              {t.totalAttendees}: {totalAttendees} · {t.avgAttendees}: {avgAttendees}
+                            </div>
+                            <div className="space-y-2">
+                              {organizedEvents.slice(0, 6).map((e, i) => (
+                                <div key={e.id} className="flex items-center gap-3">
+                                  <span className="text-xs truncate flex-1 min-w-0" style={{ color: 'var(--text-primary)' }} title={e.title}>
+                                    {e.title}
+                                  </span>
+                                  <div className="flex-1 h-5 rounded overflow-hidden min-w-[60px]" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                                    <motion.div
+                                      initial={{ width: 0 }}
+                                      animate={{ width: `${maxAttendees > 0 ? ((e.attendees || 0) / maxAttendees) * 100 : 0}%` }}
+                                      transition={{ duration: 0.4, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
+                                      className="h-full rounded"
+                                      style={{ backgroundColor: 'var(--accent-primary)' }}
+                                    />
+                                  </div>
+                                  <span className="text-xs font-medium w-8 text-right" style={{ color: 'var(--text-muted)' }}>{e.attendees || 0}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Voting & Payment pie-style breakdown */}
+                        <div className="flex gap-4">
+                          <div className="flex-1 rounded-xl p-4" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                            <div className="flex items-center gap-2 mb-2">
+                              <ChatBubbleLeftRightIcon className="w-4 h-4 text-purple-400" />
+                              <span className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.withVoting}</span>
+                            </div>
+                            <div className="relative h-12 rounded-lg overflow-hidden" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${organizedEvents.length > 0 ? (withVoting / organizedEvents.length) * 100 : 0}%` }}
+                                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                                className="absolute inset-y-0 left-0 rounded-lg"
+                                style={{ backgroundColor: 'rgba(147, 51, 234, 0.4)' }}
+                              />
+                              <span className="absolute inset-0 flex items-center justify-center text-sm font-bold" style={{ color: 'var(--text-primary)' }}>
+                                {withVoting}/{organizedEvents.length}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex-1 rounded-xl p-4" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                            <div className="flex items-center gap-2 mb-2">
+                              <CreditCardIcon className="w-4 h-4 text-emerald-400" />
+                              <span className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.withPayment}</span>
+                            </div>
+                            <div className="relative h-12 rounded-lg overflow-hidden" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={{ width: `${organizedEvents.length > 0 ? (withPayment / organizedEvents.length) * 100 : 0}%` }}
+                                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                                className="absolute inset-y-0 left-0 rounded-lg"
+                                style={{ backgroundColor: 'rgba(16, 185, 129, 0.4)' }}
+                              />
+                              <span className="absolute inset-0 flex items-center justify-center text-sm font-bold" style={{ color: 'var(--text-primary)' }}>
+                                {withPayment}/{organizedEvents.length}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    )
+                  }
+
                   return (
                     <>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
