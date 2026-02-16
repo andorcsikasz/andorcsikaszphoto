@@ -4335,7 +4335,7 @@ export default function Home() {
                       {t.myEvents}
                     </h3>
                   </div>
-                  <div className={eventsViewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : 'flex overflow-x-auto gap-4 pb-2 -mx-1 px-1 snap-x snap-mandatory scrollbar-thin'}>
+                  <div className={eventsViewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : 'flex overflow-x-auto gap-4 pb-2 -mx-1 px-1 snap-x snap-mandatory '}>
                   {myEventsForDisplay.map((event, index) => (
                     <motion.div
                       key={event.id}
@@ -4408,12 +4408,14 @@ export default function Home() {
                       {t.friendsFamilyCompany}
                     </h3>
                   </div>
-                  <div className={eventsViewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : 'flex overflow-x-auto gap-4 pb-2 -mx-1 px-1 snap-x snap-mandatory scrollbar-thin'}>
-                  {friendsFamilyCompanyEventsForDisplay.map((event, index) => (
+                  <div className={eventsViewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : 'flex overflow-x-auto gap-4 pb-2 -mx-1 px-1 snap-x snap-mandatory '}>
+                  {friendsFamilyCompanyEventsForDisplay.map((event, index) => {
+                    const cantAttend = getMyRsvp(event) === 'declined'
+                    return (
                     <motion.div
                       key={event.id}
                       initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
+                      animate={{ opacity: cantAttend ? 0.45 : 1, y: 0 }}
                       transition={{ duration: 0.2, delay: index * 0.02, ease: [0.22, 1, 0.36, 1] }}
                       onClick={() => setSelectedEvent(event)}
                       className={`relative rounded-xl border overflow-hidden ${getStatusBorderColor(event.status)} p-5 cursor-pointer transition-all group snap-start ${
@@ -4467,7 +4469,7 @@ export default function Home() {
                         </div>
                       )}
                     </motion.div>
-                  ))}
+                  )})}
                   </div>
                   {friendsFamilyCompanyEventsForDisplay.length === 0 && (
                     <div className="rounded-xl py-8 px-4 flex items-center justify-center gap-4" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
@@ -4485,12 +4487,14 @@ export default function Home() {
                       {t.suggestedOpenNearMe}
                     </h3>
                   </div>
-                  <div className={eventsViewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : 'flex overflow-x-auto gap-4 pb-2 -mx-1 px-1 snap-x snap-mandatory scrollbar-thin'}>
-                  {openSuggestedEventsForDisplay.map((event, index) => (
+                  <div className={eventsViewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : 'flex overflow-x-auto gap-4 pb-2 -mx-1 px-1 snap-x snap-mandatory '}>
+                  {openSuggestedEventsForDisplay.map((event, index) => {
+                    const cantAttend = getMyRsvp(event) === 'declined'
+                    return (
                     <motion.div
                       key={event.id}
                       initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
+                      animate={{ opacity: cantAttend ? 0.45 : 1, y: 0 }}
                       transition={{ duration: 0.2, delay: index * 0.02, ease: [0.22, 1, 0.36, 1] }}
                       onClick={() => setSelectedEvent(event)}
                       className={`relative rounded-xl border overflow-hidden ${getStatusBorderColor(event.status)} p-5 cursor-pointer transition-all group snap-start ${
@@ -4536,7 +4540,7 @@ export default function Home() {
                         </div>
                       )}
                     </motion.div>
-                  ))}
+                  )})}
                   </div>
                   {openSuggestedEventsForDisplay.length === 0 && (
                     <div className="rounded-xl py-8 px-4 flex items-center justify-center gap-4" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
