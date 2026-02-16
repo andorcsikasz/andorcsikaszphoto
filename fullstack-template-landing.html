@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fullstack Web Template — Modern TypeScript Starter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Syne:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #080a0e;
+    --bg-2: #0d1117;
+    --bg-3: #131920;
+    --surface: #1a2230;
+    --border: rgba(255,255,255,0.07);
+    --border-bright: rgba(255,255,255,0.14);
+    --text: #e8edf5;
+    --text-dim: #7a8899;
+    --text-dimmer: #3d4d60;
+    --accent: #4af2a1;
+    --accent-dim: rgba(74,242,161,0.12);
+    --accent-glow: rgba(74,242,161,0.25);
+    --orange: #ff8c42;
+    --blue: #4ab0f2;
+    --purple: #a78bfa;
+    --red: #f25555;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Mono', monospace;
+    --font-serif: 'Instrument Serif', serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NOISE TEXTURE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.6;
+  }
+
+  /* GRID BACKGROUND */
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* -------- NAV -------- */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8,10,14,0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-logo .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.8); }
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-cta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 20px;
+    background: var(--accent);
+    color: var(--bg) !important;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s !important;
+  }
+  .nav-cta:hover { background: #7ff9c0 !important; transform: translateY(-1px); color: var(--bg) !important; }
+
+  /* -------- HERO -------- */
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 48px 80px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    height: 600px;
+    background: radial-gradient(ellipse at center, rgba(74,242,161,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-glow-2 {
+    position: absolute;
+    bottom: -10%;
+    left: 20%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(74,176,242,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px 6px 8px;
+    background: rgba(74,242,161,0.08);
+    border: 1px solid rgba(74,242,161,0.2);
+    border-radius: 100px;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+    animation: fadeSlideDown 0.6s ease forwards;
+    opacity: 0;
+  }
+  .hero-badge .badge-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(52px, 8vw, 96px);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    margin-bottom: 28px;
+    animation: fadeSlideDown 0.6s 0.1s ease forwards;
+    opacity: 0;
+  }
+  .hero-title .line-1 { display: block; color: var(--text); }
+  .hero-title .line-2 {
+    display: block;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.2);
+    font-style: italic;
+    font-family: var(--font-serif);
+    font-size: 0.95em;
+  }
+  .hero-title .accent-word {
+    color: var(--accent);
+    position: relative;
+  }
+
+  .hero-sub {
+    max-width: 540px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-dim);
+    margin-bottom: 48px;
+    font-family: var(--font-body);
+    animation: fadeSlideDown 0.6s 0.2s ease forwards;
+    opacity: 0;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 72px;
+    animation: fadeSlideDown 0.6s 0.3s ease forwards;
+    opacity: 0;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    letter-spacing: 0.01em;
+  }
+  .btn-primary:hover { background: #7ff9c0; transform: translateY(-2px); box-shadow: 0 8px 32px rgba(74,242,161,0.3); }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 24px;
+    background: transparent;
+    color: var(--text-dim);
+    border: 1px solid var(--border-bright);
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.3); color: var(--text); background: rgba(255,255,255,0.04); }
+
+  /* TECH STRIP */
+  .tech-strip {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--bg-2);
+    animation: fadeSlideDown 0.6s 0.4s ease forwards;
+    opacity: 0;
+  }
+  .tech-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    font-size: 12px;
+    color: var(--text-dim);
+    border-right: 1px solid var(--border);
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .tech-item:last-child { border-right: none; }
+  .tech-item:hover { background: rgba(255,255,255,0.03); color: var(--text); }
+  .tech-item .icon { font-size: 16px; }
+  .tech-item .version {
+    font-size: 10px;
+    color: var(--text-dimmer);
+    padding: 2px 6px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    font-weight: 500;
+  }
+
+  @keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* -------- TERMINAL SECTION -------- */
+  .section {
+    position: relative;
+    z-index: 1;
+    padding: 100px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .section-desc {
+    color: var(--text-dim);
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 56px;
+  }
+
+  /* TERMINAL */
+  .terminal {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    font-family: var(--font-body);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04);
+  }
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 18px;
+    background: var(--bg-3);
+    border-bottom: 1px solid var(--border);
+  }
+  .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .terminal-dot.red { background: #ff5f57; }
+  .terminal-dot.yellow { background: #ffbd2e; }
+  .terminal-dot.green { background: #28c840; }
+  .terminal-title {
+    margin-left: 8px;
+    font-size: 12px;
+    color: var(--text-dimmer);
+    letter-spacing: 0.02em;
+  }
+  .terminal-body { padding: 24px; }
+  .terminal-line {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 6px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .t-prompt { color: var(--accent); user-select: none; flex-shrink: 0; }
+  .t-cmd { color: var(--text); }
+  .t-comment { color: var(--text-dimmer); font-style: italic; }
+  .t-output { color: var(--text-dim); padding-left: 20px; margin-bottom: 4px; font-size: 12px; }
+  .t-success { color: var(--accent); }
+  .t-warn { color: var(--orange); }
+  .t-blank { margin-bottom: 12px; }
+
+  /* -------- FEATURE GRID -------- */
+  .features-section {
+    position: relative;
+    z-index: 1;
+    padding: 100px 48px;
+    background: var(--bg-2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .features-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .feature-card {
+    background: var(--bg-2);
+    padding: 36px 32px;
+    transition: background 0.2s;
+    position: relative;
+  }
+  .feature-card:hover { background: var(--bg-3); }
+  .feature-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: transparent;
+    transition: background 0.2s;
+  }
+  .feature-card:hover::after { background: var(--accent); }
+
+  .feature-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .feature-title {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+
+  .feature-desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.65;
+  }
+
+  .feature-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 16px;
+  }
+  .tag {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .tag-green { color: var(--accent); border-color: rgba(74,242,161,0.25); background: rgba(74,242,161,0.06); }
+  .tag-blue { color: var(--blue); border-color: rgba(74,176,242,0.25); background: rgba(74,176,242,0.06); }
+  .tag-orange { color: var(--orange); border-color: rgba(255,140,66,0.25); background: rgba(255,140,66,0.06); }
+  .tag-purple { color: var(--purple); border-color: rgba(167,139,250,0.25); background: rgba(167,139,250,0.06); }
+
+  /* -------- STACK SECTION -------- */
+  .stack-section {
+    position: relative;
+    z-index: 1;
+    padding: 100px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .stack-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .stack-col-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .stack-col-icon {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  .stack-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .stack-item:last-child { border-bottom: none; }
+  .stack-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .stack-emoji { font-size: 18px; }
+  .stack-name { font-size: 14px; color: var(--text); font-weight: 500; }
+  .stack-role { font-size: 11px; color: var(--text-dimmer); margin-top: 2px; }
+  .stack-version {
+    font-size: 11px;
+    padding: 3px 8px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-dim);
+    font-family: var(--font-body);
+  }
+
+  /* -------- DEPLOY SECTION -------- */
+  .deploy-section {
+    position: relative;
+    z-index: 1;
+    padding: 100px 48px;
+    background: var(--bg-2);
+    border-top: 1px solid var(--border);
+  }
+  .deploy-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .deploy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 56px;
+  }
+
+  .deploy-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .deploy-card:hover { border-color: var(--border-bright); transform: translateY(-2px); }
+  .deploy-card.recommended {
+    border-color: rgba(74,242,161,0.3);
+  }
+  .deploy-card.recommended:hover { border-color: rgba(74,242,161,0.6); }
+
+  .deploy-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: rgba(74,242,161,0.1);
+    border: 1px solid rgba(74,242,161,0.25);
+    border-radius: 100px;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .deploy-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+  }
+
+  .deploy-desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+    line-height: 1.65;
+  }
+
+  .deploy-steps {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .deploy-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .step-num {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    margin-top: 1px;
+  }
+  .recommended .step-num {
+    background: rgba(74,242,161,0.1);
+    border-color: rgba(74,242,161,0.3);
+    color: var(--accent);
+  }
+
+  /* -------- STRUCTURE SECTION -------- */
+  .structure-section {
+    position: relative;
+    z-index: 1;
+    padding: 100px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .file-tree {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    font-family: var(--font-body);
+    font-size: 13px;
+  }
+  .file-tree-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--bg-3);
+    border-bottom: 1px solid var(--border);
+    color: var(--text-dimmer);
+    font-size: 12px;
+  }
+  .file-tree-body { padding: 20px 24px; }
+  .file-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 3px 0;
+    color: var(--text-dim);
+    transition: color 0.15s;
+  }
+  .file-row:hover { color: var(--text); }
+  .file-row .indent { display: inline-block; width: 20px; flex-shrink: 0; }
+  .file-row .file-icon { margin-right: 8px; font-size: 14px; }
+  .file-row.dir { color: var(--blue); font-weight: 500; }
+  .file-row.dir:hover { color: #7dcfff; }
+  .file-row .file-comment { margin-left: auto; color: var(--text-dimmer); font-size: 11px; font-style: italic; padding-left: 20px; white-space: nowrap; }
+
+  /* -------- CTA SECTION -------- */
+  .cta-section {
+    position: relative;
+    z-index: 1;
+    padding: 120px 48px;
+    text-align: center;
+    overflow: hidden;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+  }
+  .cta-glow {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 800px; height: 400px;
+    background: radial-gradient(ellipse, rgba(74,242,161,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-title {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 6vw, 80px);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-title em {
+    font-style: italic;
+    font-family: var(--font-serif);
+    color: var(--accent);
+  }
+  .cta-sub {
+    font-size: 15px;
+    color: var(--text-dim);
+    margin-bottom: 44px;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* -------- FOOTER -------- */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 32px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .footer-sep { color: var(--text-dimmer); }
+  .footer-license { font-size: 12px; color: var(--text-dimmer); }
+  .footer-right { display: flex; gap: 24px; }
+  .footer-link {
+    font-size: 12px;
+    color: var(--text-dimmer);
+    text-decoration: none;
+    transition: color 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .footer-link:hover { color: var(--text); }
+
+  /* DIVIDER */
+  .divider {
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+  /* HIGHLIGHT CODE */
+  .hl-green { color: var(--accent); }
+  .hl-blue { color: var(--blue); }
+  .hl-orange { color: var(--orange); }
+  .hl-purple { color: var(--purple); }
+  .hl-dim { color: var(--text-dimmer); }
+
+  /* CURSOR BLINK */
+  .cursor {
+    display: inline-block;
+    width: 8px; height: 14px;
+    background: var(--accent);
+    margin-left: 2px;
+    animation: blink 1.2s step-end infinite;
+    vertical-align: middle;
+    border-radius: 1px;
+  }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 100px 24px 60px; }
+    .tech-strip { flex-wrap: wrap; }
+    .section, .stack-section, .structure-section { padding: 60px 24px; }
+    .features-section, .deploy-section { padding: 60px 24px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .stack-cols { grid-template-columns: 1fr; }
+    .deploy-grid { grid-template-columns: 1fr; }
+    .cta-section { padding: 80px 24px; }
+    footer { padding: 24px; flex-direction: column; gap: 16px; text-align: center; }
+    .hero-actions { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="dot"></div>
+    Fullstack Web Template
+  </div>
+  <ul class="nav-links">
+    <li><a href="#quickstart">Quick Start</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#deploy">Deploy</a></li>
+    <li><a href="https://github.com/bravenewxyz/fullstack-web-template" class="nav-cta">→ GitHub</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow-2"></div>
+
+  <div class="hero-badge">
+    <div class="badge-dot"></div>
+    Modern TypeScript Starter · MIT License
+  </div>
+
+  <h1 class="hero-title">
+    <span class="line-1">Ship faster.</span>
+    <span class="line-2">Build <span class="accent-word">everything.</span></span>
+  </h1>
+
+  <p class="hero-sub">
+    A production-grade fullstack template with React 19, Express, tRPC v11, and PostgreSQL.
+    Zero config. Instant deploy. LLM-ready from day one.
+  </p>
+
+  <div class="hero-actions">
+    <a href="https://github.com/bravenewxyz/fullstack-web-template" class="btn-primary">
+      Clone Template →
+    </a>
+    <a href="#quickstart" class="btn-ghost">
+      Quick Start ↓
+    </a>
+  </div>
+
+  <div class="tech-strip">
+    <div class="tech-item">
+      <span class="icon">⚛️</span>
+      React
+      <span class="version">19</span>
+    </div>
+    <div class="tech-item">
+      <span class="icon">⚡</span>
+      Vite
+      <span class="version">6</span>
+    </div>
+    <div class="tech-item">
+      <span class="icon">🔷</span>
+      tRPC
+      <span class="version">v11</span>
+    </div>
+    <div class="tech-item">
+      <span class="icon">🐘</span>
+      PostgreSQL
+    </div>
+    <div class="tech-item">
+      <span class="icon">🔐</span>
+      Supabase Auth
+    </div>
+    <div class="tech-item">
+      <span class="icon">🤖</span>
+      OpenRouter
+      <span class="version">200+ LLMs</span>
+    </div>
+    <div class="tech-item">
+      <span class="icon">🥟</span>
+      Bun
+    </div>
+  </div>
+</section>
+
+<!-- QUICK START -->
+<section id="quickstart" class="section">
+  <div class="section-label">Quick Start</div>
+  <h2 class="section-title">Up and running<br>in under 60 seconds</h2>
+  <p class="section-desc">Clone, install, and start building. No complex configuration required — local Supabase runs in Docker with a single command.</p>
+
+  <div class="terminal">
+    <div class="terminal-bar">
+      <div class="terminal-dot red"></div>
+      <div class="terminal-dot yellow"></div>
+      <div class="terminal-dot green"></div>
+      <span class="terminal-title">~/my-app — zsh</span>
+    </div>
+    <div class="terminal-body">
+      <div class="terminal-line">
+        <span class="t-prompt">$</span>
+        <span class="t-cmd"><span class="hl-blue">git</span> clone https://github.com/bravenewxyz/fullstack-web-template <span class="hl-orange">my-app</span></span>
+      </div>
+      <div class="t-output">Cloning into 'my-app'... <span class="hl-green">✓ done</span></div>
+      <div class="t-blank"></div>
+      <div class="terminal-line">
+        <span class="t-prompt">$</span>
+        <span class="t-cmd"><span class="hl-blue">cd</span> my-app <span class="hl-dim">&amp;&amp;</span> <span class="hl-blue">cp</span> .env.example .env</span>
+      </div>
+      <div class="t-blank"></div>
+      <div class="terminal-line">
+        <span class="t-prompt">$</span>
+        <span class="t-cmd"><span class="hl-blue">bun</span> install</span>
+      </div>
+      <div class="t-output">Resolving dependencies... <span class="hl-green">✓ 847 packages installed</span></div>
+      <div class="t-blank"></div>
+      <div class="terminal-line">
+        <span class="t-prompt">$</span>
+        <span class="t-cmd"><span class="hl-blue">bun</span> run docker:up</span>
+        <span class="t-comment"># Start local Supabase</span>
+      </div>
+      <div class="t-output"><span class="hl-green">✓</span> supabase_db started</div>
+      <div class="t-output"><span class="hl-green">✓</span> supabase_auth started</div>
+      <div class="t-output"><span class="hl-green">✓</span> supabase_realtime started</div>
+      <div class="t-blank"></div>
+      <div class="terminal-line">
+        <span class="t-prompt">$</span>
+        <span class="t-cmd"><span class="hl-blue">bun</span> run db:push</span>
+        <span class="t-comment"># Run migrations</span>
+      </div>
+      <div class="t-output"><span class="hl-green">✓</span> Applied 3 migrations</div>
+      <div class="t-blank"></div>
+      <div class="terminal-line">
+        <span class="t-prompt">$</span>
+        <span class="t-cmd"><span class="hl-blue">bun</span> run dev</span>
+      </div>
+      <div class="t-output"><span class="hl-green">✓</span> Frontend: http://localhost:5173</div>
+      <div class="t-output"><span class="hl-green">✓</span> Backend:  http://localhost:3000</div>
+      <div class="t-output"><span class="hl-green">✓</span> tRPC:     http://localhost:3000/trpc</div>
+      <div class="terminal-line" style="margin-top:8px;">
+        <span class="t-prompt">$</span>
+        <span class="t-cmd"><span class="cursor"></span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="features-section">
+  <div class="features-inner">
+    <div class="section-label">Features</div>
+    <h2 class="section-title">Everything included.<br>Nothing to configure.</h2>
+    <p class="section-desc">A carefully assembled stack that covers authentication, database, type-safe APIs, and LLM integration — all wired up and ready to extend.</p>
+
+    <div class="features-grid">
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(74,242,161,0.08);">🔒</div>
+        <div class="feature-title">Auth out of the box</div>
+        <div class="feature-desc">Supabase Auth integrated with row-level security, JWT tokens, and server-side session validation via tRPC context.</div>
+        <div class="feature-tags">
+          <span class="tag tag-green">Supabase Auth</span>
+          <span class="tag tag-blue">JWT</span>
+          <span class="tag tag-purple">RLS</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(74,176,242,0.08);">🔷</div>
+        <div class="feature-title">End-to-end type safety</div>
+        <div class="feature-desc">tRPC v11 eliminates the client/server type boundary. No codegen, no schemas — just TypeScript all the way down.</div>
+        <div class="feature-tags">
+          <span class="tag tag-blue">tRPC v11</span>
+          <span class="tag tag-green">Zod</span>
+          <span class="tag tag-purple">TypeScript</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(255,140,66,0.08);">🤖</div>
+        <div class="feature-title">LLM-ready from day one</div>
+        <div class="feature-desc">OpenRouter integration gives you access to 200+ AI models — GPT-4o, Claude 3.5, Llama 3, Gemini — with a single API key.</div>
+        <div class="feature-tags">
+          <span class="tag tag-orange">OpenRouter</span>
+          <span class="tag tag-purple">200+ Models</span>
+          <span class="tag tag-blue">Streaming</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(167,139,250,0.08);">⚡</div>
+        <div class="feature-title">Modern frontend stack</div>
+        <div class="feature-desc">React 19 with Vite, Tailwind CSS v4, Radix UI primitives, Phosphor Icons, Zustand, and Framer Motion for animations.</div>
+        <div class="feature-tags">
+          <span class="tag tag-purple">React 19</span>
+          <span class="tag tag-blue">Vite 6</span>
+          <span class="tag tag-green">Tailwind v4</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(74,242,161,0.08);">🐘</div>
+        <div class="feature-title">Drizzle ORM + PostgreSQL</div>
+        <div class="feature-desc">Type-safe database queries with Drizzle. Works with self-hosted Supabase, Railway PostgreSQL, or any Postgres-compatible database.</div>
+        <div class="feature-tags">
+          <span class="tag tag-green">Drizzle ORM</span>
+          <span class="tag tag-blue">Postgres</span>
+          <span class="tag tag-orange">Supabase</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(74,176,242,0.08);">🚀</div>
+        <div class="feature-title">Zero-config deployment</div>
+        <div class="feature-desc">Dockerfile bundles everything — PostgreSQL, Auth, and your app. One-click Railway deploy with optional external database for production.</div>
+        <div class="feature-tags">
+          <span class="tag tag-blue">Railway</span>
+          <span class="tag tag-purple">Docker</span>
+          <span class="tag tag-green">Self-hosted</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK DETAIL -->
+<section id="stack" class="stack-section">
+  <div class="section-label">Tech Stack</div>
+  <h2 class="section-title">Chosen for velocity<br>and production readiness</h2>
+  <p class="section-desc">Every dependency is intentional — battle-tested, well-documented, and actively maintained.</p>
+
+  <div class="stack-cols">
+    <div>
+      <div class="stack-col-title">
+        <div class="stack-col-icon" style="background:rgba(74,176,242,0.1);">⚛️</div>
+        Frontend
+      </div>
+      <div class="stack-item">
+        <div class="stack-left">
+          <span class="stack-emoji">⚛️</span>
+          <div>
+            <div class="stack-name">React</div>
+            <div class="stack-role">UI Framework</div>
+          </div>
+        </div>
+        <span class="stack-version">19.0</span>
+      </div>
+      <div class="stack-item">
+        <div class="stack-left">
+          <span class="stack-emoji">⚡</span>
+          <div>
+            <div class="stack-name">Vite</div>
+            <div class="stack-role">Build Tool &amp; Dev Server</div>
+          </div>
+        </div>
+        <span class="stack-version">6.x</span>
+      </div>
+      <div class="stack-item">
+        <div class="stack-left">
+          <span class="stack-emoji">🎨</span>
+          <div>
+            <div class="stack-name">Tailwind CSS</div>
+            <div class="stack-role">Utility-first CSS</div>
+          </div>
+        </div>
+        <span class="stack-version">v4</span>
+      </div>
+      <div class="stack-item">
+        <div class="stack-left">
+          <span class="stack-emoji">🧩</span>
+          <div>
+            <div class="stack-name">Radix UI</div>
+            <div class="stack-role">Accessible Primitives</div>
+          </div>
+        </div>
+        <span class="stack-version">latest</span>
+      </div>
+      <div class="stack-item">
+        <div class="stack-left">
+          <span class="stack-emoji">🐻</span>
+          <div>
+            <div class="stack-name">Zustand</div>
+            <div class="stack-role">State Management</div>
+          </div>
+        </div>
+        <span class="stack-version">5.x</span>
+      </div>
+      <div class="stack-item">
+        <div class="stack-left">
+          <span class="stack-emoji">🎭</span>
+          <div>
+            <div class="stack-name">Framer Motion</div>
+            <div class="stack-role">Animations</div>
+          </div>
+        </div>
+        <span class="stack-version">12.x</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="stack-col-title">
+        <div class="stack-col-icon" style="background:rgba(74,242,161,0.1);">🖥️</div>
+        Backend &amp; Infrastructure
+      </div>
+      <div class="stack-item">
+        <div class="stack-left">
+          <span class="stack-emoji">🛤️</span>
+          <div>
+            <div class="stack-name">Express</div>
+            <div class="stack-role">HTTP Server</div>
+          </div>
+        </div>
+        <span class="stack-version">5.x</span>
+      </div>
+      <div class="stack-item">
+        <div class="stack-left">
+          <span class="stack-emoji">🔷</span>
+          <div>
+            <div class="stack-name">tRPC</div>
+            <div class="stack-role">Type-safe API Layer</div>
+          </div>
+        </div>
+        <span class="stack-version">v11</span>
+      </div>
+      <div class="stack-item">
+        <div class="stack-left">
+          <span class="stack-emoji">🗄️</span>
+          <div>
+            <div class="stack-name">Drizzle ORM</div>
+            <div class="stack-role">Database ORM</div>
+          </div>
+        </div>
+        <span class="stack-version">latest</span>
+      </div>
+      <div class="stack-item">
+        <div class="stack-left">
+          <span class="stack-emoji">🔐</span>
+          <div>
+            <div class="stack-name">Supabase Auth</div>
+            <div class="stack-role">Authentication</div>
+          </div>
+        </div>
+        <span class="stack-version">self-hosted</span>
+      </div>
+      <div class="stack-item">
+        <div class="stack-left">
+          <span class="stack-emoji">🤖</span>
+          <div>
+            <div class="stack-name">OpenRouter</div>
+            <div class="stack-role">LLM Gateway</div>
+          </div>
+        </div>
+        <span class="stack-version">200+ models</span>
+      </div>
+      <div class="stack-item">
+        <div class="stack-left">
+          <span class="stack-emoji">🥟</span>
+          <div>
+            <div class="stack-name">Bun</div>
+            <div class="stack-role">Runtime &amp; Package Manager</div>
+          </div>
+        </div>
+        <span class="stack-version">1.x</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECT STRUCTURE -->
+<section class="structure-section">
+  <div class="section-label">Project Structure</div>
+  <h2 class="section-title">Organized for scale</h2>
+  <p class="section-desc">Clear separation of concerns between frontend, backend, and shared code. Easy to navigate, easy to extend.</p>
+
+  <div class="file-tree">
+    <div class="file-tree-bar">
+      📁 my-app/
+    </div>
+    <div class="file-tree-body">
+      <div class="file-row dir">
+        <span class="file-icon">📁</span> client/
+        <span class="file-comment">React frontend</span>
+      </div>
+      <div class="file-row dir">
+        <span class="indent"></span><span class="file-icon">📁</span> src/
+      </div>
+      <div class="file-row">
+        <span class="indent"></span><span class="indent"></span><span class="file-icon">📁</span> pages/
+        <span class="file-comment">Route components</span>
+      </div>
+      <div class="file-row">
+        <span class="indent"></span><span class="indent"></span><span class="file-icon">📁</span> components/
+        <span class="file-comment">Radix + shadcn UI</span>
+      </div>
+      <div class="file-row">
+        <span class="indent"></span><span class="indent"></span><span class="file-icon">📁</span> hooks/
+        <span class="file-comment">Custom React hooks</span>
+      </div>
+      <div class="file-row">
+        <span class="indent"></span><span class="indent"></span><span class="file-icon">📁</span> store/
+        <span class="file-comment">Zustand state</span>
+      </div>
+      <div class="file-row">
+        <span class="indent"></span><span class="indent"></span><span class="file-icon">📁</span> lib/
+        <span class="file-comment">Utilities + tRPC client</span>
+      </div>
+      <div class="file-row dir" style="margin-top:8px;">
+        <span class="file-icon">📁</span> server/
+        <span class="file-comment">Express backend</span>
+      </div>
+      <div class="file-row">
+        <span class="indent"></span><span class="file-icon">📁</span> lib/
+        <span class="file-comment">tRPC, context, env</span>
+      </div>
+      <div class="file-row">
+        <span class="indent"></span><span class="file-icon">📁</span> services/
+        <span class="file-comment">OpenRouter, maps, etc.</span>
+      </div>
+      <div class="file-row">
+        <span class="indent"></span><span class="file-icon">📄</span> routers.ts
+        <span class="file-comment">tRPC router definitions</span>
+      </div>
+      <div class="file-row">
+        <span class="indent"></span><span class="file-icon">📄</span> db.ts
+        <span class="file-comment">Database operations</span>
+      </div>
+      <div class="file-row dir" style="margin-top:8px;">
+        <span class="file-icon">📁</span> shared/
+        <span class="file-comment">Shared types + constants</span>
+      </div>
+      <div class="file-row dir">
+        <span class="file-icon">📁</span> drizzle/
+        <span class="file-comment">Schema + migrations</span>
+      </div>
+      <div class="file-row dir">
+        <span class="file-icon">📁</span> docker/
+        <span class="file-comment">Docker Compose config</span>
+      </div>
+      <div class="file-row" style="margin-top:8px;">
+        <span class="file-icon">📄</span> package.json
+        <span class="file-comment">Bun workspace config</span>
+      </div>
+      <div class="file-row">
+        <span class="file-icon">📄</span> .env.example
+        <span class="file-comment">Environment template</span>
+      </div>
+      <div class="file-row">
+        <span class="file-icon">📄</span> Dockerfile
+        <span class="file-comment">Railway-ready container</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEPLOY -->
+<section id="deploy" class="deploy-section">
+  <div class="deploy-inner">
+    <div class="section-label">Deploy</div>
+    <h2 class="section-title">From local to production<br>in minutes</h2>
+    <p class="section-desc">Two deployment options — both work out of the box. The Dockerfile bundles everything for maximum simplicity.</p>
+
+    <div class="deploy-grid">
+      <div class="deploy-card">
+        <div class="deploy-title">Option A — Fully Self-Contained</div>
+        <div class="deploy-desc">The simplest path. PostgreSQL, Supabase Auth, and your app bundled into a single container. Add a volume for persistence.</div>
+        <ul class="deploy-steps">
+          <li class="deploy-step">
+            <span class="step-num">1</span>
+            Click "Deploy on Railway" from the GitHub repo
+          </li>
+          <li class="deploy-step">
+            <span class="step-num">2</span>
+            Add a Volume mounted at <code style="color:var(--blue)">/data</code> for persistent storage
+          </li>
+          <li class="deploy-step">
+            <span class="step-num">3</span>
+            Done — your app, database, and auth system are live
+          </li>
+        </ul>
+      </div>
+
+      <div class="deploy-card recommended">
+        <div class="deploy-badge">⭐ Recommended for Production</div>
+        <div class="deploy-title">Option B — Railway PostgreSQL</div>
+        <div class="deploy-desc">Use Railway's managed PostgreSQL for better reliability, backups, and scalability in production environments.</div>
+        <ul class="deploy-steps">
+          <li class="deploy-step">
+            <span class="step-num">1</span>
+            Click "Deploy on Railway" from the GitHub repo
+          </li>
+          <li class="deploy-step">
+            <span class="step-num">2</span>
+            Add a PostgreSQL service in your Railway project
+          </li>
+          <li class="deploy-step">
+            <span class="step-num">3</span>
+            Set <code style="color:var(--accent)">DATABASE_URL</code> to the Postgres connection string
+          </li>
+          <li class="deploy-step">
+            <span class="step-num">4</span>
+            App auto-detects external database — no volume needed
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-glow"></div>
+  <h2 class="cta-title">Stop configuring.<br><em>Start building.</em></h2>
+  <p class="cta-sub">Clone the template, describe your app to Claude Code, and ship.</p>
+  <div class="cta-actions">
+    <a href="https://github.com/bravenewxyz/fullstack-web-template" class="btn-primary" style="font-size:14px;padding:16px 32px;">
+      Clone on GitHub →
+    </a>
+    <a href="https://railway.app" class="btn-ghost" style="font-size:14px;padding:16px 24px;">
+      Deploy on Railway
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <span class="footer-logo">Fullstack Web Template</span>
+    <span class="footer-sep">·</span>
+    <span class="footer-license">MIT License</span>
+  </div>
+  <div class="footer-right">
+    <a href="https://github.com/bravenewxyz/fullstack-web-template" class="footer-link">GitHub</a>
+    <a href="https://railway.app" class="footer-link">Railway</a>
+    <a href="https://supabase.com" class="footer-link">Supabase</a>
+    <a href="https://openrouter.ai" class="footer-link">OpenRouter</a>
+  </div>
+</footer>
+
+<script>
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const el = document.querySelector(a.getAttribute('href'));
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // Subtle parallax on hero glow
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    const glow = document.querySelector('.hero-glow');
+    if (glow) glow.style.transform = `translateX(-50%) translateY(${y * 0.15}px)`;
+  });
+
+  // Intersection observer for feature cards
+  const observer = new IntersectionObserver(
+    entries => entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    }),
+    { threshold: 0.1 }
+  );
+
+  document.querySelectorAll('.feature-card, .deploy-card, .stack-item').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = `opacity 0.5s ${i * 0.05}s ease, transform 0.5s ${i * 0.05}s ease`;
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
