@@ -3595,6 +3595,7 @@ export default function Home() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setShowBuildSchemeModal(true)}
+                  title={t.buildScheme}
                   className="h-10 flex items-center gap-2 px-3 sm:px-4 rounded-xl font-semibold text-sm transition-all"
                   style={{ 
                     borderColor: 'var(--border-primary)',
