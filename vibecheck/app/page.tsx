@@ -143,6 +143,16 @@ const EVENT_CATEGORIES: { id: EventCategory; labelEn: string; labelHu: string; c
   { id: 'none', labelEn: 'Other', labelHu: 'Egyéb', color: 'gray', iconId: 'calendar' },
 ]
 
+// Event inspiration categories - for suggestion modal (schemes/templates coming later)
+const EVENT_SUGGESTION_CATEGORIES: { id: string; labelEn: string; labelHu: string; ideas: { en: string; hu: string }[]; color: string }[] = [
+  { id: 'birthday', labelEn: 'Birthday', labelHu: 'Születésnap', color: 'pink', ideas: [{ en: 'Theme party with decorations', hu: 'Témás buli díszekkel' }, { en: 'Surprise cake moment', hu: 'Meglepetés torta' }, { en: 'Gift collection & wishes', hu: 'Ajándékok és kívánságok' }] },
+  { id: 'camping', labelEn: 'Camping', labelHu: 'Táborozás', color: 'green', ideas: [{ en: 'Tent & gear checklist', hu: 'Sátor és felszerelés lista' }, { en: 'Fire pit & marshmallows', hu: 'Tábortűz és pillecukor' }, { en: 'Trail maps & safety', hu: 'Térképek és biztonság' }] },
+  { id: 'romantic', labelEn: 'Romantic dates', labelHu: 'Romantikus randik', color: 'rose', ideas: [{ en: 'Dinner reservation & flowers', hu: 'Vacsora foglalás és virág' }, { en: 'Sunset picnic setup', hu: 'Napnyugta piknik' }, { en: 'Special occasion surprise', hu: 'Különleges meglepetés' }] },
+  { id: 'surprise', labelEn: 'Surprise party', labelHu: 'Meglepetés buli', color: 'purple', ideas: [{ en: 'Secret coordination with friends', hu: 'Titkos koordináció barátokkal' }, { en: 'Decoy plan for the guest of honour', hu: 'Bevezető terv a megtiszteltnek' }, { en: 'Perfect timing & reveal', hu: 'Tökéletes időzítés és meglepetés' }] },
+  { id: 'dinner', labelEn: 'Dinner party', labelHu: 'Vacsora partik', color: 'amber', ideas: [{ en: 'Menu planning & dietary needs', hu: 'Menü tervezés és diétás igények' }, { en: 'Table setting & ambience', hu: 'Asztal díszítés és hangulat' }, { en: 'Cocktail hour & appetizers', hu: 'Koktél óra és előételek' }] },
+  { id: 'outdoor', labelEn: 'Outdoor adventure', labelHu: 'Szabadtéri kaland', color: 'emerald', ideas: [{ en: 'Hiking or biking route', hu: 'Túra vagy kerékpárútvonal' }, { en: 'Weather backup plan', hu: 'Időjárás tartalék terv' }, { en: 'Snacks & hydration pack', hu: 'Nasi és hidratálás' }] },
+]
+
 // Task suggestions per category - 10 visible in 2x5 grid; click to collect (add to tasks), new one appears
 const TASK_SUGGESTIONS: Record<EventCategory, { en: string; hu: string }[]> = {
   family: [
@@ -1459,6 +1469,7 @@ export default function Home() {
   const [showParticipantsModal, setShowParticipantsModal] = useState(false)
   const [showOrganizerStatsModal, setShowOrganizerStatsModal] = useState(false)
   const [selectedOrganizer, setSelectedOrganizer] = useState<{ id: string; name: string } | null>(null)
+  const [showEventSuggestionModal, setShowEventSuggestionModal] = useState(false)
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [showIntegrateMenu, setShowIntegrateMenu] = useState(false)
   const integrateMenuRef = useRef<HTMLDivElement>(null)
@@ -3853,7 +3864,15 @@ export default function Home() {
                 {/* 1. My events */}
                 <section className="p-6 border-b" style={{ borderColor: 'var(--border-primary)' }}>
                   <div className="flex items-center gap-2 mb-4">
-                    <StarIcon className="w-5 h-5 text-blue-400" />
+                    <button
+                      type="button"
+                      onClick={() => setShowEventSuggestionModal(true)}
+                      className="p-1 -ml-1 rounded-lg transition-colors hover:opacity-80"
+                      style={{ color: 'var(--accent-primary)' }}
+                      title={lang === 'en' ? 'Event ideas & inspiration' : 'Esemény ötletek és inspiráció'}
+                    >
+                      <StarIcon className="w-5 h-5 text-blue-400" />
+                    </button>
                     <h3 className="text-lg font-bold text-blue-400" style={{ fontFamily: 'var(--font-heading)' }}>
                       {t.myEvents}
                     </h3>
