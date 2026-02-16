@@ -70,7 +70,6 @@ import WarpTwister from '@/components/WarpTwister'
 import VibeNetwork from '@/components/VibeNetwork'
 import ConnectionsManager from '@/components/ConnectionsManager'
 import StarBorder from '@/components/StarBorder'
-import LocationMap from '@/components/LocationMap'
 
 type Language = 'en' | 'hu'
 type EventStatus = 'fixed' | 'optimal' | 'in-progress'
@@ -4005,9 +4004,6 @@ export default function Home() {
                     <h3 className="text-lg font-bold text-amber-400" style={{ fontFamily: 'var(--font-heading)' }}>
                       {t.suggestedOpenNearMe}
                     </h3>
-                  </div>
-                  <div className="mb-6">
-                    <LocationMap />
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {openSuggestedEvents.map((event, index) => (
