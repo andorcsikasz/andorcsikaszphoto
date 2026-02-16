@@ -5014,7 +5014,7 @@ export default function Home() {
                           </div>
                           <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2">
                             {statusSegments.map((seg, i) => (
-                              <span key={i} className="flex items-center gap-1.5 text-xs">
+                              <span key={i} className="flex items-center gap-1.5 text-xs" style={{ color: seg.color }}>
                                 <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: seg.color }} />
                                 {seg.label}: {seg.count}
                               </span>
@@ -5056,7 +5056,7 @@ export default function Home() {
                           <div className="flex-1 rounded-xl overflow-hidden p-4" style={{ backgroundColor: 'rgba(168,85,247,0.15)', border: '1px solid rgba(168,85,247,0.3)' }}>
                             <div className="flex items-center gap-2 mb-2">
                               <ChatBubbleLeftRightIcon className="w-5 h-5 text-purple-400" />
-                              <span className="text-sm font-medium" style={{ color: 'var(--text-muted)' }}>{t.withVoting}</span>
+                              <span className="text-sm font-medium text-purple-400">{t.withVoting}</span>
                             </div>
                             <div className="text-xl font-bold text-purple-400">{withVoting}/{organizedEvents.length || 1}</div>
                             <div className="h-1.5 mt-2 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(168,85,247,0.3)' }}>
@@ -5071,7 +5071,7 @@ export default function Home() {
                           <div className="flex-1 rounded-xl overflow-hidden p-4" style={{ backgroundColor: 'rgba(16,185,129,0.12)', border: '1px solid rgba(16,185,129,0.3)' }}>
                             <div className="flex items-center gap-2 mb-2">
                               <CreditCardIcon className="w-5 h-5 text-emerald-400" />
-                              <span className="text-sm font-medium" style={{ color: 'var(--text-muted)' }}>{t.withPayment}</span>
+                              <span className="text-sm font-medium text-emerald-400">{t.withPayment}</span>
                             </div>
                             <div className="text-xl font-bold text-emerald-400">{withPayment}/{organizedEvents.length || 1}</div>
                             <div className="h-1.5 mt-2 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(16,185,129,0.3)' }}>
@@ -5107,21 +5107,21 @@ export default function Home() {
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div className="rounded-xl p-4 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
                           <div className="text-2xl font-bold" style={{ color: 'var(--accent-primary)' }}>{organizedEvents.length}</div>
-                          <div className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{t.eventsOrganized}</div>
+                          <div className="text-sm mt-1" style={{ color: 'var(--accent-primary)' }}>{t.eventsOrganized}</div>
                         </div>
                         <div className="rounded-xl p-4 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
                           <div className="text-2xl font-bold text-emerald-400">{totalAttendees}</div>
-                          <div className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{t.totalAttendees}</div>
+                          <div className="text-sm mt-1 text-emerald-400">{t.totalAttendees}</div>
                         </div>
                         <div className="rounded-xl p-4 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
-                          <div className="text-2xl font-bold text-amber-400">{avgAttendees}</div>
-                          <div className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{t.avgAttendees}</div>
+                          <div className="text-2xl font-bold text-amber-500">{avgAttendees}</div>
+                          <div className="text-sm mt-1 text-amber-500">{t.avgAttendees}</div>
                         </div>
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div className="rounded-xl p-3 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
                           <div className="text-lg font-bold text-emerald-400">{fixedCount}</div>
-                          <div className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>{t.fixed}</div>
+                          <div className="text-xs mt-1 text-emerald-400">{t.fixed}</div>
                         </div>
                         <div className="rounded-xl p-3 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
                           <div className="text-lg font-bold" style={{ color: 'var(--text-muted)' }}>{optimalCount}</div>
@@ -5129,18 +5129,18 @@ export default function Home() {
                         </div>
                         <div className="rounded-xl p-3 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
                           <div className="text-lg font-bold text-orange-400">{inProgressCount}</div>
-                          <div className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>{t.inProgress}</div>
+                          <div className="text-xs mt-1 text-orange-400">{t.inProgress}</div>
                         </div>
                       </div>
                       <div className="flex flex-wrap gap-4">
                         <div className="rounded-xl px-4 py-2 flex items-center gap-2" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
                           <ChatBubbleLeftRightIcon className="w-4 h-4 text-purple-400" />
-                          <span className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.withVoting}:</span>
+                          <span className="text-sm text-purple-400 font-medium">{t.withVoting}:</span>
                           <span className="font-bold text-purple-400">{withVoting}</span>
                         </div>
                         <div className="rounded-xl px-4 py-2 flex items-center gap-2" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
                           <CreditCardIcon className="w-4 h-4 text-emerald-400" />
-                          <span className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.withPayment}:</span>
+                          <span className="text-sm text-emerald-400 font-medium">{t.withPayment}:</span>
                           <span className="font-bold text-emerald-400">{withPayment}</span>
                         </div>
                       </div>
