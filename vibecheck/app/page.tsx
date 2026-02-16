@@ -1165,7 +1165,8 @@ export default function Home() {
     const lastDay = new Date(year, month + 1, 0)
     const days: (Date | null)[] = []
     
-    for (let i = 0; i < firstDay.getDay(); i++) {
+    const startOffset = (firstDay.getDay() + 6) % 7
+    for (let i = 0; i < startOffset; i++) {
       days.push(null)
     }
     
@@ -1867,8 +1868,9 @@ export default function Home() {
     const lastDay = new Date(year, month + 1, 0)
     const days: (Date | null)[] = []
     
-    // Add empty slots for days before the first day of the month
-    for (let i = 0; i < firstDay.getDay(); i++) {
+    // Add empty slots for days before the first day (Monday-first week)
+    const startOffset = (firstDay.getDay() + 6) % 7
+    for (let i = 0; i < startOffset; i++) {
       days.push(null)
     }
     
@@ -3206,9 +3208,9 @@ export default function Home() {
                 className="rounded-xl border overflow-hidden flex-1 min-h-0 flex flex-col"
                 style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
               >
-                {/* Day Headers */}
+                {/* Day Headers (Monday first) */}
                 <div className="grid grid-cols-7 border-b flex-shrink-0" style={{ borderColor: 'var(--border-primary)' }}>
-                  {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+                  {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => (
                     <div key={day} className="py-2 px-1 text-center text-xs font-medium" style={{ color: 'var(--text-muted)' }}>
                       {day}
                     </div>
@@ -5545,9 +5547,9 @@ export default function Home() {
               </button>
           </div>
 
-                          {/* Day Headers */}
+                          {/* Day Headers (Monday first) */}
                           <div className="grid grid-cols-7 mb-2">
-                            {(lang === 'en' ? ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'] : ['V', 'H', 'K', 'Sz', 'Cs', 'P', 'Szo']).map((day) => (
+                            {(lang === 'en' ? ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'] : ['H', 'K', 'Sz', 'Cs', 'P', 'Szo', 'V']).map((day) => (
                               <div key={day} className="text-center text-xs text-[var(--text-muted)] font-medium py-2">
                                 {day}
         </div>
