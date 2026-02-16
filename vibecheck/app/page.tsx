@@ -467,6 +467,9 @@ const translations = {
     levelPlanner: 'Event Planner',
     levelChampion: 'Social Champion',
     levelLegend: 'Event Legend',
+    ptsToNextLevel: 'pts to next level',
+    nextLevel: 'Next level',
+    completedBonus: 'Completed',
   },
   hu: {
     calendar: 'Naptár',
@@ -540,11 +543,18 @@ const translations = {
     levelPlanner: 'Eseményszervező',
     levelChampion: 'Társasági bajnok',
     levelLegend: 'Esemény legenda',
+    ptsToNextLevel: 'pont a következő szintig',
+    nextLevel: 'Következő szint',
+    completedBonus: 'Lezárva',
   },
 }
 
 // Gamification: organizer point system
-function computeOrganizerScore(events: { attendees: number; status: EventStatus; hasVoting: boolean; hasPayment: boolean }[]): { total: number; breakdown: { events: number; attendees: number; status: number; features: number } } {
+const LEVEL_THRESHOLDS = [0, 100, 300, 600, 1000] as const
+const LEVEL_KEYS = ['levelRookie', 'levelHost', 'levelPlanner', 'levelChampion', 'levelLegend'] as const
+
+function computeOrganizerScore(events: { attendees: number; status: EventStatus; hasVoting: boolean; hasPayment: boolean; date?: string }[]): { total: number; breakdown: { events: number; attendees: number; status: number; features: number; completed: number } } {
+  const today = new Date().toISOString().slice(0, 10)
   const eventsPts = events.length * 50
   const attendeesPts = events.reduce((s, e) => s + (e.attendees || 0) * 2, 0)
   const statusPts = events.reduce((s, e) => {
@@ -558,14 +568,23 @@ function computeOrganizerScore(events: { attendees: number; status: EventStatus;
     if (e.hasPayment) pts += 25
     return s + pts
   }, 0)
-  return { total: eventsPts + attendeesPts + statusPts + featuresPts, breakdown: { events: eventsPts, attendees: attendeesPts, status: statusPts, features: featuresPts } }
+  const completedPts = events.reduce((s, e) => (e.date && e.date < today ? s + 30 : s), 0)
+  return { total: eventsPts + attendeesPts + statusPts + featuresPts + completedPts, breakdown: { events: eventsPts, attendees: attendeesPts, status: statusPts, features: featuresPts, completed: completedPts } }
 }
 function getOrganizerLevel(score: number): string {
-  if (score >= 1000) return 'levelLegend'
-  if (score >= 600) return 'levelChampion'
-  if (score >= 300) return 'levelPlanner'
-  if (score >= 100) return 'levelHost'
+  for (let i = LEVEL_KEYS.length - 1; i >= 0; i--) if (score >= LEVEL_THRESHOLDS[i]) return LEVEL_KEYS[i]
   return 'levelRookie'
+}
+function getOrganizerLevelProgress(score: number): { levelKey: string; current: number; nextThreshold: number | null; progress: number; ptsToNext: number | null } {
+  let idx = LEVEL_KEYS.length - 1
+  for (let i = 0; i < LEVEL_THRESHOLDS.length; i++) if (score < LEVEL_THRESHOLDS[i]) { idx = i - 1; break }
+  if (idx < 0) idx = 0
+  const current = LEVEL_THRESHOLDS[idx]
+  const next = idx + 1 < LEVEL_THRESHOLDS.length ? LEVEL_THRESHOLDS[idx + 1] : null
+  const range = next != null ? next - current : 0
+  const progress = next != null ? Math.min(100, ((score - current) / range) * 100) : 100
+  const ptsToNext = next != null ? next - score : null
+  return { levelKey: LEVEL_KEYS[idx], current, nextThreshold: next, progress, ptsToNext }
 }
 
 // Demo events data
@@ -5842,11 +5861,26 @@ export default function Home() {
                     )
                     const { total: score } = computeOrganizerScore(oe)
                     const lvl = getOrganizerLevel(score)
+                    const { progress, ptsToNext } = getOrganizerLevelProgress(score)
                     return (
                       <div className="flex flex-col items-end shrink-0">
                         <span className="text-2xl font-extrabold tabular-nums" style={{ color: 'var(--accent-primary)' }}>{score}</span>
                         <span className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>{t.organizerScore}</span>
                         <span className="text-xs mt-0.5 px-2 py-0.5 rounded-full" style={{ backgroundColor: 'var(--accent-light)', color: 'var(--accent-primary)' }}>{t[lvl as keyof typeof t]}</span>
+                        {ptsToNext != null && ptsToNext > 0 && (
+                          <div className="mt-2 w-24">
+                            <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                              <motion.div
+                                className="h-full rounded-full"
+                                style={{ backgroundColor: 'var(--accent-primary)' }}
+                                initial={{ width: 0 }}
+                                animate={{ width: `${progress}%` }}
+                                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                              />
+                            </div>
+                            <span className="text-[10px] mt-0.5 block" style={{ color: 'var(--text-muted)' }}>{ptsToNext} {t.ptsToNextLevel}</span>
+                          </div>
+                        )}
                       </div>
                     )
                   })()}
@@ -6060,6 +6094,9 @@ export default function Home() {
                             <span className="px-2 py-1 rounded-lg text-xs" style={{ backgroundColor: 'rgba(16,185,129,0.2)', color: '#10b981' }}>Attendees: +{scoreBreakdown.attendees}</span>
                             <span className="px-2 py-1 rounded-lg text-xs" style={{ backgroundColor: 'rgba(249,115,22,0.2)', color: '#f97316' }}>Status: +{scoreBreakdown.status}</span>
                             <span className="px-2 py-1 rounded-lg text-xs" style={{ backgroundColor: 'rgba(147,51,234,0.2)', color: '#a855f7' }}>Features: +{scoreBreakdown.features}</span>
+                            {scoreBreakdown.completed > 0 && (
+                              <span className="px-2 py-1 rounded-lg text-xs" style={{ backgroundColor: 'rgba(59,130,246,0.2)', color: '#3b82f6' }}>{t.completedBonus}: +{scoreBreakdown.completed}</span>
+                            )}
                           </div>
                         </div>
                       </>
