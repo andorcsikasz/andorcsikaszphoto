@@ -2092,7 +2092,7 @@ export default function Home() {
                           key={index}
                           onClick={() => setTempProfile({ ...tempProfile, avatarIndex: index })}
                           className={`aspect-square p-3 rounded-xl border-2 transition-all flex items-center justify-center ${
-                            tempProfile.avatarIndex === index
+                            (tempProfile.avatarIndex ?? 0) === index
                               ? 'border-white bg-white/10 scale-110'
                               : 'border-white/10 hover:border-white/30 hover:bg-white/5'
                           }`}
@@ -2105,7 +2105,7 @@ export default function Home() {
                     {/* Preview */}
                     <div className="flex items-center justify-center gap-4 mb-8 p-4 bg-white/5 rounded-xl">
                       <div className="w-16 h-16 rounded-full bg-white/10 p-2 flex items-center justify-center">
-                        <span className="text-3xl">{AVATARS[tempProfile.avatarIndex % AVATARS.length]}</span>
+                        <span className="text-3xl">{AVATARS[(tempProfile.avatarIndex ?? 0) % AVATARS.length]}</span>
           </div>
                       <div className="text-left">
                         <p className="font-semibold text-lg text-white">{tempProfile.name}</p>
@@ -2226,12 +2226,12 @@ export default function Home() {
                     }}
                     onClick={() => {
                       // Cycle through avatars on click
-                      const nextIndex = (tempProfile.avatarIndex + 1) % AVATARS.length
+                      const nextIndex = ((tempProfile.avatarIndex ?? 0) + 1) % AVATARS.length
                       setTempProfile({ ...tempProfile, avatarIndex: nextIndex })
                     }}
                   >
                     <span className="text-5xl leading-none transition-transform group-hover:scale-110 select-none" style={{ color: 'var(--text-primary)' }}>
-                      {AVATARS[tempProfile.avatarIndex % AVATARS.length]}
+                      {AVATARS[(tempProfile.avatarIndex ?? 0) % AVATARS.length]}
                     </span>
                     <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity bg-black/10 flex items-center justify-center">
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: 'var(--text-primary)' }}>
@@ -2410,10 +2410,10 @@ export default function Home() {
                         onClick={() => setTempProfile({ ...tempProfile, avatarIndex: index })}
                         className="aspect-square p-2 rounded-lg border transition-all hover:scale-105 flex items-center justify-center"
                         style={{
-                          borderColor: tempProfile.avatarIndex === index ? 'var(--accent-primary)' : 'var(--border-primary)',
-                          backgroundColor: tempProfile.avatarIndex === index ? 'var(--accent-light)' : 'transparent',
-                          transform: tempProfile.avatarIndex === index ? 'scale(1.05)' : 'scale(1)',
-                          borderWidth: tempProfile.avatarIndex === index ? '2px' : '1px'
+                          borderColor: (tempProfile.avatarIndex ?? 0) === index ? 'var(--accent-primary)' : 'var(--border-primary)',
+                          backgroundColor: (tempProfile.avatarIndex ?? 0) === index ? 'var(--accent-light)' : 'transparent',
+                          transform: (tempProfile.avatarIndex ?? 0) === index ? 'scale(1.05)' : 'scale(1)',
+                          borderWidth: (tempProfile.avatarIndex ?? 0) === index ? '2px' : '1px'
                         }}
                       >
                         <span className="text-xl">{avatar}</span>
@@ -3071,7 +3071,7 @@ export default function Home() {
                     className="w-7 h-7 rounded-full overflow-hidden flex-shrink-0 p-1 flex items-center justify-center"
                     style={{ backgroundColor: 'var(--bg-tertiary)' }}
                   >
-                    <span className="text-lg leading-none">{AVATARS[userProfile.avatarIndex % AVATARS.length]}</span>
+                    <span className="text-lg leading-none">{AVATARS[(userProfile.avatarIndex ?? 0) % AVATARS.length]}</span>
                   </div>
                   <span className="text-sm font-medium">{userProfile.name.split(' ')[0]}</span>
                 </button>
@@ -6092,7 +6092,7 @@ export default function Home() {
                                           }`}
                                         >
                                           <div className="w-5 h-5 rounded-full overflow-hidden bg-white/10 p-0.5 flex items-center justify-center">
-                                            <span className="text-sm leading-none">{AVATARS[userProfile.avatarIndex % AVATARS.length]}</span>
+                                            <span className="text-sm leading-none">{AVATARS[(userProfile.avatarIndex ?? 0) % AVATARS.length]}</span>
                                           </div>
                                           <span className="text-sm">{lang === 'en' ? 'Me' : 'Én'}</span>
                                         </button>
