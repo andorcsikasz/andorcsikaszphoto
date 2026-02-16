@@ -4987,9 +4987,9 @@ export default function Home() {
 
                   if (organizerStatsView === 'charts') {
                     const statusSegments = [
-                      { count: fixedCount, color: '#10b981', label: t.fixed },
-                      { count: optimalCount, color: 'var(--text-muted)', label: t.optimal },
-                      { count: inProgressCount, color: '#f97316', label: t.inProgress },
+                      { count: fixedCount, color: 'var(--accent-primary)', label: t.fixed },
+                      { count: optimalCount, color: 'var(--accent-primary)', label: t.optimal },
+                      { count: inProgressCount, color: 'var(--accent-primary)', label: t.inProgress },
                     ].filter(s => s.count > 0)
                     return (
                       <>
@@ -5109,38 +5109,38 @@ export default function Home() {
                           <div className="text-sm mt-1" style={{ color: 'var(--accent-primary)' }}>{t.eventsOrganized}</div>
                         </div>
                         <div className="rounded-xl p-4 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
-                          <div className="text-2xl font-bold text-emerald-400">{totalAttendees}</div>
-                          <div className="text-sm mt-1 text-emerald-400">{t.totalAttendees}</div>
+                          <div className="text-2xl font-bold" style={{ color: 'var(--accent-primary)' }}>{totalAttendees}</div>
+                          <div className="text-sm mt-1" style={{ color: 'var(--accent-primary)' }}>{t.totalAttendees}</div>
                         </div>
                         <div className="rounded-xl p-4 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
-                          <div className="text-2xl font-bold text-amber-500">{avgAttendees}</div>
-                          <div className="text-sm mt-1 text-amber-500">{t.avgAttendees}</div>
+                          <div className="text-2xl font-bold" style={{ color: 'var(--accent-primary)' }}>{avgAttendees}</div>
+                          <div className="text-sm mt-1" style={{ color: 'var(--accent-primary)' }}>{t.avgAttendees}</div>
                         </div>
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div className="rounded-xl p-3 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
-                          <div className="text-lg font-bold text-emerald-400">{fixedCount}</div>
-                          <div className="text-xs mt-1 text-emerald-400">{t.fixed}</div>
+                          <div className="text-lg font-bold" style={{ color: 'var(--accent-primary)' }}>{fixedCount}</div>
+                          <div className="text-xs mt-1" style={{ color: 'var(--accent-primary)' }}>{t.fixed}</div>
                         </div>
                         <div className="rounded-xl p-3 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
-                          <div className="text-lg font-bold" style={{ color: 'var(--text-muted)' }}>{optimalCount}</div>
-                          <div className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>{t.optimal}</div>
+                          <div className="text-lg font-bold" style={{ color: 'var(--accent-primary)' }}>{optimalCount}</div>
+                          <div className="text-xs mt-1" style={{ color: 'var(--accent-primary)' }}>{t.optimal}</div>
                         </div>
                         <div className="rounded-xl p-3 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
-                          <div className="text-lg font-bold text-orange-400">{inProgressCount}</div>
-                          <div className="text-xs mt-1 text-orange-400">{t.inProgress}</div>
+                          <div className="text-lg font-bold" style={{ color: 'var(--accent-primary)' }}>{inProgressCount}</div>
+                          <div className="text-xs mt-1" style={{ color: 'var(--accent-primary)' }}>{t.inProgress}</div>
                         </div>
                       </div>
                       <div className="flex flex-wrap gap-4">
                         <div className="rounded-xl px-4 py-2 flex items-center gap-2" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
-                          <ChatBubbleLeftRightIcon className="w-4 h-4 text-purple-400" />
-                          <span className="text-sm text-purple-400 font-medium">{t.withVoting}:</span>
-                          <span className="font-bold text-purple-400">{withVoting}</span>
+                          <ChatBubbleLeftRightIcon className="w-4 h-4" style={{ color: 'var(--accent-primary)' }} />
+                          <span className="text-sm font-medium" style={{ color: 'var(--accent-primary)' }}>{t.withVoting}:</span>
+                          <span className="font-bold" style={{ color: 'var(--accent-primary)' }}>{withVoting}</span>
                         </div>
                         <div className="rounded-xl px-4 py-2 flex items-center gap-2" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
-                          <CreditCardIcon className="w-4 h-4 text-emerald-400" />
-                          <span className="text-sm text-emerald-400 font-medium">{t.withPayment}:</span>
-                          <span className="font-bold text-emerald-400">{withPayment}</span>
+                          <CreditCardIcon className="w-4 h-4" style={{ color: 'var(--accent-primary)' }} />
+                          <span className="text-sm font-medium" style={{ color: 'var(--accent-primary)' }}>{t.withPayment}:</span>
+                          <span className="font-bold" style={{ color: 'var(--accent-primary)' }}>{withPayment}</span>
                         </div>
                       </div>
                     </>
