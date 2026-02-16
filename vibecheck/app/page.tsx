@@ -2760,23 +2760,23 @@ export default function Home() {
     }
   }
 
-  const handleRsvp = (eventId: number | string, status: 'confirmed' | 'pending' | 'declined') => {
+  const applyRsvpToEvent = (event: Event, status: 'confirmed' | 'pending' | 'declined'): Event => {
     const me = userProfile?.name || 'Me'
     const myId = userProfile?.userId || 'me'
-    let updatedEvent: Event | null = null
-    setEvents(prev => prev.map(e => {
-      if (e.id !== eventId) return e
-      const participants = [...(e.participants || [])]
-      const idx = participants.findIndex(p => p.id === 'me' || p.id === myId || p.name === me)
-      const updated = { ...participants[idx] ?? { id: myId, name: me, status: 'pending' as const }, status }
-      if (idx >= 0) participants[idx] = updated
-      else participants.push(updated)
-      const confirmedAttendees = participants.filter(p => p.status === 'confirmed').length
-      updatedEvent = { ...e, participants, confirmedAttendees }
-      return updatedEvent
-    }))
-    if (updatedEvent && selectedEvent?.id === eventId) {
-      setSelectedEvent(updatedEvent)
+    const participants = [...(event.participants || [])]
+    const idx = participants.findIndex(p => p.id === 'me' || p.id === myId || p.name === me)
+    const updated = { ...participants[idx] ?? { id: myId, name: me, status: 'pending' as const }, status }
+    if (idx >= 0) participants[idx] = updated
+    else participants.push(updated)
+    const confirmedAttendees = participants.filter(p => p.status === 'confirmed').length
+    return { ...event, participants, confirmedAttendees }
+  }
+
+  const handleRsvp = (eventId: number | string, status: 'confirmed' | 'pending' | 'declined') => {
+    const idMatch = (a: number | string, b: number | string) => a === b || String(a) === String(b)
+    setEvents(prev => prev.map(e => (idMatch(e.id, eventId) ? applyRsvpToEvent(e, status) : e)))
+    if (selectedEvent && idMatch(selectedEvent.id, eventId)) {
+      setSelectedEvent(applyRsvpToEvent(selectedEvent, status))
     }
   }
 
