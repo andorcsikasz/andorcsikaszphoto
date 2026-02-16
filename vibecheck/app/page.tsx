@@ -2927,7 +2927,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto pl-6 pr-6 sm:pl-8 sm:pr-8 lg:pl-12 lg:pr-12 py-4 sm:py-5">
           <div className="flex items-center justify-between gap-4 sm:gap-6">
             {/* 1. Brand: Logo - aligned with main content left edge */}
-            <div className="flex items-baseline min-w-0 flex-shrink-0 pr-4 sm:pr-6 border-r" style={{ borderColor: 'var(--border-primary)' }}>
+            <div className="flex items-baseline min-w-0 flex-shrink-0 pr-4 sm:pr-6">
               <button
                 onClick={handleLogoClick}
                 className="text-3xl sm:text-4xl font-black tracking-tighter cursor-pointer hover:opacity-80 transition-opacity select-none"
@@ -3012,7 +3012,7 @@ export default function Home() {
             </div>
 
             {/* 3. Settings: Lang + Theme */}
-            <div className="flex items-center gap-2 pl-4 sm:pl-6 border-l" style={{ borderColor: 'var(--border-primary)' }}>
+            <div className="flex items-center gap-2 pl-4 sm:pl-6">
               <div className="relative hover:opacity-90 transition-opacity">
                 <select
                   value={lang}
@@ -3046,7 +3046,7 @@ export default function Home() {
             </div>
 
             {/* 4. User: Connections + Profile */}
-            <div className="flex items-center gap-2 pl-4 sm:pl-6 border-l" style={{ borderColor: 'var(--border-primary)' }}>
+            <div className="flex items-center gap-2 pl-4 sm:pl-6">
               {userProfile ? (
               <>
                 <button
