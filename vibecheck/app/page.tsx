@@ -454,6 +454,7 @@ const translations = {
     withVoting: 'With voting',
     withPayment: 'With payment',
     viewOrganizerStats: 'View organizer statistics',
+    buildScheme: 'Build a scheme',
   },
   hu: {
     calendar: 'Naptár',
@@ -514,6 +515,7 @@ const translations = {
     withVoting: 'Szavazással',
     withPayment: 'Fizetéssel',
     viewOrganizerStats: 'Szervező statisztikák megtekintése',
+    buildScheme: 'Építs sémát',
   },
 }
 
@@ -1464,6 +1466,7 @@ export default function Home() {
   const [showOrganizerStatsModal, setShowOrganizerStatsModal] = useState(false)
   const [selectedOrganizer, setSelectedOrganizer] = useState<{ id: string; name: string } | null>(null)
   const [showEventSuggestionModal, setShowEventSuggestionModal] = useState(false)
+  const [showBuildSchemeModal, setShowBuildSchemeModal] = useState(false)
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [showIntegrateMenu, setShowIntegrateMenu] = useState(false)
   const integrateMenuRef = useRef<HTMLDivElement>(null)
@@ -3587,21 +3590,38 @@ export default function Home() {
                 <span className="text-sm font-medium hidden sm:inline">{isDarkTheme() ? 'Dark' : 'Light'}</span>
               </button>
 
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setShowCreateModal(true)}
-                className="h-10 flex items-center gap-2 px-4 rounded-xl font-semibold text-sm transition-all"
-                style={{ 
-                  background: 'var(--btn-primary-bg)', 
-                  color: 'var(--btn-primary-text)',
-                  border: '1px solid transparent',
-                  boxShadow: 'var(--shadow-sm)'
-                }}
-              >
-                <PlusIcon className="w-4 h-4" />
-                {t.createEvent}
-              </motion.button>
+              <div className="flex items-center gap-2">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setShowBuildSchemeModal(true)}
+                  className="h-10 flex items-center gap-2 px-3 sm:px-4 rounded-xl font-semibold text-sm transition-all"
+                  style={{ 
+                    borderColor: 'var(--border-primary)',
+                    backgroundColor: 'var(--bg-card)',
+                    color: 'var(--text-primary)',
+                    border: '1px solid var(--border-primary)',
+                  }}
+                >
+                  <DocumentTextIcon className="w-4 h-4" />
+                  <span className="hidden sm:inline">{t.buildScheme}</span>
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setShowCreateModal(true)}
+                  className="h-10 flex items-center gap-2 px-3 sm:px-4 rounded-xl font-semibold text-sm transition-all"
+                  style={{ 
+                    background: 'var(--btn-primary-bg)', 
+                    color: 'var(--btn-primary-text)',
+                    border: '1px solid transparent',
+                    boxShadow: 'var(--shadow-sm)'
+                  }}
+                >
+                  <PlusIcon className="w-4 h-4" />
+                  {t.createEvent}
+                </motion.button>
+              </div>
               
               {userProfile ? (
               <>
@@ -5525,6 +5545,43 @@ export default function Home() {
                   {lang === 'en' ? 'Create event' : 'Esemény létrehozása'}
                 </button>
               </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Build Scheme Modal - placeholder for template/schema builder */}
+      <AnimatePresence>
+        {showBuildSchemeModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
+            onClick={() => setShowBuildSchemeModal(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              onClick={(e) => e.stopPropagation()}
+              className="rounded-2xl border p-8 max-w-md w-full text-center"
+              style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
+            >
+              <DocumentTextIcon className="w-12 h-12 mx-auto mb-4" style={{ color: 'var(--accent-primary)' }} />
+              <h2 className="text-xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>{t.buildScheme}</h2>
+              <p className="text-sm mb-6" style={{ color: 'var(--text-muted)' }}>
+                {lang === 'en' 
+                  ? 'Create reusable templates and schemes to make event creation faster and more inspired. Coming soon.' 
+                  : 'Hozz létre újrafelhasználható sablonokat és sémákat a gyorsabb és inspirálóbb eseménylétrehozáshoz. Hamarosan.'}
+              </p>
+              <button
+                onClick={() => setShowBuildSchemeModal(false)}
+                className="px-4 py-2 rounded-xl font-medium"
+                style={{ backgroundColor: 'var(--btn-primary-bg)', color: 'var(--btn-primary-text)' }}
+              >
+                {t.close}
+              </button>
             </motion.div>
           </motion.div>
         )}
