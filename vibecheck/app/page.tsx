@@ -5378,6 +5378,88 @@ export default function Home() {
         )}
       </AnimatePresence>
 
+      {/* Event suggestion / inspiration modal */}
+      <AnimatePresence>
+        {showEventSuggestionModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
+            onClick={() => setShowEventSuggestionModal(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 12 }}
+              transition={{ type: 'tween', duration: 0.2 }}
+              onClick={(e) => e.stopPropagation()}
+              className="rounded-2xl border w-full max-w-lg max-h-[85vh] overflow-hidden flex flex-col"
+              style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
+            >
+              <div className="p-6 border-b flex items-center justify-between flex-shrink-0" style={{ borderColor: 'var(--border-primary)' }}>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-xl" style={{ backgroundColor: 'var(--accent-light)' }}>
+                    <LightBulbIcon className="w-6 h-6" style={{ color: 'var(--accent-primary)' }} />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>
+                      {lang === 'en' ? 'Event ideas & inspiration' : 'Esemény ötletek és inspiráció'}
+                    </h2>
+                    <p className="text-sm mt-0.5" style={{ color: 'var(--text-muted)' }}>
+                      {lang === 'en' ? 'Categories to get you started — schemes coming soon' : 'Kategóriák a kezdéshez — sablonok hamarosan'}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowEventSuggestionModal(false)}
+                  className="p-2 rounded-lg transition-colors"
+                  style={{ color: 'var(--text-muted)' }}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--bg-hover)' }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+                >
+                  <XMarkIcon className="w-5 h-5" />
+                </button>
+              </div>
+              <div className="p-6 overflow-y-auto flex-1">
+                <div className="space-y-6">
+                  {EVENT_SUGGESTION_CATEGORIES.map((cat) => (
+                    <div key={cat.id} className="rounded-xl border p-4" style={{ borderColor: 'var(--border-primary)', backgroundColor: 'var(--bg-tertiary)' }}>
+                      <h3 className="font-bold mb-3 flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
+                        {cat.id === 'birthday' && <CakeIcon className="w-5 h-5 text-pink-400" />}
+                        {cat.id === 'camping' && <FireIcon className="w-5 h-5 text-emerald-500" />}
+                        {cat.id === 'romantic' && <HeartIcon className="w-5 h-5 text-rose-400" />}
+                        {cat.id === 'surprise' && <SparklesIcon className="w-5 h-5 text-purple-400" />}
+                        {cat.id === 'dinner' && <CurrencyDollarIcon className="w-5 h-5 text-amber-500" />}
+                        {cat.id === 'outdoor' && <MapPinIcon className="w-5 h-5 text-emerald-500" />}
+                        {lang === 'en' ? cat.labelEn : cat.labelHu}
+                      </h3>
+                      <ul className="space-y-1.5">
+                        {cat.ideas.map((idea, i) => (
+                          <li key={i} className="text-sm flex items-center gap-2" style={{ color: 'var(--text-secondary)' }}>
+                            <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: `var(--accent-primary)` }} />
+                            {lang === 'en' ? idea.en : idea.hu}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+                <button
+                  onClick={() => { setShowEventSuggestionModal(false); setShowCreateModal(true) }}
+                  className="mt-6 w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors"
+                  style={{ backgroundColor: 'var(--btn-primary-bg)', color: 'var(--btn-primary-text)' }}
+                >
+                  <PlusIcon className="w-5 h-5" />
+                  {lang === 'en' ? 'Create event' : 'Esemény létrehozása'}
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Create Event Modal */}
       <AnimatePresence>
         {showCreateModal && (
