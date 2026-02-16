@@ -4995,7 +4995,7 @@ export default function Home() {
                       <>
                         {/* Event Status: horizontal stacked bar */}
                         <div>
-                          <div className="text-sm font-medium mb-2" style={{ color: 'var(--text-muted)' }}>{t.eventsOrganized} {organizedEvents.length}</div>
+                          <div className="text-sm font-medium mb-2" style={{ color: 'var(--accent-primary)' }}>{t.eventsOrganized} {organizedEvents.length}</div>
                           <div className="flex h-8 rounded-lg overflow-hidden" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
                             {statusSegments.map((seg, i) => {
                               const pct = statusTotal > 0 ? seg.count / statusTotal : 0
@@ -5022,7 +5022,7 @@ export default function Home() {
                         </div>
 
                         {/* Attendees summary */}
-                        <div className="text-sm font-medium" style={{ color: 'var(--text-muted)' }}>
+                        <div className="text-sm font-medium" style={{ color: 'var(--accent-primary)' }}>
                           {t.totalAttendees}: {totalAttendees} · {t.avgAttendees}: {avgAttendees}
                         </div>
 
@@ -5052,30 +5052,32 @@ export default function Home() {
 
                         {/* With voting & With payment: horizontal bar sections */}
                         <div className="flex gap-4">
-                          <div className="flex-1 rounded-xl overflow-hidden p-4" style={{ backgroundColor: 'rgba(168,85,247,0.15)', border: '1px solid rgba(168,85,247,0.3)' }}>
+                          <div className="flex-1 rounded-xl overflow-hidden p-4" style={{ backgroundColor: 'var(--accent-light)', border: '1px solid var(--accent-primary)' }}>
                             <div className="flex items-center gap-2 mb-2">
-                              <ChatBubbleLeftRightIcon className="w-5 h-5 text-purple-400" />
-                              <span className="text-sm font-medium text-purple-400">{t.withVoting}</span>
+                              <ChatBubbleLeftRightIcon className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
+                              <span className="text-sm font-medium" style={{ color: 'var(--accent-primary)' }}>{t.withVoting}</span>
                             </div>
-                            <div className="text-xl font-bold text-purple-400">{withVoting}/{organizedEvents.length || 1}</div>
-                            <div className="h-1.5 mt-2 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(168,85,247,0.3)' }}>
+                            <div className="text-xl font-bold" style={{ color: 'var(--accent-primary)' }}>{withVoting}/{organizedEvents.length || 1}</div>
+                            <div className="h-1.5 mt-2 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
                               <motion.div
-                                className="h-full rounded-full bg-purple-500"
+                                className="h-full rounded-full"
+                                style={{ backgroundColor: 'var(--accent-primary)' }}
                                 initial={{ width: 0 }}
                                 animate={{ width: `${organizedEvents.length > 0 ? (withVoting / organizedEvents.length) * 100 : 0}%` }}
                                 transition={{ duration: 0.5, delay: 0.2 }}
                               />
                             </div>
                           </div>
-                          <div className="flex-1 rounded-xl overflow-hidden p-4" style={{ backgroundColor: 'rgba(16,185,129,0.12)', border: '1px solid rgba(16,185,129,0.3)' }}>
+                          <div className="flex-1 rounded-xl overflow-hidden p-4" style={{ backgroundColor: 'var(--accent-light)', border: '1px solid var(--accent-primary)' }}>
                             <div className="flex items-center gap-2 mb-2">
-                              <CreditCardIcon className="w-5 h-5 text-emerald-400" />
-                              <span className="text-sm font-medium text-emerald-400">{t.withPayment}</span>
+                              <CreditCardIcon className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
+                              <span className="text-sm font-medium" style={{ color: 'var(--accent-primary)' }}>{t.withPayment}</span>
                             </div>
-                            <div className="text-xl font-bold text-emerald-400">{withPayment}/{organizedEvents.length || 1}</div>
-                            <div className="h-1.5 mt-2 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(16,185,129,0.3)' }}>
+                            <div className="text-xl font-bold" style={{ color: 'var(--accent-primary)' }}>{withPayment}/{organizedEvents.length || 1}</div>
+                            <div className="h-1.5 mt-2 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
                               <motion.div
-                                className="h-full rounded-full bg-emerald-500"
+                                className="h-full rounded-full"
+                                style={{ backgroundColor: 'var(--accent-primary)' }}
                                 initial={{ width: 0 }}
                                 animate={{ width: `${organizedEvents.length > 0 ? (withPayment / organizedEvents.length) * 100 : 0}%` }}
                                 transition={{ duration: 0.5, delay: 0.25 }}
@@ -5089,11 +5091,11 @@ export default function Home() {
                           <div className="text-xs font-medium mb-2" style={{ color: 'var(--text-muted)' }}>{t.organizerScore} breakdown</div>
                           <div className="flex gap-2 flex-wrap">
                             <span className="px-2 py-1 rounded-lg text-xs" style={{ backgroundColor: 'var(--accent-light)', color: 'var(--accent-primary)' }}>Events: +{scoreBreakdown.events}</span>
-                            <span className="px-2 py-1 rounded-lg text-xs" style={{ backgroundColor: 'rgba(16,185,129,0.2)', color: '#10b981' }}>Attendees: +{scoreBreakdown.attendees}</span>
-                            <span className="px-2 py-1 rounded-lg text-xs" style={{ backgroundColor: 'rgba(249,115,22,0.2)', color: '#f97316' }}>Status: +{scoreBreakdown.status}</span>
-                            <span className="px-2 py-1 rounded-lg text-xs" style={{ backgroundColor: 'rgba(147,51,234,0.2)', color: '#a855f7' }}>Features: +{scoreBreakdown.features}</span>
+                            <span className="px-2 py-1 rounded-lg text-xs" style={{ backgroundColor: 'var(--accent-light)', color: 'var(--accent-primary)' }}>Attendees: +{scoreBreakdown.attendees}</span>
+                            <span className="px-2 py-1 rounded-lg text-xs" style={{ backgroundColor: 'var(--accent-light)', color: 'var(--accent-primary)' }}>Status: +{scoreBreakdown.status}</span>
+                            <span className="px-2 py-1 rounded-lg text-xs" style={{ backgroundColor: 'var(--accent-light)', color: 'var(--accent-primary)' }}>Features: +{scoreBreakdown.features}</span>
                             {scoreBreakdown.completed > 0 && (
-                              <span className="px-2 py-1 rounded-lg text-xs" style={{ backgroundColor: 'rgba(59,130,246,0.2)', color: '#3b82f6' }}>{t.completedBonus}: +{scoreBreakdown.completed}</span>
+                              <span className="px-2 py-1 rounded-lg text-xs" style={{ backgroundColor: 'var(--accent-light)', color: 'var(--accent-primary)' }}>{t.completedBonus}: +{scoreBreakdown.completed}</span>
                             )}
                           </div>
                         </div>
