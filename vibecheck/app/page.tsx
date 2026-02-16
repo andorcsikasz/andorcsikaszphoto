@@ -4557,21 +4557,53 @@ export default function Home() {
         </div>
       </div>
                 ) : (
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-4 flex-wrap">
                     <div>
                       <h2 className="text-3xl font-extrabold mb-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>{t.dashboard}</h2>
                       <p style={{ color: 'var(--text-muted)' }}>
                         {lang === 'en' ? 'Overview and analytics' : 'Áttekintés és statisztikák'}
                       </p>
     </div>
-                    {userProfile && (
-                      <div className="px-4 py-2 rounded-xl" style={{ backgroundColor: 'var(--bg-secondary)' }}>
-                        <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
-                          {lang === 'en' ? 'Welcome back,' : 'Üdv újra,'}
-                        </p>
-                        <p className="font-semibold" style={{ color: 'var(--text-primary)' }}>{userProfile.name}</p>
-                      </div>
-                    )}
+                    <div className="flex items-center gap-3">
+                      {userProfile && (() => {
+                        const myEvts = events.filter(e => e.organizerId === 'me' || e.organizerId === currentUserId || e.organizerId === userProfile?.name || e.organizerId === userProfile?.userId)
+                        const { total: score } = computeOrganizerScore(myEvts)
+                        const lvl = getOrganizerLevel(score)
+                        const { progress, ptsToNext } = getOrganizerLevelProgress(score)
+                        return myEvts.length > 0 ? (
+                          <button
+                            type="button"
+                            onClick={() => { setSelectedOrganizer({ id: 'me', name: userProfile.name }); setShowOrganizerStatsModal(true) }}
+                            className="flex items-center gap-3 px-4 py-2.5 rounded-xl border transition-all hover:scale-[1.02]"
+                            style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-primary)' }}
+                          >
+                            <div className="flex flex-col items-end">
+                              <span className="text-xl font-extrabold tabular-nums" style={{ color: 'var(--accent-primary)' }}>{score}</span>
+                              <span className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>{t.organizerScore}</span>
+                            </div>
+                            <div className="h-10 w-px" style={{ backgroundColor: 'var(--border-primary)' }} />
+                            <div>
+                              <span className="text-xs px-2 py-0.5 rounded-full block" style={{ backgroundColor: 'var(--accent-light)', color: 'var(--accent-primary)' }}>{t[lvl as keyof typeof t]}</span>
+                              {ptsToNext != null && ptsToNext > 0 && (
+                                <div className="mt-1 w-16">
+                                  <div className="h-1 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                                    <motion.div className="h-full rounded-full" style={{ backgroundColor: 'var(--accent-primary)' }} initial={{ width: 0 }} animate={{ width: `${progress}%` }} transition={{ duration: 0.5 }} />
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </button>
+                        ) : null
+                      })()}
+                      {userProfile && (
+                        <div className="px-4 py-2 rounded-xl" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+                          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
+                            {lang === 'en' ? 'Welcome back,' : 'Üdv újra,'}
+                          </p>
+                          <p className="font-semibold" style={{ color: 'var(--text-primary)' }}>{userProfile.name}</p>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
@@ -5941,47 +5973,27 @@ export default function Home() {
                       { count: optimalCount, color: 'var(--text-muted)', label: t.optimal },
                       { count: inProgressCount, color: '#f97316', label: t.inProgress },
                     ].filter(s => s.count > 0)
-                    const donutR = 48
-                    const donutStroke = 16
-                    const donutC = 2 * Math.PI * (donutR - donutStroke / 2)
-                    let strokeOffset = 0
                     return (
                       <>
-                        {/* Donut chart: event status */}
-                        <div className="flex flex-col sm:flex-row items-center gap-4">
-                          <div className="relative flex-shrink-0">
-                            <svg width={donutR * 2} height={donutR * 2} className="rotate-[-90deg]">
-                              {statusSegments.map((seg, i) => {
-                                const pct = statusTotal > 0 ? seg.count / statusTotal : 0
-                                const dash = pct * donutC
-                                const offset = strokeOffset
-                                strokeOffset += dash
-                                return (
-                                  <motion.circle
-                                    key={i}
-                                    cx={donutR}
-                                    cy={donutR}
-                                    r={donutR - donutStroke / 2}
-                                    fill="none"
-                                    stroke={seg.color}
-                                    strokeWidth={donutStroke}
-                                    strokeDasharray={`${dash} ${donutC - dash}`}
-                                    strokeDashoffset={-offset}
-                                    strokeLinecap="round"
-                                    initial={{ strokeDasharray: `0 ${donutC}` }}
-                                    animate={{ strokeDasharray: `${dash} ${donutC - dash}` }}
-                                    transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                                  />
-                                )
-                              })}
-                              <circle cx={donutR} cy={donutR} r={donutR - donutStroke} fill="none" stroke="transparent" strokeWidth={donutStroke} />
-                            </svg>
-                            <div className="absolute inset-0 flex flex-col items-center justify-center">
-                              <span className="text-lg font-bold" style={{ color: 'var(--text-primary)' }}>{organizedEvents.length}</span>
-                              <span className="text-xs" style={{ color: 'var(--text-muted)' }}>{t.eventsOrganized}</span>
-                            </div>
+                        {/* Event Status: horizontal stacked bar */}
+                        <div>
+                          <div className="text-sm font-medium mb-2" style={{ color: 'var(--text-muted)' }}>{t.eventsOrganized} {organizedEvents.length}</div>
+                          <div className="flex h-8 rounded-lg overflow-hidden" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                            {statusSegments.map((seg, i) => {
+                              const pct = statusTotal > 0 ? seg.count / statusTotal : 0
+                              return (
+                                <motion.div
+                                  key={i}
+                                  className="flex items-center justify-center min-w-[2rem]"
+                                  style={{ width: `${pct * 100}%`, backgroundColor: seg.color }}
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${pct * 100}%` }}
+                                  transition={{ duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                                />
+                              )
+                            })}
                           </div>
-                          <div className="flex flex-wrap gap-x-4 gap-y-1 flex-1">
+                          <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2">
                             {statusSegments.map((seg, i) => (
                               <span key={i} className="flex items-center gap-1.5 text-xs">
                                 <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: seg.color }} />
@@ -5991,100 +6003,68 @@ export default function Home() {
                           </div>
                         </div>
 
-                        {/* Radial rings: voting & payment */}
-                        <div className="flex gap-6 justify-center">
-                          <div className="flex flex-col items-center">
-                            <div className="relative">
-                              <svg width={72} height={72} className="rotate-[-90deg]">
-                                <circle cx={36} cy={36} r={28} fill="none" stroke="var(--bg-tertiary)" strokeWidth={8} />
-                                <motion.circle
-                                  cx={36}
-                                  cy={36}
-                                  r={28}
-                                  fill="none"
-                                  stroke="#a855f7"
-                                  strokeWidth={8}
-                                  strokeLinecap="round"
-                                  strokeDasharray={2 * Math.PI * 28}
-                                  initial={{ strokeDashoffset: 2 * Math.PI * 28 }}
-                                  animate={{ strokeDashoffset: 2 * Math.PI * 28 * (1 - (organizedEvents.length > 0 ? withVoting / organizedEvents.length : 0)) }}
-                                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                                />
-                              </svg>
-                              <div className="absolute inset-0 flex items-center justify-center">
-                                <ChatBubbleLeftRightIcon className="w-6 h-6 text-purple-400" />
-                              </div>
-                            </div>
-                            <span className="text-xs mt-2 font-medium" style={{ color: 'var(--text-muted)' }}>{t.withVoting}</span>
-                            <span className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>{withVoting}/{organizedEvents.length || 1}</span>
-                          </div>
-                          <div className="flex flex-col items-center">
-                            <div className="relative">
-                              <svg width={72} height={72} className="rotate-[-90deg]">
-                                <circle cx={36} cy={36} r={28} fill="none" stroke="var(--bg-tertiary)" strokeWidth={8} />
-                                <motion.circle
-                                  cx={36}
-                                  cy={36}
-                                  r={28}
-                                  fill="none"
-                                  stroke="#10b981"
-                                  strokeWidth={8}
-                                  strokeLinecap="round"
-                                  strokeDasharray={2 * Math.PI * 28}
-                                  initial={{ strokeDashoffset: 2 * Math.PI * 28 }}
-                                  animate={{ strokeDashoffset: 2 * Math.PI * 28 * (1 - (organizedEvents.length > 0 ? withPayment / organizedEvents.length : 0)) }}
-                                  transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                                />
-                              </svg>
-                              <div className="absolute inset-0 flex items-center justify-center">
-                                <CreditCardIcon className="w-6 h-6 text-emerald-400" />
-                              </div>
-                            </div>
-                            <span className="text-xs mt-2 font-medium" style={{ color: 'var(--text-muted)' }}>{t.withPayment}</span>
-                            <span className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>{withPayment}/{organizedEvents.length || 1}</span>
-                          </div>
+                        {/* Attendees summary */}
+                        <div className="text-sm font-medium" style={{ color: 'var(--text-muted)' }}>
+                          {t.totalAttendees}: {totalAttendees} · {t.avgAttendees}: {avgAttendees}
                         </div>
 
-                        {/* Attendees: rose/radial segments */}
+                        {/* Attendees per event: horizontal bars */}
                         {organizedEvents.length > 0 && (
-                          <div>
-                            <div className="text-sm font-medium mb-3" style={{ color: 'var(--text-muted)' }}>
-                              {t.totalAttendees}: {totalAttendees} · {t.avgAttendees}: {avgAttendees}
-                            </div>
-                            <div className="flex flex-wrap justify-center gap-3">
-                              {organizedEvents.slice(0, 6).map((e, i) => {
-                                const pct = maxAttendees > 0 ? (e.attendees || 0) / maxAttendees : 0
-                                const size = 56 + Math.max(0, pct * 24)
-                                return (
-                                  <motion.div
-                                    key={e.id}
-                                    initial={{ scale: 0, opacity: 0 }}
-                                    animate={{ scale: 1, opacity: 1 }}
-                                    transition={{ duration: 0.35, delay: i * 0.06, type: 'spring', stiffness: 200, damping: 20 }}
-                                    className="flex flex-col items-center"
-                                  >
-                                    <div
-                                      className="rounded-full flex items-center justify-center font-bold text-sm"
-                                      style={{
-                                        width: size,
-                                        height: size,
-                                        backgroundColor: 'var(--bg-tertiary)',
-                                        border: `3px solid var(--accent-primary)`,
-                                        color: 'var(--text-primary)',
-                                        boxShadow: `0 0 0 ${pct * 6}px rgba(var(--accent-rgb, 59, 130, 246), 0.15)`,
-                                      }}
-                                    >
-                                      {e.attendees || 0}
-                                    </div>
-                                    <span className="text-xs mt-1.5 max-w-[70px] truncate text-center" style={{ color: 'var(--text-muted)' }} title={e.title}>
-                                      {e.title}
-                                    </span>
-                                  </motion.div>
-                                )
-                              })}
-                            </div>
+                          <div className="space-y-3">
+                            {organizedEvents.slice(0, 8).map((e, i) => {
+                              const pct = maxAttendees > 0 ? (e.attendees || 0) / maxAttendees : 0
+                              return (
+                                <motion.div key={e.id} className="flex items-center gap-2" initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }}>
+                                  <span className="text-sm truncate shrink-0 w-36" style={{ color: 'var(--text-primary)' }} title={e.title}>{e.title}</span>
+                                  <div className="flex-1 h-5 rounded overflow-hidden" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                                    <motion.div
+                                      className="h-full rounded"
+                                      style={{ backgroundColor: 'var(--accent-primary)' }}
+                                      initial={{ width: 0 }}
+                                      animate={{ width: `${Math.max(pct * 100, 4)}%` }}
+                                      transition={{ duration: 0.4, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                                    />
+                                  </div>
+                                  <span className="text-sm font-semibold tabular-nums shrink-0 w-6 text-right" style={{ color: 'var(--text-primary)' }}>{e.attendees || 0}</span>
+                                </motion.div>
+                              )
+                            })}
                           </div>
                         )}
+
+                        {/* With voting & With payment: horizontal bar sections */}
+                        <div className="flex gap-4">
+                          <div className="flex-1 rounded-xl overflow-hidden p-4" style={{ backgroundColor: 'rgba(168,85,247,0.15)', border: '1px solid rgba(168,85,247,0.3)' }}>
+                            <div className="flex items-center gap-2 mb-2">
+                              <ChatBubbleLeftRightIcon className="w-5 h-5 text-purple-400" />
+                              <span className="text-sm font-medium" style={{ color: 'var(--text-muted)' }}>{t.withVoting}</span>
+                            </div>
+                            <div className="text-xl font-bold text-purple-400">{withVoting}/{organizedEvents.length || 1}</div>
+                            <div className="h-1.5 mt-2 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(168,85,247,0.3)' }}>
+                              <motion.div
+                                className="h-full rounded-full bg-purple-500"
+                                initial={{ width: 0 }}
+                                animate={{ width: `${organizedEvents.length > 0 ? (withVoting / organizedEvents.length) * 100 : 0}%` }}
+                                transition={{ duration: 0.5, delay: 0.2 }}
+                              />
+                            </div>
+                          </div>
+                          <div className="flex-1 rounded-xl overflow-hidden p-4" style={{ backgroundColor: 'rgba(16,185,129,0.12)', border: '1px solid rgba(16,185,129,0.3)' }}>
+                            <div className="flex items-center gap-2 mb-2">
+                              <CreditCardIcon className="w-5 h-5 text-emerald-400" />
+                              <span className="text-sm font-medium" style={{ color: 'var(--text-muted)' }}>{t.withPayment}</span>
+                            </div>
+                            <div className="text-xl font-bold text-emerald-400">{withPayment}/{organizedEvents.length || 1}</div>
+                            <div className="h-1.5 mt-2 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(16,185,129,0.3)' }}>
+                              <motion.div
+                                className="h-full rounded-full bg-emerald-500"
+                                initial={{ width: 0 }}
+                                animate={{ width: `${organizedEvents.length > 0 ? (withPayment / organizedEvents.length) * 100 : 0}%` }}
+                                transition={{ duration: 0.5, delay: 0.25 }}
+                              />
+                            </div>
+                          </div>
+                        </div>
 
                         {/* Score breakdown mini visualization */}
                         <div className="rounded-xl p-4" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
