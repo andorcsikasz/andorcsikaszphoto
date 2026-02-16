@@ -147,18 +147,6 @@ const ICON_MAP: Record<IconId, React.ComponentType<React.SVGProps<SVGSVGElement>
   baby: HeartIcon,
 }
 
-// Icon component that renders the appropriate Heroicon
-interface EventIconProps {
-  iconId: IconId
-  className?: string
-  style?: CSSProperties
-}
-
-const EventIcon = ({ iconId, className = "w-6 h-6", style }: EventIconProps) => {
-  const Icon = ICON_MAP[iconId] || CalendarIcon
-  return <Icon className={className} style={style} />
-}
-
 // 12 profile emojis for registration
 const AVATARS = ['🚗', '⚽', '☀️', '🌸', '🌳', '🐱', '🐕', '⭐', '🌙', '🐟', '🏠', '❤️']
 
