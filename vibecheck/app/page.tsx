@@ -3590,40 +3590,6 @@ export default function Home() {
                 <span className="text-sm font-medium hidden sm:inline">{isDarkTheme() ? 'Dark' : 'Light'}</span>
               </button>
 
-              <div className="flex items-center gap-2">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setShowBuildSchemeModal(true)}
-                  title={t.buildScheme}
-                  className="h-10 flex items-center gap-2 px-3 sm:px-4 rounded-xl font-semibold text-sm transition-all"
-                  style={{ 
-                    borderColor: 'var(--border-primary)',
-                    backgroundColor: 'var(--bg-card)',
-                    color: 'var(--text-primary)',
-                    border: '1px solid var(--border-primary)',
-                  }}
-                >
-                  <DocumentTextIcon className="w-4 h-4" />
-                  <span className="hidden sm:inline">{t.buildScheme}</span>
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setShowCreateModal(true)}
-                  className="h-10 flex items-center gap-2 px-3 sm:px-4 rounded-xl font-semibold text-sm transition-all"
-                  style={{ 
-                    background: 'var(--btn-primary-bg)', 
-                    color: 'var(--btn-primary-text)',
-                    border: '1px solid transparent',
-                    boxShadow: 'var(--shadow-sm)'
-                  }}
-                >
-                  <PlusIcon className="w-4 h-4" />
-                  {t.createEvent}
-                </motion.button>
-              </div>
-              
               {userProfile ? (
               <>
                 <button
@@ -5537,14 +5503,29 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
-                <button
-                  onClick={() => { setShowEventSuggestionModal(false); setShowCreateModal(true) }}
-                  className="mt-6 w-full py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors"
-                  style={{ backgroundColor: 'var(--btn-primary-bg)', color: 'var(--btn-primary-text)' }}
-                >
-                  <PlusIcon className="w-5 h-5" />
-                  {lang === 'en' ? 'Create event' : 'Esemény létrehozása'}
-                </button>
+                <div className="mt-6 flex gap-3">
+                  <button
+                    onClick={() => { setShowEventSuggestionModal(false); setShowBuildSchemeModal(true) }}
+                    className="flex-1 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors"
+                    style={{ 
+                      borderColor: 'var(--border-primary)', 
+                      backgroundColor: 'var(--bg-tertiary)', 
+                      color: 'var(--text-primary)',
+                      border: '1px solid var(--border-primary)',
+                    }}
+                  >
+                    <DocumentTextIcon className="w-5 h-5" />
+                    {t.buildScheme}
+                  </button>
+                  <button
+                    onClick={() => { setShowEventSuggestionModal(false); setShowCreateModal(true) }}
+                    className="flex-1 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors"
+                    style={{ backgroundColor: 'var(--btn-primary-bg)', color: 'var(--btn-primary-text)' }}
+                  >
+                    <PlusIcon className="w-5 h-5" />
+                    {t.createEvent}
+                  </button>
+                </div>
               </div>
             </motion.div>
           </motion.div>
