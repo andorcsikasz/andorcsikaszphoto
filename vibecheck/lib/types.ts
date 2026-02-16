@@ -47,7 +47,7 @@ export type IconId =
 
 export interface EventResource {
   id: string
-  type: 'drive' | 'photos' | 'documents'
+  type: 'document' | 'drive' | 'photos' | 'documents'
   url: string
   name: string
 }
@@ -88,6 +88,7 @@ export interface Event {
 export interface UserGroup {
   id: string
   name: string
+  type: 'family' | 'friends' | 'company'
   members: string[]
 }
 
@@ -95,6 +96,9 @@ export interface UserProfile {
   name: string
   revolutTag?: string
   avatarIndex?: number
-  groups?: UserGroup[]
+  email?: string
   userId?: string
+  googleConnected?: boolean
+  appleConnected?: boolean
+  groups?: UserGroup[]
 }
