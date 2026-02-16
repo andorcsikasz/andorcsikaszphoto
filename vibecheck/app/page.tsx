@@ -460,6 +460,13 @@ const translations = {
     statsViewCharts: 'Charts',
     viewOrganizerStats: 'View organizer statistics',
     buildScheme: 'Build a scheme',
+    organizerScore: 'Organizer score',
+    organizerLevel: 'Level',
+    levelRookie: 'Rookie',
+    levelHost: 'Host',
+    levelPlanner: 'Event Planner',
+    levelChampion: 'Social Champion',
+    levelLegend: 'Event Legend',
   },
   hu: {
     calendar: 'Naptár',
@@ -526,7 +533,39 @@ const translations = {
     statsViewCharts: 'Grafikonok',
     viewOrganizerStats: 'Szervező statisztikák megtekintése',
     buildScheme: 'Építs sémát',
+    organizerScore: 'Szervező pontszám',
+    organizerLevel: 'Szint',
+    levelRookie: 'Újonc',
+    levelHost: 'Házigazda',
+    levelPlanner: 'Eseményszervező',
+    levelChampion: 'Társasági bajnok',
+    levelLegend: 'Esemény legenda',
   },
+}
+
+// Gamification: organizer point system
+function computeOrganizerScore(events: { attendees: number; status: EventStatus; hasVoting: boolean; hasPayment: boolean }[]): { total: number; breakdown: { events: number; attendees: number; status: number; features: number } } {
+  const eventsPts = events.length * 50
+  const attendeesPts = events.reduce((s, e) => s + (e.attendees || 0) * 2, 0)
+  const statusPts = events.reduce((s, e) => {
+    if (e.status === 'fixed') return s + 20
+    if (e.status === 'in-progress') return s + 5
+    return s
+  }, 0)
+  const featuresPts = events.reduce((s, e) => {
+    let pts = 0
+    if (e.hasVoting) pts += 15
+    if (e.hasPayment) pts += 25
+    return s + pts
+  }, 0)
+  return { total: eventsPts + attendeesPts + statusPts + featuresPts, breakdown: { events: eventsPts, attendees: attendeesPts, status: statusPts, features: featuresPts } }
+}
+function getOrganizerLevel(score: number): string {
+  if (score >= 1000) return 'levelLegend'
+  if (score >= 600) return 'levelChampion'
+  if (score >= 300) return 'levelPlanner'
+  if (score >= 100) return 'levelHost'
+  return 'levelRookie'
 }
 
 // Demo events data
@@ -5788,13 +5827,29 @@ export default function Home() {
               style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
             >
               <div className="p-6 border-b" style={{ borderColor: 'var(--border-primary)' }}>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-4">
                   <div>
                     <h2 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>{selectedOrganizer.name}</h2>
                     <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
                       {lang === 'en' ? 'Organizer statistics' : 'Szervezői statisztikák'}
                     </p>
                   </div>
+                  {(() => {
+                    const isMeHeader = selectedOrganizer.id === 'me' || selectedOrganizer.id === currentUserId || selectedOrganizer.name === userProfile?.name || selectedOrganizer.name === userProfile?.userId
+                    const oe = events.filter(e =>
+                      e.organizerId === selectedOrganizer.id || e.organizerName === selectedOrganizer.name ||
+                      (isMeHeader && (e.organizerId === 'me' || e.organizerId === currentUserId || e.organizerId === userProfile?.name || e.organizerId === userProfile?.userId))
+                    )
+                    const { total: score } = computeOrganizerScore(oe)
+                    const lvl = getOrganizerLevel(score)
+                    return (
+                      <div className="flex flex-col items-end shrink-0">
+                        <span className="text-2xl font-extrabold tabular-nums" style={{ color: 'var(--accent-primary)' }}>{score}</span>
+                        <span className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>{t.organizerScore}</span>
+                        <span className="text-xs mt-0.5 px-2 py-0.5 rounded-full" style={{ backgroundColor: 'var(--accent-light)', color: 'var(--accent-primary)' }}>{t[lvl as keyof typeof t]}</span>
+                      </div>
+                    )
+                  })()}
                   <div className="flex items-center gap-2">
                     <div className="flex rounded-lg p-0.5 border" style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-primary)' }}>
                       <button
@@ -5843,6 +5898,8 @@ export default function Home() {
                   const withPayment = organizedEvents.filter(e => e.hasPayment).length
                   const statusTotal = fixedCount + optimalCount + inProgressCount
                   const maxAttendees = Math.max(...organizedEvents.map(e => e.attendees || 0), 1)
+                  const { total: organizerScoreTotal, breakdown: scoreBreakdown } = computeOrganizerScore(organizedEvents)
+                  const organizerLevelKey = getOrganizerLevel(organizerScoreTotal)
 
                   if (organizerStatsView === 'charts') {
                     return (
