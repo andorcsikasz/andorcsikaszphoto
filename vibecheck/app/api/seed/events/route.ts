@@ -8,16 +8,16 @@ import { prisma } from '@/lib/prisma'
 const DEFAULT_MY_EMAIL = 'me@example.com'
 const DEFAULT_MY_NAME = 'Me'
 
-// Other users for events where I'm invited
+// Other users (cartoon characters) for events where I'm invited
 const OTHER_USERS = [
-  { email: 'alice@example.com', name: 'Alice Johnson' },
-  { email: 'bob@example.com', name: 'Bob Smith' },
+  { email: 'marge@example.com', name: 'Marge Simpson' },
+  { email: 'homer@example.com', name: 'Homer Simpson' },
   { email: 'charlie@example.com', name: 'Charlie Brown' },
-  { email: 'diana@example.com', name: 'Diana Prince' },
-  { email: 'eve@example.com', name: 'Eve Wilson' },
-  { email: 'frank@example.com', name: 'Frank Miller' },
-  { email: 'grace@example.com', name: 'Grace Lee' },
-  { email: 'henry@example.com', name: 'Henry Davis' },
+  { email: 'wonderwoman@example.com', name: 'Wonder Woman' },
+  { email: 'edna@example.com', name: 'Edna Mode' },
+  { email: 'spongebob@example.com', name: 'SpongeBob SquarePants' },
+  { email: 'minnie@example.com', name: 'Minnie Mouse' },
+  { email: 'peter@example.com', name: 'Peter Griffin' },
 ]
 
 // Event templates
@@ -74,7 +74,7 @@ const EVENT_TEMPLATES = {
       endDate: new Date('2025-07-25T17:00:00Z'),
       timezone: 'UTC',
       isInviteOnly: true,
-      organizerEmail: 'alice@example.com',
+      organizerEmail: 'marge@example.com',
     },
     {
       title: 'Wine Tasting Evening',
@@ -85,7 +85,7 @@ const EVENT_TEMPLATES = {
       endDate: new Date('2025-08-10T23:00:00Z'),
       timezone: 'UTC',
       isInviteOnly: true,
-      organizerEmail: 'bob@example.com',
+      organizerEmail: 'homer@example.com',
     },
     {
       title: 'Beach Volleyball Tournament',
@@ -107,7 +107,7 @@ const EVENT_TEMPLATES = {
       endDate: new Date('2025-09-05T21:00:00Z'),
       timezone: 'UTC',
       isInviteOnly: true,
-      organizerEmail: 'diana@example.com',
+      organizerEmail: 'wonderwoman@example.com',
     },
     {
       title: 'Cooking Class',
@@ -118,7 +118,7 @@ const EVENT_TEMPLATES = {
       endDate: new Date('2025-09-18T20:00:00Z'),
       timezone: 'UTC',
       isInviteOnly: true,
-      organizerEmail: 'eve@example.com',
+      organizerEmail: 'edna@example.com',
     },
     {
       title: 'Music Festival',
@@ -129,7 +129,7 @@ const EVENT_TEMPLATES = {
       endDate: new Date('2025-09-30T23:00:00Z'),
       timezone: 'UTC',
       isInviteOnly: false,
-      organizerEmail: 'frank@example.com',
+      organizerEmail: 'spongebob@example.com',
     },
     {
       title: 'Book Club Meeting',
@@ -140,7 +140,7 @@ const EVENT_TEMPLATES = {
       endDate: new Date('2025-10-12T17:00:00Z'),
       timezone: 'UTC',
       isInviteOnly: true,
-      organizerEmail: 'grace@example.com',
+      organizerEmail: 'minnie@example.com',
     },
     {
       title: 'Charity Fundraiser',
@@ -151,7 +151,7 @@ const EVENT_TEMPLATES = {
       endDate: new Date('2025-10-20T22:00:00Z'),
       timezone: 'UTC',
       isInviteOnly: false,
-      organizerEmail: 'henry@example.com',
+      organizerEmail: 'peter@example.com',
     },
   ],
 }
