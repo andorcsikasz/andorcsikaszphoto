@@ -5474,6 +5474,56 @@ export default function Home() {
         )}
       </AnimatePresence>
 
+      {/* RSVP Confirmation Modal */}
+      <AnimatePresence>
+        {pendingRsvpConfirm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="fixed inset-0 bg-black/70 z-[60] flex items-center justify-center p-4"
+            onClick={() => setPendingRsvpConfirm(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              onClick={(e) => e.stopPropagation()}
+              className="rounded-2xl border w-full max-w-sm overflow-hidden"
+              style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
+            >
+              <div className="p-6">
+                <h3 className="text-lg font-bold mb-2" style={{ color: 'var(--text-primary)' }}>{t.rsvpConfirmTitle}</h3>
+                <p className="text-sm mb-4" style={{ color: 'var(--text-muted)' }}>
+                  {t.rsvpConfirmMessage} &ldquo;{pendingRsvpConfirm.status === 'confirmed' ? t.rsvpGoing : pendingRsvpConfirm.status === 'pending' ? t.rsvpThinking : t.rsvpNotGoing}&rdquo;
+                  {pendingRsvpConfirm.eventTitle ? ` ${lang === 'en' ? 'for' : '—'} ${pendingRsvpConfirm.eventTitle}` : ''}?
+                </p>
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setPendingRsvpConfirm(null)}
+                    className="flex-1 py-2.5 rounded-xl font-medium transition-colors"
+                    style={{ color: 'var(--text-secondary)', backgroundColor: 'var(--bg-tertiary)' }}
+                  >
+                    {lang === 'en' ? 'Cancel' : 'Mégse'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={confirmRsvpAndClose}
+                    className="flex-1 py-2.5 rounded-xl font-medium transition-colors"
+                    style={{ color: '#fff', backgroundColor: 'var(--accent-primary)' }}
+                  >
+                    {t.rsvpConfirm}
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Organizer Stats Modal */}
       <AnimatePresence>
         {showOrganizerStatsModal && selectedOrganizer && (
