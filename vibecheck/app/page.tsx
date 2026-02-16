@@ -5035,7 +5035,7 @@ export default function Home() {
                                     className={`flex items-center justify-between gap-3 py-2 px-3 rounded-lg ${isCurrent ? 'ring-1' : ''}`}
                                     style={{
                                       backgroundColor: isCurrent ? 'var(--accent-light)' : isReached ? 'var(--bg-secondary)' : 'transparent',
-                                      ringColor: 'var(--accent-primary)',
+                                      boxShadow: isCurrent ? '0 0 0 1px var(--accent-primary)' : undefined,
                                       opacity: isReached ? 1 : 0.6,
                                     }}
                                   >
@@ -5227,6 +5227,9 @@ export default function Home() {
                       </div>
                     </>
                   )}
+                </>
+              )
+            })()}
               </div>
             </motion.div>
           </motion.div>
