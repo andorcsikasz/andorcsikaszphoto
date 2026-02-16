@@ -4208,12 +4208,12 @@ export default function Home() {
                             >
                               {date.getDate()}
         </div>
-                            <div className="space-y-0.5 flex-1 min-h-0 overflow-hidden">
-                              {events.slice(0, 2).map((event) => (
+                            <div className="space-y-0.5 flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
+                              {events.map((event) => (
                                 <button
                                   key={event.id}
                                   onClick={() => setSelectedEvent(event)}
-                                  className="w-full text-left px-2 py-1 rounded text-xs font-medium truncate transition-colors border-l-[3px]"
+                                  className="w-full text-left px-2 py-1 rounded text-xs font-medium truncate transition-colors border-l-[3px] flex-shrink-0"
                                   style={{ 
                                     borderLeftColor: event.status === 'fixed' ? 'var(--readiness-location)' 
                                       : event.status === 'optimal' ? 'var(--accent-primary)' 
@@ -4229,11 +4229,6 @@ export default function Home() {
                                   {event.title}
                                 </button>
                               ))}
-                              {events.length > 2 && (
-                                <p className="text-xs px-2 font-medium" style={{ color: 'var(--text-muted)' }}>
-                                  +{events.length - 2} more
-                                </p>
-                              )}
       </div>
                           </>
                         )}
