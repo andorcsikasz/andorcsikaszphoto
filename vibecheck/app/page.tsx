@@ -454,7 +454,6 @@ const translations = {
     withVoting: 'With voting',
     withPayment: 'With payment',
     viewOrganizerStats: 'View organizer statistics',
-    rsvpCounts: 'going · not going · pending',
   },
   hu: {
     calendar: 'Naptár',
@@ -515,7 +514,6 @@ const translations = {
     withVoting: 'Szavazással',
     withPayment: 'Fizetéssel',
     viewOrganizerStats: 'Szervező statisztikák megtekintése',
-    rsvpCounts: 'megy · nem megy · függőben',
   },
 }
 
@@ -3996,6 +3994,18 @@ export default function Home() {
                         <MapPinIcon className="w-4 h-4" />
                         <span className="truncate">{event.location}</span>
                       </div>
+                      {!(event.organizerId === 'me' || event.organizerId === currentUserId || event.organizerId === userProfile?.name || event.organizerId === userProfile?.userId) && (() => {
+                        const { going, notGoing, pending } = getRsvpCounts(event)
+                        return (
+                          <p className="text-xs mb-3" style={{ color: 'var(--text-muted)' }}>
+                            <span className="text-emerald-400">{going}</span> {lang === 'en' ? 'going' : 'megy'}
+                            {' · '}
+                            <span className="text-red-400">{notGoing}</span> {lang === 'en' ? 'not going' : 'nem megy'}
+                            {' · '}
+                            <span className="text-amber-400">{pending}</span> {lang === 'en' ? 'pending' : 'függőben'}
+                          </p>
+                        )
+                      })()}
                       {(event.hasVoting || event.hasTasks || event.hasPayment) && (
                         <div className="flex flex-wrap gap-2 pt-3 border-t" style={{ borderColor: 'var(--border-primary)' }}>
                           {event.hasVoting && <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-purple-500/20 text-purple-400"><ChatBubbleLeftRightIcon className="w-3 h-3" />Voting</span>}
@@ -4051,6 +4061,18 @@ export default function Home() {
                         <MapPinIcon className="w-4 h-4" />
                         <span className="truncate">{event.location}</span>
                       </div>
+                      {!(event.organizerId === 'me' || event.organizerId === currentUserId || event.organizerId === userProfile?.name || event.organizerId === userProfile?.userId) && (() => {
+                        const { going, notGoing, pending } = getRsvpCounts(event)
+                        return (
+                          <p className="text-xs mb-3" style={{ color: 'var(--text-muted)' }}>
+                            <span className="text-emerald-400">{going}</span> {lang === 'en' ? 'going' : 'megy'}
+                            {' · '}
+                            <span className="text-red-400">{notGoing}</span> {lang === 'en' ? 'not going' : 'nem megy'}
+                            {' · '}
+                            <span className="text-amber-400">{pending}</span> {lang === 'en' ? 'pending' : 'függőben'}
+                          </p>
+                        )
+                      })()}
                       {(event.hasVoting || event.hasTasks || event.hasPayment) && (
                         <div className="flex flex-wrap gap-2 pt-3 border-t" style={{ borderColor: 'var(--border-primary)' }}>
                           {event.hasVoting && <span className="inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-purple-500/20 text-purple-400"><ChatBubbleLeftRightIcon className="w-3 h-3" />Voting</span>}
@@ -4865,7 +4887,7 @@ export default function Home() {
                   <p className="mb-6" style={{ color: 'var(--text-secondary)' }}>{selectedEvent.description}</p>
                 )}
 
-                {/* Edit button for organizers - next to event details */}
+                {/* Edit button for organizers only */}
                 {(selectedEvent.organizerId === 'me' || selectedEvent.organizerId === currentUserId || selectedEvent.organizerId === userProfile?.name || selectedEvent.organizerId === userProfile?.userId || selectedEvent.organizerName === userProfile?.name) && (
                   <button
                     type="button"
@@ -4876,6 +4898,44 @@ export default function Home() {
                     <PencilIcon className="w-4 h-4" />
                     {t.edit}
                   </button>
+                )}
+
+                {/* RSVP for non-organizers: send response + see counts */}
+                {!(selectedEvent.organizerId === 'me' || selectedEvent.organizerId === currentUserId || selectedEvent.organizerId === userProfile?.name || selectedEvent.organizerId === userProfile?.userId || selectedEvent.organizerName === userProfile?.name) && (
+                  <div className="mb-6">
+                    <div className="flex flex-wrap items-center gap-3 mb-3">
+                      {(['confirmed', 'pending', 'declined'] as const).map((status) => (
+                        <button
+                          key={status}
+                          type="button"
+                          onClick={() => handleRsvp(selectedEvent.id, status)}
+                          className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+                            getMyRsvp(selectedEvent) === status
+                              ? status === 'confirmed'
+                                ? 'bg-emerald-600 text-white'
+                                : status === 'pending'
+                                  ? 'bg-amber-500/90 text-white'
+                                  : 'bg-red-500/90 text-white'
+                              : 'bg-[var(--bg-tertiary)] text-[var(--text-muted)] hover:bg-[var(--border-primary)] hover:text-[var(--text-primary)]'
+                          }`}
+                        >
+                          {status === 'confirmed' ? t.rsvpGoing : status === 'pending' ? t.rsvpThinking : t.rsvpNotGoing}
+                        </button>
+                      ))}
+                    </div>
+                    {(() => {
+                      const { going, notGoing, pending } = getRsvpCounts(selectedEvent)
+                      return (
+                        <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
+                          <span className="text-emerald-400 font-medium">{going}</span> {lang === 'en' ? 'going' : 'megy'}
+                          {' · '}
+                          <span className="text-red-400 font-medium">{notGoing}</span> {lang === 'en' ? 'not going' : 'nem megy'}
+                          {' · '}
+                          <span className="text-amber-400 font-medium">{pending}</span> {lang === 'en' ? 'pending' : 'függőben'}
+                        </p>
+                      )
+                    })()}
+                  </div>
                 )}
 
                 {/* Event Info Grid */}
