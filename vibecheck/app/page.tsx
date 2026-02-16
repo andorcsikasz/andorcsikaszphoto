@@ -525,7 +525,7 @@ const translations = {
 
 // Demo events data
 const demoEvents: Event[] = [
-  // === EVENTS BY ANDOR (me) ===
+  // === EVENTS BY SÁSI (me) ===
   {
     id: 1,
     title: 'Summer BBQ Party',
@@ -542,17 +542,17 @@ const demoEvents: Event[] = [
     hasTasks: true,
     hasPayment: false,
     organizerId: 'me',
-    organizerName: 'Andor',
+    organizerName: 'Sási',
     status: 'fixed',
     tasks: [
-      { id: 1, title: 'Buy charcoal', completed: true, assignee: 'Bob' },
-      { id: 2, title: 'Setup tables', completed: true, assignee: 'Charlie' },
+      { id: 1, title: 'Buy charcoal', completed: true, assignee: 'Homer' },
+      { id: 2, title: 'Setup tables', completed: true, assignee: 'Charlie Brown' },
       { id: 3, title: 'Prepare playlist', completed: true, assignee: 'Me' },
     ],
     participants: [
-      { id: '1', name: 'Bob Smith', status: 'confirmed' },
+      { id: '1', name: 'Homer Simpson', status: 'confirmed' },
       { id: '2', name: 'Charlie Brown', status: 'confirmed' },
-      { id: '3', name: 'Diana Prince', status: 'confirmed' },
+      { id: '3', name: 'SpongeBob SquarePants', status: 'confirmed' },
     ],
     resources: [
       { id: '1', type: 'drive', name: 'Event Planning', url: 'https://drive.google.com/folder' },
@@ -577,7 +577,7 @@ const demoEvents: Event[] = [
     hasTasks: true,
     hasPayment: false,
     organizerId: 'me',
-    organizerName: 'Andor',
+    organizerName: 'Sási',
     status: 'in-progress',
     tasks: [
       { id: 1, title: 'Order cake', completed: true },
@@ -585,9 +585,9 @@ const demoEvents: Event[] = [
       { id: 3, title: 'Buy decorations', completed: false },
     ],
     participants: [
-      { id: '1', name: 'Alice Johnson', status: 'confirmed' },
-      { id: '2', name: 'Bob Smith', status: 'confirmed' },
-      { id: '3', name: 'Emma Wilson', status: 'pending' },
+      { id: '1', name: 'Marge Simpson', status: 'confirmed' },
+      { id: '2', name: 'Bart Simpson', status: 'confirmed' },
+      { id: '3', name: 'Lisa Simpson', status: 'pending' },
     ],
   },
   {
@@ -608,7 +608,7 @@ const demoEvents: Event[] = [
     paymentAmount: 180,
     currency: 'EUR',
     organizerId: 'me',
-    organizerName: 'Andor',
+    organizerName: 'Sási',
     status: 'optimal',
     tasks: [
       { id: 1, title: 'Book accommodation', completed: true },
@@ -616,9 +616,9 @@ const demoEvents: Event[] = [
       { id: 3, title: 'Arrange transport', completed: false },
     ],
     participants: [
-      { id: '1', name: 'Frank Miller', status: 'confirmed' },
-      { id: '2', name: 'Grace Lee', status: 'confirmed' },
-      { id: '3', name: 'Henry Davis', status: 'pending' },
+      { id: '1', name: 'Patrick Star', status: 'confirmed' },
+      { id: '2', name: 'Sandy Cheeks', status: 'confirmed' },
+      { id: '3', name: 'Squidward Tentacles', status: 'pending' },
     ],
   },
   {
@@ -637,13 +637,13 @@ const demoEvents: Event[] = [
     hasTasks: false,
     hasPayment: false,
     organizerId: 'me',
-    organizerName: 'Andor',
+    organizerName: 'Sási',
     status: 'fixed',
     participants: [
-      { id: '1', name: 'Alice Johnson', status: 'confirmed' },
-      { id: '2', name: 'Bob Smith', status: 'confirmed' },
-      { id: '3', name: 'Charlie Brown', status: 'confirmed' },
-      { id: '4', name: 'Diana Prince', status: 'confirmed' },
+      { id: '1', name: 'Mickey Mouse', status: 'confirmed' },
+      { id: '2', name: 'Donald Duck', status: 'confirmed' },
+      { id: '3', name: 'Goofy', status: 'confirmed' },
+      { id: '4', name: 'Minnie Mouse', status: 'confirmed' },
     ],
   },
   {
@@ -661,8 +661,8 @@ const demoEvents: Event[] = [
     hasVoting: true,
     hasTasks: true,
     hasPayment: false,
-    organizerId: 'erik',
-    organizerName: 'Erik Kovács',
+    organizerId: 'scooby',
+    organizerName: 'Scooby-Doo',
     status: 'in-progress',
     tasks: [
       { id: 1, title: 'Check weather', completed: false },
@@ -670,8 +670,8 @@ const demoEvents: Event[] = [
     ],
     participants: [
       { id: 'me', name: 'Me', status: 'pending' },
-      { id: '1', name: 'Jane Doe', status: 'pending' },
-      { id: '2', name: 'Frank Miller', status: 'confirmed' },
+      { id: '1', name: 'Shaggy Rogers', status: 'pending' },
+      { id: '2', name: 'Velma Dinkley', status: 'confirmed' },
     ],
   },
   {
@@ -690,11 +690,11 @@ const demoEvents: Event[] = [
     hasTasks: true,
     hasPayment: false,
     organizerId: 'me',
-    organizerName: 'Andor',
+    organizerName: 'Sási',
     status: 'optimal',
     participants: [
-      { id: '1', name: 'Maria Silva', status: 'confirmed' },
-      { id: '2', name: 'Tom Wilson', status: 'pending' },
+      { id: '1', name: 'Bugs Bunny', status: 'confirmed' },
+      { id: '2', name: 'Daffy Duck', status: 'pending' },
     ],
   },
   {
@@ -715,11 +715,11 @@ const demoEvents: Event[] = [
     paymentAmount: 15,
     currency: 'EUR',
     organizerId: 'lisa',
-    organizerName: 'Lisa Chen',
+    organizerName: 'Lisa Simpson',
     status: 'in-progress',
     participants: [
       { id: 'me', name: 'Me', status: 'confirmed' },
-      { id: '1', name: 'Mike Ross', status: 'confirmed' },
+      { id: '1', name: 'Bart Simpson', status: 'confirmed' },
     ],
   },
   // === EVENTS BY TEST ACCOUNTS (invited to) ===
@@ -738,8 +738,8 @@ const demoEvents: Event[] = [
     hasVoting: true,
     hasTasks: true,
     hasPayment: false,
-    organizerId: 'alice',
-    organizerName: 'Alice Johnson',
+    organizerId: 'marge',
+    organizerName: 'Marge Simpson',
     status: 'optimal',
     tasks: [
       { id: 1, title: 'Send invitations', completed: true },
@@ -747,8 +747,8 @@ const demoEvents: Event[] = [
     ],
     participants: [
       { id: 'me', name: 'Me', status: 'confirmed' },
-      { id: '2', name: 'Uncle Tom', status: 'pending' },
-      { id: '3', name: 'Aunt Sarah', status: 'confirmed' },
+      { id: '2', name: 'Abe Simpson', status: 'pending' },
+      { id: '3', name: 'Maggie Simpson', status: 'confirmed' },
     ],
   },
   {
@@ -768,8 +768,8 @@ const demoEvents: Event[] = [
     hasPayment: true,
     paymentAmount: 299,
     currency: 'USD',
-    organizerId: 'bob',
-    organizerName: 'Bob Smith',
+    organizerId: 'homer',
+    organizerName: 'Homer Simpson',
     status: 'in-progress',
     tasks: [
       { id: 1, title: 'Book speakers', completed: true },
@@ -778,8 +778,8 @@ const demoEvents: Event[] = [
     ],
     participants: [
       { id: 'me', name: 'Me', status: 'confirmed' },
-      { id: '2', name: 'Jane Doe', status: 'confirmed' },
-      { id: '3', name: 'John Dev', status: 'pending' },
+      { id: '2', name: 'Mr. Burns', status: 'confirmed' },
+      { id: '3', name: 'Lenny Leonard', status: 'pending' },
     ],
     sharedDrive: 'https://drive.google.com',
     documents: 'https://docs.google.com',
@@ -3547,7 +3547,7 @@ export default function Home() {
         className="border-b backdrop-blur-xl sticky top-0 z-40 flex-shrink-0"
         style={{ backgroundColor: 'var(--bg-nav)', borderColor: 'var(--border-primary)' }}
       >
-        <div className="max-w-7xl mx-auto pl-0 pr-4 sm:pl-2 sm:pr-6 py-4 sm:py-5">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-4 sm:py-5">
           <div className="flex items-center justify-between gap-4 sm:gap-6">
             {/* 1. Brand: Logo + Page title */}
             <div className="flex items-baseline gap-4 min-w-0 flex-shrink-0 pr-4 sm:pr-6 border-r" style={{ borderColor: 'var(--border-primary)' }}>
@@ -3720,7 +3720,7 @@ export default function Home() {
       </nav>
 
       {/* Main Content */}
-      <main className={`max-w-7xl mx-auto pl-0 pr-4 sm:pl-2 sm:pr-6 flex-1 min-h-0 min-w-0 w-full max-w-[100vw] flex flex-col py-6 overflow-x-hidden ${
+      <main className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex-1 min-h-0 min-w-0 w-full max-w-[100vw] flex flex-col py-6 overflow-x-hidden ${
         activeTab === 'calendar' ? 'overflow-hidden' : ''
       }`}>
         <div className="flex-1 min-h-0 flex flex-col">
