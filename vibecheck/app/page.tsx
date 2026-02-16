@@ -3464,7 +3464,7 @@ export default function Home() {
         className="border-b backdrop-blur-xl sticky top-0 z-40 flex-shrink-0"
         style={{ backgroundColor: 'var(--bg-nav)', borderColor: 'var(--border-primary)' }}
       >
-        <div className="max-w-7xl mx-auto pl-4 pr-4 sm:pl-6 sm:pr-6 py-4 sm:py-5">
+        <div className="max-w-7xl mx-auto pl-2 pr-4 sm:pl-4 sm:pr-6 py-4 sm:py-5">
           <div className="flex items-center justify-between gap-4 sm:gap-6">
             {/* 1. Brand: Logo + Page title */}
             <div className="flex items-baseline gap-4 min-w-0 flex-shrink-0 pr-4 sm:pr-6 border-r" style={{ borderColor: 'var(--border-primary)' }}>
@@ -3506,11 +3506,6 @@ export default function Home() {
                   </div>
                 )}
               </AnimatePresence>
-              <span className="text-xl font-extrabold whitespace-nowrap truncate flex items-baseline gap-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>
-                {activeTab === 'calendar' && t.myCalendar}
-                {activeTab === 'events' && t.events}
-                {activeTab === 'dashboard' && t.dashboard}
-              </span>
             </div>
 
             {/* 2. Primary Nav: Calendar, Events, Dashboard */}
@@ -3857,7 +3852,9 @@ export default function Home() {
             >
               <div className="flex-shrink-0 mb-3">
                 <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
-                  {t.allEvents} ({events.length}) {t.upcomingEvents} ({events.filter(e => (e.date || '') >= new Date().toISOString().split('T')[0]).length})
+                  {t.allEvents} ({events.length})
+                  <span className="mx-3" style={{ opacity: 0.5 }}>·</span>
+                  {t.upcomingEvents} ({events.filter(e => (e.date || '') >= new Date().toISOString().split('T')[0]).length})
                 </p>
               </div>
               {/* Unified card container */}
