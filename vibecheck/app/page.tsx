@@ -85,6 +85,8 @@ import {
   EVENT_CATEGORIES,
   EVENT_SUGGESTION_CATEGORIES,
   TASK_SUGGESTIONS,
+  LEVEL_KEYS,
+  LEVEL_THRESHOLDS,
 } from '@/lib/constants'
 import {
   computeOrganizerScore,
@@ -893,6 +895,7 @@ export default function Home() {
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const [showParticipantsModal, setShowParticipantsModal] = useState(false)
   const [showOrganizerStatsModal, setShowOrganizerStatsModal] = useState(false)
+  const [showOrganizerLevelBreakdown, setShowOrganizerLevelBreakdown] = useState(false)
   const [selectedOrganizer, setSelectedOrganizer] = useState<{ id: string; name: string } | null>(null)
   const [organizerStatsView, setOrganizerStatsView] = useState<'numbers' | 'charts'>('numbers')
   const [showEventSuggestionModal, setShowEventSuggestionModal] = useState(false)
@@ -4898,7 +4901,7 @@ export default function Home() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
-            onClick={() => { setShowOrganizerStatsModal(false); setSelectedOrganizer(null); setOrganizerStatsView('numbers') }}
+            onClick={() => { setShowOrganizerStatsModal(false); setSelectedOrganizer(null); setOrganizerStatsView('numbers'); setShowOrganizerLevelBreakdown(false) }}
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.96, y: 12 }}
@@ -4930,7 +4933,15 @@ export default function Home() {
                       <div className="flex flex-col items-end shrink-0">
                         <span className="text-2xl font-extrabold tabular-nums" style={{ color: 'var(--accent-primary)' }}>{score}</span>
                         <span className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>{t.organizerScore}</span>
-                        <span className="text-xs mt-0.5 px-2 py-0.5 rounded-full" style={{ backgroundColor: 'var(--accent-light)', color: 'var(--accent-primary)' }}>{t[lvl as keyof typeof t]}</span>
+                        <button
+                          type="button"
+                          onClick={() => setShowOrganizerLevelBreakdown(prev => !prev)}
+                          className="text-xs mt-0.5 px-2 py-0.5 rounded-full cursor-pointer hover:opacity-90 transition-opacity"
+                          style={{ backgroundColor: 'var(--accent-light)', color: 'var(--accent-primary)' }}
+                          title={lang === 'en' ? 'View all levels' : 'Összes szint megtekintése'}
+                        >
+                          {t[lvl as keyof typeof t]}
+                        </button>
                         {ptsToNext != null && ptsToNext > 0 && (
                           <div className="mt-2 w-24">
                             <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
@@ -4968,7 +4979,7 @@ export default function Home() {
                       </button>
                     </div>
                     <button
-                    onClick={() => { setShowOrganizerStatsModal(false); setSelectedOrganizer(null); setOrganizerStatsView('numbers') }}
+                    onClick={() => { setShowOrganizerStatsModal(false); setSelectedOrganizer(null); setOrganizerStatsView('numbers'); setShowOrganizerLevelBreakdown(false); setShowOrganizerLevelBreakdown(false) }}
                     className="p-2 rounded-lg transition-colors"
                     style={{ color: 'var(--text-muted)' }}
                     onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--bg-hover)' }}
@@ -4998,8 +5009,68 @@ export default function Home() {
                   const maxAttendees = Math.max(...organizedEvents.map(e => e.attendees || 0), 1)
                   const { total: organizerScoreTotal, breakdown: scoreBreakdown } = computeOrganizerScore(organizedEvents)
                   const organizerLevelKey = getOrganizerLevel(organizerScoreTotal)
+                  const levelProgress = getOrganizerLevelProgress(organizerScoreTotal)
+                  const currentLevelIdx = LEVEL_KEYS.indexOf(organizerLevelKey as typeof LEVEL_KEYS[number])
 
-                  if (organizerStatsView === 'charts') {
+                  return (
+                    <>
+                      {showOrganizerLevelBreakdown && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="rounded-xl border overflow-hidden mb-6"
+                          style={{ backgroundColor: 'var(--bg-tertiary)', borderColor: 'var(--border-primary)' }}
+                        >
+                          <div className="p-4">
+                            <div className="text-sm font-semibold mb-3" style={{ color: 'var(--text-primary)' }}>
+                              {lang === 'en' ? 'Level progression' : 'Szint előrehaladás'}
+                            </div>
+                            <div className="space-y-2">
+                              {LEVEL_KEYS.map((key, i) => {
+                                const threshold = LEVEL_THRESHOLDS[i]
+                                const nextThreshold = i + 1 < LEVEL_THRESHOLDS.length ? LEVEL_THRESHOLDS[i + 1] : null
+                                const isReached = organizerScoreTotal >= threshold
+                                const isCurrent = key === organizerLevelKey
+                                return (
+                                  <div
+                                    key={key}
+                                    className={`flex items-center justify-between gap-3 py-2 px-3 rounded-lg ${isCurrent ? 'ring-1' : ''}`}
+                                    style={{
+                                      backgroundColor: isCurrent ? 'var(--accent-light)' : isReached ? 'var(--bg-secondary)' : 'transparent',
+                                      ringColor: 'var(--accent-primary)',
+                                      opacity: isReached ? 1 : 0.6,
+                                    }}
+                                  >
+                                    <div className="flex items-center gap-2">
+                                      <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={{ backgroundColor: isReached ? 'var(--accent-primary)' : 'var(--bg-tertiary)', color: isReached ? 'var(--text-inverse)' : 'var(--text-muted)' }}>
+                                        {isReached ? '✓' : i + 1}
+                                      </span>
+                                      <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{t[key as keyof typeof t]}</span>
+                                      {isCurrent && (
+                                        <span className="text-xs" style={{ color: 'var(--accent-primary)' }}>
+                                          {lang === 'en' ? '(you are here)' : '(ide tartozol)'}
+                                        </span>
+                                      )}
+                                    </div>
+                                    <span className="text-xs tabular-nums" style={{ color: 'var(--text-muted)' }}>
+                                      {threshold} {nextThreshold != null ? `→ ${nextThreshold} pts` : '+ pts'}
+                                    </span>
+                                  </div>
+                                )
+                              })}
+                            </div>
+                            {levelProgress.ptsToNext != null && levelProgress.ptsToNext > 0 && (
+                              <div className="mt-3 pt-3 border-t" style={{ borderColor: 'var(--border-primary)' }}>
+                                <span className="text-xs" style={{ color: 'var(--text-muted)' }}>
+                                  {levelProgress.ptsToNext} {t.ptsToNextLevel} {t.nextLevel}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        </motion.div>
+                      )}
+                  {organizerStatsView === 'charts' ? (
                     const statusSegments = [
                       { count: fixedCount, color: 'var(--accent-primary)', label: t.fixed },
                       { count: optimalCount, color: 'var(--accent-primary)', label: t.optimal },
@@ -5114,10 +5185,7 @@ export default function Home() {
                           </div>
                         </div>
                       </>
-                    )
-                  }
-
-                  return (
+                    ) : (
                     <>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div className="rounded-xl p-4 text-center" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
