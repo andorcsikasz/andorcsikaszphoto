@@ -1,5 +1,6 @@
 // GatherGo - Collaborative Event Management
 // Clean dashboard with Calendar view, Events grid, and Dashboard features
+// Structure follows RAZ fullstack-web-template: lib/, components/ui/, hooks/
 
 'use client'
 
@@ -65,8 +66,38 @@ import {
   EnvelopeIcon,
 } from '@heroicons/react/24/outline'
 import { RevolutLogo, GoogleLogo, AppleLogo } from '@/components/PaymentLogos'
+import { EventIcon } from '@/components/ui/EventIcon'
 import LandingPageComponent from '@/components/LandingPage'
 import Aurora from '@/components/Aurora'
+import {
+  type Event,
+  type EventStatus,
+  type EventCategory,
+  type EventResource,
+  type UserGroup,
+  type Language,
+  type PaymentType,
+} from '@/lib/types'
+import {
+  AVATARS,
+  EVENT_CATEGORIES,
+  EVENT_SUGGESTION_CATEGORIES,
+  TASK_SUGGESTIONS,
+} from '@/lib/constants'
+import {
+  computeOrganizerScore,
+  getOrganizerLevel,
+  getOrganizerLevelProgress,
+} from '@/lib/gamification'
+import {
+  isPastDate,
+  isToday,
+  getEventsForDate,
+  getStatusColor,
+  getStatusBorderColor,
+  getSuggestedIcon,
+} from '@/lib/event-utils'
+import { demoEvents } from '@/lib/demo-events'
 import WarpTwister from '@/components/WarpTwister'
 import VibeNetwork from '@/components/VibeNetwork'
 import ConnectionsManager from '@/components/ConnectionsManager'
