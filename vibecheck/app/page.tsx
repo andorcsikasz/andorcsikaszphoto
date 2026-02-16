@@ -1714,10 +1714,17 @@ export default function Home() {
   const myName = userProfile?.name || 'Me'
   const isMyEvent = (e: Event) => {
     if (e.organizerId === 'me' || e.organizerId === currentUserId || e.organizerId === userProfile?.name || e.organizerId === userProfile?.userId) return true
-    if (!userProfile?.name || !e.organizerName) return false
-    const myFirst = userProfile.name.trim().split(/\s+/)[0]
-    const org = e.organizerName.trim()
-    return org === userProfile.name || org === myFirst || userProfile.name.startsWith(org + ' ')
+    if (!e.organizerName) return false
+    const org = e.organizerName.trim().toLowerCase()
+    if (!org) return false
+    // Match by organizer name: if my profile name contains or equals "Andor", events by Andor are mine
+    if (userProfile?.name) {
+      const myNameLower = userProfile.name.trim().toLowerCase()
+      const myFirst = myNameLower.split(/\s+/)[0]
+      if (org === myNameLower || org === myFirst || myNameLower.startsWith(org + ' ') || myNameLower === org) return true
+    }
+    // Fallback: organizer "Andor" = my events (user confirmed Andor is me)
+    return org === 'andor'
   }
   const myEvents = events.filter(isMyEvent)
   const invitedEvents = events.filter(e => !myEvents.includes(e))
