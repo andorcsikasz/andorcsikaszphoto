@@ -3881,6 +3881,7 @@ export default function Home() {
                   {getDaysInMonth(currentMonth).map((date, index) => {
                     const events = date ? getEventsForDate(date) : []
                     const today = date && isToday(date)
+                    const past = date && isPastDate(date)
                     
   return (
                       <div
@@ -3901,7 +3902,8 @@ export default function Home() {
                               }`}
                               style={{
                                 backgroundColor: today ? 'var(--accent-primary)' : 'transparent',
-                                color: today ? 'var(--text-inverse)' : 'var(--text-muted)'
+                                color: today ? 'var(--text-inverse)' : 'var(--text-muted)',
+                                opacity: past ? 0.4 : 1
                               }}
                             >
                               {date.getDate()}
