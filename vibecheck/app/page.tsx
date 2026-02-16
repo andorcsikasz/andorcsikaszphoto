@@ -1563,6 +1563,7 @@ export default function Home() {
   const [showAllOrganizedEvents, setShowAllOrganizedEvents] = useState(false)
   const [showAllInvitedEvents, setShowAllInvitedEvents] = useState(false)
   const [taskViewFilter, setTaskViewFilter] = useState<'assigned-to-me' | 'my-events' | 'not-assigned' | 'tasks-assigned' | null>(null)
+  const [eventsDateFilter, setEventsDateFilter] = useState<'all' | 'upcoming'>('all')
   
   // Create Event Modal
   const [editingEvent, setEditingEvent] = useState<Event | null>(null)
@@ -2368,6 +2369,23 @@ export default function Home() {
   const openSuggestedEvents = events.filter(e => 
     e.type === 'public' && !myEvents.includes(e) && !invitedEvents.includes(e)
   )
+
+  // Upcoming = today through next 2 weeks (for Events tab filter)
+  const isEventWithinTwoWeeks = (e: Event) => {
+    const d = e.date || ''
+    if (!d) return false
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const eventDate = new Date(d + 'T00:00:00')
+    const twoWeeksLater = new Date(today)
+    twoWeeksLater.setDate(twoWeeksLater.getDate() + 14)
+    return eventDate >= today && eventDate <= twoWeeksLater
+  }
+  const eventsForDisplayDateFilter = eventsDateFilter === 'upcoming' ? isEventWithinTwoWeeks : () => true
+  const myEventsForDisplay = myEvents.filter(eventsForDisplayDateFilter)
+  const friendsFamilyCompanyEventsForDisplay = friendsFamilyCompanyEvents.filter(eventsForDisplayDateFilter)
+  const openSuggestedEventsForDisplay = openSuggestedEvents.filter(eventsForDisplayDateFilter)
+  const upcomingCountTwoWeeks = events.filter(isEventWithinTwoWeeks).length
 
   // Task metrics for control cells
   const allTasks = events.flatMap(e => (e.tasks || []).map(t => ({ ...t, eventId: e.id })))
@@ -3933,12 +3951,31 @@ export default function Home() {
               transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
               className="w-full"
             >
-              <div className="flex-shrink-0 mb-3">
-                <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
+              <div className="flex-shrink-0 mb-3 flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setEventsDateFilter('all')}
+                  className={`text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${
+                    eventsDateFilter === 'all'
+                      ? 'bg-[var(--accent-primary)] text-[var(--text-inverse)]'
+                      : 'hover:bg-[var(--bg-tertiary)]'
+                  }`}
+                  style={eventsDateFilter === 'all' ? {} : { color: 'var(--text-muted)' }}
+                >
                   {t.allEvents} ({events.length})
-                  <span className="mx-3" style={{ opacity: 0.5 }}>·</span>
-                  {t.upcomingEvents} ({events.filter(e => (e.date || '') >= new Date().toISOString().split('T')[0]).length})
-                </p>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEventsDateFilter('upcoming')}
+                  className={`text-sm font-medium px-3 py-1.5 rounded-lg transition-colors ${
+                    eventsDateFilter === 'upcoming'
+                      ? 'bg-[var(--accent-primary)] text-[var(--text-inverse)]'
+                      : 'hover:bg-[var(--bg-tertiary)]'
+                  }`}
+                  style={eventsDateFilter === 'upcoming' ? {} : { color: 'var(--text-muted)' }}
+                >
+                  {t.upcomingEvents} ({upcomingCountTwoWeeks})
+                </button>
               </div>
               {/* Unified card container */}
               <div className="rounded-2xl border overflow-hidden w-full" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}>
@@ -3959,7 +3996,7 @@ export default function Home() {
                     </h3>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                  {myEvents.map((event, index) => (
+                  {myEventsForDisplay.map((event, index) => (
                     <motion.div
                       key={event.id}
                       initial={{ opacity: 0, y: 12 }}
@@ -4013,7 +4050,7 @@ export default function Home() {
                     </motion.div>
                   ))}
                   </div>
-                  {myEvents.length === 0 && (
+                  {myEventsForDisplay.length === 0 && (
                     <div className="rounded-xl py-8 px-4 flex items-center justify-center gap-4" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
                       <CalendarIcon className="w-10 h-10 flex-shrink-0" style={{ color: 'var(--text-muted)' }} />
                       <p style={{ color: 'var(--text-muted)' }}>{lang === 'en' ? 'No events you organize yet' : 'Még nincs szervezett eseményed'}</p>
@@ -4030,7 +4067,7 @@ export default function Home() {
                     </h3>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                  {friendsFamilyCompanyEvents.map((event, index) => (
+                  {friendsFamilyCompanyEventsForDisplay.map((event, index) => (
                     <motion.div
                       key={event.id}
                       initial={{ opacity: 0, y: 12 }}
@@ -4088,7 +4125,7 @@ export default function Home() {
                     </motion.div>
                   ))}
                   </div>
-                  {friendsFamilyCompanyEvents.length === 0 && (
+                  {friendsFamilyCompanyEventsForDisplay.length === 0 && (
                     <div className="rounded-xl py-8 px-4 flex items-center justify-center gap-4" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
                       <UserGroupIcon className="w-10 h-10 flex-shrink-0" style={{ color: 'var(--text-muted)' }} />
                       <p style={{ color: 'var(--text-muted)' }}>{lang === 'en' ? 'No invitations from your network yet' : 'Még nincs meghívás a hálózatodból'}</p>
@@ -4105,7 +4142,7 @@ export default function Home() {
                     </h3>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                  {openSuggestedEvents.map((event, index) => (
+                  {openSuggestedEventsForDisplay.map((event, index) => (
                     <motion.div
                       key={event.id}
                       initial={{ opacity: 0, y: 12 }}
@@ -4155,7 +4192,7 @@ export default function Home() {
                     </motion.div>
                   ))}
                   </div>
-                  {openSuggestedEvents.length === 0 && (
+                  {openSuggestedEventsForDisplay.length === 0 && (
                     <div className="rounded-xl py-8 px-4 flex items-center justify-center gap-4" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
                       <MapPinIcon className="w-10 h-10 flex-shrink-0" style={{ color: 'var(--text-muted)' }} />
                       <div>
