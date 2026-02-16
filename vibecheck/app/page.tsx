@@ -3484,7 +3484,7 @@ export default function Home() {
                         <MapPinIcon className="w-4 h-4" />
                         <span className="truncate">{event.location}</span>
                       </div>
-                      {!(event.organizerId === 'me' || event.organizerId === currentUserId || event.organizerId === userProfile?.name || event.organizerId === userProfile?.userId) && (() => {
+                      {!(event.organizerId === 'me' || event.organizerId === currentUserId || event.organizerId === userProfile?.name || event.organizerId === userProfile?.userId || event.organizerName === userProfile?.name) && (() => {
                         const { going, notGoing, pending } = getRsvpCounts(event)
                         return (
                           <p className="text-xs mb-3" style={{ color: 'var(--text-muted)' }}>
@@ -3555,7 +3555,7 @@ export default function Home() {
                         <MapPinIcon className="w-4 h-4" />
                         <span className="truncate">{event.location}</span>
                       </div>
-                      {!(event.organizerId === 'me' || event.organizerId === currentUserId || event.organizerId === userProfile?.name || event.organizerId === userProfile?.userId) && (() => {
+                      {!(event.organizerId === 'me' || event.organizerId === currentUserId || event.organizerId === userProfile?.name || event.organizerId === userProfile?.userId || event.organizerName === userProfile?.name) && (() => {
                         const { going, notGoing, pending } = getRsvpCounts(event)
                         return (
                           <p className="text-xs mb-3" style={{ color: 'var(--text-muted)' }}>
@@ -3632,7 +3632,7 @@ export default function Home() {
     </div>
                     <div className="flex items-center gap-3">
                       {userProfile && (() => {
-                        const myEvts = events.filter(e => e.organizerId === 'me' || e.organizerId === currentUserId || e.organizerId === userProfile?.name || e.organizerId === userProfile?.userId)
+                        const myEvts = events.filter(e => e.organizerId === 'me' || e.organizerId === currentUserId || e.organizerId === userProfile?.name || e.organizerId === userProfile?.userId || e.organizerName === userProfile?.name)
                         const { total: score } = computeOrganizerScore(myEvts)
                         const lvl = getOrganizerLevel(score)
                         const { progress, ptsToNext } = getOrganizerLevelProgress(score)
@@ -3702,7 +3702,7 @@ export default function Home() {
                             {getStatusLabel(event.status)}
       </span>
                           <div className="flex items-center gap-1">
-                            {(event.organizerId === 'me' || event.organizerId === currentUserId || event.organizerId === userProfile?.name || event.organizerId === userProfile?.userId) && (
+                            {(event.organizerId === 'me' || event.organizerId === currentUserId || event.organizerId === userProfile?.name || event.organizerId === userProfile?.userId || event.organizerName === userProfile?.name) && (
                               <button
                                 type="button"
                                 onClick={(e) => { e.stopPropagation(); openEditModal(event) }}
@@ -4907,7 +4907,7 @@ export default function Home() {
                     const isMeHeader = selectedOrganizer.id === 'me' || selectedOrganizer.id === currentUserId || selectedOrganizer.name === userProfile?.name || selectedOrganizer.name === userProfile?.userId
                     const oe = events.filter(e =>
                       e.organizerId === selectedOrganizer.id || e.organizerName === selectedOrganizer.name ||
-                      (isMeHeader && (e.organizerId === 'me' || e.organizerId === currentUserId || e.organizerId === userProfile?.name || e.organizerId === userProfile?.userId))
+                      (isMeHeader && (e.organizerId === 'me' || e.organizerId === currentUserId || e.organizerId === userProfile?.name || e.organizerId === userProfile?.userId || e.organizerName === userProfile?.name))
                     )
                     const { total: score } = computeOrganizerScore(oe)
                     const lvl = getOrganizerLevel(score)
@@ -4971,7 +4971,7 @@ export default function Home() {
                   const organizedEvents = events.filter(e =>
                     e.organizerId === selectedOrganizer.id ||
                     e.organizerName === selectedOrganizer.name ||
-                    (isMe && (e.organizerId === 'me' || e.organizerId === currentUserId || e.organizerId === userProfile?.name || e.organizerId === userProfile?.userId))
+                    (isMe && (e.organizerId === 'me' || e.organizerId === currentUserId || e.organizerId === userProfile?.name || e.organizerId === userProfile?.userId || e.organizerName === userProfile?.name))
                   )
                   const totalAttendees = organizedEvents.reduce((sum, e) => sum + (e.attendees || 0), 0)
                   const avgAttendees = organizedEvents.length > 0 ? Math.round(totalAttendees / organizedEvents.length) : 0
