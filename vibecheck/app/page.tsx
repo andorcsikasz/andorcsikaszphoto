@@ -426,6 +426,9 @@ const translations = {
     rsvpGoing: 'Going',
     rsvpThinking: 'Thinking',
     rsvpNotGoing: 'Not going',
+    rsvpConfirmTitle: 'Confirm attendance',
+    rsvpConfirmMessage: 'Set your attendance to',
+    rsvpConfirm: 'Confirm',
     upcomingEvents: 'Upcoming Events',
     allEvents: 'All Events',
     myEvents: 'My events',
@@ -489,6 +492,9 @@ const translations = {
     rsvpGoing: 'Megyek',
     rsvpThinking: 'Gondolkozom',
     rsvpNotGoing: 'Nem megyek',
+    rsvpConfirmTitle: 'Részvétel megerősítése',
+    rsvpConfirmMessage: 'Részvételi státusza',
+    rsvpConfirm: 'Megerősítés',
     upcomingEvents: 'Közelgő események',
     allEvents: 'Összes esemény',
     myEvents: 'Saját eseményeim',
@@ -1601,6 +1607,7 @@ export default function Home() {
   const [locationSuggestionsOpen, setLocationSuggestionsOpen] = useState(false)
   const [linkCopiedFeedback, setLinkCopiedFeedback] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [pendingRsvpConfirm, setPendingRsvpConfirm] = useState<{ eventId: number | string; status: 'confirmed' | 'pending' | 'declined'; eventTitle?: string } | null>(null)
   const locationSuggestDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const t = translations[lang]
@@ -2438,6 +2445,17 @@ export default function Home() {
     const me = userProfile?.name || 'Me'
     const p = (event.participants || []).find(p => p.id === 'me' || p.id === (userProfile?.userId || 'me') || p.name === me)
     return p?.status ?? 'pending'
+  }
+
+  const requestRsvpChange = (eventId: number | string, status: 'confirmed' | 'pending' | 'declined', eventTitle?: string) => {
+    setPendingRsvpConfirm({ eventId, status, eventTitle })
+  }
+
+  const confirmRsvpAndClose = () => {
+    if (pendingRsvpConfirm) {
+      handleRsvp(pendingRsvpConfirm.eventId, pendingRsvpConfirm.status)
+      setPendingRsvpConfirm(null)
+    }
   }
 
   const handleRsvp = (eventId: number | string, status: 'confirmed' | 'pending' | 'declined') => {
@@ -4763,7 +4781,7 @@ export default function Home() {
                                   {(['confirmed', 'pending', 'declined'] as const).map((status) => (
                                     <button
                                       key={status}
-                                      onClick={() => handleRsvp(event.id, status)}
+                                      onClick={() => requestRsvpChange(event.id, status, event.title)}
                                       className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                                         myRsvp === status
                                           ? status === 'confirmed'
@@ -5023,7 +5041,7 @@ export default function Home() {
                         <button
                           key={status}
                           type="button"
-                          onClick={() => handleRsvp(selectedEvent.id, status)}
+                          onClick={() => requestRsvpChange(selectedEvent.id, status, selectedEvent.title)}
                           className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
                             getMyRsvp(selectedEvent) === status
                               ? status === 'confirmed'
