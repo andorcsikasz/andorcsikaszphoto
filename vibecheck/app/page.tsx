@@ -70,7 +70,7 @@ import { EventIcon } from '@/components/ui/EventIcon'
 import LandingPageComponent from '@/components/LandingPage'
 import Aurora from '@/components/Aurora'
 import {
-  type Event,
+  type Event as AppEvent,
   type EventStatus,
   type EventCategory,
   type EventResource,
