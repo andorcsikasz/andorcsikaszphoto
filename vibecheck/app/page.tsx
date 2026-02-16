@@ -525,7 +525,7 @@ const translations = {
 
 // Demo events data
 const demoEvents: Event[] = [
-  // === EVENTS BY SÁSI (me) ===
+  // === EVENTS BY ANDOR (me) ===
   {
     id: 1,
     title: 'Summer BBQ Party',
@@ -542,7 +542,7 @@ const demoEvents: Event[] = [
     hasTasks: true,
     hasPayment: false,
     organizerId: 'me',
-    organizerName: 'Sási',
+    organizerName: 'Andor',
     status: 'fixed',
     tasks: [
       { id: 1, title: 'Buy charcoal', completed: true, assignee: 'Homer' },
@@ -577,7 +577,7 @@ const demoEvents: Event[] = [
     hasTasks: true,
     hasPayment: false,
     organizerId: 'me',
-    organizerName: 'Sási',
+    organizerName: 'Andor',
     status: 'in-progress',
     tasks: [
       { id: 1, title: 'Order cake', completed: true },
@@ -608,7 +608,7 @@ const demoEvents: Event[] = [
     paymentAmount: 180,
     currency: 'EUR',
     organizerId: 'me',
-    organizerName: 'Sási',
+    organizerName: 'Andor',
     status: 'optimal',
     tasks: [
       { id: 1, title: 'Book accommodation', completed: true },
@@ -637,7 +637,7 @@ const demoEvents: Event[] = [
     hasTasks: false,
     hasPayment: false,
     organizerId: 'me',
-    organizerName: 'Sási',
+    organizerName: 'Andor',
     status: 'fixed',
     participants: [
       { id: '1', name: 'Mickey Mouse', status: 'confirmed' },
@@ -690,7 +690,7 @@ const demoEvents: Event[] = [
     hasTasks: true,
     hasPayment: false,
     organizerId: 'me',
-    organizerName: 'Sási',
+    organizerName: 'Andor',
     status: 'optimal',
     participants: [
       { id: '1', name: 'Bugs Bunny', status: 'confirmed' },
