@@ -3583,10 +3583,10 @@ export default function Home() {
         className="border-b backdrop-blur-xl sticky top-0 z-40 flex-shrink-0"
         style={{ backgroundColor: 'var(--bg-nav)', borderColor: 'var(--border-primary)' }}
       >
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-4 sm:py-5">
+        <div className="max-w-7xl mx-auto pl-6 pr-6 sm:pl-8 sm:pr-8 lg:pl-12 lg:pr-12 py-4 sm:py-5">
           <div className="flex items-center justify-between gap-4 sm:gap-6">
-            {/* 1. Brand: Logo + Page title */}
-            <div className="flex items-baseline gap-4 min-w-0 flex-shrink-0 pr-4 sm:pr-6 border-r" style={{ borderColor: 'var(--border-primary)' }}>
+            {/* 1. Brand: Logo - aligned with main content left edge */}
+            <div className="flex items-baseline min-w-0 flex-shrink-0 pr-4 sm:pr-6 border-r" style={{ borderColor: 'var(--border-primary)' }}>
               <button
                 onClick={handleLogoClick}
                 className="text-3xl sm:text-4xl font-black tracking-tighter cursor-pointer hover:opacity-80 transition-opacity select-none"
@@ -3756,7 +3756,7 @@ export default function Home() {
       </nav>
 
       {/* Main Content */}
-      <main className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex-1 min-h-0 min-w-0 w-full max-w-[100vw] flex flex-col py-6 overflow-x-hidden ${
+      <main className={`max-w-7xl mx-auto pl-6 pr-6 sm:pl-8 sm:pr-8 lg:pl-12 lg:pr-12 flex-1 min-h-0 min-w-0 w-full max-w-[100vw] flex flex-col py-6 overflow-x-hidden ${
         activeTab === 'calendar' ? 'overflow-hidden' : ''
       }`}>
         <div className="flex-1 min-h-0 flex flex-col">
