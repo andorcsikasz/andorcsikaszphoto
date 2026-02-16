@@ -4916,9 +4916,6 @@ export default function Home() {
                 <div className="flex items-center justify-between gap-4">
                   <div>
                     <h2 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>{selectedOrganizer.name}</h2>
-                    <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
-                      {lang === 'en' ? 'Organizer statistics' : 'Szervezői statisztikák'}
-                    </p>
                   </div>
                   {(() => {
                     const isMeHeader = selectedOrganizer.id === 'me' || selectedOrganizer.id === currentUserId || selectedOrganizer.name === userProfile?.name || selectedOrganizer.name === userProfile?.userId
@@ -5070,7 +5067,7 @@ export default function Home() {
                           </div>
                         </motion.div>
                       )}
-                  {organizerStatsView === 'charts' ? (
+                  {organizerStatsView === 'charts' ? (() => {
                     const statusSegments = [
                       { count: fixedCount, color: 'var(--accent-primary)', label: t.fixed },
                       { count: optimalCount, color: 'var(--accent-primary)', label: t.optimal },
