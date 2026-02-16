@@ -9,6 +9,7 @@ import {
   CalendarIcon,
   ChartBarIcon,
   Squares2X2Icon,
+  ArrowsRightLeftIcon,
   PlusIcon,
   XMarkIcon,
   MapPinIcon,
@@ -434,6 +435,8 @@ const translations = {
     myEvents: 'My events',
     friendsFamilyCompany: 'Friends / Family / Company',
     suggestedOpenNearMe: 'Suggested open events near me',
+    viewCell: 'Grid view',
+    viewRow: 'Row scroll',
     noOpenEventsNearby: 'No open events nearby yet',
     integrateCalendar: 'Integrate to calendar',
     googleCalendar: 'Google Calendar',
@@ -510,6 +513,8 @@ const translations = {
     myEvents: 'Saját eseményeim',
     friendsFamilyCompany: 'Barátok / Család / Munka',
     suggestedOpenNearMe: 'Javasolt nyitott események a közelemben',
+    viewCell: 'Rács nézet',
+    viewRow: 'Sorszint görgetés',
     noOpenEventsNearby: 'Még nincs nyitott esemény a közeledben',
     integrateCalendar: 'Naptár csatlakoztatása',
     googleCalendar: 'Google Naptár',
@@ -1869,6 +1874,7 @@ export default function Home() {
   const [showAllInvitedEvents, setShowAllInvitedEvents] = useState(false)
   const [taskViewFilter, setTaskViewFilter] = useState<'assigned-to-me' | 'my-events' | 'not-assigned' | 'tasks-assigned' | null>(null)
   const [eventsDateFilter, setEventsDateFilter] = useState<'all' | 'upcoming'>('all')
+  const [eventsViewMode, setEventsViewMode] = useState<'grid' | 'row'>('grid')
   
   // Create Event Modal
   const [editingEvent, setEditingEvent] = useState<Event | null>(null)
@@ -4265,7 +4271,7 @@ export default function Home() {
               transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
               className="w-full"
             >
-              <div className="flex-shrink-0 mb-3 flex items-center gap-2">
+              <div className="flex-shrink-0 mb-3 flex flex-wrap items-center gap-2">
                 <button
                   type="button"
                   onClick={() => setEventsDateFilter('all')}
@@ -4290,6 +4296,26 @@ export default function Home() {
                 >
                   {t.upcomingEvents} ({upcomingCountTwoWeeks})
                 </button>
+                <div className="ml-auto flex rounded-lg p-0.5 border" style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-primary)' }}>
+                  <button
+                    type="button"
+                    onClick={() => setEventsViewMode('grid')}
+                    className={`p-2 rounded-md transition-colors`}
+                    style={eventsViewMode === 'grid' ? { backgroundColor: 'var(--accent-primary)', color: 'var(--text-inverse)' } : { color: 'var(--text-muted)' }}
+                    title={t.viewCell}
+                  >
+                    <Squares2X2Icon className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEventsViewMode('row')}
+                    className={`p-2 rounded-md transition-colors`}
+                    style={eventsViewMode === 'row' ? { backgroundColor: 'var(--accent-primary)', color: 'var(--text-inverse)' } : { color: 'var(--text-muted)' }}
+                    title={t.viewRow}
+                  >
+                    <ArrowsRightLeftIcon className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
               {/* Unified card container */}
               <div className="rounded-2xl border overflow-hidden w-full" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}>
@@ -4309,7 +4335,7 @@ export default function Home() {
                       {t.myEvents}
                     </h3>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  <div className={eventsViewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : 'flex overflow-x-auto gap-4 pb-2 -mx-1 px-1 snap-x snap-mandatory scrollbar-thin'}>
                   {myEventsForDisplay.map((event, index) => (
                     <motion.div
                       key={event.id}
@@ -4317,7 +4343,9 @@ export default function Home() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.2, delay: index * 0.02, ease: [0.22, 1, 0.36, 1] }}
                       onClick={() => setSelectedEvent(event)}
-                      className={`relative rounded-xl border overflow-hidden ${getStatusBorderColor(event.status)} p-5 cursor-pointer transition-all group`}
+                      className={`relative rounded-xl border overflow-hidden ${getStatusBorderColor(event.status)} p-5 cursor-pointer transition-all group snap-start ${
+                        eventsViewMode === 'row' ? 'flex-shrink-0 w-[min(320px,85vw)]' : ''
+                      }`}
                       style={{ backgroundColor: 'var(--bg-card)', backfaceVisibility: 'hidden' }}
                     >
                       <div className={`absolute top-0 left-0 right-0 h-1 rounded-t-[11px] ${getStatusColor(event.status)}`} />
@@ -4380,7 +4408,7 @@ export default function Home() {
                       {t.friendsFamilyCompany}
                     </h3>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  <div className={eventsViewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : 'flex overflow-x-auto gap-4 pb-2 -mx-1 px-1 snap-x snap-mandatory scrollbar-thin'}>
                   {friendsFamilyCompanyEventsForDisplay.map((event, index) => (
                     <motion.div
                       key={event.id}
@@ -4388,7 +4416,9 @@ export default function Home() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.2, delay: index * 0.02, ease: [0.22, 1, 0.36, 1] }}
                       onClick={() => setSelectedEvent(event)}
-                      className={`relative rounded-xl border overflow-hidden ${getStatusBorderColor(event.status)} p-5 cursor-pointer transition-all group`}
+                      className={`relative rounded-xl border overflow-hidden ${getStatusBorderColor(event.status)} p-5 cursor-pointer transition-all group snap-start ${
+                        eventsViewMode === 'row' ? 'flex-shrink-0 w-[min(320px,85vw)]' : ''
+                      }`}
                       style={{ backgroundColor: 'var(--bg-card)', backfaceVisibility: 'hidden' }}
                     >
                       <div className={`absolute top-0 left-0 right-0 h-1 rounded-t-[11px] ${getStatusColor(event.status)}`} />
@@ -4455,7 +4485,7 @@ export default function Home() {
                       {t.suggestedOpenNearMe}
                     </h3>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  <div className={eventsViewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : 'flex overflow-x-auto gap-4 pb-2 -mx-1 px-1 snap-x snap-mandatory scrollbar-thin'}>
                   {openSuggestedEventsForDisplay.map((event, index) => (
                     <motion.div
                       key={event.id}
@@ -4463,7 +4493,9 @@ export default function Home() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.2, delay: index * 0.02, ease: [0.22, 1, 0.36, 1] }}
                       onClick={() => setSelectedEvent(event)}
-                      className={`relative rounded-xl border overflow-hidden ${getStatusBorderColor(event.status)} p-5 cursor-pointer transition-all group`}
+                      className={`relative rounded-xl border overflow-hidden ${getStatusBorderColor(event.status)} p-5 cursor-pointer transition-all group snap-start ${
+                        eventsViewMode === 'row' ? 'flex-shrink-0 w-[min(320px,85vw)]' : ''
+                      }`}
                       style={{ backgroundColor: 'var(--bg-card)', backfaceVisibility: 'hidden' }}
                     >
                       <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-400 mb-4 inline-block">Open</span>
