@@ -3464,13 +3464,13 @@ export default function Home() {
         className="border-b backdrop-blur-xl sticky top-0 z-40 flex-shrink-0"
         style={{ backgroundColor: 'var(--bg-nav)', borderColor: 'var(--border-primary)' }}
       >
-        <div className="max-w-7xl mx-auto pl-2 pr-4 sm:pl-4 sm:pr-6 py-4 sm:py-5">
+        <div className="max-w-7xl mx-auto pl-0 pr-4 sm:pl-2 sm:pr-6 py-4 sm:py-5">
           <div className="flex items-center justify-between gap-4 sm:gap-6">
             {/* 1. Brand: Logo + Page title */}
             <div className="flex items-baseline gap-4 min-w-0 flex-shrink-0 pr-4 sm:pr-6 border-r" style={{ borderColor: 'var(--border-primary)' }}>
               <button
                 onClick={handleLogoClick}
-                className="text-2xl font-black tracking-tighter cursor-pointer hover:opacity-80 transition-opacity select-none"
+                className="text-3xl sm:text-4xl font-black tracking-tighter cursor-pointer hover:opacity-80 transition-opacity select-none"
                 style={{ fontFamily: 'var(--font-logo)', color: 'var(--text-primary)', background: 'none', border: 'none', padding: 0 }}
               >
                 GatherGo
