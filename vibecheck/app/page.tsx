@@ -5902,114 +5902,164 @@ export default function Home() {
                   const organizerLevelKey = getOrganizerLevel(organizerScoreTotal)
 
                   if (organizerStatsView === 'charts') {
+                    const statusSegments = [
+                      { count: fixedCount, color: '#10b981', label: t.fixed },
+                      { count: optimalCount, color: 'var(--text-muted)', label: t.optimal },
+                      { count: inProgressCount, color: '#f97316', label: t.inProgress },
+                    ].filter(s => s.count > 0)
+                    const donutR = 48
+                    const donutStroke = 16
+                    const donutC = 2 * Math.PI * (donutR - donutStroke / 2)
+                    let strokeOffset = 0
                     return (
                       <>
-                        {/* Status breakdown bar */}
-                        <div>
-                          <div className="text-sm font-medium mb-2" style={{ color: 'var(--text-muted)' }}>
-                            {t.eventsOrganized} {organizedEvents.length}
+                        {/* Donut chart: event status */}
+                        <div className="flex flex-col sm:flex-row items-center gap-4">
+                          <div className="relative flex-shrink-0">
+                            <svg width={donutR * 2} height={donutR * 2} className="rotate-[-90deg]">
+                              {statusSegments.map((seg, i) => {
+                                const pct = statusTotal > 0 ? seg.count / statusTotal : 0
+                                const dash = pct * donutC
+                                const offset = strokeOffset
+                                strokeOffset += dash
+                                return (
+                                  <motion.circle
+                                    key={i}
+                                    cx={donutR}
+                                    cy={donutR}
+                                    r={donutR - donutStroke / 2}
+                                    fill="none"
+                                    stroke={seg.color}
+                                    strokeWidth={donutStroke}
+                                    strokeDasharray={`${dash} ${donutC - dash}`}
+                                    strokeDashoffset={-offset}
+                                    strokeLinecap="round"
+                                    initial={{ strokeDasharray: `0 ${donutC}` }}
+                                    animate={{ strokeDasharray: `${dash} ${donutC - dash}` }}
+                                    transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                                  />
+                                )
+                              })}
+                              <circle cx={donutR} cy={donutR} r={donutR - donutStroke} fill="none" stroke="transparent" strokeWidth={donutStroke} />
+                            </svg>
+                            <div className="absolute inset-0 flex flex-col items-center justify-center">
+                              <span className="text-lg font-bold" style={{ color: 'var(--text-primary)' }}>{organizedEvents.length}</span>
+                              <span className="text-xs" style={{ color: 'var(--text-muted)' }}>{t.eventsOrganized}</span>
+                            </div>
                           </div>
-                          <div className="h-8 rounded-lg overflow-hidden flex" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
-                            {fixedCount > 0 && (
-                              <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: `${statusTotal > 0 ? (fixedCount / statusTotal) * 100 : 0}%` }}
-                                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                                className="h-full"
-                                style={{ backgroundColor: '#10b981' }}
-                              />
-                            )}
-                            {optimalCount > 0 && (
-                              <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: `${statusTotal > 0 ? (optimalCount / statusTotal) * 100 : 0}%` }}
-                                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
-                                className="h-full"
-                                style={{ backgroundColor: 'var(--text-muted)' }}
-                              />
-                            )}
-                            {inProgressCount > 0 && (
-                              <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: `${statusTotal > 0 ? (inProgressCount / statusTotal) * 100 : 0}%` }}
-                                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-                                className="h-full"
-                                style={{ backgroundColor: '#f97316' }}
-                              />
-                            )}
-                          </div>
-                          <div className="flex gap-4 mt-2 text-xs">
-                            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: '#10b981' }}></span>{t.fixed}: {fixedCount}</span>
-                            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: 'var(--text-muted)' }}></span>{t.optimal}: {optimalCount}</span>
-                            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: '#f97316' }}></span>{t.inProgress}: {inProgressCount}</span>
+                          <div className="flex flex-wrap gap-x-4 gap-y-1 flex-1">
+                            {statusSegments.map((seg, i) => (
+                              <span key={i} className="flex items-center gap-1.5 text-xs">
+                                <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: seg.color }} />
+                                {seg.label}: {seg.count}
+                              </span>
+                            ))}
                           </div>
                         </div>
 
-                        {/* Attendees per event bar chart */}
+                        {/* Radial rings: voting & payment */}
+                        <div className="flex gap-6 justify-center">
+                          <div className="flex flex-col items-center">
+                            <div className="relative">
+                              <svg width={72} height={72} className="rotate-[-90deg]">
+                                <circle cx={36} cy={36} r={28} fill="none" stroke="var(--bg-tertiary)" strokeWidth={8} />
+                                <motion.circle
+                                  cx={36}
+                                  cy={36}
+                                  r={28}
+                                  fill="none"
+                                  stroke="#a855f7"
+                                  strokeWidth={8}
+                                  strokeLinecap="round"
+                                  strokeDasharray={2 * Math.PI * 28}
+                                  initial={{ strokeDashoffset: 2 * Math.PI * 28 }}
+                                  animate={{ strokeDashoffset: 2 * Math.PI * 28 * (1 - (organizedEvents.length > 0 ? withVoting / organizedEvents.length : 0)) }}
+                                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                                />
+                              </svg>
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <ChatBubbleLeftRightIcon className="w-6 h-6 text-purple-400" />
+                              </div>
+                            </div>
+                            <span className="text-xs mt-2 font-medium" style={{ color: 'var(--text-muted)' }}>{t.withVoting}</span>
+                            <span className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>{withVoting}/{organizedEvents.length || 1}</span>
+                          </div>
+                          <div className="flex flex-col items-center">
+                            <div className="relative">
+                              <svg width={72} height={72} className="rotate-[-90deg]">
+                                <circle cx={36} cy={36} r={28} fill="none" stroke="var(--bg-tertiary)" strokeWidth={8} />
+                                <motion.circle
+                                  cx={36}
+                                  cy={36}
+                                  r={28}
+                                  fill="none"
+                                  stroke="#10b981"
+                                  strokeWidth={8}
+                                  strokeLinecap="round"
+                                  strokeDasharray={2 * Math.PI * 28}
+                                  initial={{ strokeDashoffset: 2 * Math.PI * 28 }}
+                                  animate={{ strokeDashoffset: 2 * Math.PI * 28 * (1 - (organizedEvents.length > 0 ? withPayment / organizedEvents.length : 0)) }}
+                                  transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                                />
+                              </svg>
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <CreditCardIcon className="w-6 h-6 text-emerald-400" />
+                              </div>
+                            </div>
+                            <span className="text-xs mt-2 font-medium" style={{ color: 'var(--text-muted)' }}>{t.withPayment}</span>
+                            <span className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>{withPayment}/{organizedEvents.length || 1}</span>
+                          </div>
+                        </div>
+
+                        {/* Attendees: rose/radial segments */}
                         {organizedEvents.length > 0 && (
                           <div>
                             <div className="text-sm font-medium mb-3" style={{ color: 'var(--text-muted)' }}>
                               {t.totalAttendees}: {totalAttendees} · {t.avgAttendees}: {avgAttendees}
                             </div>
-                            <div className="space-y-2">
-                              {organizedEvents.slice(0, 6).map((e, i) => (
-                                <div key={e.id} className="flex items-center gap-3">
-                                  <span className="text-xs truncate flex-1 min-w-0" style={{ color: 'var(--text-primary)' }} title={e.title}>
-                                    {e.title}
-                                  </span>
-                                  <div className="flex-1 h-5 rounded overflow-hidden min-w-[60px]" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
-                                    <motion.div
-                                      initial={{ width: 0 }}
-                                      animate={{ width: `${maxAttendees > 0 ? ((e.attendees || 0) / maxAttendees) * 100 : 0}%` }}
-                                      transition={{ duration: 0.4, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
-                                      className="h-full rounded"
-                                      style={{ backgroundColor: 'var(--accent-primary)' }}
-                                    />
-                                  </div>
-                                  <span className="text-xs font-medium w-8 text-right" style={{ color: 'var(--text-muted)' }}>{e.attendees || 0}</span>
-                                </div>
-                              ))}
+                            <div className="flex flex-wrap justify-center gap-3">
+                              {organizedEvents.slice(0, 6).map((e, i) => {
+                                const pct = maxAttendees > 0 ? (e.attendees || 0) / maxAttendees : 0
+                                const size = 56 + Math.max(0, pct * 24)
+                                return (
+                                  <motion.div
+                                    key={e.id}
+                                    initial={{ scale: 0, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    transition={{ duration: 0.35, delay: i * 0.06, type: 'spring', stiffness: 200, damping: 20 }}
+                                    className="flex flex-col items-center"
+                                  >
+                                    <div
+                                      className="rounded-full flex items-center justify-center font-bold text-sm"
+                                      style={{
+                                        width: size,
+                                        height: size,
+                                        backgroundColor: 'var(--bg-tertiary)',
+                                        border: `3px solid var(--accent-primary)`,
+                                        color: 'var(--text-primary)',
+                                        boxShadow: `0 0 0 ${pct * 6}px rgba(var(--accent-rgb, 59, 130, 246), 0.15)`,
+                                      }}
+                                    >
+                                      {e.attendees || 0}
+                                    </div>
+                                    <span className="text-xs mt-1.5 max-w-[70px] truncate text-center" style={{ color: 'var(--text-muted)' }} title={e.title}>
+                                      {e.title}
+                                    </span>
+                                  </motion.div>
+                                )
+                              })}
                             </div>
                           </div>
                         )}
 
-                        {/* Voting & Payment pie-style breakdown */}
-                        <div className="flex gap-4">
-                          <div className="flex-1 rounded-xl p-4" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
-                            <div className="flex items-center gap-2 mb-2">
-                              <ChatBubbleLeftRightIcon className="w-4 h-4 text-purple-400" />
-                              <span className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.withVoting}</span>
-                            </div>
-                            <div className="relative h-12 rounded-lg overflow-hidden" style={{ backgroundColor: 'var(--bg-secondary)' }}>
-                              <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: `${organizedEvents.length > 0 ? (withVoting / organizedEvents.length) * 100 : 0}%` }}
-                                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                                className="absolute inset-y-0 left-0 rounded-lg"
-                                style={{ backgroundColor: 'rgba(147, 51, 234, 0.4)' }}
-                              />
-                              <span className="absolute inset-0 flex items-center justify-center text-sm font-bold" style={{ color: 'var(--text-primary)' }}>
-                                {withVoting}/{organizedEvents.length}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="flex-1 rounded-xl p-4" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
-                            <div className="flex items-center gap-2 mb-2">
-                              <CreditCardIcon className="w-4 h-4 text-emerald-400" />
-                              <span className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.withPayment}</span>
-                            </div>
-                            <div className="relative h-12 rounded-lg overflow-hidden" style={{ backgroundColor: 'var(--bg-secondary)' }}>
-                              <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: `${organizedEvents.length > 0 ? (withPayment / organizedEvents.length) * 100 : 0}%` }}
-                                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                                className="absolute inset-y-0 left-0 rounded-lg"
-                                style={{ backgroundColor: 'rgba(16, 185, 129, 0.4)' }}
-                              />
-                              <span className="absolute inset-0 flex items-center justify-center text-sm font-bold" style={{ color: 'var(--text-primary)' }}>
-                                {withPayment}/{organizedEvents.length}
-                              </span>
-                            </div>
+                        {/* Score breakdown mini visualization */}
+                        <div className="rounded-xl p-4" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                          <div className="text-xs font-medium mb-2" style={{ color: 'var(--text-muted)' }}>{t.organizerScore} breakdown</div>
+                          <div className="flex gap-2 flex-wrap">
+                            <span className="px-2 py-1 rounded-lg text-xs" style={{ backgroundColor: 'var(--accent-light)', color: 'var(--accent-primary)' }}>Events: +{scoreBreakdown.events}</span>
+                            <span className="px-2 py-1 rounded-lg text-xs" style={{ backgroundColor: 'rgba(16,185,129,0.2)', color: '#10b981' }}>Attendees: +{scoreBreakdown.attendees}</span>
+                            <span className="px-2 py-1 rounded-lg text-xs" style={{ backgroundColor: 'rgba(249,115,22,0.2)', color: '#f97316' }}>Status: +{scoreBreakdown.status}</span>
+                            <span className="px-2 py-1 rounded-lg text-xs" style={{ backgroundColor: 'rgba(147,51,234,0.2)', color: '#a855f7' }}>Features: +{scoreBreakdown.features}</span>
                           </div>
                         </div>
                       </>
