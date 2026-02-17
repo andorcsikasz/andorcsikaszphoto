@@ -5,7 +5,6 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback, type CSSProperties } from 'react'
-import { useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { AIChatBox, type Message as AIChatMessage } from '@/components/AIChatBox'
 import {
@@ -878,7 +877,6 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
 }
 
 export default function Home() {
-  const searchParams = useSearchParams()
   const [showSplash, setShowSplash] = useState(true)
   const [showLanding, setShowLanding] = useState(false)
   const [showOnboarding, setShowOnboarding] = useState(false)
@@ -1478,11 +1476,12 @@ export default function Home() {
     if (activeTab !== 'calendar') setShowIntegrateMenu(false)
   }, [activeTab])
 
-  // Open tab from URL (?tab=ai)
+  // Open tab from URL (?tab=ai) - client-side only
   useEffect(() => {
-    const tab = searchParams.get('tab')
-    if (tab === 'ai') setActiveTab('ai')
-  }, [searchParams])
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('tab') === 'ai') setActiveTab('ai')
+  }, [])
 
   // Events view always starts at top when opened
   useEffect(() => {
