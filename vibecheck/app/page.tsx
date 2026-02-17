@@ -5328,67 +5328,6 @@ export default function Home() {
           </motion.div>
         )}
 
-          {/* AI Chat View - integrated into main app */}
-          {activeTab === 'ai' && (
-            <motion.div
-              key="ai"
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
-              className="flex flex-col min-h-0 flex-1"
-            >
-              <div className="flex-shrink-0 mb-3">
-                <h2 className="text-2xl font-extrabold mb-1" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>
-                  {t.ai}
-                </h2>
-                <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
-                  {lang === 'en' ? 'Event planning assistant' : 'Eseményszervező asszisztens'}
-                </p>
-              </div>
-              <div className="flex-1 min-h-[400px]">
-                <AIChatBox
-                  messages={aiChatMessages}
-                  onSendMessage={async (content) => {
-                    const userMsg: AIChatMessage = { role: 'user', content }
-                    setAiChatMessages((prev) => [...prev, userMsg])
-                    setAiChatLoading(true)
-                    try {
-                      const res = await fetch('/api/ai/chat', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ messages: [...aiChatMessages, userMsg] }),
-                      })
-                      const data = await res.json()
-                      if (!res.ok) {
-                        setAiChatMessages((prev) => [
-                          ...prev,
-                          { role: 'assistant', content: `Error: ${data.error || (lang === 'en' ? 'Failed to get response' : 'Sikertelen válasz')}` },
-                        ])
-                        return
-                      }
-                      setAiChatMessages((prev) => [...prev, { role: 'assistant', content: data.content }])
-                    } catch {
-                      setAiChatMessages((prev) => [
-                        ...prev,
-                        { role: 'assistant', content: lang === 'en' ? 'Failed to connect. Check OPENAI_API_KEY in .env' : 'Kapcsolódás sikertelen. Ellenőrizd az OPENAI_API_KEY-et.' },
-                      ])
-                    } finally {
-                      setAiChatLoading(false)
-                    }
-                  }}
-                  isLoading={aiChatLoading}
-                  height="calc(100vh - 320px)"
-                  emptyStateMessage={lang === 'en' ? 'Ask about event planning, venues, or ideas!' : 'Kérdezz eseményszervezésről, helyszínről vagy ötletekről!'}
-                  suggestedPrompts={
-                    lang === 'en'
-                      ? ['Suggest ideas for a summer BBQ', 'What should I consider when planning a wedding?', 'Help me pick a date for a team offsite']
-                      : ['Javasolj ötleteket egy nyári BBQ-hoz', 'Mire figyeljek egy esküvő szervezésekor?', 'Segíts választani dátumot egy csapatszervezéshez']
-                  }
-                />
-              </div>
-            </motion.div>
-          )}
       </AnimatePresence>
 
       {/* Event suggestion / inspiration modal — categories → onboarding → create */}
