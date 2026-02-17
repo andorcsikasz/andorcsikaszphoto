@@ -1933,28 +1933,6 @@ export default function Home() {
     }
   }
 
-  const getStatusColor = (status: EventStatus) => {
-    switch (status) {
-      case 'fixed':
-        return 'bg-emerald-500'
-      case 'optimal':
-        return 'bg-gray-500'
-      case 'in-progress':
-        return 'bg-orange-500'
-    }
-  }
-
-  const getStatusBorderColor = (status: EventStatus) => {
-    switch (status) {
-      case 'fixed':
-        return 'border-emerald-500/50 hover:border-emerald-400'
-      case 'optimal':
-        return 'border-gray-500/50 hover:border-gray-400'
-      case 'in-progress':
-        return 'border-orange-500/50 hover:border-orange-400'
-    }
-  }
-
   const getStatusLabel = (status: EventStatus) => {
     switch (status) {
       case 'fixed':
