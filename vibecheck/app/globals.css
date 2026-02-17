@@ -337,6 +337,14 @@ small, .text-small {
     text-wrap: balance;
   }
   
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
   /* Hide scrollbars - content still scrollable */
   ::-webkit-scrollbar {
     width: 0;

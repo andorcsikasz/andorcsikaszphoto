@@ -565,10 +565,10 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
       style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}
     >
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 border-b backdrop-blur-xl"
+      <nav className="fixed top-0 left-0 right-0 z-50 w-full px-4 sm:px-6 lg:px-8 py-3 sm:py-4 border-b backdrop-blur-xl"
         style={{ backgroundColor: 'var(--bg-nav)', borderColor: 'var(--border-primary)' }}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="text-2xl font-extrabold tracking-tighter" style={{ color: 'var(--accent-primary)', fontFamily: 'var(--font-logo)' }}>
+          <div className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tighter flex-shrink-0" style={{ color: 'var(--accent-primary)', fontFamily: 'var(--font-logo)' }}>
             GatherGo
           </div>
           <div className="flex items-center gap-4">
@@ -598,7 +598,7 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6">
+      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -3017,16 +3017,16 @@ export default function Home() {
       >
       {/* Navigation */}
       <nav 
-        className="border-b backdrop-blur-xl sticky top-0 z-40 flex-shrink-0"
+        className="border-b backdrop-blur-xl sticky top-0 z-40 flex-shrink-0 w-full"
         style={{ backgroundColor: 'var(--bg-nav)', borderColor: 'var(--border-primary)' }}
       >
-        <div className="max-w-7xl mx-auto pl-6 pr-6 sm:pl-8 sm:pr-8 lg:pl-12 lg:pr-12 py-4 sm:py-5">
-          <div className="flex items-center justify-between gap-4 sm:gap-6">
-            {/* 1. Brand: Logo - aligned with main content left edge */}
-            <div className="flex items-baseline min-w-0 flex-shrink-0 pr-4 sm:pr-6">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+          <div className="flex items-center justify-between gap-2 sm:gap-4 min-w-0">
+            {/* 1. Brand: Logo - top-left in every frame */}
+            <div className="flex items-center flex-shrink-0 pr-2 sm:pr-4">
               <button
                 onClick={handleLogoClick}
-                className="text-3xl sm:text-4xl font-extrabold tracking-tighter cursor-pointer hover:opacity-80 transition-opacity select-none"
+                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tighter cursor-pointer hover:opacity-80 transition-opacity select-none whitespace-nowrap"
                 style={{ fontFamily: 'var(--font-logo)', color: 'var(--text-primary)', background: 'none', border: 'none', padding: 0 }}
               >
                 GatherGo
@@ -3067,7 +3067,7 @@ export default function Home() {
             {/* 2. Primary Nav: Calendar, Events, Dashboard */}
             <div
               ref={tabBarRef}
-              className="relative flex items-center gap-1 rounded-xl p-0.5 flex-shrink-0 px-2.5 sm:px-3 py-1.5"
+              className="relative flex items-center gap-0.5 sm:gap-1 rounded-lg sm:rounded-xl p-0.5 flex-shrink min-w-0 overflow-x-auto overflow-y-hidden scrollbar-hide px-2 sm:px-3 py-1.5"
               style={{ backgroundColor: 'var(--bg-secondary)', border: '0.5px solid var(--border-primary)' }}
             >
               {/* Sliding indicator - single element, animates position */}
@@ -3092,7 +3092,7 @@ export default function Home() {
                   key={tab}
                   ref={(el) => { tabRefsMap.current[tab] = el }}
                   onClick={() => setActiveTab(tab)}
-                  className="relative px-5 py-2 text-sm font-medium rounded-lg flex items-center gap-2 z-10 transition-colors duration-200"
+                  className="relative px-3 sm:px-4 md:px-5 py-2 text-xs sm:text-sm font-medium rounded-lg flex items-center gap-1.5 sm:gap-2 z-10 transition-colors duration-200 flex-shrink-0"
                   style={activeTab === tab && tabIndicator.width === 0 ? { backgroundColor: 'var(--accent-primary)', borderRadius: '0.5rem' } : undefined}
                 >
                   <span
@@ -3110,12 +3110,12 @@ export default function Home() {
             </div>
 
             {/* 3. Settings: Lang + Theme */}
-            <div className="flex items-center gap-2 pl-4 sm:pl-6">
+            <div className="flex items-center gap-1.5 sm:gap-2 pl-2 sm:pl-4 flex-shrink-0">
               <div className="relative hover:opacity-90 transition-opacity">
                 <select
                   value={lang}
                   onChange={(e) => setLang(e.target.value as Language)}
-                  className="h-10 pl-3 pr-8 rounded-xl border text-sm font-medium cursor-pointer appearance-none transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] focus:ring-offset-1"
+                  className="h-9 sm:h-10 pl-2 sm:pl-3 pr-7 sm:pr-8 rounded-lg sm:rounded-xl border text-xs sm:text-sm font-medium cursor-pointer appearance-none transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] focus:ring-offset-1"
                   style={{ 
                     borderColor: 'var(--border-primary)', 
                     backgroundColor: 'var(--bg-card)',
@@ -3130,7 +3130,7 @@ export default function Home() {
 
               <button
                 onClick={toggleTheme}
-                className="h-10 px-3 rounded-xl border flex items-center gap-2 transition-colors hover:bg-[var(--bg-hover)]"
+                className="h-9 sm:h-10 p-2 sm:px-3 rounded-lg sm:rounded-xl border flex items-center gap-2 transition-colors hover:bg-[var(--bg-hover)]"
                 style={{ 
                   borderColor: 'var(--border-primary)', 
                   backgroundColor: 'var(--bg-card)',
@@ -3144,16 +3144,16 @@ export default function Home() {
             </div>
 
             {/* 4. User: Connections + Profile */}
-            <div className="flex items-center gap-2 pl-4 sm:pl-6">
+            <div className="flex items-center gap-1.5 sm:gap-2 pl-2 sm:pl-4 flex-shrink-0">
               {userProfile ? (
               <>
                 <button
                   onClick={() => setShowConnectionsModal(true)}
-                  className="h-10 flex items-center gap-2 px-3 rounded-xl border transition-colors hover:bg-[var(--bg-hover)]"
+                  className="h-9 sm:h-10 flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 rounded-lg sm:rounded-xl border transition-colors hover:bg-[var(--bg-hover)]"
                   style={{ borderColor: 'var(--border-primary)', backgroundColor: 'var(--bg-card)', color: 'var(--text-primary)' }}
                   title={lang === 'en' ? 'Friends & Family' : 'Barátok és család'}
                 >
-                  <UserGroupIcon className="w-4 h-4" style={{ color: 'var(--accent-primary)' }} />
+                  <UserGroupIcon className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--accent-primary)' }} />
                   <span className="text-sm font-medium hidden sm:inline">
                     {lang === 'en' ? 'Connections' : 'Kapcsolatok'}
                   </span>
@@ -3163,16 +3163,16 @@ export default function Home() {
                     setTempProfile({ ...userProfile, groups: userProfile.groups || [] })
                     setShowProfileModal(true)
                   }}
-                  className="h-10 flex items-center gap-2 px-3 rounded-xl border transition-colors hover:bg-[var(--bg-hover)]"
+                  className="h-9 sm:h-10 flex items-center gap-2 px-2 sm:px-3 rounded-lg sm:rounded-xl border transition-colors hover:bg-[var(--bg-hover)]"
                   style={{ borderColor: 'var(--border-primary)', backgroundColor: 'var(--bg-card)', color: 'var(--text-primary)' }}
                 >
                   <div 
-                    className="w-7 h-7 rounded-full overflow-hidden flex-shrink-0 p-1 flex items-center justify-center"
+                    className="w-6 h-6 sm:w-7 sm:h-7 rounded-full overflow-hidden flex-shrink-0 p-0.5 sm:p-1 flex items-center justify-center"
                     style={{ backgroundColor: 'var(--bg-tertiary)' }}
                   >
-                    <span className="text-lg leading-none">{AVATARS[(userProfile.avatarIndex ?? 0) % AVATARS.length]}</span>
+                    <span className="text-base sm:text-lg leading-none">{AVATARS[(userProfile.avatarIndex ?? 0) % AVATARS.length]}</span>
                   </div>
-                  <span className="text-sm font-medium">{userProfile.name.split(' ')[0]}</span>
+                  <span className="text-xs sm:text-sm font-medium truncate max-w-[4rem] sm:max-w-none">{userProfile.name.split(' ')[0]}</span>
                 </button>
               </>
               ) : (
@@ -3194,7 +3194,7 @@ export default function Home() {
       </nav>
 
       {/* Main Content */}
-      <main className={`max-w-7xl mx-auto pl-6 pr-6 sm:pl-8 sm:pr-8 lg:pl-12 lg:pr-12 flex-1 min-h-0 min-w-0 w-full max-w-[100vw] flex flex-col py-6 overflow-x-hidden ${
+      <main className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 min-h-0 min-w-0 w-full max-w-[100vw] flex flex-col py-6 overflow-x-hidden ${
         (activeTab === 'calendar' || activeTab === 'ai') ? 'overflow-hidden' : ''
       }`}>
         <div className="flex-1 min-h-0 flex flex-col">
