@@ -896,6 +896,7 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<'calendar' | 'events' | 'dashboard' | 'newEvent'>('calendar')
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const [showParticipantsModal, setShowParticipantsModal] = useState(false)
+  const [rsvpConfirmPending, setRsvpConfirmPending] = useState<{ eventId: number | string; status: 'confirmed' | 'pending' | 'declined' } | null>(null)
   const [showOrganizerStatsModal, setShowOrganizerStatsModal] = useState(false)
   const [showOrganizerLevelBreakdown, setShowOrganizerLevelBreakdown] = useState(false)
   const [selectedOrganizer, setSelectedOrganizer] = useState<{ id: string; name: string } | null>(null)
@@ -1890,7 +1891,13 @@ export default function Home() {
     const event = events.find(e => e.id === eventId || String(e.id) === String(eventId))
     const currentStatus = event ? getMyRsvp(event) : undefined
     if (currentStatus === status) return
-    handleRsvp(eventId, status)
+    setRsvpConfirmPending({ eventId, status })
+  }
+
+  const confirmRsvpChange = () => {
+    if (!rsvpConfirmPending) return
+    handleRsvp(rsvpConfirmPending.eventId, rsvpConfirmPending.status)
+    setRsvpConfirmPending(null)
   }
 
   const applyRsvpToEvent = (event: Event, status: 'confirmed' | 'pending' | 'declined'): Event => {
@@ -4258,7 +4265,15 @@ export default function Home() {
                             </p>
                           </div>
                         ) : (
-                          (showAllInvitedEvents ? filteredInvitedEvents : filteredInvitedEvents.slice(0, 4)).map((event) => {
+                          (() => {
+                            const sorted = [...filteredInvitedEvents].sort((a, b) => {
+                              const aDeclined = getMyRsvp(a) === 'declined'
+                              const bDeclined = getMyRsvp(b) === 'declined'
+                              if (aDeclined && !bDeclined) return 1
+                              if (!aDeclined && bDeclined) return -1
+                              return 0
+                            })
+                            return (showAllInvitedEvents ? sorted : sorted.slice(0, 4)).map((event) => {
                             const myRsvp = getMyRsvp(event)
                             const cantAttend = myRsvp === 'declined'
                             return (
@@ -4307,6 +4322,7 @@ export default function Home() {
                               </div>
                             )
                           })
+                          })()
                         )}
                       </div>
                     </div>
@@ -4352,6 +4368,51 @@ export default function Home() {
         </AnimatePresence>
         </div>
       </main>
+
+      {/* RSVP Confirmation Modal */}
+      <AnimatePresence>
+        {rsvpConfirmPending && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 z-[60] flex items-center justify-center p-4"
+            onClick={() => setRsvpConfirmPending(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              onClick={(e) => e.stopPropagation()}
+              className="rounded-2xl border p-6 w-full max-w-sm"
+              style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
+            >
+              <h3 className="text-lg font-bold mb-2" style={{ color: 'var(--text-primary)' }}>{t.rsvpConfirmTitle}</h3>
+              <p className="text-sm mb-4" style={{ color: 'var(--text-muted)' }}>
+                {t.rsvpConfirmMessage} <strong style={{ color: 'var(--text-primary)' }}>
+                  {rsvpConfirmPending.status === 'confirmed' ? t.rsvpGoing : rsvpConfirmPending.status === 'pending' ? t.rsvpThinking : t.rsvpNotGoing}
+                </strong>?
+              </p>
+              <div className="flex gap-3 justify-end">
+                <button
+                  onClick={() => setRsvpConfirmPending(null)}
+                  className="px-4 py-2 rounded-xl text-sm font-medium transition-colors"
+                  style={{ backgroundColor: 'var(--bg-tertiary)', color: 'var(--text-primary)' }}
+                >
+                  {lang === 'en' ? 'Cancel' : 'Mégse'}
+                </button>
+                <button
+                  onClick={confirmRsvpChange}
+                  className="px-4 py-2 rounded-xl text-sm font-medium text-white transition-colors"
+                  style={{ background: 'var(--btn-primary-bg)' }}
+                >
+                  {t.rsvpConfirm}
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Event Detail Modal */}
       <AnimatePresence>
