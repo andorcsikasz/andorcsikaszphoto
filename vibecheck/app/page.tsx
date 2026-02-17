@@ -5,13 +5,13 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback, type CSSProperties } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { AIChatBox, type Message as AIChatMessage } from '@/components/AIChatBox'
 import {
   CalendarIcon,
   ChartBarIcon,
   Squares2X2Icon,
-  SparklesIcon as AISparklesIcon,
   ArrowsRightLeftIcon,
   PlusIcon,
   XMarkIcon,
@@ -878,6 +878,7 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
 }
 
 export default function Home() {
+  const searchParams = useSearchParams()
   const [showSplash, setShowSplash] = useState(true)
   const [showLanding, setShowLanding] = useState(false)
   const [showOnboarding, setShowOnboarding] = useState(false)
@@ -959,6 +960,12 @@ export default function Home() {
   const [linkCopiedFeedback, setLinkCopiedFeedback] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const locationSuggestDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // AI Chat (integrated into main app)
+  const [aiChatMessages, setAiChatMessages] = useState<AIChatMessage[]>([
+    { role: 'system', content: lang === 'en' ? 'You are a helpful assistant for event planning. Keep responses concise and friendly.' : 'Te egy barátkoző asszisztens vagy eseményszervezéshez. Röviden és barátságosan válaszolj.' },
+  ])
+  const [aiChatLoading, setAiChatLoading] = useState(false)
 
   const t = translations[lang]
 
@@ -1470,6 +1477,12 @@ export default function Home() {
   useEffect(() => {
     if (activeTab !== 'calendar') setShowIntegrateMenu(false)
   }, [activeTab])
+
+  // Open tab from URL (?tab=ai)
+  useEffect(() => {
+    const tab = searchParams.get('tab')
+    if (tab === 'ai') setActiveTab('ai')
+  }, [searchParams])
 
   // Events view always starts at top when opened
   useEffect(() => {
@@ -2937,7 +2950,7 @@ export default function Home() {
         initial={{ opacity: 0 }}
         animate={{ opacity: showSplash ? 0 : 1 }}
         transition={{ duration: 0.5 }}
-        className={`min-h-screen flex flex-col w-full max-w-[100vw] overflow-x-hidden ${activeTab === 'calendar' ? 'h-screen overflow-hidden' : ''}`}
+        className={`min-h-screen flex flex-col w-full max-w-[100vw] overflow-x-hidden ${(activeTab === 'calendar' || activeTab === 'ai') ? 'h-screen overflow-hidden' : ''}`}
         style={{ backgroundColor: 'var(--bg-primary)', color: 'var(--text-primary)' }}
       >
       {/* Navigation */}
@@ -3012,7 +3025,7 @@ export default function Home() {
                   }}
                 />
               )}
-              {(['calendar', 'events', 'dashboard'] as const).map((tab) => (
+              {(['calendar', 'events', 'dashboard', 'ai'] as const).map((tab) => (
                 <button
                   key={tab}
                   ref={(el) => { tabRefsMap.current[tab] = el }}
@@ -3026,6 +3039,7 @@ export default function Home() {
                     {tab === 'calendar' && <CalendarIcon className="w-4 h-4" />}
                     {tab === 'events' && <Squares2X2Icon className="w-4 h-4" />}
                     {tab === 'dashboard' && <ChartBarIcon className="w-4 h-4" />}
+                    {tab === 'ai' && <SparklesIcon className="w-4 h-4" />}
                     {t[tab]}
                   </span>
                 </button>
@@ -3118,7 +3132,7 @@ export default function Home() {
 
       {/* Main Content */}
       <main className={`max-w-7xl mx-auto pl-6 pr-6 sm:pl-8 sm:pr-8 lg:pl-12 lg:pr-12 flex-1 min-h-0 min-w-0 w-full max-w-[100vw] flex flex-col py-6 overflow-x-hidden ${
-        activeTab === 'calendar' ? 'overflow-hidden' : ''
+        (activeTab === 'calendar' || activeTab === 'ai') ? 'overflow-hidden' : ''
       }`}>
         <div className="flex-1 min-h-0 flex flex-col">
         <AnimatePresence mode="wait" initial={false}>
@@ -5238,6 +5252,68 @@ export default function Home() {
             </motion.div>
           </motion.div>
         )}
+
+          {/* AI Chat View - integrated into main app */}
+          {activeTab === 'ai' && (
+            <motion.div
+              key="ai"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
+              className="flex flex-col min-h-0 flex-1"
+            >
+              <div className="flex-shrink-0 mb-3">
+                <h2 className="text-2xl font-extrabold mb-1" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>
+                  {t.ai}
+                </h2>
+                <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
+                  {lang === 'en' ? 'Event planning assistant' : 'Eseményszervező asszisztens'}
+                </p>
+              </div>
+              <div className="flex-1 min-h-[400px]">
+                <AIChatBox
+                  messages={aiChatMessages}
+                  onSendMessage={async (content) => {
+                    const userMsg: AIChatMessage = { role: 'user', content }
+                    setAiChatMessages((prev) => [...prev, userMsg])
+                    setAiChatLoading(true)
+                    try {
+                      const res = await fetch('/api/ai/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ messages: [...aiChatMessages, userMsg] }),
+                      })
+                      const data = await res.json()
+                      if (!res.ok) {
+                        setAiChatMessages((prev) => [
+                          ...prev,
+                          { role: 'assistant', content: `Error: ${data.error || (lang === 'en' ? 'Failed to get response' : 'Sikertelen válasz')}` },
+                        ])
+                        return
+                      }
+                      setAiChatMessages((prev) => [...prev, { role: 'assistant', content: data.content }])
+                    } catch {
+                      setAiChatMessages((prev) => [
+                        ...prev,
+                        { role: 'assistant', content: lang === 'en' ? 'Failed to connect. Check OPENAI_API_KEY in .env' : 'Kapcsolódás sikertelen. Ellenőrizd az OPENAI_API_KEY-et.' },
+                      ])
+                    } finally {
+                      setAiChatLoading(false)
+                    }
+                  }}
+                  isLoading={aiChatLoading}
+                  height="calc(100vh - 320px)"
+                  emptyStateMessage={lang === 'en' ? 'Ask about event planning, venues, or ideas!' : 'Kérdezz eseményszervezésről, helyszínről vagy ötletekről!'}
+                  suggestedPrompts={
+                    lang === 'en'
+                      ? ['Suggest ideas for a summer BBQ', 'What should I consider when planning a wedding?', 'Help me pick a date for a team offsite']
+                      : ['Javasolj ötleteket egy nyári BBQ-hoz', 'Mire figyeljek egy esküvő szervezésekor?', 'Segíts választani dátumot egy csapatszervezéshez']
+                  }
+                />
+              </div>
+            </motion.div>
+          )}
       </AnimatePresence>
 
       {/* Event suggestion / inspiration modal */}

@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
 import Dashboard from '@/components/Dashboard'
 import EventWorkspace from '@/components/EventWorkspace'
 import EventCreationWizard from '@/components/EventCreationWizard'
@@ -207,23 +206,12 @@ export default function DemoPage() {
 
   return (
     <>
-      <div className="min-h-screen">
-        <div className="flex justify-end gap-2 p-4" style={{ backgroundColor: 'var(--bg-primary)' }}>
-          <Link
-            href="/demo/ai"
-            className="text-sm hover:opacity-80"
-            style={{ color: 'var(--text-muted)' }}
-          >
-            Try AI Chat →
-          </Link>
-        </div>
-        <Dashboard
-          events={demoEvents}
-          currentUserId={currentUserId}
-          onCreateEvent={handleCreateEvent}
-          onEventClick={handleEventClick}
-        />
-      </div>
+      <Dashboard
+        events={demoEvents}
+        currentUserId={currentUserId}
+        onCreateEvent={handleCreateEvent}
+        onEventClick={handleEventClick}
+      />
       <EventCreationWizard
         isOpen={showWizard}
         onClose={() => setShowWizard(false)}
