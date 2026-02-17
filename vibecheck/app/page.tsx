@@ -883,7 +883,7 @@ export default function Home() {
   const [showProfileModal, setShowProfileModal] = useState(false)
   const [showConnectionsModal, setShowConnectionsModal] = useState(false)
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
-  const [onboardingStep, setOnboardingStep] = useState(1)
+  const [onboardingStep, setOnboardingStep] = useState(0)
   const [tempProfile, setTempProfile] = useState<UserProfile>({ name: '', revolutTag: '', avatarIndex: 0, groups: [] })
   const [showGroupsModal, setShowGroupsModal] = useState(false)
   const [editingGroup, setEditingGroup] = useState<UserGroup | null>(null)
@@ -1742,17 +1742,17 @@ export default function Home() {
   // Complete onboarding
   const completeOnboarding = async () => {
     const synced = await syncProfileToBackend(tempProfile)
-    const final = { ...synced, userId: synced.userId ?? tempProfile.userId }
+    const final = { ...synced, userId: synced.userId ?? tempProfile.userId, preferredLanguage: tempProfile.preferredLanguage ?? lang }
     localStorage.setItem('vibecheck_profile', JSON.stringify(final))
     setUserProfile(final)
     setShowOnboarding(false)
-    setOnboardingStep(1)
+    setOnboardingStep(0)
   }
   
   // Save profile from modal
   const saveProfile = async () => {
     const synced = await syncProfileToBackend(tempProfile)
-    const final = { ...synced, userId: synced.userId ?? tempProfile.userId }
+    const final = { ...synced, userId: synced.userId ?? tempProfile.userId, preferredLanguage: tempProfile.preferredLanguage ?? lang }
     localStorage.setItem('vibecheck_profile', JSON.stringify(final))
     setUserProfile(final)
     setShowProfileModal(false)
@@ -2065,7 +2065,7 @@ export default function Home() {
             >
               {/* Progress indicator */}
               <div className="flex items-center justify-center gap-2 mb-8">
-                {[1, 2, 3].map((step) => (
+                {[0, 1, 2, 3].map((step) => (
                   <div
                     key={step}
                     className={`h-1 rounded-full transition-all duration-300 ${
@@ -2074,9 +2074,49 @@ export default function Home() {
                     }`}
                   />
                 ))}
-            </div>
+              </div>
 
               <AnimatePresence mode="wait">
+                {/* Step 0: Language */}
+                {onboardingStep === 0 && (
+                  <motion.div
+                    key="step0"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    className="text-center"
+                  >
+                    <h2 className="text-3xl font-bold mb-2 text-white">
+                      Select language / Válassz nyelvet
+                    </h2>
+                    <p className="text-white/80 mb-8">
+                      Choose your preferred language
+                    </p>
+                    <div className="flex gap-4 justify-center">
+                      <button
+                        onClick={() => {
+                          setLang('en')
+                          setTempProfile({ ...tempProfile, preferredLanguage: 'en' })
+                          setOnboardingStep(1)
+                        }}
+                        className="px-8 py-4 rounded-xl border-2 border-white/30 hover:border-white hover:bg-white/10 transition-all font-semibold text-white"
+                      >
+                        English
+                      </button>
+                      <button
+                        onClick={() => {
+                          setLang('hu')
+                          setTempProfile({ ...tempProfile, preferredLanguage: 'hu' })
+                          setOnboardingStep(1)
+                        }}
+                        className="px-8 py-4 rounded-xl border-2 border-white/30 hover:border-white hover:bg-white/10 transition-all font-semibold text-white"
+                      >
+                        Magyar
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+
                 {/* Step 1: Name */}
                 {onboardingStep === 1 && (
                   <motion.div
