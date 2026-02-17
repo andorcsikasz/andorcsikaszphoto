@@ -1001,29 +1001,50 @@ export default function Home() {
     setCreateStep(1)
   }
 
-  const openCreateFromSuggestion = (cat: typeof EVENT_SUGGESTION_CATEGORIES[0], ideaValue?: string) => {
+  const startOnboarding = (cat: typeof EVENT_SUGGESTION_CATEGORIES[0]) => {
+    if (!cat.subcategoryQuestions?.length) {
+      finishOnboardingAndCreate(cat)
+      return
+    }
+    setSelectedSuggestionCategory(cat)
+    setSuggestionAnswers({})
+    setOnboardingQuestionIndex(0)
+  }
+
+  const goBackToCategories = () => {
+    setSelectedSuggestionCategory(null)
+    setOnboardingQuestionIndex(0)
+  }
+
+  const finishOnboardingAndCreate = (cat: typeof EVENT_SUGGESTION_CATEGORIES[0]) => {
     const title = lang === 'en' ? cat.labelEn : cat.labelHu
+    const choiceSummary = cat.subcategoryQuestions
+      .filter(q => suggestionAnswers[q.key])
+      .map(q => {
+        const opt = q.options.find(o => o.value === suggestionAnswers[q.key])
+        return opt ? (lang === 'en' ? opt.labelEn : opt.labelHu) : null
+      })
+      .filter(Boolean) as string[]
+    const descriptionHint = choiceSummary.length > 0
+      ? (lang === 'en' ? `\n\nEvent details: ${choiceSummary.join(' · ')}` : `\n\nRészletek: ${choiceSummary.join(' · ')}`)
+      : ''
     setNewEvent(prev => ({
       ...prev,
       title,
+      description: (prev.description || '') + descriptionHint,
       category: cat.eventCategory,
       iconId: cat.iconId,
     }))
-    const initialAnswers: Record<string, string> = {}
-    if (ideaValue) {
-      for (const q of cat.subcategoryQuestions) {
-        const match = q.options.find(o => o.value === ideaValue)
-        if (match) {
-          initialAnswers[q.key] = match.value
-          break
-        }
-      }
-    }
-    setSuggestionAnswers(initialAnswers)
-    setSuggestionPrefill({ categoryId: cat.id, ideaValue })
+    setSuggestionPrefill({ categoryId: cat.id })
+    setSelectedSuggestionCategory(null)
+    setOnboardingQuestionIndex(0)
     setShowEventSuggestionModal(false)
     setShowCreateModal(true)
     setCreateStep(1)
+  }
+
+  const openCreateFromSuggestion = (cat: typeof EVENT_SUGGESTION_CATEGORIES[0]) => {
+    finishOnboardingAndCreate(cat)
   }
 
   const handleLogoClick = (e: React.MouseEvent) => {
@@ -5346,7 +5367,7 @@ export default function Home() {
           )}
       </AnimatePresence>
 
-      {/* Event suggestion / inspiration modal */}
+      {/* Event suggestion / inspiration modal — categories → onboarding → create */}
       <AnimatePresence>
         {showEventSuggestionModal && (
           <motion.div
@@ -5355,7 +5376,7 @@ export default function Home() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
             className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
-            onClick={() => setShowEventSuggestionModal(false)}
+            onClick={() => { setShowEventSuggestionModal(false); setSelectedSuggestionCategory(null) }}
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.96, y: 12 }}
@@ -5373,89 +5394,177 @@ export default function Home() {
                   </div>
                   <div>
                     <h2 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>
-                      {lang === 'en' ? 'Event ideas & inspiration' : 'Esemény ötletek és inspiráció'}
+                      {selectedSuggestionCategory
+                        ? (lang === 'en' ? 'Think it through' : 'Gondold végig')
+                        : (lang === 'en' ? 'Event ideas & inspiration' : 'Esemény ötletek és inspiráció')}
                     </h2>
                     <p className="text-sm mt-0.5" style={{ color: 'var(--text-muted)' }}>
-                      {lang === 'en' ? 'Categories to get you started — schemes coming soon' : 'Kategóriák a kezdéshez — sablonok hamarosan'}
+                      {selectedSuggestionCategory
+                        ? (lang === 'en'
+                          ? `A few choices to shape your ${selectedSuggestionCategory.labelEn.toLowerCase()}`
+                          : `Pár kérdés a ${selectedSuggestionCategory.labelHu.toLowerCase()} elképzeléséhez`)
+                        : (lang === 'en' ? 'Pick a category to get started' : 'Válassz kategóriát a kezdéshez')}
                     </p>
                   </div>
                 </div>
-                <button
-                  onClick={() => setShowEventSuggestionModal(false)}
-                  className="p-2 rounded-lg transition-colors"
-                  style={{ color: 'var(--text-muted)' }}
-                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--bg-hover)' }}
-                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
-                >
-                  <XMarkIcon className="w-5 h-5" />
-                </button>
+                <div className="flex items-center gap-2">
+                  {selectedSuggestionCategory && (
+                    <button
+                      onClick={goBackToCategories}
+                      className="p-2 rounded-lg transition-colors text-sm font-medium"
+                      style={{ color: 'var(--accent-primary)' }}
+                      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-light)' }}
+                      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+                    >
+                      {lang === 'en' ? '← Back' : '← Vissza'}
+                    </button>
+                  )}
+                  <button
+                    onClick={() => { setShowEventSuggestionModal(false); setSelectedSuggestionCategory(null) }}
+                    className="p-2 rounded-lg transition-colors"
+                    style={{ color: 'var(--text-muted)' }}
+                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--bg-hover)' }}
+                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+                  >
+                    <XMarkIcon className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
               <div className="p-6 overflow-y-auto flex-1">
-                <div className="space-y-6">
-                  {EVENT_SUGGESTION_CATEGORIES.map((cat) => (
-                    <div
-                      key={cat.id}
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => openCreateFromSuggestion(cat)}
-                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openCreateFromSuggestion(cat) } }}
-                      className="rounded-xl border p-4 cursor-pointer transition-all hover:border-[var(--accent-primary)] hover:ring-2 hover:ring-[var(--accent-primary)]/20"
-                      style={{ borderColor: 'var(--border-primary)', backgroundColor: 'var(--bg-tertiary)' }}
-                    >
-                      <h3 className="font-bold mb-3 flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
-                        {cat.id === 'birthday' && <CakeIcon className="w-5 h-5 text-pink-400" />}
-                        {cat.id === 'camping' && <FireIcon className="w-5 h-5 text-emerald-500" />}
-                        {cat.id === 'romantic' && <HeartIcon className="w-5 h-5 text-rose-400" />}
-                        {cat.id === 'surprise' && <SparklesIcon className="w-5 h-5 text-purple-400" />}
-                        {cat.id === 'dinner' && <CurrencyDollarIcon className="w-5 h-5 text-amber-500" />}
-                        {cat.id === 'outdoor' && <MapPinIcon className="w-5 h-5 text-emerald-500" />}
-                        {lang === 'en' ? cat.labelEn : cat.labelHu}
-                        <span className="ml-1 text-xs font-normal opacity-70" style={{ color: 'var(--text-muted)' }}>
-                          {lang === 'en' ? '— click to create' : '— kattints a létrehozáshoz'}
-                        </span>
-                      </h3>
-                      <ul className="space-y-1.5">
-                        {cat.ideas.map((idea, i) => (
-                          <li
-                            key={i}
-                            role="button"
-                            tabIndex={0}
-                            onClick={(e) => { e.stopPropagation(); openCreateFromSuggestion(cat, idea.value) }}
-                            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); openCreateFromSuggestion(cat, idea.value) } }}
-                            className="text-sm flex items-center gap-2 py-1.5 px-2 -mx-2 rounded-lg cursor-pointer transition-colors hover:bg-[var(--bg-hover)]"
-                            style={{ color: 'var(--text-secondary)' }}
-                          >
-                            <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: `var(--accent-primary)` }} />
-                            {lang === 'en' ? idea.en : idea.hu}
-                          </li>
-                        ))}
-                      </ul>
+                {!selectedSuggestionCategory ? (
+                  <>
+                    <div className="grid grid-cols-2 gap-4">
+                      {EVENT_SUGGESTION_CATEGORIES.map((cat) => (
+                        <button
+                          key={cat.id}
+                          type="button"
+                          onClick={() => startOnboarding(cat)}
+                          className="rounded-xl border p-6 flex flex-col items-center gap-3 transition-all text-center hover:border-[var(--accent-primary)] hover:ring-2 hover:ring-[var(--accent-primary)]/20 group"
+                          style={{ borderColor: 'var(--border-primary)', backgroundColor: 'var(--bg-tertiary)' }}
+                        >
+                          {cat.id === 'birthday' && <CakeIcon className="w-8 h-8 text-pink-400 group-hover:scale-110 transition-transform" />}
+                          {cat.id === 'camping' && <FireIcon className="w-8 h-8 text-emerald-500 group-hover:scale-110 transition-transform" />}
+                          {cat.id === 'romantic' && <HeartIcon className="w-8 h-8 text-rose-400 group-hover:scale-110 transition-transform" />}
+                          {cat.id === 'surprise' && <SparklesIcon className="w-8 h-8 text-purple-400 group-hover:scale-110 transition-transform" />}
+                          {cat.id === 'dinner' && <CurrencyDollarIcon className="w-8 h-8 text-amber-500 group-hover:scale-110 transition-transform" />}
+                          {cat.id === 'outdoor' && <MapPinIcon className="w-8 h-8 text-emerald-500 group-hover:scale-110 transition-transform" />}
+                          <span className="font-bold" style={{ color: 'var(--text-primary)' }}>
+                            {lang === 'en' ? cat.labelEn : cat.labelHu}
+                          </span>
+                        </button>
+                      ))}
                     </div>
-                  ))}
-                </div>
-                <div className="mt-6 flex gap-3">
-                  <button
-                    onClick={() => { setShowEventSuggestionModal(false); setShowBuildSchemeModal(true) }}
-                    className="flex-1 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors"
-                    style={{ 
-                      borderColor: 'var(--border-primary)', 
-                      backgroundColor: 'var(--bg-tertiary)', 
-                      color: 'var(--text-primary)',
-                      border: '1px solid var(--border-primary)',
-                    }}
-                  >
-                    <DocumentTextIcon className="w-5 h-5" />
-                    {t.buildScheme}
-                  </button>
-                  <button
-                    onClick={() => { setShowEventSuggestionModal(false); setShowCreateModal(true) }}
-                    className="flex-1 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors"
-                    style={{ backgroundColor: 'var(--btn-primary-bg)', color: 'var(--btn-primary-text)' }}
-                  >
-                    <PlusIcon className="w-5 h-5" />
-                    {t.createEvent}
-                  </button>
-                </div>
+                    <div className="mt-6 flex gap-3">
+                      <button
+                        onClick={() => { setShowEventSuggestionModal(false); setShowBuildSchemeModal(true) }}
+                        className="flex-1 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors"
+                        style={{ 
+                          borderColor: 'var(--border-primary)', 
+                          backgroundColor: 'var(--bg-tertiary)', 
+                          color: 'var(--text-primary)',
+                          border: '1px solid var(--border-primary)',
+                        }}
+                      >
+                        <DocumentTextIcon className="w-5 h-5" />
+                        {t.buildScheme}
+                      </button>
+                      <button
+                        onClick={() => { setShowEventSuggestionModal(false); setShowCreateModal(true) }}
+                        className="flex-1 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors"
+                        style={{ backgroundColor: 'var(--btn-primary-bg)', color: 'var(--btn-primary-text)' }}
+                      >
+                        <PlusIcon className="w-5 h-5" />
+                        {lang === 'en' ? 'Skip & create blank' : 'Kihagyás és üres létrehozás'}
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  (() => {
+                    const cat = selectedSuggestionCategory
+                    const questions = cat.subcategoryQuestions
+                    const currentQ = questions[onboardingQuestionIndex]
+                    const isLastQuestion = onboardingQuestionIndex >= questions.length - 1
+                    const canProceed = currentQ ? !!suggestionAnswers[currentQ.key] : true
+
+                    return (
+                      <div className="space-y-6">
+                        <div className="flex items-center gap-2 mb-6">
+                          {questions.map((_, i) => (
+                            <div
+                              key={i}
+                              className="h-1 flex-1 rounded-full transition-colors"
+                              style={{ backgroundColor: i <= onboardingQuestionIndex ? 'var(--accent-primary)' : 'var(--bg-tertiary)' }}
+                            />
+                          ))}
+                        </div>
+
+                        {currentQ && (
+                          <motion.div
+                            key={currentQ.key}
+                            initial={{ opacity: 0, x: 12 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            className="space-y-6"
+                          >
+                            <h3 className="text-lg font-semibold" style={{ color: 'var(--text-primary)' }}>
+                              {lang === 'en' ? currentQ.labelEn : currentQ.labelHu}
+                            </h3>
+                            <div className="flex flex-wrap gap-3">
+                              {currentQ.options.map((opt) => (
+                                <button
+                                  key={opt.value}
+                                  type="button"
+                                  onClick={() => setSuggestionAnswers(prev => ({ ...prev, [currentQ.key]: opt.value }))}
+                                  className={`px-5 py-3 rounded-xl border text-sm font-medium transition-all ${
+                                    suggestionAnswers[currentQ.key] === opt.value
+                                      ? 'border-[var(--accent-primary)] ring-2 ring-[var(--accent-primary)]/30'
+                                      : 'border-[var(--border-primary)] hover:border-[var(--accent-primary)]/50'
+                                  }`}
+                                  style={{
+                                    color: suggestionAnswers[currentQ.key] === opt.value ? 'var(--accent-primary)' : 'var(--text-secondary)',
+                                    backgroundColor: suggestionAnswers[currentQ.key] === opt.value ? 'var(--accent-light)' : 'var(--bg-tertiary)',
+                                  }}
+                                >
+                                  {lang === 'en' ? opt.labelEn : opt.labelHu}
+                                </button>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+
+                        <div className="flex gap-3 pt-4">
+                          <button
+                            onClick={() => setOnboardingQuestionIndex(i => Math.max(0, i - 1))}
+                            disabled={onboardingQuestionIndex === 0}
+                            className="flex-1 py-3 rounded-xl font-semibold transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                            style={{ borderColor: 'var(--border-primary)', border: '1px solid', backgroundColor: 'var(--bg-tertiary)', color: 'var(--text-primary)' }}
+                          >
+                            {lang === 'en' ? '← Previous' : '← Előző'}
+                          </button>
+                          {isLastQuestion ? (
+                            <button
+                              onClick={() => finishOnboardingAndCreate(cat)}
+                              disabled={!canProceed}
+                              className="flex-1 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                              style={{ backgroundColor: 'var(--btn-primary-bg)', color: 'var(--btn-primary-text)' }}
+                            >
+                              <PlusIcon className="w-5 h-5" />
+                              {lang === 'en' ? 'Create event' : 'Esemény létrehozása'}
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => setOnboardingQuestionIndex(i => i + 1)}
+                              disabled={!canProceed}
+                              className="flex-1 py-3 rounded-xl font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                              style={{ backgroundColor: 'var(--btn-primary-bg)', color: 'var(--btn-primary-text)' }}
+                            >
+                              {lang === 'en' ? 'Next →' : 'Következő →'}
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    )
+                  })()
+                )}
               </div>
             </motion.div>
           </motion.div>
@@ -5606,43 +5715,25 @@ export default function Home() {
                         </p>
                       </div>
 
-                      {/* Subcategory questions when opened from inspiration modal */}
+                      {/* Summary of onboarding choices when opened from inspiration flow */}
                       {suggestionPrefill && (() => {
                         const cat = EVENT_SUGGESTION_CATEGORIES.find(c => c.id === suggestionPrefill.categoryId)
-                        if (!cat || !cat.subcategoryQuestions?.length) return null
+                        if (!cat || !cat.subcategoryQuestions?.length || Object.keys(suggestionAnswers).length === 0) return null
+                        const summary = cat.subcategoryQuestions
+                          .filter(q => suggestionAnswers[q.key])
+                          .map(q => {
+                            const opt = q.options.find(o => o.value === suggestionAnswers[q.key])
+                            return opt ? (lang === 'en' ? opt.labelEn : opt.labelHu) : null
+                          })
+                          .filter(Boolean)
+                        if (summary.length === 0) return null
                         return (
-                          <div className="rounded-xl border p-4" style={{ borderColor: 'var(--border-primary)', backgroundColor: 'var(--accent-light)' }}>
-                            <p className="text-sm font-medium mb-3" style={{ color: 'var(--accent-primary)' }}>
-                              {lang === 'en' ? 'Quick choices for your event' : 'Gyors választások az eseményhez'}
+                          <div className="rounded-xl border px-4 py-3 flex items-center gap-2" style={{ borderColor: 'var(--accent-primary)', backgroundColor: 'var(--accent-light)' }}>
+                            <SparklesIcon className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--accent-primary)' }} />
+                            <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+                              {lang === 'en' ? 'Your choices: ' : 'A választásaid: '}
+                              <span className="font-medium" style={{ color: 'var(--accent-primary)' }}>{summary.join(' · ')}</span>
                             </p>
-                            <div className="space-y-4">
-                              {cat.subcategoryQuestions.map((q) => (
-                                <div key={q.key}>
-                                  <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
-                                    {lang === 'en' ? q.labelEn : q.labelHu}
-                                  </label>
-                                  <div className="flex flex-wrap gap-2">
-                                    {q.options.map((opt) => (
-                                      <button
-                                        key={opt.value}
-                                        type="button"
-                                        onClick={() => setSuggestionAnswers(prev => ({ ...prev, [q.key]: opt.value }))}
-                                        className={`px-4 py-2 rounded-full border text-sm font-medium transition-all ${
-                                          suggestionAnswers[q.key] === opt.value
-                                            ? 'border-[var(--accent-primary)] bg-[var(--accent-primary)]/20'
-                                            : 'border-[var(--border-primary)] hover:border-[var(--accent-primary)]'
-                                        }`}
-                                        style={{
-                                          color: suggestionAnswers[q.key] === opt.value ? 'var(--accent-primary)' : 'var(--text-secondary)',
-                                        }}
-                                      >
-                                        {lang === 'en' ? opt.labelEn : opt.labelHu}
-                                      </button>
-                                    ))}
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
                           </div>
                         )
                       })()}
