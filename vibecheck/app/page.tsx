@@ -5603,6 +5603,47 @@ export default function Home() {
                           {lang === 'en' ? 'Icon auto-suggests based on title (bbq, hiking, birthday...)' : 'Az ikon automatikusan változik a cím alapján (grillezés, túra, születésnap...)'}
                         </p>
                       </div>
+
+                      {/* Subcategory questions when opened from inspiration modal */}
+                      {suggestionPrefill && (() => {
+                        const cat = EVENT_SUGGESTION_CATEGORIES.find(c => c.id === suggestionPrefill.categoryId)
+                        if (!cat || !cat.subcategoryQuestions?.length) return null
+                        return (
+                          <div className="rounded-xl border p-4" style={{ borderColor: 'var(--border-primary)', backgroundColor: 'var(--accent-light)' }}>
+                            <p className="text-sm font-medium mb-3" style={{ color: 'var(--accent-primary)' }}>
+                              {lang === 'en' ? 'Quick choices for your event' : 'Gyors választások az eseményhez'}
+                            </p>
+                            <div className="space-y-4">
+                              {cat.subcategoryQuestions.map((q) => (
+                                <div key={q.key}>
+                                  <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
+                                    {lang === 'en' ? q.labelEn : q.labelHu}
+                                  </label>
+                                  <div className="flex flex-wrap gap-2">
+                                    {q.options.map((opt) => (
+                                      <button
+                                        key={opt.value}
+                                        type="button"
+                                        onClick={() => setSuggestionAnswers(prev => ({ ...prev, [q.key]: opt.value }))}
+                                        className={`px-4 py-2 rounded-full border text-sm font-medium transition-all ${
+                                          suggestionAnswers[q.key] === opt.value
+                                            ? 'border-[var(--accent-primary)] bg-[var(--accent-primary)]/20'
+                                            : 'border-[var(--border-primary)] hover:border-[var(--accent-primary)]'
+                                        }`}
+                                        style={{
+                                          color: suggestionAnswers[q.key] === opt.value ? 'var(--accent-primary)' : 'var(--text-secondary)',
+                                        }}
+                                      >
+                                        {lang === 'en' ? opt.labelEn : opt.labelHu}
+                                      </button>
+                                    ))}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )
+                      })()}
                       
                       {/* Category Selection */}
                       <div>
