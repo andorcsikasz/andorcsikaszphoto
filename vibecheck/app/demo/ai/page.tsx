@@ -29,7 +29,7 @@ export default function AIChatDemoPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          messages: [...messages, userMsg].filter((m) => m.role !== 'system'),
+          messages: [...messages, userMsg], // include system for context
         }),
       })
 
