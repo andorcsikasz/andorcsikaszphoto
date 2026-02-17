@@ -44,6 +44,18 @@ export async function GET(
             avatar: true,
           },
         },
+        coHosts: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                avatar: true,
+              },
+            },
+          },
+        },
         decisions: {
           include: {
             options: {

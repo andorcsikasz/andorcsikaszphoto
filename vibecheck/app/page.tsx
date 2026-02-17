@@ -1633,6 +1633,7 @@ export default function Home() {
         const startDate = e.startDate || ''
         const dateStr = typeof startDate === 'string' ? startDate.split('T')[0] : new Date(startDate).toISOString().split('T')[0]
         const participantCount = e.participants?.length ?? 0
+        const coHostNames = (e.coHosts || []).map((ch: { user: { name: string } }) => ch.user?.name).filter(Boolean)
         const ev: Event = {
           id: e.id,
           title: e.title,
@@ -1644,6 +1645,7 @@ export default function Home() {
           confirmedAttendees: participantCount,
           organizerId: e.organizerId,
           organizerName: e.organizer?.name || 'Unknown',
+          coHostNames: coHostNames.length > 0 ? coHostNames : undefined,
           readiness: participantCount > 0 ? Math.round((participantCount / (participantCount + 1)) * 100) : 0,
           hasVoting: (e.decisions?.length || 0) > 0,
           hasTasks: false,
