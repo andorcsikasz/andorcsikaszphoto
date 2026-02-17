@@ -4097,14 +4097,15 @@ export default function Home() {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => setTaskViewFilter(v => v === 'not-assigned' ? null : 'not-assigned')}
-                      className={`rounded-lg border p-4 text-left transition-all ${
+                      className={`rounded-lg border-2 p-4 text-left transition-all ${
                         taskViewFilter === 'not-assigned'
-                          ? 'ring-2 ring-amber-500/50'
+                          ? 'ring-2 ring-amber-400/60 ring-offset-2 ring-offset-[var(--bg-primary)]'
                           : ''
                       }`}
                       style={{
                         backgroundColor: taskViewFilter === 'not-assigned' ? 'var(--bg-tertiary)' : 'var(--bg-card)',
-                        borderColor: 'var(--border-primary)',
+                        borderColor: taskViewFilter === 'not-assigned' ? 'rgb(251, 191, 36)' : 'var(--border-primary)',
+                        boxShadow: taskViewFilter === 'not-assigned' ? '0 0 0 1px rgba(251, 191, 36, 0.3), 0 0 16px rgba(251, 191, 36, 0.12)' : undefined,
                       }}
                     >
                       <ClipboardDocumentListIcon className="w-5 h-5 mb-1 text-amber-400/90" />
@@ -4132,14 +4133,15 @@ export default function Home() {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => setTaskViewFilter(v => v === 'tasks-assigned' ? null : 'tasks-assigned')}
-                      className={`rounded-lg border p-4 text-left transition-all ${
+                      className={`rounded-lg border-2 p-4 text-left transition-all ${
                         taskViewFilter === 'tasks-assigned'
-                          ? 'ring-2 ring-purple-500/50'
+                          ? 'ring-2 ring-purple-400/60 ring-offset-2 ring-offset-[var(--bg-primary)]'
                           : ''
                       }`}
                       style={{
                         backgroundColor: taskViewFilter === 'tasks-assigned' ? 'var(--bg-tertiary)' : 'var(--bg-card)',
-                        borderColor: 'var(--border-primary)',
+                        borderColor: taskViewFilter === 'tasks-assigned' ? 'rgb(192, 132, 252)' : 'var(--border-primary)',
+                        boxShadow: taskViewFilter === 'tasks-assigned' ? '0 0 0 1px rgba(192, 132, 252, 0.3), 0 0 16px rgba(192, 132, 252, 0.12)' : undefined,
                       }}
                     >
                       <CheckCircleIcon className="w-5 h-5 mb-1 text-emerald-400" />
