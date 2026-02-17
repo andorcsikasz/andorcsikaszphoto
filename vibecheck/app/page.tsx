@@ -928,6 +928,8 @@ export default function Home() {
   const [collectingSuggestion, setCollectingSuggestion] = useState<string | null>(null)
   const [suggestionPrefill, setSuggestionPrefill] = useState<{ categoryId: string; ideaValue?: string } | null>(null)
   const [suggestionAnswers, setSuggestionAnswers] = useState<Record<string, string>>({})
+  const [selectedSuggestionCategory, setSelectedSuggestionCategory] = useState<typeof EVENT_SUGGESTION_CATEGORIES[0] | null>(null)
+  const [onboardingQuestionIndex, setOnboardingQuestionIndex] = useState(0)
   const [useSeparatePaymentLink, setUseSeparatePaymentLink] = useState(false)
   const [newEvent, setNewEvent] = useState<NewEventData>({
     title: '',
