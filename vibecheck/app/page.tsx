@@ -1025,13 +1025,13 @@ export default function Home() {
         return opt ? (lang === 'en' ? opt.labelEn : opt.labelHu) : null
       })
       .filter(Boolean) as string[]
-    const descriptionHint = choiceSummary.length > 0
-      ? (lang === 'en' ? `\n\nEvent details: ${choiceSummary.join(' · ')}` : `\n\nRészletek: ${choiceSummary.join(' · ')}`)
+    const descriptionFromChoices = choiceSummary.length > 0
+      ? (lang === 'en' ? `Event details: ${choiceSummary.join(' · ')}` : `Részletek: ${choiceSummary.join(' · ')}`)
       : ''
     setNewEvent(prev => ({
       ...prev,
       title,
-      description: (prev.description || '') + descriptionHint,
+      description: descriptionFromChoices || prev.description || '',
       category: cat.eventCategory,
       iconId: cat.iconId,
     }))
