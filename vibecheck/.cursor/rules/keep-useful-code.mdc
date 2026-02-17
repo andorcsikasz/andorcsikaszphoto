@@ -1,0 +1,13 @@
+---
+description: Preserve useful code when suggesting edits
+alwaysApply: true
+---
+
+# Keep Useful Code
+
+When suggesting edits or refactoring:
+
+1. **Preserve working code** — Don't remove or replace logic that already works unless explicitly asked.
+2. **Minimal changes** — Apply only the changes requested; avoid unnecessary rewrites.
+3. **Keep existing patterns** — Match the project's established style, naming, and structure.
+4. **Don't break features** — Event suggestions, task suggestions, location suggestions, and other app features must continue to work after edits.

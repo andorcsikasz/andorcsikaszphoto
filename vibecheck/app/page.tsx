@@ -417,7 +417,7 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
           style={{ 
             fontFamily: "var(--font-logo)",
             color: 'var(--text-primary)',
-            letterSpacing: '-0.03em',
+            letterSpacing: '-0.045em',
             willChange: 'transform, opacity',
             textShadow: '0 1px 4px rgba(0,0,0,0.12)'
           }}
@@ -440,7 +440,7 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
           style={{ 
             fontFamily: "var(--font-logo)",
             color: 'var(--accent-primary)',
-            letterSpacing: '-0.03em',
+            letterSpacing: '-0.045em',
             willChange: 'transform, opacity',
             textShadow: '0 1px 4px rgba(0,0,0,0.08)'
           }}
