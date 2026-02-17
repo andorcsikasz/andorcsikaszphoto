@@ -24,13 +24,13 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['Public Sans', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Outfit', 'system-ui', '-apple-system', 'sans-serif'],
       },
       fontSize: {
         'display': ['clamp(2.5rem, 6vw, 4rem)', { lineHeight: '1.1', letterSpacing: '-0.03em', fontWeight: '800' }],
         'headline': ['clamp(1.75rem, 4vw, 2.5rem)', { lineHeight: '1.15', letterSpacing: '-0.025em', fontWeight: '800' }],
         'title': ['clamp(1.25rem, 3vw, 1.5rem)', { lineHeight: '1.2', letterSpacing: '-0.02em', fontWeight: '700' }],
-        'body': ['1rem', { lineHeight: '1.6', letterSpacing: '-0.01em' }],
+        'body': ['1rem', { lineHeight: '1.6', letterSpacing: '-0.01em', fontWeight: '450' }],
         'small': ['0.875rem', { lineHeight: '1.5', letterSpacing: '0' }],
         'caption': ['0.75rem', { lineHeight: '1.4', letterSpacing: '0.05em', fontWeight: '600' }],
       },

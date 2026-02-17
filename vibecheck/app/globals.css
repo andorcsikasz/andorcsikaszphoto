@@ -1,14 +1,14 @@
-/* Public Sans - body | Nunito - headings | Space Grotesk - logo (angular) */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Public+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+/* Outfit - body + headings (angular, startup) | Space Grotesk - logo (geometric) */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --font-sans: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-heading: 'Nunito', 'Public Sans', sans-serif;
-  --font-logo: 'Space Grotesk', 'Public Sans', sans-serif;
+  --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-logo: 'Space Grotesk', 'Outfit', sans-serif;
   --ease-elite: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-out-smooth: cubic-bezier(0.33, 1, 0.68, 1);
@@ -249,7 +249,7 @@ body {
   line-height: 1.6;
   transition: background-color 0.5s ease, color 0.5s ease;
   font-size: 1rem;
-  font-weight: 400;
+  font-weight: 450;
   letter-spacing: -0.01em;
   overflow-x: hidden;
   width: 100%;
