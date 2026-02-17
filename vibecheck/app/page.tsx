@@ -963,12 +963,6 @@ export default function Home() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const locationSuggestDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // AI Chat (integrated into main app)
-  const [aiChatMessages, setAiChatMessages] = useState<AIChatMessage[]>([
-    { role: 'system', content: lang === 'en' ? 'You are a helpful assistant for event planning. Keep responses concise and friendly.' : 'Te egy barátkoző asszisztens vagy eseményszervezéshez. Röviden és barátságosan válaszolj.' },
-  ])
-  const [aiChatLoading, setAiChatLoading] = useState(false)
-
   const t = translations[lang]
 
   const openEditModal = (event: Event) => {
