@@ -136,23 +136,66 @@ export const EVENT_CATEGORIES: {
   { id: 'none', labelEn: 'Other', labelHu: 'Egyéb', color: 'gray', iconId: 'calendar' },
 ]
 
-/** Event suggestion categories for inspiration modal */
+/** Subcategory question for event suggestions - guides create event flow */
+export type SuggestionSubcategoryQuestion = {
+  key: string
+  labelEn: string
+  labelHu: string
+  options: { value: string; labelEn: string; labelHu: string }[]
+}
+
+/** Event suggestion categories for inspiration modal - clickable, opens create event with subcategory questions */
 export const EVENT_SUGGESTION_CATEGORIES: {
   id: string
   labelEn: string
   labelHu: string
-  ideas: { en: string; hu: string }[]
+  ideas: { en: string; hu: string; value?: string }[]
   color: string
+  eventCategory: import('./types').EventCategory
+  iconId: import('./types').IconId
+  subcategoryQuestions: SuggestionSubcategoryQuestion[]
 }[] = [
   {
     id: 'birthday',
     labelEn: 'Birthday',
     labelHu: 'Születésnap',
     color: 'pink',
+    eventCategory: 'friends',
+    iconId: 'birthday',
+    subcategoryQuestions: [
+      {
+        key: 'surprise',
+        labelEn: 'Surprise or planned?',
+        labelHu: 'Meglepetés vagy előre tervezett?',
+        options: [
+          { value: 'surprise', labelEn: 'Surprise', labelHu: 'Meglepetés' },
+          { value: 'planned', labelEn: 'Planned', labelHu: 'Előre tervezett' },
+        ],
+      },
+      {
+        key: 'audience',
+        labelEn: 'Who\'s invited?',
+        labelHu: 'Kik jönnek?',
+        options: [
+          { value: 'friends', labelEn: 'Friends', labelHu: 'Barátok' },
+          { value: 'family', labelEn: 'Family', labelHu: 'Család' },
+          { value: 'romantic', labelEn: 'Romantic', labelHu: 'Romantikus' },
+        ],
+      },
+      {
+        key: 'location',
+        labelEn: 'Location',
+        labelHu: 'Helyszín',
+        options: [
+          { value: 'indoor', labelEn: 'Indoor', labelHu: 'Beltér' },
+          { value: 'outdoor', labelEn: 'Outdoor', labelHu: 'Kültér' },
+        ],
+      },
+    ],
     ideas: [
-      { en: 'Theme party with decorations', hu: 'Témás buli díszekkel' },
-      { en: 'Surprise cake moment', hu: 'Meglepetés torta' },
-      { en: 'Gift collection & wishes', hu: 'Ajándékok és kívánságok' },
+      { en: 'Theme party with decorations', hu: 'Témás buli díszekkel', value: 'theme' },
+      { en: 'Surprise cake moment', hu: 'Meglepetés torta', value: 'surprise' },
+      { en: 'Gift collection & wishes', hu: 'Ajándékok és kívánságok', value: 'gifts' },
     ],
   },
   {
@@ -160,10 +203,32 @@ export const EVENT_SUGGESTION_CATEGORIES: {
     labelEn: 'Camping',
     labelHu: 'Táborozás',
     color: 'green',
+    eventCategory: 'holiday',
+    iconId: 'camping',
+    subcategoryQuestions: [
+      {
+        key: 'audience',
+        labelEn: 'Who\'s coming?',
+        labelHu: 'Kik mennek?',
+        options: [
+          { value: 'friends', labelEn: 'Friends', labelHu: 'Barátok' },
+          { value: 'family', labelEn: 'Family', labelHu: 'Család' },
+        ],
+      },
+      {
+        key: 'intensity',
+        labelEn: 'Activity level',
+        labelHu: 'Tevékenységi szint',
+        options: [
+          { value: 'relaxed', labelEn: 'Relaxed', labelHu: 'Laza' },
+          { value: 'adventure', labelEn: 'Adventure', labelHu: 'Kaland' },
+        ],
+      },
+    ],
     ideas: [
-      { en: 'Tent & gear checklist', hu: 'Sátor és felszerelés lista' },
-      { en: 'Fire pit & marshmallows', hu: 'Tábortűz és pillecukor' },
-      { en: 'Trail maps & safety', hu: 'Térképek és biztonság' },
+      { en: 'Tent & gear checklist', hu: 'Sátor és felszerelés lista', value: 'gear' },
+      { en: 'Fire pit & marshmallows', hu: 'Tábortűz és pillecukor', value: 'fire' },
+      { en: 'Trail maps & safety', hu: 'Térképek és biztonság', value: 'trail' },
     ],
   },
   {
@@ -171,10 +236,32 @@ export const EVENT_SUGGESTION_CATEGORIES: {
     labelEn: 'Romantic dates',
     labelHu: 'Romantikus randik',
     color: 'rose',
+    eventCategory: 'family',
+    iconId: 'picnic',
+    subcategoryQuestions: [
+      {
+        key: 'location',
+        labelEn: 'Location',
+        labelHu: 'Helyszín',
+        options: [
+          { value: 'indoor', labelEn: 'Indoor (dinner, home)', labelHu: 'Beltér (vacsora, otthon)' },
+          { value: 'outdoor', labelEn: 'Outdoor (picnic, sunset)', labelHu: 'Kültér (piknik, napnyugta)' },
+        ],
+      },
+      {
+        key: 'style',
+        labelEn: 'Style',
+        labelHu: 'Stílus',
+        options: [
+          { value: 'casual', labelEn: 'Casual', labelHu: 'Laza' },
+          { value: 'special', labelEn: 'Special occasion', labelHu: 'Különleges alkalom' },
+        ],
+      },
+    ],
     ideas: [
-      { en: 'Dinner reservation & flowers', hu: 'Vacsora foglalás és virág' },
-      { en: 'Sunset picnic setup', hu: 'Napnyugta piknik' },
-      { en: 'Special occasion surprise', hu: 'Különleges meglepetés' },
+      { en: 'Dinner reservation & flowers', hu: 'Vacsora foglalás és virág', value: 'dinner' },
+      { en: 'Sunset picnic setup', hu: 'Napnyugta piknik', value: 'picnic' },
+      { en: 'Special occasion surprise', hu: 'Különleges meglepetés', value: 'surprise' },
     ],
   },
   {
@@ -182,10 +269,32 @@ export const EVENT_SUGGESTION_CATEGORIES: {
     labelEn: 'Surprise party',
     labelHu: 'Meglepetés buli',
     color: 'purple',
+    eventCategory: 'friends',
+    iconId: 'party',
+    subcategoryQuestions: [
+      {
+        key: 'audience',
+        labelEn: 'Who\'s in on it?',
+        labelHu: 'Ki van benne?',
+        options: [
+          { value: 'friends', labelEn: 'Friends', labelHu: 'Barátok' },
+          { value: 'family', labelEn: 'Family', labelHu: 'Család' },
+        ],
+      },
+      {
+        key: 'location',
+        labelEn: 'Where?',
+        labelHu: 'Hol?',
+        options: [
+          { value: 'indoor', labelEn: 'Indoor', labelHu: 'Beltér' },
+          { value: 'outdoor', labelEn: 'Outdoor', labelHu: 'Kültér' },
+        ],
+      },
+    ],
     ideas: [
-      { en: 'Secret coordination with friends', hu: 'Titkos koordináció barátokkal' },
-      { en: 'Decoy plan for the guest of honour', hu: 'Bevezető terv a megtiszteltnek' },
-      { en: 'Perfect timing & reveal', hu: 'Tökéletes időzítés és meglepetés' },
+      { en: 'Secret coordination with friends', hu: 'Titkos koordináció barátokkal', value: 'coordination' },
+      { en: 'Decoy plan for the guest of honour', hu: 'Bevezető terv a megtiszteltnek', value: 'decoy' },
+      { en: 'Perfect timing & reveal', hu: 'Tökéletes időzítés és meglepetés', value: 'reveal' },
     ],
   },
   {
@@ -193,10 +302,32 @@ export const EVENT_SUGGESTION_CATEGORIES: {
     labelEn: 'Dinner party',
     labelHu: 'Vacsora partik',
     color: 'amber',
+    eventCategory: 'friends',
+    iconId: 'dinner',
+    subcategoryQuestions: [
+      {
+        key: 'audience',
+        labelEn: 'Who\'s invited?',
+        labelHu: 'Kik jönnek?',
+        options: [
+          { value: 'friends', labelEn: 'Friends', labelHu: 'Barátok' },
+          { value: 'family', labelEn: 'Family', labelHu: 'Család' },
+        ],
+      },
+      {
+        key: 'location',
+        labelEn: 'Location',
+        labelHu: 'Helyszín',
+        options: [
+          { value: 'indoor', labelEn: 'Indoor (home, restaurant)', labelHu: 'Beltér (otthon, étterem)' },
+          { value: 'outdoor', labelEn: 'Outdoor', labelHu: 'Kültér' },
+        ],
+      },
+    ],
     ideas: [
-      { en: 'Menu planning & dietary needs', hu: 'Menü tervezés és diétás igények' },
-      { en: 'Table setting & ambience', hu: 'Asztal díszítés és hangulat' },
-      { en: 'Cocktail hour & appetizers', hu: 'Koktél óra és előételek' },
+      { en: 'Menu planning & dietary needs', hu: 'Menü tervezés és diétás igények', value: 'menu' },
+      { en: 'Table setting & ambience', hu: 'Asztal díszítés és hangulat', value: 'ambience' },
+      { en: 'Cocktail hour & appetizers', hu: 'Koktél óra és előételek', value: 'cocktail' },
     ],
   },
   {
@@ -204,10 +335,33 @@ export const EVENT_SUGGESTION_CATEGORIES: {
     labelEn: 'Outdoor adventure',
     labelHu: 'Szabadtéri kaland',
     color: 'emerald',
+    eventCategory: 'sports',
+    iconId: 'hiking',
+    subcategoryQuestions: [
+      {
+        key: 'activity',
+        labelEn: 'Activity type',
+        labelHu: 'Tevékenység típusa',
+        options: [
+          { value: 'hiking', labelEn: 'Hiking', labelHu: 'Túra' },
+          { value: 'biking', labelEn: 'Biking', labelHu: 'Kerékpár' },
+          { value: 'mixed', labelEn: 'Mixed', labelHu: 'Vegyes' },
+        ],
+      },
+      {
+        key: 'audience',
+        labelEn: 'Who\'s coming?',
+        labelHu: 'Kik mennek?',
+        options: [
+          { value: 'friends', labelEn: 'Friends', labelHu: 'Barátok' },
+          { value: 'family', labelEn: 'Family', labelHu: 'Család' },
+        ],
+      },
+    ],
     ideas: [
-      { en: 'Hiking or biking route', hu: 'Túra vagy kerékpárútvonal' },
-      { en: 'Weather backup plan', hu: 'Időjárás tartalék terv' },
-      { en: 'Snacks & hydration pack', hu: 'Nasi és hidratálás' },
+      { en: 'Hiking or biking route', hu: 'Túra vagy kerékpárútvonal', value: 'route' },
+      { en: 'Weather backup plan', hu: 'Időjárás tartalék terv', value: 'weather' },
+      { en: 'Snacks & hydration pack', hu: 'Nasi és hidratálás', value: 'supplies' },
     ],
   },
 ]

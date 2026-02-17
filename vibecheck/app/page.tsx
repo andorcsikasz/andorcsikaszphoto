@@ -926,6 +926,8 @@ export default function Home() {
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [createStep, setCreateStep] = useState(1)
   const [collectingSuggestion, setCollectingSuggestion] = useState<string | null>(null)
+  const [suggestionPrefill, setSuggestionPrefill] = useState<{ categoryId: string; ideaValue?: string } | null>(null)
+  const [suggestionAnswers, setSuggestionAnswers] = useState<Record<string, string>>({})
   const [useSeparatePaymentLink, setUseSeparatePaymentLink] = useState(false)
   const [newEvent, setNewEvent] = useState<NewEventData>({
     title: '',
@@ -993,6 +995,31 @@ export default function Home() {
     })
     setEditingEvent(event)
     setSelectedEvent(null)
+    setShowCreateModal(true)
+    setCreateStep(1)
+  }
+
+  const openCreateFromSuggestion = (cat: typeof EVENT_SUGGESTION_CATEGORIES[0], ideaValue?: string) => {
+    const title = lang === 'en' ? cat.labelEn : cat.labelHu
+    setNewEvent(prev => ({
+      ...prev,
+      title,
+      category: cat.eventCategory,
+      iconId: cat.iconId,
+    }))
+    const initialAnswers: Record<string, string> = {}
+    if (ideaValue) {
+      for (const q of cat.subcategoryQuestions) {
+        const match = q.options.find(o => o.value === ideaValue)
+        if (match) {
+          initialAnswers[q.key] = match.value
+          break
+        }
+      }
+    }
+    setSuggestionAnswers(initialAnswers)
+    setSuggestionPrefill({ categoryId: cat.id, ideaValue })
+    setShowEventSuggestionModal(false)
     setShowCreateModal(true)
     setCreateStep(1)
   }
@@ -1073,6 +1100,8 @@ export default function Home() {
     setShowCreateModal(false)
     setCreateStep(1)
     setEditingEvent(null)
+    setSuggestionPrefill(null)
+    setSuggestionAnswers({})
     setNewEvent({
       title: '',
       description: '',
@@ -5362,7 +5391,15 @@ export default function Home() {
               <div className="p-6 overflow-y-auto flex-1">
                 <div className="space-y-6">
                   {EVENT_SUGGESTION_CATEGORIES.map((cat) => (
-                    <div key={cat.id} className="rounded-xl border p-4" style={{ borderColor: 'var(--border-primary)', backgroundColor: 'var(--bg-tertiary)' }}>
+                    <div
+                      key={cat.id}
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => openCreateFromSuggestion(cat)}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openCreateFromSuggestion(cat) } }}
+                      className="rounded-xl border p-4 cursor-pointer transition-all hover:border-[var(--accent-primary)] hover:ring-2 hover:ring-[var(--accent-primary)]/20"
+                      style={{ borderColor: 'var(--border-primary)', backgroundColor: 'var(--bg-tertiary)' }}
+                    >
                       <h3 className="font-bold mb-3 flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
                         {cat.id === 'birthday' && <CakeIcon className="w-5 h-5 text-pink-400" />}
                         {cat.id === 'camping' && <FireIcon className="w-5 h-5 text-emerald-500" />}
@@ -5371,10 +5408,21 @@ export default function Home() {
                         {cat.id === 'dinner' && <CurrencyDollarIcon className="w-5 h-5 text-amber-500" />}
                         {cat.id === 'outdoor' && <MapPinIcon className="w-5 h-5 text-emerald-500" />}
                         {lang === 'en' ? cat.labelEn : cat.labelHu}
+                        <span className="ml-1 text-xs font-normal opacity-70" style={{ color: 'var(--text-muted)' }}>
+                          {lang === 'en' ? '— click to create' : '— kattints a létrehozáshoz'}
+                        </span>
                       </h3>
                       <ul className="space-y-1.5">
                         {cat.ideas.map((idea, i) => (
-                          <li key={i} className="text-sm flex items-center gap-2" style={{ color: 'var(--text-secondary)' }}>
+                          <li
+                            key={i}
+                            role="button"
+                            tabIndex={0}
+                            onClick={(e) => { e.stopPropagation(); openCreateFromSuggestion(cat, idea.value) }}
+                            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); openCreateFromSuggestion(cat, idea.value) } }}
+                            className="text-sm flex items-center gap-2 py-1.5 px-2 -mx-2 rounded-lg cursor-pointer transition-colors hover:bg-[var(--bg-hover)]"
+                            style={{ color: 'var(--text-secondary)' }}
+                          >
                             <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: `var(--accent-primary)` }} />
                             {lang === 'en' ? idea.en : idea.hu}
                           </li>
