@@ -2578,25 +2578,27 @@ export default function Home() {
                   </div>
                 </div>
                 
-                {/* Avatar Selection */}
+                {/* Avatar Selection – 8 mathematical shapes */}
                 <div>
                   <p className="text-sm mb-3 font-medium" style={{ color: 'var(--text-muted)' }}>
                     {lang === 'en' ? 'Change avatar' : 'Avatar módosítása'}
                   </p>
-                  <div className="grid grid-cols-4 gap-2 max-w-[200px]">
+                  <div className="grid grid-cols-4 gap-3">
                     {AVATAR_SHAPES.map((shape, index) => (
                       <button
                         key={shape}
                         onClick={() => setTempProfile({ ...tempProfile, avatarIndex: index })}
-                        className="aspect-square p-3 rounded-lg border transition-all hover:scale-105 flex items-center justify-center"
+                        className="aspect-square p-3 rounded-xl border-2 transition-all hover:scale-105 flex flex-col items-center justify-center gap-1"
                         style={{
                           borderColor: (tempProfile.avatarIndex ?? 0) % 8 === index ? 'var(--accent-primary)' : 'var(--border-primary)',
-                          backgroundColor: (tempProfile.avatarIndex ?? 0) % 8 === index ? 'var(--accent-light)' : 'transparent',
-                          transform: (tempProfile.avatarIndex ?? 0) % 8 === index ? 'scale(1.05)' : 'scale(1)',
-                          borderWidth: (tempProfile.avatarIndex ?? 0) % 8 === index ? '2px' : '1px'
+                          backgroundColor: (tempProfile.avatarIndex ?? 0) % 8 === index ? 'var(--accent-light)' : 'var(--bg-secondary)',
+                          transform: (tempProfile.avatarIndex ?? 0) % 8 === index ? 'scale(1.05)' : 'scale(1)'
                         }}
                       >
-                        <AvatarShapeIcon shape={shape} className="w-8 h-8" style={{ color: 'var(--text-primary)' }} />
+                        <AvatarShapeIcon shape={shape} className="w-7 h-7 sm:w-8 sm:h-8 flex-shrink-0" style={{ color: 'var(--text-primary)' }} />
+                        <span className="text-[10px] font-medium capitalize leading-tight" style={{ color: 'var(--text-muted)' }}>
+                          {shape}
+                        </span>
                       </button>
                     ))}
                   </div>
