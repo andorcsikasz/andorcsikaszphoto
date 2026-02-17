@@ -6,10 +6,12 @@
 
 import { useState, useEffect, useRef, useCallback, type CSSProperties } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { AIChatBox, type Message as AIChatMessage } from '@/components/AIChatBox'
 import {
   CalendarIcon,
   ChartBarIcon,
   Squares2X2Icon,
+  SparklesIcon as AISparklesIcon,
   ArrowsRightLeftIcon,
   PlusIcon,
   XMarkIcon,
@@ -152,6 +154,7 @@ const translations = {
     calendar: 'Calendar',
     events: 'Events',
     dashboard: 'Dashboard',
+    ai: 'AI',
     createEvent: 'Create Event',
     myCalendar: 'My Calendar',
     today: 'Today',
@@ -230,6 +233,7 @@ const translations = {
     calendar: 'Naptár',
     events: 'Események',
     dashboard: 'Irányítópult',
+    ai: 'AI',
     createEvent: 'Esemény létrehozása',
     myCalendar: 'Naptáram',
     today: 'Ma',
@@ -891,7 +895,7 @@ export default function Home() {
   const [theme, setTheme] = useState<'dark' | 'light' | 'system'>('system')
   
   const [lang, setLang] = useState<Language>('en')
-  const [activeTab, setActiveTab] = useState<'calendar' | 'events' | 'dashboard'>('calendar')
+  const [activeTab, setActiveTab] = useState<'calendar' | 'events' | 'dashboard' | 'ai'>('calendar')
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const [showParticipantsModal, setShowParticipantsModal] = useState(false)
   const [showOrganizerStatsModal, setShowOrganizerStatsModal] = useState(false)
