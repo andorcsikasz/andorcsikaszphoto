@@ -17,6 +17,8 @@ model User {
 
   // Events I organize
   organizedEvents Event[] @relation("Organizer")
+  // Events I co-host
+  coHostOf  EventCoHost[]
   // Events I'm invited to (many-to-many)
   participantIn   Event[] @relation("EventParticipants")
   // My connections (friends, family)
@@ -24,6 +26,19 @@ model User {
   connectionsTo   Connection[] @relation("ConnectionTo")
   votes           Vote[]
   discussions     Discussion[]
+}
+
+model EventCoHost {
+  id       String  @id @default(cuid())
+  eventId  String
+  event    Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId   String
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+  @@index([userId])
 }
 
 model Connection {
@@ -58,7 +73,7 @@ model Event {
   organizerId String
   organizer   User     @relation("Organizer", fields: [organizerId], references: [id], onDelete: Cascade)
   participants User[]  @relation("EventParticipants")
-  coHostIds   Json?    // JSON array of user IDs: ["userId1", "userId2"]
+  coHosts     EventCoHost[]
 
   decisions    Decision[]
   discussions  Discussion[]

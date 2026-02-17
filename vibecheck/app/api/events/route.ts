@@ -18,6 +18,8 @@ const createEventSchema = z.object({
   timezone: z.string().default('UTC'),
   isInviteOnly: z.boolean().default(false),
   organizerId: z.string(),
+  // Co-host: user IDs from connections
+  coHostIds: z.array(z.string()).optional(),
   // Auto-invite: user IDs from connections or emails
   participantIds: z.array(z.string()).optional(),
   inviteeEmails: z.array(z.string().email()).optional(),
@@ -64,6 +66,18 @@ export async function GET(request: NextRequest) {
             avatar: true,
           },
         },
+        coHosts: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                avatar: true,
+              },
+            },
+          },
+        },
         _count: {
           select: {
             participants: true,
@@ -100,13 +114,20 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Resolve participants: from IDs and/or emails
+    // Resolve participants: from IDs and/or emails (include co-hosts so they're invited too)
     const participantUserIds: string[] = []
+
+    if (data.coHostIds?.length) {
+      for (const id of data.coHostIds) {
+        const resolved = await resolveUserId(id)
+        if (resolved && !participantUserIds.includes(resolved)) participantUserIds.push(resolved)
+      }
+    }
 
     if (data.participantIds?.length) {
       for (const id of data.participantIds) {
         const resolved = await resolveUserId(id)
-        if (resolved) participantUserIds.push(resolved)
+        if (resolved && !participantUserIds.includes(resolved)) participantUserIds.push(resolved)
       }
     }
 
@@ -117,6 +138,14 @@ export async function POST(request: NextRequest) {
         if (user && !participantUserIds.includes(user.id)) {
           participantUserIds.push(user.id)
         }
+      }
+    }
+
+    const coHostUserIds: string[] = []
+    if (data.coHostIds?.length) {
+      for (const id of data.coHostIds) {
+        const resolved = await resolveUserId(id)
+        if (resolved) coHostUserIds.push(resolved)
       }
     }
 
@@ -136,6 +165,9 @@ export async function POST(request: NextRequest) {
         participants: participantUserIds.length
           ? { connect: participantUserIds.map((id) => ({ id })) }
           : undefined,
+        coHosts: coHostUserIds.length
+          ? { create: coHostUserIds.map((userId) => ({ userId })) }
+          : undefined,
       },
       include: {
         organizer: {
@@ -144,6 +176,18 @@ export async function POST(request: NextRequest) {
             name: true,
             email: true,
             avatar: true,
+          },
+        },
+        coHosts: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                avatar: true,
+              },
+            },
           },
         },
         _count: {
