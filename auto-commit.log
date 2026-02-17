@@ -5497,3 +5497,16 @@ fatal: Unable to create '/Users/andorcsikasz/x_prog/.git/index.lock': No space l
  create mode 100644 vibecheck/lib/errors.ts
  create mode 100644 vibecheck/lib/utils.ts
 [10:34:38] Committed: auto: 2026-02-17 10:34
+[main d2f1968] auto: 2026-02-17 10:35
+ 13 files changed, 757 insertions(+), 198 deletions(-)
+ create mode 100644 vibecheck/app/api/ai/chat/route.ts
+ create mode 100644 vibecheck/app/api/health/route.ts
+ create mode 100644 vibecheck/components/AIChatBox.tsx
+ create mode 100644 vibecheck/components/ErrorBoundary.tsx
+ create mode 100644 vibecheck/components/ui/button.tsx
+ create mode 100644 vibecheck/components/ui/card.tsx
+ create mode 100644 vibecheck/components/ui/input.tsx
+ create mode 100644 vibecheck/components/ui/skeleton.tsx
+ create mode 100644 vibecheck/components/ui/textarea.tsx
+ create mode 100644 vibecheck/lib/date-utils.ts
+[10:35:38] Committed: auto: 2026-02-17 10:35
