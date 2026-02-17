@@ -1561,11 +1561,15 @@ export default function Home() {
         width: btnRect.width,
       })
     }
-    const id = setTimeout(updateIndicator, 10)
+    // Measure immediately + after paint for reliability
+    updateIndicator()
+    const rafId = requestAnimationFrame(updateIndicator)
+    const id = setTimeout(updateIndicator, 50)
     window.addEventListener('resize', updateIndicator)
     const obs = new ResizeObserver(updateIndicator)
     if (container) obs.observe(container)
     return () => {
+      cancelAnimationFrame(rafId)
       clearTimeout(id)
       window.removeEventListener('resize', updateIndicator)
       obs.disconnect()
@@ -3089,6 +3093,7 @@ export default function Home() {
                   ref={(el) => { tabRefsMap.current[tab] = el }}
                   onClick={() => setActiveTab(tab)}
                   className="relative px-5 py-2 text-sm font-medium rounded-lg flex items-center gap-2 z-10 transition-colors duration-200"
+                  style={activeTab === tab && tabIndicator.width === 0 ? { backgroundColor: 'var(--accent-primary)', borderRadius: '0.5rem' } : undefined}
                 >
                   <span
                     className="relative z-10 flex items-center gap-2"
