@@ -94,8 +94,8 @@ export const TASK_SUGGESTIONS: Record<
   ],
 }
 
-/** Profile avatar shape options – filled square, circle, hexagon */
-export const AVATAR_SHAPES = ['square', 'circle', 'hexagon'] as const
+/** Profile avatar shape options – 8 mathematical shapes, filled */
+export const AVATAR_SHAPES = ['square', 'circle', 'triangle', 'diamond', 'pentagon', 'hexagon', 'octagon', 'star'] as const
 export type AvatarShape = (typeof AVATAR_SHAPES)[number]
 
 /** Gamification level thresholds */

@@ -2242,13 +2242,13 @@ export default function Home() {
                       {lang === 'en' ? 'Pick one that represents you' : 'Válassz egyet ami illik hozzád'}
                     </p>
                     
-                    <div className="grid grid-cols-3 gap-3 mb-8 max-w-[200px] mx-auto">
+                    <div className="grid grid-cols-4 gap-3 mb-8 max-w-[220px] mx-auto">
                       {AVATAR_SHAPES.map((shape, index) => (
                         <button
                           key={shape}
                           onClick={() => setTempProfile({ ...tempProfile, avatarIndex: index })}
                           className={`aspect-square p-3 rounded-xl border-2 transition-all flex items-center justify-center ${
-                            (tempProfile.avatarIndex ?? 0) % 3 === index
+                            (tempProfile.avatarIndex ?? 0) % 8 === index
                               ? 'border-white bg-white/10 scale-110'
                               : 'border-white/10 hover:border-white/30 hover:bg-white/5'
                           }`}
@@ -2261,7 +2261,7 @@ export default function Home() {
                     {/* Preview */}
                     <div className="flex items-center justify-center gap-4 mb-8 p-4 bg-white/5 rounded-xl">
                       <div className="w-16 h-16 rounded-full bg-white/10 p-2 flex items-center justify-center">
-                        <AvatarShapeIcon shape={AVATAR_SHAPES[(tempProfile.avatarIndex ?? 0) % 3]} className="w-10 h-10 text-white" />
+                        <AvatarShapeIcon shape={AVATAR_SHAPES[(tempProfile.avatarIndex ?? 0) % 8]} className="w-10 h-10 text-white" />
                       </div>
                       <div className="text-left">
                         <p className="font-semibold text-lg text-white">{tempProfile.name}</p>
@@ -2382,11 +2382,11 @@ export default function Home() {
                     }}
                     onClick={() => {
                       // Cycle through avatars on click
-                      const nextIndex = ((tempProfile.avatarIndex ?? 0) + 1) % 3
+                      const nextIndex = ((tempProfile.avatarIndex ?? 0) + 1) % 8
                       setTempProfile({ ...tempProfile, avatarIndex: nextIndex })
                     }}
                   >
-                    <AvatarShapeIcon shape={AVATAR_SHAPES[(tempProfile.avatarIndex ?? 0) % 3]} className="w-12 h-12" style={{ color: 'var(--accent-primary)' }} />
+                    <AvatarShapeIcon shape={AVATAR_SHAPES[(tempProfile.avatarIndex ?? 0) % 8]} className="w-12 h-12" style={{ color: 'var(--accent-primary)' }} />
                     <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity bg-black/10 flex items-center justify-center">
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: 'var(--text-primary)' }}>
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -2583,17 +2583,17 @@ export default function Home() {
                   <p className="text-sm mb-3 font-medium" style={{ color: 'var(--text-muted)' }}>
                     {lang === 'en' ? 'Change avatar' : 'Avatar módosítása'}
                   </p>
-                  <div className="grid grid-cols-3 gap-2 max-w-[140px]">
+                  <div className="grid grid-cols-4 gap-2 max-w-[200px]">
                     {AVATAR_SHAPES.map((shape, index) => (
                       <button
                         key={shape}
                         onClick={() => setTempProfile({ ...tempProfile, avatarIndex: index })}
                         className="aspect-square p-3 rounded-lg border transition-all hover:scale-105 flex items-center justify-center"
                         style={{
-                          borderColor: (tempProfile.avatarIndex ?? 0) % 3 === index ? 'var(--accent-primary)' : 'var(--border-primary)',
-                          backgroundColor: (tempProfile.avatarIndex ?? 0) % 3 === index ? 'var(--accent-light)' : 'transparent',
-                          transform: (tempProfile.avatarIndex ?? 0) % 3 === index ? 'scale(1.05)' : 'scale(1)',
-                          borderWidth: (tempProfile.avatarIndex ?? 0) % 3 === index ? '2px' : '1px'
+                          borderColor: (tempProfile.avatarIndex ?? 0) % 8 === index ? 'var(--accent-primary)' : 'var(--border-primary)',
+                          backgroundColor: (tempProfile.avatarIndex ?? 0) % 8 === index ? 'var(--accent-light)' : 'transparent',
+                          transform: (tempProfile.avatarIndex ?? 0) % 8 === index ? 'scale(1.05)' : 'scale(1)',
+                          borderWidth: (tempProfile.avatarIndex ?? 0) % 8 === index ? '2px' : '1px'
                         }}
                       >
                         <AvatarShapeIcon shape={shape} className="w-8 h-8" style={{ color: 'var(--text-primary)' }} />
@@ -3242,7 +3242,7 @@ export default function Home() {
                     className="w-6 h-6 sm:w-7 sm:h-7 rounded-full overflow-hidden flex-shrink-0 p-0.5 sm:p-1 flex items-center justify-center"
                     style={{ backgroundColor: 'var(--bg-tertiary)' }}
                   >
-                    <AvatarShapeIcon shape={AVATAR_SHAPES[(userProfile.avatarIndex ?? 0) % 3]} className="w-6 h-6 sm:w-7 sm:h-7" style={{ color: 'var(--text-primary)' }} />
+                    <AvatarShapeIcon shape={AVATAR_SHAPES[(userProfile.avatarIndex ?? 0) % 8]} className="w-6 h-6 sm:w-7 sm:h-7" style={{ color: 'var(--text-primary)' }} />
                   </div>
                   <span className="text-xs sm:text-sm font-medium truncate max-w-[4rem] sm:max-w-none">{userProfile.name.split(' ')[0]}</span>
                 </button>
@@ -6557,7 +6557,7 @@ export default function Home() {
                                           }`}
                                         >
                                           <div className="w-5 h-5 rounded-full overflow-hidden bg-white/10 p-0.5 flex items-center justify-center">
-                                            <AvatarShapeIcon shape={AVATAR_SHAPES[(userProfile.avatarIndex ?? 0) % 3]} className="w-5 h-5" style={{ color: 'var(--text-primary)' }} />
+                                            <AvatarShapeIcon shape={AVATAR_SHAPES[(userProfile.avatarIndex ?? 0) % 8]} className="w-5 h-5" style={{ color: 'var(--text-primary)' }} />
                                           </div>
                                           <span className="text-sm">{lang === 'en' ? 'Me' : 'Én'}</span>
                                         </button>
@@ -6575,7 +6575,7 @@ export default function Home() {
                                           }`}
                                         >
                                           <div className="w-5 h-5 rounded-full overflow-hidden bg-white/10 p-0.5 flex items-center justify-center">
-                                            <AvatarShapeIcon shape={AVATAR_SHAPES[i % 3]} className="w-5 h-5" style={{ color: 'var(--text-primary)' }} />
+                                            <AvatarShapeIcon shape={AVATAR_SHAPES[i % 8]} className="w-5 h-5" style={{ color: 'var(--text-primary)' }} />
                                           </div>
                                           <span className="text-sm">{invitee.split('@')[0]}</span>
           </button>
