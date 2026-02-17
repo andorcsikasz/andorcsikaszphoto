@@ -58,27 +58,27 @@ export function isToday(date: Date): boolean {
   return date.toDateString() === today.toDateString()
 }
 
-/** Tailwind bg color class for event status */
+/** Tailwind bg color class for event status - uses theme-aware CSS vars */
 export function getStatusColor(status: EventStatus): string {
   switch (status) {
     case 'fixed':
-      return 'bg-emerald-500'
+      return 'bg-[var(--status-fixed-bg)]'
     case 'optimal':
-      return 'bg-gray-500'
+      return 'bg-[var(--status-optimal-bg)]'
     case 'in-progress':
-      return 'bg-orange-500'
+      return 'bg-[var(--status-in-progress-bg)]'
   }
 }
 
-/** Tailwind border classes for event status */
+/** Border classes for event status - theme-aware, calm colors */
 export function getStatusBorderColor(status: EventStatus): string {
   switch (status) {
     case 'fixed':
-      return 'border-emerald-500/50 hover:border-emerald-400'
+      return 'border border-[color:var(--status-fixed-border)]'
     case 'optimal':
-      return 'border-gray-500/50 hover:border-gray-400'
+      return 'border border-[color:var(--status-optimal-border)]'
     case 'in-progress':
-      return 'border-orange-500/50 hover:border-orange-400'
+      return 'border border-[color:var(--status-in-progress-border)]'
   }
 }
 

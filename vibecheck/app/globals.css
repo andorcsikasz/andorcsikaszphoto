@@ -94,6 +94,17 @@
   --info-bg: #dbeafe;
   --info-text: #1d4ed8;
   --info-border: #93c5fd;
+
+  /* Event status badges - calm, visible in light mode */
+  --status-fixed-bg: #dcfce7;
+  --status-fixed-text: #166534;
+  --status-fixed-border: rgba(22, 101, 52, 0.35);
+  --status-optimal-bg: #f1f5f9;
+  --status-optimal-text: #475569;
+  --status-optimal-border: rgba(100, 116, 139, 0.3);
+  --status-in-progress-bg: #fef9e7;
+  --status-in-progress-text: #92400e;
+  --status-in-progress-border: rgba(146, 64, 14, 0.25);
   
   /* Shadow - subtle depth */
   --shadow-sm: 0 1px 2px rgba(12, 19, 33, 0.08);
@@ -196,6 +207,17 @@
   --info-bg: rgba(91, 159, 212, 0.12);
   --info-text: #5b9fd4;
   --info-border: rgba(91, 159, 212, 0.2);
+
+  /* Event status badges - calm, visible in dark mode */
+  --status-fixed-bg: rgba(52, 211, 153, 0.12);
+  --status-fixed-text: #6ee7b7;
+  --status-fixed-border: rgba(52, 211, 153, 0.25);
+  --status-optimal-bg: rgba(148, 163, 184, 0.12);
+  --status-optimal-text: #94a3b8;
+  --status-optimal-border: rgba(148, 163, 184, 0.2);
+  --status-in-progress-bg: rgba(251, 191, 36, 0.1);
+  --status-in-progress-text: #fcd34d;
+  --status-in-progress-border: rgba(251, 191, 36, 0.2);
   
   /* Shadow */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);

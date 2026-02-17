@@ -3359,15 +3359,15 @@ export default function Home() {
                                   onClick={() => setSelectedEvent(event)}
                                   className="w-full text-left px-2 py-1 rounded text-xs font-medium truncate transition-colors border-l-[3px] flex-shrink-0"
                                   style={{ 
-                                    borderLeftColor: event.status === 'fixed' ? 'var(--readiness-location)' 
-                                      : event.status === 'optimal' ? 'var(--accent-primary)' 
-                                      : 'var(--readiness-rsvp)',
-                                    backgroundColor: event.status === 'fixed' ? 'rgba(16, 185, 129, 0.2)' 
-                                      : event.status === 'optimal' ? 'rgba(15, 76, 117, 0.2)' 
-                                      : 'rgba(251, 191, 36, 0.2)',
-                                    color: event.status === 'fixed' ? 'var(--readiness-location)' 
-                                      : event.status === 'optimal' ? 'var(--accent-primary)' 
-                                      : 'var(--readiness-rsvp)'
+                                    borderLeftColor: event.status === 'fixed' ? 'var(--status-fixed-border)' 
+                                      : event.status === 'optimal' ? 'var(--status-optimal-border)' 
+                                      : 'var(--status-in-progress-border)',
+                                    backgroundColor: event.status === 'fixed' ? 'var(--status-fixed-bg)' 
+                                      : event.status === 'optimal' ? 'var(--status-optimal-bg)' 
+                                      : 'var(--status-in-progress-bg)',
+                                    color: event.status === 'fixed' ? 'var(--status-fixed-text)' 
+                                      : event.status === 'optimal' ? 'var(--status-optimal-text)' 
+                                      : 'var(--status-in-progress-text)'
                                   }}
                                 >
                                   {event.title}
@@ -3385,15 +3385,15 @@ export default function Home() {
               {/* Legend */}
               <div className="flex items-center gap-4 mt-3 flex-shrink-0">
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-emerald-500" />
+                  <div className="w-3 h-3 rounded-full bg-[var(--status-fixed-text)]" />
                   <span className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.fixed}</span>
         </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-gray-500" />
+                  <div className="w-3 h-3 rounded-full bg-[var(--status-optimal-text)]" />
                   <span className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.optimal}</span>
       </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-orange-500" />
+                  <div className="w-3 h-3 rounded-full bg-[var(--status-in-progress-text)]" />
                   <span className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.inProgress}</span>
     </div>
               </div>
@@ -3490,9 +3490,9 @@ export default function Home() {
                       <div className={`absolute top-0 left-0 right-0 h-1 rounded-t-[11px] ${getStatusColor(event.status)}`} />
                       <div className="flex items-center justify-between mb-4 pt-2">
                         <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
-                          event.status === 'fixed' ? 'bg-emerald-500/20 text-emerald-400' :
-                          event.status === 'optimal' ? 'bg-[var(--bg-tertiary)] text-[var(--text-muted)]' :
-                          'bg-orange-500/20 text-orange-400'
+                          event.status === 'fixed' ? 'bg-[var(--status-fixed-bg)] text-[var(--status-fixed-text)]' :
+                          event.status === 'optimal' ? 'bg-[var(--status-optimal-bg)] text-[var(--status-optimal-text)]' :
+                          'bg-[var(--status-in-progress-bg)] text-[var(--status-in-progress-text)]'
                         }`}>{getStatusLabel(event.status)}</span>
                         <div className="flex items-center gap-1">
                           <button type="button" onClick={(e) => { e.stopPropagation(); openEditModal(event) }}
@@ -3565,9 +3565,9 @@ export default function Home() {
                       <div className={`absolute top-0 left-0 right-0 h-1 rounded-t-[11px] ${getStatusColor(event.status)}`} />
                       <div className="flex items-center justify-between mb-4 pt-2">
                         <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
-                          event.status === 'fixed' ? 'bg-emerald-500/20 text-emerald-400' :
-                          event.status === 'optimal' ? 'bg-[var(--bg-tertiary)] text-[var(--text-muted)]' :
-                          'bg-orange-500/20 text-orange-400'
+                          event.status === 'fixed' ? 'bg-[var(--status-fixed-bg)] text-[var(--status-fixed-text)]' :
+                          event.status === 'optimal' ? 'bg-[var(--status-optimal-bg)] text-[var(--status-optimal-text)]' :
+                          'bg-[var(--status-in-progress-bg)] text-[var(--status-in-progress-text)]'
                         }`}>{getStatusLabel(event.status)}</span>
                         {event.type === 'private' && <span className="text-xs text-[var(--text-muted)]">Private</span>}
                       </div>
@@ -3799,9 +3799,9 @@ export default function Home() {
                         {/* Status Badge */}
                         <div className="flex items-center justify-between mb-4 pt-2">
                           <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
-                            event.status === 'fixed' ? 'bg-emerald-500/20 text-emerald-400' :
-                            event.status === 'optimal' ? 'bg-[var(--bg-tertiary)] text-[var(--text-muted)]' :
-                            'bg-orange-500/20 text-orange-400'
+                            event.status === 'fixed' ? 'bg-[var(--status-fixed-bg)] text-[var(--status-fixed-text)]' :
+                            event.status === 'optimal' ? 'bg-[var(--status-optimal-bg)] text-[var(--status-optimal-text)]' :
+                            'bg-[var(--status-in-progress-bg)] text-[var(--status-in-progress-text)]'
                           }`}>
                             {getStatusLabel(event.status)}
       </span>
@@ -4388,9 +4388,9 @@ export default function Home() {
                     <div>
                       <div className="flex items-center gap-2 mb-2">
                         <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-semibold ${
-                          selectedEvent.status === 'fixed' ? 'bg-emerald-500/20 text-emerald-400' :
-                          selectedEvent.status === 'optimal' ? 'bg-[var(--bg-tertiary)] text-[var(--text-muted)]' :
-                          'bg-orange-500/20 text-orange-400'
+                          selectedEvent.status === 'fixed' ? 'bg-[var(--status-fixed-bg)] text-[var(--status-fixed-text)]' :
+                          selectedEvent.status === 'optimal' ? 'bg-[var(--status-optimal-bg)] text-[var(--status-optimal-text)]' :
+                          'bg-[var(--status-in-progress-bg)] text-[var(--status-in-progress-text)]'
                         }`}>
                           {getStatusLabel(selectedEvent.status)}
                         </span>
