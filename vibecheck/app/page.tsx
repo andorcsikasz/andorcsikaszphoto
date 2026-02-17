@@ -1585,6 +1585,9 @@ export default function Home() {
       try {
         const profile = JSON.parse(savedProfile)
         setUserProfile({ ...profile, groups: profile.groups || [] })
+        if (profile.preferredLanguage && (profile.preferredLanguage === 'en' || profile.preferredLanguage === 'hu')) {
+          setLang(profile.preferredLanguage)
+        }
       } catch {
         localStorage.removeItem('vibecheck_profile')
       }
@@ -2335,9 +2338,7 @@ export default function Home() {
                       setTempProfile({ ...tempProfile, avatarIndex: nextIndex })
                     }}
                   >
-                    <span className="text-5xl leading-none transition-transform group-hover:scale-110 select-none" style={{ color: 'var(--text-primary)' }}>
-                      <AvatarShapeIcon shape={AVATAR_SHAPES[(tempProfile.avatarIndex ?? 0) % 3]} className="w-8 h-8 text-white" />
-                    </span>
+                    <AvatarShapeIcon shape={AVATAR_SHAPES[(tempProfile.avatarIndex ?? 0) % 3]} className="w-12 h-12" style={{ color: 'var(--accent-primary)' }} />
                     <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity bg-black/10 flex items-center justify-center">
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ color: 'var(--text-primary)' }}>
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -2500,6 +2501,32 @@ export default function Home() {
                         )}
                       </button>
                     </div>
+                  </div>
+                </div>
+
+                {/* Preferred Language */}
+                <div>
+                  <p className="text-sm mb-3 font-medium" style={{ color: 'var(--text-muted)' }}>
+                    {lang === 'en' ? 'Preferred language' : 'Előnyben részesített nyelv'}
+                  </p>
+                  <div className="flex gap-2">
+                    {(['en', 'hu'] as const).map((l) => (
+                      <button
+                        key={l}
+                        onClick={() => {
+                          setTempProfile({ ...tempProfile, preferredLanguage: l })
+                          setLang(l)
+                        }}
+                        className="flex-1 px-4 py-2 rounded-lg border text-sm font-medium transition-all"
+                        style={{
+                          borderColor: (tempProfile.preferredLanguage ?? lang) === l ? 'var(--accent-primary)' : 'var(--border-primary)',
+                          backgroundColor: (tempProfile.preferredLanguage ?? lang) === l ? 'var(--accent-light)' : 'transparent',
+                          color: (tempProfile.preferredLanguage ?? lang) === l ? 'var(--accent-primary)' : 'var(--text-muted)',
+                        }}
+                      >
+                        {l === 'en' ? 'English' : 'Magyar'}
+                      </button>
+                    ))}
                   </div>
                 </div>
                 
@@ -3123,25 +3150,8 @@ export default function Home() {
               ))}
             </div>
 
-            {/* 3. Settings: Lang + Theme */}
+            {/* 3. Settings: Theme (language moved to profile) */}
             <div className="flex items-center gap-1.5 sm:gap-2 pl-2 sm:pl-4 flex-shrink-0">
-              <div className="relative hover:opacity-90 transition-opacity">
-                <select
-                  value={lang}
-                  onChange={(e) => setLang(e.target.value as Language)}
-                  className="h-9 sm:h-10 pl-2 sm:pl-3 pr-7 sm:pr-8 rounded-lg sm:rounded-xl border text-xs sm:text-sm font-medium cursor-pointer appearance-none transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] focus:ring-offset-1"
-                  style={{ 
-                    borderColor: 'var(--border-primary)', 
-                    backgroundColor: 'var(--bg-card)',
-                    color: 'var(--text-primary)'
-                  }}
-                >
-                  <option value="en">EN</option>
-                  <option value="hu">HU</option>
-                </select>
-                <ChevronDownIcon className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: 'var(--text-muted)' }} />
-              </div>
-
               <button
                 onClick={toggleTheme}
                 className="h-9 sm:h-10 p-2 sm:px-3 rounded-lg sm:rounded-xl border flex items-center gap-2 transition-colors hover:bg-[var(--bg-hover)]"
@@ -3174,7 +3184,7 @@ export default function Home() {
                 </button>
                 <button
                   onClick={() => {
-                    setTempProfile({ ...userProfile, groups: userProfile.groups || [] })
+                    setTempProfile({ ...userProfile, groups: userProfile.groups || [], preferredLanguage: userProfile.preferredLanguage ?? lang })
                     setShowProfileModal(true)
                   }}
                   className="h-9 sm:h-10 flex items-center gap-2 px-2 sm:px-3 rounded-lg sm:rounded-xl border transition-colors hover:bg-[var(--bg-hover)]"
