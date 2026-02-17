@@ -94,21 +94,9 @@ export const TASK_SUGGESTIONS: Record<
   ],
 }
 
-/** Profile emojis for registration */
-export const AVATARS = [
-  '🚗',
-  '⚽',
-  '☀️',
-  '🌸',
-  '🌳',
-  '🐱',
-  '🐕',
-  '⭐',
-  '🌙',
-  '🐟',
-  '🏠',
-  '❤️',
-]
+/** Profile avatar shape options – filled square, circle, hexagon */
+export const AVATAR_SHAPES = ['square', 'circle', 'hexagon'] as const
+export type AvatarShape = (typeof AVATAR_SHAPES)[number]
 
 /** Gamification level thresholds */
 export const LEVEL_THRESHOLDS = [0, 100, 300, 600, 1000] as const

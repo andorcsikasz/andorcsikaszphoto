@@ -97,6 +97,7 @@ export interface UserProfile {
   name: string
   revolutTag?: string
   avatarIndex?: number
+  preferredLanguage?: 'en' | 'hu'
   email?: string
   userId?: string
   googleConnected?: boolean
