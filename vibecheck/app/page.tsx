@@ -3932,64 +3932,84 @@ export default function Home() {
                     </div>
                   </div>
                   
-                  {/* Status Stats Grid - Clickable */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => setDashboardFilter('fixed')}
-                      className="rounded-xl border p-6 text-left transition-all group"
-                      style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
-                    >
-                      <div className="flex items-center gap-4">
-                        <CheckCircleIcon className="w-6 h-6 flex-shrink-0 transition-colors group-hover:opacity-80" style={{ color: 'var(--accent-primary)' }} />
-                        <div>
-                          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.fixed}</p>
-                          <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{events.filter(e => e.status === 'fixed').length}</p>
+                  {/* Status Stats Grid - Clickable filters */}
+                  <div className="mb-3">
+                    <p className="text-xs font-medium uppercase tracking-wider mb-3" style={{ color: 'var(--text-muted)' }}>
+                      {lang === 'en' ? 'Filter by status' : 'Státusz szerinti szűrés'}
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => setDashboardFilter('fixed')}
+                        className="rounded-xl border-2 p-5 text-left transition-all group cursor-pointer flex items-center justify-between"
+                        style={{ 
+                          backgroundColor: dashboardFilter === 'fixed' ? 'var(--accent-light)' : 'var(--bg-card)', 
+                          borderColor: dashboardFilter === 'fixed' ? 'var(--accent-primary)' : 'var(--border-primary)' 
+                        }}
+                        onMouseEnter={(e) => { if (dashboardFilter !== 'fixed') e.currentTarget.style.borderColor = 'var(--accent-primary)' }}
+                        onMouseLeave={(e) => { if (dashboardFilter !== 'fixed') e.currentTarget.style.borderColor = 'var(--border-primary)' }}
+                      >
+                        <div className="flex items-center gap-4">
+                          <CheckCircleIcon className="w-6 h-6 flex-shrink-0" style={{ color: 'var(--accent-primary)' }} />
+                          <div>
+                            <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{t.fixed}</p>
+                            <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{events.filter(e => e.status === 'fixed').length}</p>
+                          </div>
                         </div>
-                      </div>
-                      <p className="text-xs mt-3" style={{ color: 'var(--text-muted)' }}>
-                        {lang === 'en' ? 'Click to view →' : 'Kattints a megtekintéshez →'}
-                      </p>
-                    </motion.button>
+                        <ChevronRightIcon className="w-5 h-5 flex-shrink-0 opacity-60 group-hover:opacity-100 transition-opacity" style={{ color: 'var(--accent-primary)' }} />
+                        <span className="sr-only">{lang === 'en' ? 'Click to view' : 'Kattints a megtekintéshez'}</span>
+                      </motion.button>
 
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => setDashboardFilter('in-progress')}
-                      className="rounded-xl border p-6 text-left transition-all group"
-                      style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
-                    >
-                      <div className="flex items-center gap-4">
-                        <ClockIcon className="w-6 h-6 flex-shrink-0 transition-colors group-hover:opacity-80" style={{ color: 'var(--accent-primary)' }} />
-                        <div>
-                          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.inProgress}</p>
-                          <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{events.filter(e => e.status === 'in-progress').length}</p>
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => setDashboardFilter('in-progress')}
+                        className="rounded-xl border-2 p-5 text-left transition-all group cursor-pointer flex items-center justify-between"
+                        style={{ 
+                          backgroundColor: dashboardFilter === 'in-progress' ? 'var(--accent-light)' : 'var(--bg-card)', 
+                          borderColor: dashboardFilter === 'in-progress' ? 'var(--accent-primary)' : 'var(--border-primary)' 
+                        }}
+                        onMouseEnter={(e) => { if (dashboardFilter !== 'in-progress') e.currentTarget.style.borderColor = 'var(--accent-primary)' }}
+                        onMouseLeave={(e) => { if (dashboardFilter !== 'in-progress') e.currentTarget.style.borderColor = 'var(--border-primary)' }}
+                      >
+                        <div className="flex items-center gap-4">
+                          <ClockIcon className="w-6 h-6 flex-shrink-0" style={{ color: 'var(--accent-primary)' }} />
+                          <div>
+                            <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{t.inProgress}</p>
+                            <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{events.filter(e => e.status === 'in-progress').length}</p>
+                          </div>
                         </div>
-                      </div>
-                      <p className="text-xs mt-3" style={{ color: 'var(--text-muted)' }}>
-                        {lang === 'en' ? 'Click to view →' : 'Kattints a megtekintéshez →'}
-                      </p>
-                    </motion.button>
+                        <ChevronRightIcon className="w-5 h-5 flex-shrink-0 opacity-60 group-hover:opacity-100 transition-opacity" style={{ color: 'var(--accent-primary)' }} />
+                        <span className="sr-only">{lang === 'en' ? 'Click to view' : 'Kattints a megtekintéshez'}</span>
+                      </motion.button>
 
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => setDashboardFilter('optimal')}
-                      className="rounded-xl border p-6 text-left transition-all group"
-                      style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
-                    >
-                      <div className="flex items-center gap-4">
-                        <UserGroupIcon className="w-6 h-6 flex-shrink-0" style={{ color: 'var(--accent-primary)' }} />
-                        <div>
-                          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>{t.optimal}</p>
-                          <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{events.filter(e => e.status === 'optimal').length}</p>
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => setDashboardFilter('optimal')}
+                        className="rounded-xl border-2 p-5 text-left transition-all group cursor-pointer flex items-center justify-between"
+                        style={{ 
+                          backgroundColor: dashboardFilter === 'optimal' ? 'var(--accent-light)' : 'var(--bg-card)', 
+                          borderColor: dashboardFilter === 'optimal' ? 'var(--accent-primary)' : 'var(--border-primary)' 
+                        }}
+                        onMouseEnter={(e) => { if (dashboardFilter !== 'optimal') e.currentTarget.style.borderColor = 'var(--accent-primary)' }}
+                        onMouseLeave={(e) => { if (dashboardFilter !== 'optimal') e.currentTarget.style.borderColor = 'var(--border-primary)' }}
+                      >
+                        <div className="flex items-center gap-4">
+                          <UserGroupIcon className="w-6 h-6 flex-shrink-0" style={{ color: 'var(--accent-primary)' }} />
+                          <div>
+                            <p className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{t.optimal}</p>
+                            <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{events.filter(e => e.status === 'optimal').length}</p>
+                          </div>
                         </div>
-                      </div>
-                      <p className="text-xs mt-3" style={{ color: 'var(--text-muted)' }}>
-                        {lang === 'en' ? 'Click to view →' : 'Kattints a megtekintéshez →'}
-                      </p>
-                    </motion.button>
+                        <ChevronRightIcon className="w-5 h-5 flex-shrink-0 opacity-60 group-hover:opacity-100 transition-opacity" style={{ color: 'var(--accent-primary)' }} />
+                        <span className="sr-only">{lang === 'en' ? 'Click to view' : 'Kattints a megtekintéshez'}</span>
+                      </motion.button>
+                    </div>
+                    <p className="text-xs mt-2" style={{ color: 'var(--text-muted)' }}>
+                      {lang === 'en' ? 'Click a card to filter events below' : 'Kattints egy kártyára a szűréshez'}
+                    </p>
                   </div>
 
                   {/* Task Control Cells — THINGS TO DO (emerald) */}
