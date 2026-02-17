@@ -10,6 +10,7 @@ import {
   EnvelopeIcon,
   PaperAirplaneIcon,
   PlusIcon,
+  StarIcon,
 } from '@heroicons/react/24/outline'
 
 export interface Connection {
@@ -29,6 +30,8 @@ interface ConnectionsManagerProps {
   userId: string
   selectedIds: string[]
   onSelectionChange: (ids: string[]) => void
+  coHostIds?: string[]
+  onCoHostChange?: (ids: string[]) => void
   lang?: 'en' | 'hu'
   compact?: boolean
 }
@@ -43,6 +46,8 @@ const translations = {
     noConnections: 'No connections yet',
     addFirst: 'Add friends or family to invite them to events',
     inviteFromConnections: 'Invite from connections',
+    coHost: 'Co-host',
+    setCoHost: 'Set as co-host',
     selectAll: 'Select all',
     deselectAll: 'Deselect all',
     sendEmail: 'Send email',
@@ -57,6 +62,8 @@ const translations = {
     noConnections: 'Még nincs kapcsolat',
     addFirst: 'Adj hozzá barátokat vagy családot, hogy meghívhasd őket',
     inviteFromConnections: 'Meghívás a kapcsolatokból',
+    coHost: 'Társszervező',
+    setCoHost: 'Társszervezőként',
     selectAll: 'Összes kijelölése',
     deselectAll: 'Kijelölés törlése',
     sendEmail: 'Email küldése',
@@ -68,6 +75,8 @@ export default function ConnectionsManager({
   userId,
   selectedIds,
   onSelectionChange,
+  coHostIds = [],
+  onCoHostChange,
   lang = 'en',
   compact = false,
 }: ConnectionsManagerProps) {
@@ -189,6 +198,15 @@ export default function ConnectionsManager({
     onSelectionChange(selectedIds.filter((id) => !connIds.has(id)))
   }
 
+  const toggleCoHost = (id: string) => {
+    if (!onCoHostChange) return
+    if (coHostIds.includes(id)) {
+      onCoHostChange(coHostIds.filter((x) => x !== id))
+    } else {
+      onCoHostChange([...coHostIds, id])
+    }
+  }
+
   if (loading && connections.length === 0) {
     return (
       <div className="py-4 text-sm" style={{ color: 'var(--text-muted)' }}>
@@ -203,6 +221,11 @@ export default function ConnectionsManager({
         <h4 className="font-semibold flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
           <UserGroupIcon className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
           {t.inviteFromConnections}
+          {onCoHostChange && (
+            <span className="text-xs font-normal" style={{ color: 'var(--text-muted)' }}>
+              — {lang === 'en' ? 'star to add as co-host' : 'csillag a társszervezőhöz'}
+            </span>
+          )}
         </h4>
         {connections.length > 0 && (
           <div className="flex gap-1">
@@ -425,11 +448,29 @@ export default function ConnectionsManager({
                   <span className="text-sm truncate" style={{ color: 'var(--text-primary)' }}>
                     {c.user.name}
                   </span>
+                  {coHostIds.includes(c.user.id) && (
+                    <span className="text-xs shrink-0 px-1.5 py-0.5 rounded flex items-center gap-0.5" style={{ backgroundColor: 'var(--accent-light)', color: 'var(--accent-primary)' }}>
+                      <StarIcon className="w-3 h-3 fill-current" />
+                      {t.coHost}
+                    </span>
+                  )}
                   <span className="text-xs shrink-0 px-1.5 py-0.5 rounded" style={{ backgroundColor: 'var(--bg-secondary)', color: 'var(--text-muted)' }}>
                     {c.type}
                   </span>
                 </label>
                 {!compact && (
+                  <>
+                    {onCoHostChange && (
+                      <button
+                        type="button"
+                        onClick={() => toggleCoHost(c.user.id)}
+                        className={`p-1.5 rounded transition-colors ${coHostIds.includes(c.user.id) ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}
+                        style={{ color: coHostIds.includes(c.user.id) ? 'var(--accent-primary)' : 'var(--text-muted)' }}
+                        title={t.setCoHost}
+                      >
+                        <StarIcon className={`w-4 h-4 ${coHostIds.includes(c.user.id) ? 'fill-current' : ''}`} />
+                      </button>
+                    )}
                   <div className="flex items-center gap-0.5 shrink-0">
                     {c.user.email && (
                       <a
@@ -452,6 +493,7 @@ export default function ConnectionsManager({
                       <XMarkIcon className="w-4 h-4" />
                     </button>
                   </div>
+                  </>
                 )}
               </div>
             ))}
