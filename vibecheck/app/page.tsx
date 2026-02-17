@@ -3555,7 +3555,15 @@ export default function Home() {
                     </h3>
                   </div>
                   <div className={eventsViewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : 'flex overflow-x-auto gap-4 pb-2 -mx-1 px-1 snap-x snap-mandatory '}>
-                  {friendsFamilyCompanyEventsForDisplay.map((event, index) => {
+                  {[...friendsFamilyCompanyEventsForDisplay]
+                    .sort((a, b) => {
+                      const aDeclined = getMyRsvp(a) === 'declined'
+                      const bDeclined = getMyRsvp(b) === 'declined'
+                      if (aDeclined && !bDeclined) return 1
+                      if (!aDeclined && bDeclined) return -1
+                      return 0
+                    })
+                    .map((event, index) => {
                     const cantAttend = getMyRsvp(event) === 'declined'
                     return (
                     <motion.div
@@ -3634,7 +3642,15 @@ export default function Home() {
                     </h3>
                   </div>
                   <div className={eventsViewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : 'flex overflow-x-auto gap-4 pb-2 -mx-1 px-1 snap-x snap-mandatory '}>
-                  {openSuggestedEventsForDisplay.map((event, index) => {
+                  {[...openSuggestedEventsForDisplay]
+                    .sort((a, b) => {
+                      const aDeclined = getMyRsvp(a) === 'declined'
+                      const bDeclined = getMyRsvp(b) === 'declined'
+                      if (aDeclined && !bDeclined) return 1
+                      if (!aDeclined && bDeclined) return -1
+                      return 0
+                    })
+                    .map((event, index) => {
                     const cantAttend = getMyRsvp(event) === 'declined'
                     return (
                     <motion.div
@@ -4995,9 +5011,17 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Participants List */}
+                {/* Participants List - declined at end of queue */}
                 <div className="space-y-2">
-                  {selectedEvent.participants.map((p) => (
+                  {[...selectedEvent.participants]
+                    .sort((a, b) => {
+                      const aDeclined = a.status === 'declined'
+                      const bDeclined = b.status === 'declined'
+                      if (aDeclined && !bDeclined) return 1
+                      if (!aDeclined && bDeclined) return -1
+                      return 0
+                    })
+                    .map((p) => (
                     <div
                       key={p.id}
                       className="rounded-xl p-4 flex items-center justify-between transition-colors cursor-pointer"
