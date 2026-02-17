@@ -893,7 +893,7 @@ export default function Home() {
   const [theme, setTheme] = useState<'dark' | 'light' | 'system'>('system')
   
   const [lang, setLang] = useState<Language>('en')
-  const [activeTab, setActiveTab] = useState<'calendar' | 'events' | 'dashboard' | 'ai'>('calendar')
+  const [activeTab, setActiveTab] = useState<'calendar' | 'events' | 'dashboard' | 'newEvent'>('calendar')
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const [showParticipantsModal, setShowParticipantsModal] = useState(false)
   const [showOrganizerStatsModal, setShowOrganizerStatsModal] = useState(false)
