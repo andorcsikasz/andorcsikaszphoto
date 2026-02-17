@@ -149,7 +149,7 @@ export default function EventsPage() {
       <nav className="border-b border-[#2A2A2A] bg-[#121212]/95 backdrop-blur-xl sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <Link href="/" className="text-2xl font-black text-white tracking-tighter" style={{ fontFamily: 'var(--font-logo)', letterSpacing: '-0.05em', fontWeight: 700, minWidth: '140px', minHeight: '1.2em', lineHeight: '1.2' }}>
+            <Link href="/" className="text-2xl font-extrabold italic text-white tracking-tighter" style={{ fontFamily: 'var(--font-logo)', letterSpacing: '-0.05em', fontWeight: 800, minWidth: '140px', minHeight: '1.2em', lineHeight: '1.2' }}>
               GatherGo
             </Link>
             <div className="flex items-center gap-4">

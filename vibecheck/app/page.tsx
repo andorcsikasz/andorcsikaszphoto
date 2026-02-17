@@ -413,7 +413,7 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
             y: { duration: 1.1, ease: [0.16, 1, 0.3, 1] },
             x: { duration: 1.3, ease: [0.16, 1, 0.3, 1] },
           }}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"
+          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold italic"
           style={{ 
             fontFamily: "var(--font-logo)",
             color: 'var(--text-primary)',
@@ -436,7 +436,7 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
             duration: 1.1,
             ease: [0.16, 1, 0.3, 1],
           }}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold"
+          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold italic"
           style={{ 
             fontFamily: "var(--font-logo)",
             color: 'var(--accent-primary)',
@@ -568,7 +568,7 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
       <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 border-b backdrop-blur-xl"
         style={{ backgroundColor: 'var(--bg-nav)', borderColor: 'var(--border-primary)' }}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="text-2xl font-black tracking-tighter" style={{ color: 'var(--accent-primary)' }}>
+          <div className="text-2xl font-extrabold italic tracking-tighter" style={{ color: 'var(--accent-primary)', fontFamily: 'var(--font-logo)' }}>
             GatherGo
           </div>
           <div className="flex items-center gap-4">
@@ -829,7 +829,7 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <h3 className="font-bold mb-4" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-logo)' }}>GatherGo</h3>
+              <h3 className="font-extrabold italic mb-4" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-logo)' }}>GatherGo</h3>
               <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
                 {lang === 'en' 
                   ? 'Collaborative event management made simple.'
@@ -3022,7 +3022,7 @@ export default function Home() {
             <div className="flex items-baseline min-w-0 flex-shrink-0 pr-4 sm:pr-6">
               <button
                 onClick={handleLogoClick}
-                className="text-3xl sm:text-4xl font-black tracking-tighter cursor-pointer hover:opacity-80 transition-opacity select-none"
+                className="text-3xl sm:text-4xl font-extrabold italic tracking-tighter cursor-pointer hover:opacity-80 transition-opacity select-none"
                 style={{ fontFamily: 'var(--font-logo)', color: 'var(--text-primary)', background: 'none', border: 'none', padding: 0 }}
               >
                 GatherGo

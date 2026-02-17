@@ -946,7 +946,7 @@ export default function ManagePage() {
           <div className="flex items-center justify-between">
             <Link 
               href="/" 
-              className="text-xl font-bold tracking-tight" 
+              className="text-xl font-extrabold italic tracking-tight" 
               style={{ 
                 color: '#000',
                 letterSpacing: '-0.02em',
