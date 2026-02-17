@@ -6,7 +6,6 @@
 
 import { useState, useEffect, useRef, useCallback, type CSSProperties } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { AIChatBox, type Message as AIChatMessage } from '@/components/AIChatBox'
 import {
   CalendarIcon,
   ChartBarIcon,
