@@ -459,7 +459,7 @@ export default function ConnectionsManager({
                   </span>
                 </label>
                 {!compact && (
-                  <>
+                  <div className="flex items-center gap-0.5 shrink-0">
                     {onCoHostChange && (
                       <button
                         type="button"
@@ -471,7 +471,6 @@ export default function ConnectionsManager({
                         <StarIcon className={`w-4 h-4 ${coHostIds.includes(c.user.id) ? 'fill-current' : ''}`} />
                       </button>
                     )}
-                  <div className="flex items-center gap-0.5 shrink-0">
                     {c.user.email && (
                       <a
                         href={`mailto:${c.user.email}`}
@@ -493,7 +492,6 @@ export default function ConnectionsManager({
                       <XMarkIcon className="w-4 h-4" />
                     </button>
                   </div>
-                  </>
                 )}
               </div>
             ))}

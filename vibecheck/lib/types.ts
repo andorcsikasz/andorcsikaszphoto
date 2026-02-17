@@ -72,6 +72,7 @@ export interface Event {
   currency?: string
   organizerId: string
   organizerName: string
+  coHostNames?: string[]
   status: EventStatus
   tasks?: { id: number; title: string; completed: boolean; assignee?: string }[]
   participants?: {

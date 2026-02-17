@@ -1438,6 +1438,7 @@ export default function Home() {
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           isInviteOnly: newEvent.type === 'private',
           organizerId: userProfile?.userId || userProfile?.name || 'user1',
+          coHostIds: selectedCoHostIds,
           participantIds: selectedConnectionIds,
           inviteeEmails: newEvent.invitees,
         }
@@ -1475,6 +1476,7 @@ export default function Home() {
             const startDate = e.startDate || ''
             const dateStr = typeof startDate === 'string' ? startDate.split('T')[0] : new Date(startDate).toISOString().split('T')[0]
             const participantCount = e._count?.participants ?? 0
+            const coHostNames = (e.coHosts || []).map((ch: { user: { name: string } }) => ch.user?.name).filter(Boolean)
             return {
               id: e.id,
               title: e.title,
@@ -1486,6 +1488,7 @@ export default function Home() {
               confirmedAttendees: participantCount,
               organizerId: e.organizerId,
               organizerName: e.organizer?.name || 'Unknown',
+              coHostNames: coHostNames.length > 0 ? coHostNames : undefined,
               readiness: participantCount > 0 ? Math.round((participantCount / (participantCount + 1)) * 100) : 0,
               hasVoting: (e._count?.decisions || 0) > 0,
               hasTasks: false,
@@ -3495,7 +3498,7 @@ export default function Home() {
                         className="text-sm font-bold mb-2 text-left hover:underline cursor-pointer"
                         style={{ color: 'var(--accent-primary)' }}
                       >
-                        {event.organizerName}
+                        {event.organizerName}{event.coHostNames?.length ? ` ${lang === 'en' ? '&' : 'és'} ${event.coHostNames.join(', ')}` : ''}
                       </button>
                       <div className="flex items-center gap-2 text-sm mb-2" style={{ color: 'var(--text-muted)' }}>
                         <CalendarIcon className="w-4 h-4" />
@@ -3562,7 +3565,7 @@ export default function Home() {
                         className="text-sm font-bold mb-2 text-left hover:underline cursor-pointer"
                         style={{ color: 'var(--accent-primary)' }}
                       >
-                        {event.organizerName}
+                        {event.organizerName}{event.coHostNames?.length ? ` ${lang === 'en' ? '&' : 'és'} ${event.coHostNames.join(', ')}` : ''}
                       </button>
                       <div className="flex items-center gap-2 text-sm mb-2" style={{ color: 'var(--text-muted)' }}>
                         <CalendarIcon className="w-4 h-4" />
@@ -3633,7 +3636,7 @@ export default function Home() {
                         className="text-sm font-bold mb-2 text-left hover:underline cursor-pointer"
                         style={{ color: 'var(--accent-primary)' }}
                       >
-                        {event.organizerName}
+                        {event.organizerName}{event.coHostNames?.length ? ` ${lang === 'en' ? '&' : 'és'} ${event.coHostNames.join(', ')}` : ''}
                       </button>
                       <div className="flex items-center gap-2 text-sm mb-2" style={{ color: 'var(--text-muted)' }}>
                         <CalendarIcon className="w-4 h-4" />
@@ -4261,7 +4264,7 @@ export default function Home() {
                                   <div className="flex-1 min-w-0">
                                     <p className="font-bold truncate">{event.title}</p>
                                     <p className={`text-sm ${theme === 'light' ? 'text-[var(--text-muted)]' : 'text-[var(--text-muted)]'}`}>
-                                      {lang === 'en' ? 'by' : 'szervező:'} {event.organizerName}
+                                      {lang === 'en' ? 'by' : 'szervező:'} {event.organizerName}{event.coHostNames?.length ? ` ${lang === 'en' ? '&' : 'és'} ${event.coHostNames.join(', ')}` : ''}
                                     </p>
                                   </div>
                                   <ChevronRightIcon className={`w-4 h-4 flex-shrink-0 ${theme === 'light' ? 'text-[var(--text-muted)]' : 'text-[var(--text-muted)]'}`} />
@@ -4396,7 +4399,7 @@ export default function Home() {
                         title={t.viewOrganizerStats}
                       >
                         <ChartBarIcon className="w-4 h-4 opacity-70 group-hover:opacity-100" />
-                        {selectedEvent.organizerName}
+                        {selectedEvent.organizerName}{selectedEvent.coHostNames?.length ? ` ${lang === 'en' ? '&' : 'és'} ${selectedEvent.coHostNames.join(', ')}` : ''}
                         <span className="text-xs font-normal opacity-70">({lang === 'en' ? 'view stats' : 'statisztika'})</span>
                       </button>
                     </div>
@@ -4494,7 +4497,7 @@ export default function Home() {
                           style={{ color: 'var(--accent-primary)' }}
                         >
                           <ChartBarIcon className="w-4 h-4" />
-                          {selectedEvent.organizerName}
+                          {selectedEvent.organizerName}{selectedEvent.coHostNames?.length ? ` ${lang === 'en' ? '&' : 'és'} ${selectedEvent.coHostNames.join(', ')}` : ''}
                           <span className="text-xs font-normal opacity-80">({lang === 'en' ? 'view stats' : 'statisztika'})</span>
                         </button>
                         <p className="text-sm max-w-md mx-auto" style={{ color: 'var(--accent-primary)' }}>{t.privateEventRestricted}</p>
@@ -6676,6 +6679,8 @@ export default function Home() {
                           userId={userProfile.userId || userProfile.name}
                           selectedIds={selectedConnectionIds}
                           onSelectionChange={setSelectedConnectionIds}
+                          coHostIds={selectedCoHostIds}
+                          onCoHostChange={setSelectedCoHostIds}
                           lang={lang}
                         />
                       )}
