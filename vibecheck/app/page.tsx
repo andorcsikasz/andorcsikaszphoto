@@ -3092,11 +3092,18 @@ export default function Home() {
                   }}
                 />
               )}
-              {(['calendar', 'events', 'dashboard', 'ai'] as const).map((tab) => (
+              {(['calendar', 'events', 'dashboard', 'newEvent'] as const).map((tab) => (
                 <button
                   key={tab}
                   ref={(el) => { tabRefsMap.current[tab] = el }}
-                  onClick={() => setActiveTab(tab)}
+                  onClick={() => {
+                    if (tab === 'newEvent') {
+                      setShowCreateModal(true)
+                      setActiveTab('events')
+                    } else {
+                      setActiveTab(tab)
+                    }
+                  }}
                   className="relative px-3 sm:px-4 md:px-5 py-2 text-xs sm:text-sm font-medium rounded-lg flex items-center gap-1.5 sm:gap-2 z-10 transition-colors duration-200 flex-shrink-0"
                   style={activeTab === tab && tabIndicator.width === 0 ? { backgroundColor: 'var(--accent-primary)', borderRadius: '0.5rem' } : undefined}
                 >
@@ -3107,7 +3114,7 @@ export default function Home() {
                     {tab === 'calendar' && <CalendarIcon className="w-4 h-4" />}
                     {tab === 'events' && <Squares2X2Icon className="w-4 h-4" />}
                     {tab === 'dashboard' && <ChartBarIcon className="w-4 h-4" />}
-                    {tab === 'ai' && <SparklesIcon className="w-4 h-4" />}
+                    {tab === 'newEvent' && <PlusIcon className="w-4 h-4" />}
                     {t[tab]}
                   </span>
                 </button>
@@ -3200,7 +3207,7 @@ export default function Home() {
 
       {/* Main Content */}
       <main className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 min-h-0 min-w-0 w-full max-w-[100vw] flex flex-col py-6 overflow-x-hidden ${
-        (activeTab === 'calendar' || activeTab === 'ai') ? 'overflow-hidden' : ''
+        activeTab === 'calendar' ? 'overflow-hidden' : ''
       }`}>
         <div className="flex-1 min-h-0 flex flex-col">
         <AnimatePresence mode="wait" initial={false}>
