@@ -58,6 +58,7 @@ model Event {
   organizerId String
   organizer   User     @relation("Organizer", fields: [organizerId], references: [id], onDelete: Cascade)
   participants User[]  @relation("EventParticipants")
+  coHostIds   Json?    // JSON array of user IDs: ["userId1", "userId2"]
 
   decisions    Decision[]
   discussions  Discussion[]
