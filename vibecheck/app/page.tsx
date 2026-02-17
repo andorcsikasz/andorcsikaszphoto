@@ -3883,58 +3883,52 @@ export default function Home() {
       </div>
               ) : (
                 <>
-                  {/* Top Metrics Row */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                    <div 
-                      className="p-5 rounded-xl border"
-                      style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
-                    >
-                      <div className="flex items-center gap-3 mb-2">
-                        <CalendarIcon className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--accent-primary)' }} />
-                        <span className="text-sm" style={{ color: 'var(--text-muted)' }}>
+                  {/* Data-only stats – overview, not clickable */}
+                  <div className="mb-3">
+                    <p className="text-xs font-medium uppercase tracking-wider mb-3" style={{ color: 'var(--text-muted)' }}>
+                      {lang === 'en' ? 'Overview' : 'Áttekintés'}
+                    </p>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      <div 
+                        className="p-4 rounded-lg"
+                        style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-secondary)', borderWidth: '1px', borderStyle: 'solid' }}
+                      >
+                        <CalendarIcon className="w-4 h-4 flex-shrink-0 mb-2 opacity-60" style={{ color: 'var(--text-muted)' }} />
+                        <span className="text-xs block" style={{ color: 'var(--text-muted)' }}>
                           {lang === 'en' ? 'Total Events' : 'Összes esemény'}
                         </span>
+                        <p className="text-2xl font-bold mt-0.5" style={{ color: 'var(--text-primary)' }}>{totalEvents}</p>
                       </div>
-                      <p className="text-3xl font-bold" style={{ color: 'var(--text-primary)' }}>{totalEvents}</p>
-                    </div>
-                    
-                    <div 
-                      className="p-5 rounded-xl border"
-                      style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
-                    >
-                      <div className="flex items-center gap-3 mb-2">
-                        <UserGroupIcon className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--accent-primary)' }} />
-                        <span className="text-sm" style={{ color: 'var(--text-muted)' }}>
+                      <div 
+                        className="p-4 rounded-lg"
+                        style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-secondary)', borderWidth: '1px', borderStyle: 'solid' }}
+                      >
+                        <UserGroupIcon className="w-4 h-4 flex-shrink-0 mb-2 opacity-60" style={{ color: 'var(--text-muted)' }} />
+                        <span className="text-xs block" style={{ color: 'var(--text-muted)' }}>
                           {lang === 'en' ? 'Total Attendees' : 'Összes résztvevő'}
                         </span>
+                        <p className="text-2xl font-bold mt-0.5" style={{ color: 'var(--text-primary)' }}>{totalAttendees}</p>
                       </div>
-                      <p className="text-3xl font-bold" style={{ color: 'var(--text-primary)' }}>{totalAttendees}</p>
-                    </div>
-                    
-                    <div 
-                      className="p-5 rounded-xl border"
-                      style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
-                    >
-                      <div className="flex items-center gap-3 mb-2">
-                        <ArrowTrendingUpIcon className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--accent-primary)' }} />
-                        <span className="text-sm" style={{ color: 'var(--text-muted)' }}>
+                      <div 
+                        className="p-4 rounded-lg"
+                        style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-secondary)', borderWidth: '1px', borderStyle: 'solid' }}
+                      >
+                        <ArrowTrendingUpIcon className="w-4 h-4 flex-shrink-0 mb-2 opacity-60" style={{ color: 'var(--text-muted)' }} />
+                        <span className="text-xs block" style={{ color: 'var(--text-muted)' }}>
                           {lang === 'en' ? 'Avg Readiness' : 'Átl. készültség'}
                         </span>
+                        <p className="text-2xl font-bold mt-0.5" style={{ color: 'var(--text-primary)' }}>{avgReadiness}%</p>
                       </div>
-                      <p className="text-3xl font-bold" style={{ color: 'var(--text-primary)' }}>{avgReadiness}%</p>
-                    </div>
-                    
-                    <div 
-                      className="p-5 rounded-xl border"
-                      style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }}
-                    >
-                      <div className="flex items-center gap-3 mb-2">
-                        <FireIcon className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--accent-primary)' }} />
-                        <span className="text-sm" style={{ color: 'var(--text-muted)' }}>
+                      <div 
+                        className="p-4 rounded-lg"
+                        style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-secondary)', borderWidth: '1px', borderStyle: 'solid' }}
+                      >
+                        <FireIcon className="w-4 h-4 flex-shrink-0 mb-2 opacity-60" style={{ color: 'var(--text-muted)' }} />
+                        <span className="text-xs block" style={{ color: 'var(--text-muted)' }}>
                           {lang === 'en' ? 'Upcoming' : 'Közelgő'}
                         </span>
+                        <p className="text-2xl font-bold mt-0.5" style={{ color: 'var(--text-primary)' }}>{upcomingCount}</p>
                       </div>
-                      <p className="text-3xl font-bold" style={{ color: 'var(--text-primary)' }}>{upcomingCount}</p>
                     </div>
                   </div>
                   
