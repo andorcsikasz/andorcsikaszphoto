@@ -2142,15 +2142,23 @@ export default function Home() {
                       autoFocus
                     />
                     
-              <StarBorder className="mt-12" disabled={!tempProfile.name}>
-                <button
-                      onClick={() => tempProfile.name && setOnboardingStep(2)}
-                      disabled={!tempProfile.name}
-                      className="w-full px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 disabled:bg-gray-700 disabled:text-white/60 disabled:cursor-not-allowed transition-all"
-                    >
-                      {lang === 'en' ? 'Continue' : 'Tovább'}
-                </button>
-              </StarBorder>
+                    <div className="flex items-center justify-center gap-4 mt-12">
+                      <button
+                        onClick={() => setOnboardingStep(0)}
+                        className="px-6 py-3 text-white/80 hover:text-white transition-colors"
+                      >
+                        {lang === 'en' ? 'Back' : 'Vissza'}
+                      </button>
+                      <StarBorder disabled={!tempProfile.name}>
+                        <button
+                          onClick={() => tempProfile.name && setOnboardingStep(2)}
+                          disabled={!tempProfile.name}
+                          className="w-full px-8 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 disabled:bg-gray-700 disabled:text-white/60 disabled:cursor-not-allowed transition-all"
+                        >
+                          {lang === 'en' ? 'Continue' : 'Tovább'}
+                        </button>
+                      </StarBorder>
+                    </div>
                   </motion.div>
                 )}
 
