@@ -3890,8 +3890,8 @@ export default function Home() {
                     </p>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                       <div 
-                        className="p-4 rounded-lg"
-                        style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-secondary)', borderWidth: '1px', borderStyle: 'solid' }}
+                        className="p-4 rounded-lg border cursor-default select-none"
+                        style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-secondary)' }}
                       >
                         <CalendarIcon className="w-4 h-4 flex-shrink-0 mb-2 opacity-60" style={{ color: 'var(--text-muted)' }} />
                         <span className="text-xs block" style={{ color: 'var(--text-muted)' }}>
@@ -3900,8 +3900,8 @@ export default function Home() {
                         <p className="text-2xl font-bold mt-0.5" style={{ color: 'var(--text-primary)' }}>{totalEvents}</p>
                       </div>
                       <div 
-                        className="p-4 rounded-lg"
-                        style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-secondary)', borderWidth: '1px', borderStyle: 'solid' }}
+                        className="p-4 rounded-lg border cursor-default select-none"
+                        style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-secondary)' }}
                       >
                         <UserGroupIcon className="w-4 h-4 flex-shrink-0 mb-2 opacity-60" style={{ color: 'var(--text-muted)' }} />
                         <span className="text-xs block" style={{ color: 'var(--text-muted)' }}>
@@ -3910,8 +3910,8 @@ export default function Home() {
                         <p className="text-2xl font-bold mt-0.5" style={{ color: 'var(--text-primary)' }}>{totalAttendees}</p>
                       </div>
                       <div 
-                        className="p-4 rounded-lg"
-                        style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-secondary)', borderWidth: '1px', borderStyle: 'solid' }}
+                        className="p-4 rounded-lg border cursor-default select-none"
+                        style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-secondary)' }}
                       >
                         <ArrowTrendingUpIcon className="w-4 h-4 flex-shrink-0 mb-2 opacity-60" style={{ color: 'var(--text-muted)' }} />
                         <span className="text-xs block" style={{ color: 'var(--text-muted)' }}>
@@ -3920,8 +3920,8 @@ export default function Home() {
                         <p className="text-2xl font-bold mt-0.5" style={{ color: 'var(--text-primary)' }}>{avgReadiness}%</p>
                       </div>
                       <div 
-                        className="p-4 rounded-lg"
-                        style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-secondary)', borderWidth: '1px', borderStyle: 'solid' }}
+                        className="p-4 rounded-lg border cursor-default select-none"
+                        style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-secondary)' }}
                       >
                         <FireIcon className="w-4 h-4 flex-shrink-0 mb-2 opacity-60" style={{ color: 'var(--text-muted)' }} />
                         <span className="text-xs block" style={{ color: 'var(--text-muted)' }}>
@@ -4022,14 +4022,15 @@ export default function Home() {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => setTaskViewFilter(v => v === 'assigned-to-me' ? null : 'assigned-to-me')}
-                      className={`rounded-lg border p-4 text-left transition-all ${
+                      className={`rounded-lg border-2 p-4 text-left transition-all ${
                         taskViewFilter === 'assigned-to-me'
-                          ? 'ring-2 ring-emerald-500/50'
+                          ? 'ring-2 ring-emerald-400/60 ring-offset-2 ring-offset-[var(--bg-primary)]'
                           : ''
                       }`}
                       style={{
                         backgroundColor: taskViewFilter === 'assigned-to-me' ? 'var(--bg-tertiary)' : 'var(--bg-card)',
-                        borderColor: 'var(--border-primary)',
+                        borderColor: taskViewFilter === 'assigned-to-me' ? 'rgb(52, 211, 153)' : 'var(--border-primary)',
+                        boxShadow: taskViewFilter === 'assigned-to-me' ? '0 0 0 1px rgba(52, 211, 153, 0.3), 0 0 16px rgba(52, 211, 153, 0.12)' : undefined,
                       }}
                     >
                       <ClipboardDocumentListIcon className="w-5 h-5 mb-1 text-emerald-400" />
@@ -4057,14 +4058,15 @@ export default function Home() {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => setTaskViewFilter(v => v === 'my-events' ? null : 'my-events')}
-                      className={`rounded-lg border p-4 text-left transition-all ${
+                      className={`rounded-lg border-2 p-4 text-left transition-all ${
                         taskViewFilter === 'my-events'
-                          ? 'ring-2 ring-blue-500/50'
+                          ? 'ring-2 ring-blue-400/60 ring-offset-2 ring-offset-[var(--bg-primary)]'
                           : ''
                       }`}
                       style={{
                         backgroundColor: taskViewFilter === 'my-events' ? 'var(--bg-tertiary)' : 'var(--bg-card)',
-                        borderColor: 'var(--border-primary)',
+                        borderColor: taskViewFilter === 'my-events' ? 'rgb(96, 165, 250)' : 'var(--border-primary)',
+                        boxShadow: taskViewFilter === 'my-events' ? '0 0 0 1px rgba(96, 165, 250, 0.3), 0 0 16px rgba(96, 165, 250, 0.12)' : undefined,
                       }}
                     >
                       <StarIcon className="w-5 h-5 mb-1 text-blue-400" />
