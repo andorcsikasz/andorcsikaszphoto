@@ -1,5 +1,5 @@
-/* Outfit - body + headings | Space Grotesk - logo (edgy tech startup) */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap');
+/* Outfit - body + headings | Archivo Black - logo (bold, edgy) */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Archivo+Black&family=Space+Grotesk:wght@700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -8,7 +8,7 @@
 :root {
   --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-logo: 'Space Grotesk', 'Outfit', sans-serif;
+  --font-logo: 'Archivo Black', 'Space Grotesk', sans-serif;
   --ease-elite: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-out-smooth: cubic-bezier(0.33, 1, 0.68, 1);

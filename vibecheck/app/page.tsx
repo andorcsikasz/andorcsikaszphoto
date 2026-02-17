@@ -413,13 +413,13 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
             y: { duration: 1.1, ease: [0.16, 1, 0.3, 1] },
             x: { duration: 1.3, ease: [0.16, 1, 0.3, 1] },
           }}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold"
+          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black"
           style={{ 
             fontFamily: "var(--font-logo)",
             color: 'var(--text-primary)',
-            letterSpacing: '-0.045em',
+            letterSpacing: '-0.05em',
             willChange: 'transform, opacity',
-            textShadow: '0 1px 4px rgba(0,0,0,0.12)'
+            textShadow: '0 2px 8px rgba(0,0,0,0.2)'
           }}
         >
           Gather
@@ -436,13 +436,13 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
             duration: 1.1,
             ease: [0.16, 1, 0.3, 1],
           }}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold"
+          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black"
           style={{ 
             fontFamily: "var(--font-logo)",
             color: 'var(--accent-primary)',
-            letterSpacing: '-0.045em',
+            letterSpacing: '-0.05em',
             willChange: 'transform, opacity',
-            textShadow: '0 1px 4px rgba(0,0,0,0.08)'
+            textShadow: '0 2px 8px rgba(0,0,0,0.15)'
           }}
         >
           Go
@@ -461,7 +461,7 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
             delay: 0.35,
             ease: [0.16, 1, 0.3, 1] 
           }}
-          className="text-sm sm:text-base tracking-[0.15em] uppercase font-medium"
+          className="text-sm sm:text-base tracking-[0.2em] uppercase font-bold"
           style={{ 
             color: 'var(--text-secondary)',
             willChange: 'transform, opacity',
@@ -568,7 +568,7 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
       <nav className="fixed top-0 left-0 right-0 z-50 w-full px-4 sm:px-6 lg:px-8 py-3 sm:py-4 border-b backdrop-blur-xl"
         style={{ backgroundColor: 'var(--bg-nav)', borderColor: 'var(--border-primary)' }}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tighter flex-shrink-0" style={{ color: 'var(--accent-primary)', fontFamily: 'var(--font-logo)' }}>
+          <div className="text-xl sm:text-2xl md:text-3xl font-black tracking-tighter flex-shrink-0" style={{ color: 'var(--accent-primary)', fontFamily: 'var(--font-logo)' }}>
             GatherGo
           </div>
           <div className="flex items-center gap-4">
@@ -829,7 +829,7 @@ function LandingPage({ onRegister, onSkip }: { onRegister: () => void; onSkip: (
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <h3 className="font-extrabold mb-4" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-logo)' }}>GatherGo</h3>
+              <h3 className="font-black mb-4" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-logo)' }}>GatherGo</h3>
               <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
                 {lang === 'en' 
                   ? 'Collaborative event management made simple.'
@@ -3026,7 +3026,7 @@ export default function Home() {
             <div className="flex items-center flex-shrink-0 pr-2 sm:pr-4">
               <button
                 onClick={handleLogoClick}
-                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tighter cursor-pointer hover:opacity-80 transition-opacity select-none whitespace-nowrap"
+                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black tracking-tighter cursor-pointer hover:opacity-80 transition-opacity select-none whitespace-nowrap"
                 style={{ fontFamily: 'var(--font-logo)', color: 'var(--text-primary)', background: 'none', border: 'none', padding: 0 }}
               >
                 GatherGo
