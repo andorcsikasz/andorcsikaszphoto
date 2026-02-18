@@ -30,21 +30,21 @@ export function AppLayout({
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-[#faf9f7] flex flex-col">
       {/* Nav */}
       <nav
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-out",
-          "bg-slate-50/95 backdrop-blur-md",
+          "bg-[#faf9f7]/80 backdrop-blur-xl",
           scrolled
-            ? "py-2.5 border-b border-black/[0.06] shadow-[0_1px_3px_rgba(0,51,153,0.04)]"
+            ? "py-2.5 border-b border-slate-200/80 shadow-[0_1px_0_rgba(0,0,0,0.04)]"
             : "py-3 sm:py-4 border-b border-transparent"
         )}
       >
         <div className="container flex items-center justify-between gap-2">
           <motion.a
             href="#"
-            className="font-serif text-lg sm:text-xl font-bold text-[#003399] hover:opacity-80 transition-opacity"
+            className="font-serif text-lg sm:text-xl font-extrabold text-[#003399] hover:text-[#002266] transition-colors"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -116,13 +116,13 @@ export function AppLayout({
       <main className="flex-1">{children}</main>
 
       {/* Footer */}
-      <footer className="py-12 text-center text-sm text-slate-600 border-t border-slate-200 bg-slate-100">
+      <footer className="py-14 sm:py-16 text-center text-sm text-slate-600 border-t border-slate-200/80 bg-white">
         <div className="container">
-          <p>
+          <p className="text-slate-700">
             {lang === "hu" ? "Kérdésed van? Írj nekünk:" : "Questions? Write to"}{" "}
             <a
               href="mailto:info@jovokepp.hu"
-              className="text-[#003399] font-semibold hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[#003399] focus-visible:ring-offset-2 rounded"
+              className="text-[#003399] font-bold hover:text-[#002266] hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[#003399] focus-visible:ring-offset-2 rounded transition-colors"
             >
               info@jovokepp.hu
             </a>
@@ -131,11 +131,11 @@ export function AppLayout({
             href="https://erasmus-plus.ec.europa.eu/"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-3 inline-flex items-center gap-1.5 text-slate-500 hover:text-[#003399] transition-colors"
+            className="mt-4 inline-flex items-center gap-2 text-slate-500 hover:text-[#003399] transition-colors"
           >
             <span className="font-bold text-[#003399]">EU</span>
             {lang === "hu" ? "Az Európai Unió támogatásával" : "Funded by the European Union"}
-            <span className="text-xs">↗</span>
+            <span className="text-xs opacity-70">↗</span>
           </a>
         </div>
       </footer>
