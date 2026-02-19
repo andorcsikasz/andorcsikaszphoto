@@ -18,8 +18,7 @@ function FullWidthMedia({
   onClick: () => void;
   index: number;
 }) {
-  const isEven = index % 2 === 0;
-  const slideX = isEven ? -80 : 80;
+  const isZoomIn = index % 2 === 0;
 
   return (
     <motion.section
@@ -27,15 +26,17 @@ function FullWidthMedia({
       whileInView="animate"
       viewport={{ once: true, margin: "-12% 0px -12% 0px", amount: 0.15 }}
       variants={{
-        initial: { opacity: 0, y: 100, x: slideX },
+        initial: {
+          opacity: 0,
+          scale: isZoomIn ? 0.88 : 1.12,
+        },
         animate: {
           opacity: 1,
-          y: 0,
-          x: 0,
+          scale: 1,
           transition: {
-            duration: 0.95,
+            duration: 1,
             ease: [0.22, 1, 0.36, 1],
-            delay: index % 2 === 0 ? 0 : 0.1,
+            delay: index % 2 === 0 ? 0 : 0.08,
           },
         },
       }}
@@ -79,7 +80,7 @@ function FullWidthMedia({
           )}
         </div>
         {(item.title || item.category) && (
-          <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 md:p-10 bg-gradient-to-t from-foreground/40 via-foreground/10 to-transparent opacity-0 translate-y-4 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
+          <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 md:p-10 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 translate-y-4 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
             <p className="text-base sm:text-lg font-medium text-white drop-shadow-md">{item.title}</p>
             {item.category && (
               <p className="text-sm text-white/90 mt-1">{item.category}</p>
@@ -164,10 +165,10 @@ export default function Portfolio() {
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-2.5 py-20 text-muted-foreground hover:text-foreground transition-colors duration-200"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, margin: "-10% 0px" }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
           <InstagramLogo className="h-4 w-4" weight="regular" />
           <span className="text-[13px] font-normal">@andorcsikasz</span>
