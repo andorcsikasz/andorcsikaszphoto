@@ -39,19 +39,12 @@ export default function Contact() {
         variants={container}
       >
         <motion.h1
-          className="text-3xl sm:text-4xl md:text-[2.5rem] font-light tracking-tight text-foreground leading-[1.25]"
+          className="text-3xl sm:text-4xl md:text-[2.5rem] font-semibold tracking-tight text-foreground leading-[1.25]"
           variants={item}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
-          Let's work together
+          Get in touch
         </motion.h1>
-        <motion.p
-          className="mt-6 text-[15px] text-muted-foreground font-normal leading-relaxed"
-          variants={item}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        >
-          For commissions, collaborations, or just to say hello.
-        </motion.p>
 
         <motion.div
           className="mt-12 flex flex-col gap-6"
@@ -70,7 +63,7 @@ export default function Contact() {
               <span className="flex h-8 w-8 items-center justify-center text-foreground/40 group-hover:text-foreground transition-colors">
                 <Icon className="h-[18px] w-[18px]" weight="regular" />
               </span>
-              <span className="text-[15px] font-normal">{label}</span>
+              <span className="text-[15px] font-medium">{label}</span>
             </motion.a>
           ))}
         </motion.div>
@@ -79,7 +72,7 @@ export default function Contact() {
           <Link href="/">
             <button
               type="button"
-              className="mt-16 text-[13px] uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground transition-colors duration-200"
+              className="mt-16 text-[13px] font-semibold uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground transition-colors duration-200"
             >
               ← Back
             </button>

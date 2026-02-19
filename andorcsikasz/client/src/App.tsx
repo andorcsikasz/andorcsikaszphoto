@@ -28,7 +28,7 @@ function StoreInit() {
 
   useEffect(() => {
     // Initialize theme (set switchable to true to show theme toggle)
-    themeInit("dark", true);
+    themeInit("light", false);
 
     // Initialize auth and get cleanup function
     const cleanup = authInit();

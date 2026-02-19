@@ -1,6 +1,4 @@
-import { useThemeStore } from "@/store";
 import { Button } from "@/components/ui/button";
-import { Moon, Sun } from "@phosphor-icons/react";
 import { Link, useLocation } from "wouter";
 import { portfolioConfig } from "@/data/portfolio";
 import { useState } from "react";
@@ -8,8 +6,9 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { List } from "@phosphor-icons/react";
 
 const navItems = [
-  { label: "Work", path: "/" },
-  { label: "Contact", path: "/contact" },
+  { label: "About me", href: "/#about" },
+  { label: "Work", href: "/#work" },
+  { label: "Contact", href: "/contact" },
 ];
 
 function NavLinks({
@@ -24,45 +23,23 @@ function NavLinks({
   return (
     <>
       {navItems.map((item) => {
-        const isActive = location === item.path;
+        const isActive = item.href === "/contact" && location === "/contact";
         return (
-          <Link
-            key={item.path}
-            href={item.path}
+          <a
+            key={item.href}
+            href={item.href}
             onClick={onClick}
             className={`text-[15px] font-normal transition-colors duration-200 ${
               mobile ? "px-4 py-4 min-h-[52px] text-base" : "px-4 py-2"
             } ${
-              isActive
-                ? "text-foreground"
-                : "text-muted-foreground hover:text-foreground"
+              isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
             }`}
           >
             {item.label}
-          </Link>
+          </a>
         );
       })}
     </>
-  );
-}
-
-function ThemeToggle() {
-  const { theme, toggleTheme, switchable } = useThemeStore();
-  if (!switchable) return null;
-
-  return (
-    <Button
-      variant="ghost"
-      size="icon"
-      onClick={toggleTheme}
-      className="text-muted-foreground hover:text-foreground rounded-none h-9 w-9"
-    >
-      {theme === "light" ? (
-        <Moon className="h-[18px] w-[18px]" weight="regular" />
-      ) : (
-        <Sun className="h-[18px] w-[18px]" weight="regular" />
-      )}
-    </Button>
   );
 }
 
@@ -112,10 +89,10 @@ export function PortfolioLayout({
 }) {
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur-sm">
+      <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-xl border-b border-border/40">
         <div className="container flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center">
-            <span className="text-[15px] font-medium tracking-tight text-foreground">
+            <span className="text-[15px] font-semibold tracking-tight text-foreground">
               {portfolioConfig.name}
             </span>
           </Link>
@@ -124,18 +101,15 @@ export function PortfolioLayout({
             <NavLinks />
           </nav>
 
-          <div className="flex items-center gap-0">
-            <ThemeToggle />
-            <MobileNav />
-          </div>
+          <MobileNav />
         </div>
       </header>
 
       <main className="flex-1 overflow-x-hidden">{children}</main>
 
-      <footer className="py-12 border-t border-border/50">
+      <footer className="py-12 border-t border-border/40">
         <div className="container flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
-          <span className="text-[15px] font-medium text-muted-foreground">
+          <span className="text-[15px] font-semibold text-muted-foreground">
             {portfolioConfig.name}
           </span>
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
