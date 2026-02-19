@@ -11,9 +11,9 @@ A modern fullstack TypeScript template with React, Express, tRPC, and PostgreSQL
 - **LLM**: OpenRouter (access 200+ models)
 - **Package Manager**: Bun
 
-## Deploy to Railway (Recommended)
+## Deploy to Railway
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/your-template)
+If this project lives in a monorepo (e.g. `x_prog/andorcsikasz/`), set **Root Directory** to `andorcsikasz` when connecting the repo in Railway.
 
 **Zero configuration required!** The Dockerfile bundles PostgreSQL, Supabase Auth, and the Node.js app together.
 

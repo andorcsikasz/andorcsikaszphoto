@@ -89,70 +89,13 @@ export const portfolioItems: PortfolioItem[] = [
   },
 ];
 
-export const services = [
-  {
-    title: "Travel & Landscapes",
-    description: "From drone to ground — a different perspective.",
-  },
-  {
-    title: "Portraits",
-    description: "Moments and emotions, caught in real time.",
-  },
-  {
-    title: "Documentary",
-    description: "Stories from 40 countries and counting.",
-  },
-];
-
-export const processSteps = [
-  {
-    step: "01",
-    title: "Connect",
-    description: "Share your vision or idea.",
-  },
-  {
-    step: "02",
-    title: "Capture",
-    description: "On the road or in the moment.",
-  },
-  {
-    step: "03",
-    title: "Refine",
-    description: "Edited with care.",
-  },
-  {
-    step: "04",
-    title: "Deliver",
-    description: "Images that last.",
-  },
-];
-
 export const aboutImage =
   "https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=1200&q=90";
 
-export const testimonials = [
-  {
-    quote:
-      "Andor has an eye for moments others miss. The images feel like being there.",
-  },
-  {
-    quote:
-      "From ground level to drone — every frame tells a story. Genuine and arresting.",
-  },
-];
-
 export const portfolioConfig = {
   name: "Csíkász Andor",
-  tagline: "Photography passion. 40 countries since 2022.",
   email: "andor.csikasz@gmail.com",
   instagram: "https://www.instagram.com/andorcsikasz/",
   twitter: "",
   linkedin: "",
 };
-
-// Standalone text blocks — key phrases get their own space
-export const standaloneTexts = [
-  "Moments and emotions — real, unforced, alive.",
-  "40 countries. A different perspective.",
-  "From drone to ground. Light and timing.",
-];

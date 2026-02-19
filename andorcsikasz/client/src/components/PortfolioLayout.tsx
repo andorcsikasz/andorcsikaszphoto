@@ -29,8 +29,8 @@ function NavLinks({
             key={item.href}
             href={item.href}
             onClick={onClick}
-            className={`text-[15px] font-normal transition-colors duration-200 ${
-              mobile ? "px-4 py-4 min-h-[52px] text-base" : "px-4 py-2"
+            className={`text-[13px] uppercase tracking-[0.1em] font-light transition-colors duration-200 ${
+              mobile ? "px-4 py-4 min-h-[52px] text-sm tracking-[0.1em]" : "px-5 py-2"
             } ${
               isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
             }`}
@@ -64,14 +64,14 @@ function MobileNav() {
                 href={portfolioConfig.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[15px] text-muted-foreground hover:text-foreground transition-colors"
+                className="text-[13px] tracking-wide text-muted-foreground hover:text-foreground transition-colors"
               >
                 Instagram
               </a>
             )}
             <a
               href={`mailto:${portfolioConfig.email}`}
-              className="text-[15px] text-muted-foreground hover:text-foreground transition-colors"
+              className="text-[13px] tracking-wide text-muted-foreground hover:text-foreground transition-colors"
             >
               {portfolioConfig.email}
             </a>
@@ -89,15 +89,18 @@ export function PortfolioLayout({
 }) {
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-xl border-b border-border/40">
-        <div className="container flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center">
-            <span className="text-[15px] font-semibold tracking-tight text-foreground">
+      <header className="sticky top-0 z-50 w-full bg-background/60 backdrop-blur-2xl">
+        <div className="container flex h-14 items-center justify-between">
+          <Link href="/" className="flex items-center gap-2">
+            <span className="text-[13px] uppercase tracking-[0.15em] font-medium text-foreground">
               {portfolioConfig.name}
+            </span>
+            <span className="text-[13px] uppercase tracking-[0.15em] font-light text-muted-foreground">
+              photography
             </span>
           </Link>
 
-          <nav className="hidden md:flex items-center">
+          <nav className="hidden md:flex items-center gap-1">
             <NavLinks />
           </nav>
 
@@ -107,9 +110,9 @@ export function PortfolioLayout({
 
       <main className="flex-1 overflow-x-hidden">{children}</main>
 
-      <footer className="py-12 border-t border-border/40">
+      <footer className="py-12 border-t border-border/30">
         <div className="container flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
-          <span className="text-[15px] font-semibold text-muted-foreground">
+          <span className="text-[13px] uppercase tracking-[0.15em] font-medium text-muted-foreground">
             {portfolioConfig.name}
           </span>
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
@@ -117,14 +120,14 @@ export function PortfolioLayout({
               href={portfolioConfig.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[15px] text-muted-foreground hover:text-foreground transition-colors"
+              className="text-[13px] tracking-wide text-muted-foreground hover:text-foreground transition-colors"
               aria-label="Instagram"
             >
               Instagram
             </a>
             <a
               href={`mailto:${portfolioConfig.email}`}
-              className="text-[15px] text-muted-foreground hover:text-foreground transition-colors"
+              className="text-[13px] tracking-wide text-muted-foreground hover:text-foreground transition-colors"
             >
               {portfolioConfig.email}
             </a>

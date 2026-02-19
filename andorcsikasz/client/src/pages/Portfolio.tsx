@@ -47,29 +47,21 @@ function HeroSection() {
           <div className="absolute inset-0 bg-black/25" />
         </motion.div>
       ))}
-      <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
-        <motion.h1
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-white drop-shadow-lg"
+      <div className="relative z-10 flex h-full flex-col items-end justify-end px-8 pb-12 sm:px-12 sm:pb-16">
+        <motion.div
+          className="flex flex-col sm:flex-row gap-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          Csíkász Andor
-        </motion.h1>
-        <motion.div
-          className="mt-8 flex flex-col sm:flex-row gap-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-        >
           <a
             href="#work"
-            className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-neutral-900 transition-opacity hover:opacity-90"
+            className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3.5 text-sm font-medium text-neutral-900 transition-opacity hover:opacity-90"
           >
             Work
           </a>
           <Link href="/contact">
-            <span className="inline-flex items-center justify-center rounded-full border border-white/70 px-8 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-opacity hover:opacity-90">
+            <span className="inline-flex items-center justify-center rounded-full border border-white/70 px-8 py-3.5 text-sm font-medium text-white backdrop-blur-sm transition-opacity hover:opacity-90">
               Contact
             </span>
           </Link>
@@ -108,8 +100,18 @@ function AboutSection() {
               About
             </h2>
             <p className="mt-8 text-lg text-muted-foreground leading-relaxed">
-              Started photography in 2022. Traveled 40 countries. I use a drone for a
-              different perspective. I like catching moments as they happen.
+              I picked up a camera in 2022 and haven't really put it down since.
+              What started as curiosity turned into something I now carry everywhere —
+              through 40 countries and counting.
+            </p>
+            <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
+              I shoot landscapes, people, cities, whatever catches my eye. Got a drone
+              at some point because I wanted to see things from above. Most of what I do
+              is just trying to hold on to a moment before it's gone — no posing, no
+              staging, just what's there.
+            </p>
+            <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
+              Based in Hungary, usually somewhere else.
             </p>
           </motion.div>
         </div>
@@ -219,7 +221,7 @@ function PortfolioSection({
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          From the Road
+          Work
         </motion.h2>
       </div>
       <div className="container max-w-5xl space-y-8 sm:space-y-12">
@@ -231,146 +233,6 @@ function PortfolioSection({
             onClick={() => onOpenLightbox(item)}
           />
         ))}
-      </div>
-    </section>
-  );
-}
-
-function ServicesSection() {
-  return (
-    <section className="py-20 sm:py-32 bg-neutral-50/50">
-      <div className="container">
-        <motion.h2
-          className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          Services
-        </motion.h2>
-        <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((s, i) => (
-            <motion.div
-              key={s.title}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-5% 0px" }}
-              transition={{ duration: 0.5, delay: i * 0.08, ease }}
-              className="rounded-2xl bg-white p-8 shadow-sm transition-shadow hover:shadow-md"
-            >
-              <h3 className="text-lg font-semibold text-foreground">{s.title}</h3>
-              <p className="mt-3 text-sm text-muted-foreground">{s.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ProcessSection() {
-  return (
-    <section className="py-20 sm:py-32">
-      <div className="container">
-        <motion.h2
-          className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          How I Work
-        </motion.h2>
-        <div className="mt-20 grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
-          {processSteps.map((step, i) => (
-            <motion.div
-              key={step.step}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-5% 0px" }}
-              transition={{ duration: 0.5, delay: i * 0.06, ease }}
-            >
-              <span className="text-xs font-semibold text-muted-foreground">
-                {step.step}
-              </span>
-              <h3 className="mt-3 text-lg font-semibold text-foreground">
-                {step.title}
-              </h3>
-              <p className="mt-2 text-sm text-muted-foreground">{step.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-const TESTIMONIAL_INTERVAL_MS = 6000;
-
-function TestimonialSection() {
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const t = setInterval(
-      () => setIndex((i) => (i + 1) % testimonials.length),
-      TESTIMONIAL_INTERVAL_MS
-    );
-    return () => clearInterval(t);
-  }, []);
-
-  return (
-    <section className="py-20 sm:py-32 bg-neutral-50/50">
-      <div className="container max-w-2xl text-center">
-        <AnimatePresence mode="wait">
-          <motion.blockquote
-            key={index}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease }}
-            className="text-xl sm:text-2xl font-medium text-foreground leading-relaxed"
-          >
-            "{testimonials[index].quote}"
-          </motion.blockquote>
-        </AnimatePresence>
-        <div className="mt-10 flex justify-center gap-3">
-          {testimonials.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => setIndex(i)}
-              className="h-2 w-2 rounded-full transition-all duration-300"
-              style={{
-                backgroundColor: "currentColor",
-                opacity: i === index ? 1 : 0.35,
-              }}
-              aria-label={`View testimonial ${i + 1}`}
-            />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function FinalCTASection() {
-  return (
-    <section className="py-24 sm:py-36">
-      <div className="container text-center">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
-          Let's connect.
-        </h2>
-        <Link href="/contact">
-          <motion.button
-            type="button"
-            className="mt-10 inline-flex items-center justify-center rounded-full bg-foreground px-12 py-4 text-sm font-semibold text-background transition-opacity hover:opacity-90"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            Get in Touch
-          </motion.button>
-        </Link>
       </div>
     </section>
   );
@@ -438,22 +300,8 @@ export default function Portfolio() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-background">
       <HeroSection />
-
-      <StandaloneTextSection text={standaloneTexts[0]} />
-
       <AboutSection />
-
-      <StandaloneTextSection text={standaloneTexts[1]} />
-
-      <ServicesSection />
-
       <PortfolioSection onOpenLightbox={setLightboxItem} />
-
-      <StandaloneTextSection text={standaloneTexts[2]} />
-
-      <ProcessSection />
-      <TestimonialSection />
-      <FinalCTASection />
 
       <AnimatePresence>
         {lightboxItem && (

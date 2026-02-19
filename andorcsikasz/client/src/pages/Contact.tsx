@@ -43,7 +43,7 @@ export default function Contact() {
           variants={item}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
-          Get in touch
+          Contact
         </motion.h1>
 
         <motion.div
