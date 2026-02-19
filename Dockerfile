@@ -34,7 +34,7 @@ ENV PGDATA=/data/postgres
 # Copy application files
 WORKDIR /app
 COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile
+RUN bun install
 
 COPY . .
 RUN bun run build
