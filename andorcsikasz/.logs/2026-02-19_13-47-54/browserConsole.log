@@ -54,3 +54,17 @@
 [2026-02-19T13:33:51.548Z] {"timestamp":1771508030881,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
 [2026-02-19T13:33:53.548Z] {"timestamp":1771508032767,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/Portfolio.tsx"],"stack":null}
 [2026-02-19T13:33:53.548Z] {"timestamp":1771508032767,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-02-19T13:34:27.552Z] {"timestamp":1771508066122,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/Portfolio.tsx"],"stack":null}
+[2026-02-19T13:34:27.553Z] {"timestamp":1771508066123,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-02-19T13:34:29.543Z] {"timestamp":1771508067585,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/Portfolio.tsx"],"stack":null}
+[2026-02-19T13:34:29.543Z] {"timestamp":1771508067585,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-02-19T13:34:29.543Z] {"timestamp":1771508067963,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/Contact.tsx"],"stack":null}
+[2026-02-19T13:34:29.543Z] {"timestamp":1771508067963,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-02-19T13:35:27.608Z] {"timestamp":1771508126166,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-02-19T13:35:27.608Z] {"timestamp":1771508127422,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-02-19T13:35:30.747Z] {"timestamp":1771508128740,"level":"DEBUG","args":["[Debug] Debug collector initialized (no rrweb, UI events only)"],"stack":null}
+[2026-02-19T13:35:30.747Z] {"timestamp":1771508128888,"level":"DEBUG","args":["[vite] connected."],"stack":null}
+[2026-02-19T13:35:30.747Z] {"timestamp":1771508129013,"level":"INFO","args":["%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools","font-weight:bold"],"stack":null}
+[2026-02-19T13:35:34.743Z] {"timestamp":1771508132865,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
+[2026-02-19T13:35:40.749Z] {"timestamp":1771508139579,"level":"DEBUG","args":["[vite]","hot updated: /src/pages/Portfolio.tsx"],"stack":null}
+[2026-02-19T13:35:40.749Z] {"timestamp":1771508139579,"level":"DEBUG","args":["[vite]","hot updated: /src/index.css"],"stack":null}
