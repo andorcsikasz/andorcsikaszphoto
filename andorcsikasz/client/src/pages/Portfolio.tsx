@@ -5,16 +5,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { portfolioConfig, portfolioItems, type PortfolioItem } from "@/data/portfolio";
-import { motion, AnimatePresence, useInView } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { FilmStrip, InstagramLogo, X } from "@phosphor-icons/react";
-import { useState, useRef } from "react";
-import { useLocation } from "wouter";
-
-const fadeUp = {
-  initial: { opacity: 0, y: 60 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] },
-};
+import { useState } from "react";
 
 function FullWidthMedia({
   item,
@@ -25,23 +18,28 @@ function FullWidthMedia({
   onClick: () => void;
   index: number;
 }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-10% 0px -10% 0px", amount: 0.3 });
+  const isEven = index % 2 === 0;
+  const slideX = isEven ? -80 : 80;
 
   return (
     <motion.section
-      ref={ref}
       initial="initial"
-      animate={isInView ? "animate" : "initial"}
+      whileInView="animate"
+      viewport={{ once: true, margin: "-12% 0px -12% 0px", amount: 0.15 }}
       variants={{
-        initial: { opacity: 0, y: 80 },
+        initial: { opacity: 0, y: 100, x: slideX },
         animate: {
           opacity: 1,
           y: 0,
-          transition: { duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.1 },
+          x: 0,
+          transition: {
+            duration: 0.95,
+            ease: [0.22, 1, 0.36, 1],
+            delay: index % 2 === 0 ? 0 : 0.1,
+          },
         },
       }}
-      className="w-full py-4 sm:py-6"
+      className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] py-3 sm:py-5"
     >
       <motion.button
         type="button"
@@ -144,42 +142,13 @@ function Lightbox({
 }
 
 export default function Portfolio() {
-  const [, setLocation] = useLocation();
   const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
-  const heroRef = useRef(null);
-  const igRef = useRef(null);
-  const heroInView = useInView(heroRef, { once: true });
-  const igInView = useInView(igRef, { once: true });
 
   return (
-    <div className="min-h-screen">
-      {/* Hero */}
-      <section ref={heroRef} className="py-24 sm:py-32 lg:py-40">
-        <motion.div
-          className="container text-left"
-          initial={{ opacity: 0, y: 24 }}
-          animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-        >
-          <h1 className="text-3xl sm:text-4xl md:text-[2.75rem] font-light tracking-tight text-foreground max-w-2xl leading-[1.2]">
-            {portfolioConfig.name}
-          </h1>
-          <p className="mt-6 text-[15px] text-muted-foreground max-w-md font-normal leading-relaxed">
-            {portfolioConfig.tagline}
-          </p>
-          <button
-            type="button"
-            onClick={() => setLocation("/contact")}
-            className="mt-10 text-[13px] text-muted-foreground hover:text-foreground transition-colors duration-200 uppercase tracking-[0.2em]"
-          >
-            Get in touch
-          </button>
-        </motion.div>
-      </section>
-
+    <div className="min-h-screen overflow-x-hidden">
       {/* Full-width gallery with scroll animations */}
-      <section className="w-full overflow-hidden">
-        <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="w-full">
+        <div className="w-full">
           {portfolioItems.map((item, index) => (
             <FullWidthMedia
               key={item.id}
@@ -191,14 +160,14 @@ export default function Portfolio() {
         </div>
 
         <motion.a
-          ref={igRef}
           href={portfolioConfig.instagram}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-2.5 py-20 text-muted-foreground hover:text-foreground transition-colors duration-200"
-          initial={{ opacity: 0, y: 30 }}
-          animate={igInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10% 0px" }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
           <InstagramLogo className="h-4 w-4" weight="regular" />
           <span className="text-[13px] font-normal">@andorcsikasz</span>

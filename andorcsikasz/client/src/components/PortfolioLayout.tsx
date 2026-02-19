@@ -116,7 +116,7 @@ export function PortfolioLayout({
         <div className="container flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center">
             <span className="text-[15px] font-medium tracking-tight text-foreground">
-              Csíkász
+              {portfolioConfig.name}
             </span>
           </Link>
 
@@ -131,7 +131,7 @@ export function PortfolioLayout({
         </div>
       </header>
 
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 overflow-x-hidden">{children}</main>
 
       <footer className="py-12 border-t border-border/50">
         <div className="container flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
