@@ -30,10 +30,8 @@ function NavLinks({
             key={item.path}
             href={item.path}
             onClick={onClick}
-            className={`font-medium transition-colors ${
-              mobile
-                ? "px-4 py-3 min-h-[48px] text-lg"
-                : "px-3 py-2 text-sm"
+            className={`text-[15px] font-normal transition-colors duration-200 ${
+              mobile ? "px-4 py-4 min-h-[52px] text-base" : "px-4 py-2"
             } ${
               isActive
                 ? "text-foreground"
@@ -57,12 +55,12 @@ function ThemeToggle() {
       variant="ghost"
       size="icon"
       onClick={toggleTheme}
-      className="text-muted-foreground hover:text-foreground"
+      className="text-muted-foreground hover:text-foreground rounded-none h-9 w-9"
     >
       {theme === "light" ? (
-        <Moon className="h-5 w-5" weight="regular" />
+        <Moon className="h-[18px] w-[18px]" weight="regular" />
       ) : (
-        <Sun className="h-5 w-5" weight="regular" />
+        <Sun className="h-[18px] w-[18px]" weight="regular" />
       )}
     </Button>
   );
@@ -74,29 +72,29 @@ function MobileNav() {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="md:hidden h-10 w-10">
-          <List className="h-5 w-5" />
+        <Button variant="ghost" size="icon" className="md:hidden h-10 w-10 rounded-none">
+          <List className="h-5 w-5" weight="regular" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-[280px] p-0">
-        <div className="flex flex-col h-full pt-16">
-          <nav className="flex flex-col gap-1 p-4">
+      <SheetContent side="right" className="w-[300px] p-0 rounded-none border-l">
+        <div className="flex flex-col h-full pt-20">
+          <nav className="flex flex-col p-6">
             <NavLinks onClick={() => setOpen(false)} mobile />
           </nav>
-          <div className="mt-auto p-4 border-t flex flex-col gap-2">
+          <div className="mt-auto p-6 pt-8 border-t border-border/50 flex flex-col gap-4">
             {portfolioConfig.instagram && (
               <a
                 href={portfolioConfig.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-muted-foreground hover:text-foreground"
+                className="text-[15px] text-muted-foreground hover:text-foreground transition-colors"
               >
                 Instagram
               </a>
             )}
             <a
               href={`mailto:${portfolioConfig.email}`}
-              className="text-sm text-muted-foreground hover:text-foreground"
+              className="text-[15px] text-muted-foreground hover:text-foreground transition-colors"
             >
               {portfolioConfig.email}
             </a>
@@ -114,19 +112,19 @@ export function PortfolioLayout({
 }) {
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-md">
-        <div className="container flex h-14 sm:h-16 items-center justify-between">
+      <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur-sm">
+        <div className="container flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center">
-            <span className="font-portfolio text-xl sm:text-2xl font-medium tracking-tight">
+            <span className="text-[15px] font-medium tracking-tight text-foreground">
               Csíkász
             </span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center">
             <NavLinks />
           </nav>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-0">
             <ThemeToggle />
             <MobileNav />
           </div>
@@ -135,24 +133,24 @@ export function PortfolioLayout({
 
       <main className="flex-1">{children}</main>
 
-      <footer className="border-t border-border/40 py-8">
-        <div className="container flex flex-col sm:flex-row justify-between items-center gap-4">
-          <span className="font-portfolio text-lg text-muted-foreground">
+      <footer className="py-12 border-t border-border/50">
+        <div className="container flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+          <span className="text-[15px] font-medium text-muted-foreground">
             {portfolioConfig.name}
           </span>
-          <div className="flex items-center gap-6">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
             <a
               href={portfolioConfig.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="text-[15px] text-muted-foreground hover:text-foreground transition-colors"
               aria-label="Instagram"
             >
               Instagram
             </a>
             <a
               href={`mailto:${portfolioConfig.email}`}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="text-[15px] text-muted-foreground hover:text-foreground transition-colors"
             >
               {portfolioConfig.email}
             </a>
