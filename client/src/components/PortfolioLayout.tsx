@@ -29,17 +29,21 @@ function NavLinks({
             key={item.href}
             href={item.href}
             onClick={onClick}
-            className={`text-[13px] uppercase tracking-[0.1em] font-light transition-colors duration-200 ${
-              mobile
-                ? "px-4 py-4 min-h-[52px] text-sm tracking-[0.1em] flex items-center"
-                : "px-5 py-2"
-            } ${
-              isActive
-                ? "text-foreground"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
+            className={`
+              relative text-sm uppercase tracking-[0.12em] font-medium
+              transition-colors duration-200
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm
+              ${mobile ? "px-4 py-4 min-h-[52px] flex items-center" : "px-4 py-2.5"}
+              ${isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"}
+            `}
           >
             {item.label}
+            {isActive && !mobile && (
+              <span
+                className="absolute bottom-0 left-4 right-4 h-px bg-foreground"
+                aria-hidden
+              />
+            )}
           </Link>
         );
       })}
@@ -53,19 +57,26 @@ function MobileNav() {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="md:hidden h-10 w-10 rounded-none">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:hidden h-10 w-10 rounded-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+        >
           <List className="h-5 w-5" weight="regular" />
         </Button>
       </SheetTrigger>
       <SheetContent side="right" className="w-[300px] p-0 rounded-none border-l">
         <div className="flex flex-col h-full pt-20">
-          <nav className="flex flex-col p-6">
+          <nav className="flex flex-col p-6" aria-label="Main">
             <NavLinks onClick={() => setOpen(false)} mobile />
           </nav>
           <div className="mt-auto p-6 pt-8 border-t border-border/50 flex flex-col gap-4">
             <Link
               href="/contact"
-              className="text-[13px] tracking-wide text-muted-foreground hover:text-foreground transition-colors"
+              onClick={() => setOpen(false)}
+              className="text-sm tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm py-1"
             >
               Contact
             </Link>
@@ -74,14 +85,15 @@ function MobileNav() {
                 href={portfolioConfig.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[13px] tracking-wide text-muted-foreground hover:text-foreground transition-colors"
+                className="text-sm tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm py-1"
+                aria-label="Instagram"
               >
                 Instagram
               </a>
             )}
             <a
               href={`mailto:${portfolioConfig.email}`}
-              className="text-[13px] tracking-wide text-muted-foreground hover:text-foreground transition-colors"
+              className="text-sm tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm py-1"
             >
               {portfolioConfig.email}
             </a>
@@ -99,15 +111,16 @@ export function PortfolioLayout({
 }) {
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <header className="sticky top-0 z-50 w-full bg-background/60 backdrop-blur-2xl">
-        <div className="container flex h-14 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-[13px] uppercase tracking-[0.15em] font-medium text-foreground">
-              {portfolioConfig.name}
-            </span>
+      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-14 sm:h-16 items-center justify-between">
+          <Link
+            href="/"
+            className="text-sm uppercase tracking-[0.15em] font-semibold text-foreground hover:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+          >
+            {portfolioConfig.name}
           </Link>
 
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-1" aria-label="Main">
             <NavLinks />
           </nav>
 
@@ -117,15 +130,15 @@ export function PortfolioLayout({
 
       <main className="flex-1 overflow-x-hidden">{children}</main>
 
-      <footer className="py-12 border-t border-border/30">
+      <footer className="py-8 sm:py-10 border-t border-border/40">
         <div className="container flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
-          <span className="text-[13px] uppercase tracking-[0.15em] font-medium text-muted-foreground">
+          <span className="text-sm uppercase tracking-[0.12em] font-medium text-muted-foreground">
             {portfolioConfig.name}
           </span>
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
             <Link
               href="/contact"
-              className="text-[13px] tracking-wide text-muted-foreground hover:text-foreground transition-colors"
+              className="text-sm tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
             >
               Contact
             </Link>
@@ -134,7 +147,7 @@ export function PortfolioLayout({
                 href={portfolioConfig.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[13px] tracking-wide text-muted-foreground hover:text-foreground transition-colors"
+                className="text-sm tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
                 aria-label="Instagram"
               >
                 Instagram
@@ -142,7 +155,7 @@ export function PortfolioLayout({
             )}
             <a
               href={`mailto:${portfolioConfig.email}`}
-              className="text-[13px] tracking-wide text-muted-foreground hover:text-foreground transition-colors"
+              className="text-sm tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
             >
               {portfolioConfig.email}
             </a>

@@ -2,8 +2,9 @@ import { portfolioConfig } from "@/data/portfolio";
 import { motion } from "framer-motion";
 import { EnvelopeSimple, InstagramLogo } from "@phosphor-icons/react";
 import { Link } from "wouter";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
-const ease = [0.22, 1, 0.36, 1];
+const spring = { type: "spring" as const, stiffness: 300, damping: 30 };
 
 const contactLinks = [
   {
@@ -17,38 +18,44 @@ const contactLinks = [
 ];
 
 export default function Contact() {
+  const reduced = useReducedMotion();
+
   return (
-    <div className="min-h-screen flex flex-col justify-center py-32">
+    <div className="min-h-screen flex flex-col justify-center py-24 sm:py-32">
       <motion.section
         className="container text-left max-w-xl"
-        initial={{ opacity: 0, y: 20 }}
+        initial={reduced ? false : { opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease }}
+        transition={reduced ? { duration: 0 } : spring}
       >
-        <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-foreground">
+        <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-foreground">
           Contact
         </h1>
 
-        <div className="mt-10 flex flex-col gap-5">
+        <div className="mt-10 sm:mt-12 flex flex-col gap-6">
           {contactLinks.map(({ href, icon: Icon, label }) => (
             <a
               key={label}
               href={href}
               target={href.startsWith("mailto") ? undefined : "_blank"}
               rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
-              className="group flex items-center gap-4 text-muted-foreground hover:text-foreground transition-colors"
+              className="group flex items-center gap-4 text-muted-foreground hover:text-foreground transition-colors duration-200 py-2 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               {Icon && (
-                <Icon className="h-5 w-5 text-foreground/40" weight="regular" />
+                <Icon
+                  className="h-5 w-5 text-foreground/40 group-hover:text-foreground/70 transition-colors shrink-0"
+                  weight="regular"
+                />
               )}
-              <span className="text-[15px] font-medium">{label}</span>
+              <span className="text-base sm:text-lg font-medium">{label}</span>
             </a>
           ))}
         </div>
 
         <Link
           href="/"
-          className="mt-14 inline-flex items-center gap-2 text-[13px] font-medium uppercase tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors"
+          className="mt-14 inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+          aria-label="Back to home"
         >
           Back
         </Link>
