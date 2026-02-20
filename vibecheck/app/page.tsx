@@ -441,8 +441,10 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-              letterSpacing: '-0.05em',
+              letterSpacing: '-0.03em',
               lineHeight: 1,
+              display: 'inline-block',
+              paddingRight: '0.04em',
               willChange: 'transform, opacity',
             }}
           >
@@ -3387,7 +3389,8 @@ export default function Home() {
                                       : 'var(--status-in-progress-bg)',
                                     color: event.status === 'fixed' ? 'var(--status-fixed-text)' 
                                       : event.status === 'optimal' ? 'var(--status-optimal-text)' 
-                                      : 'var(--status-in-progress-text)'
+                                      : 'var(--status-in-progress-text)',
+                                    opacity: past ? 0.5 : 1
                                   }}
                                 >
                                   {event.title}
@@ -3455,24 +3458,24 @@ export default function Home() {
                 >
                   {t.upcomingEvents} ({upcomingCountTwoWeeks})
                 </button>
-                <div className="ml-auto flex rounded-lg p-0.5 border" style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-primary)' }}>
+                <div className="ml-auto flex items-center rounded-lg p-0.5 border gap-0.5" style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-primary)' }}>
                   <button
                     type="button"
                     onClick={() => setEventsViewMode('grid')}
-                    className={`p-2 rounded-md transition-colors`}
+                    className={`p-1.5 rounded-md transition-colors`}
                     style={eventsViewMode === 'grid' ? { backgroundColor: 'var(--accent-primary)', color: 'var(--text-inverse)' } : { color: 'var(--text-muted)' }}
                     title={t.viewCell}
                   >
-                    <Squares2X2Icon className="w-4 h-4" />
+                    <Squares2X2Icon className="w-3.5 h-3.5" />
                   </button>
                   <button
                     type="button"
                     onClick={() => setEventsViewMode('row')}
-                    className={`p-2 rounded-md transition-colors`}
+                    className={`p-1.5 rounded-md transition-colors`}
                     style={eventsViewMode === 'row' ? { backgroundColor: 'var(--accent-primary)', color: 'var(--text-inverse)' } : { color: 'var(--text-muted)' }}
                     title={t.viewRow}
                   >
-                    <ArrowsRightLeftIcon className="w-4 h-4" />
+                    <ArrowsRightLeftIcon className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
@@ -3494,7 +3497,15 @@ export default function Home() {
                       {t.myEvents}
                     </h3>
                   </div>
-                  <div className={eventsViewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : 'flex overflow-x-auto gap-4 pb-2 -mx-1 px-1 snap-x snap-mandatory '}>
+                  <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={`my-events-${eventsViewMode}`}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                    className={eventsViewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : 'flex overflow-x-auto gap-4 pb-2 -mx-1 px-1 snap-x snap-mandatory '}
+                  >
                   {myEventsForDisplay.map((event, index) => (
                     <motion.div
                       key={event.id}
@@ -3550,7 +3561,8 @@ export default function Home() {
                       )}
                     </motion.div>
                   ))}
-                  </div>
+                  </motion.div>
+                  </AnimatePresence>
                   {myEventsForDisplay.length === 0 && (
                     <div className="rounded-xl py-8 px-4 flex items-center justify-center gap-4" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
                       <CalendarIcon className="w-10 h-10 flex-shrink-0" style={{ color: 'var(--text-muted)' }} />
@@ -3567,7 +3579,15 @@ export default function Home() {
                       {t.friendsFamilyCompany}
                     </h3>
                   </div>
-                  <div className={eventsViewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : 'flex overflow-x-auto gap-4 pb-2 -mx-1 px-1 snap-x snap-mandatory '}>
+                  <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={`network-events-${eventsViewMode}`}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                    className={eventsViewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : 'flex overflow-x-auto gap-4 pb-2 -mx-1 px-1 snap-x snap-mandatory '}
+                  >
                   {[...friendsFamilyCompanyEventsForDisplay]
                     .sort((a, b) => {
                       const aDeclined = getMyRsvp(a) === 'declined'
@@ -3637,7 +3657,8 @@ export default function Home() {
                       )}
                     </motion.div>
                   )})}
-                  </div>
+                  </motion.div>
+                  </AnimatePresence>
                   {friendsFamilyCompanyEventsForDisplay.length === 0 && (
                     <div className="rounded-xl py-8 px-4 flex items-center justify-center gap-4" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
                       <UserGroupIcon className="w-10 h-10 flex-shrink-0" style={{ color: 'var(--text-muted)' }} />
@@ -3654,7 +3675,15 @@ export default function Home() {
                       {t.suggestedOpenNearMe}
                     </h3>
                   </div>
-                  <div className={eventsViewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : 'flex overflow-x-auto gap-4 pb-2 -mx-1 px-1 snap-x snap-mandatory '}>
+                  <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={`open-events-${eventsViewMode}`}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                    className={eventsViewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : 'flex overflow-x-auto gap-4 pb-2 -mx-1 px-1 snap-x snap-mandatory '}
+                  >
                   {[...openSuggestedEventsForDisplay]
                     .sort((a, b) => {
                       const aDeclined = getMyRsvp(a) === 'declined'
@@ -3716,7 +3745,8 @@ export default function Home() {
                       )}
                     </motion.div>
                   )})}
-                  </div>
+                  </motion.div>
+                  </AnimatePresence>
                   {openSuggestedEventsForDisplay.length === 0 && (
                     <div className="rounded-xl py-8 px-4 flex items-center justify-center gap-4" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
                       <MapPinIcon className="w-10 h-10 flex-shrink-0" style={{ color: 'var(--text-muted)' }} />
