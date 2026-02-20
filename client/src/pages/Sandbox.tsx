@@ -83,7 +83,7 @@ export default function Sandbox() {
   return (
     <div className="min-h-screen pb-32">
       {/* Page header */}
-      <div className="container pt-16 pb-14">
+      <div className="container pt-20 sm:pt-24 pb-14 scroll-mt-20">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}

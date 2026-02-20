@@ -46,9 +46,9 @@ function HeroSection() {
         </motion.div>
       ))}
 
-      {/* Name + tagline top-left */}
+      {/* Name + tagline top-left (below sticky header) */}
       <motion.div
-        className="absolute top-0 left-0 z-10 p-8 sm:p-12"
+        className="absolute top-16 left-0 z-10 p-8 sm:p-12"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.5 }}

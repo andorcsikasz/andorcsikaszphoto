@@ -1,6 +1,7 @@
 import { portfolioConfig } from "@/data/portfolio";
 import { motion } from "framer-motion";
 import {
+  ArrowLeft,
   EnvelopeSimple,
   InstagramLogo,
   LinkedinLogo,
@@ -72,9 +73,10 @@ export default function Contact() {
           <Link href="/">
             <button
               type="button"
-              className="mt-16 text-[13px] font-semibold uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground transition-colors duration-200"
+              className="mt-16 inline-flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground transition-colors duration-200"
             >
-              ← Back
+              <ArrowLeft className="h-3.5 w-3.5" weight="bold" />
+              Back
             </button>
           </Link>
         </motion.div>

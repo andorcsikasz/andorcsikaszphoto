@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/dialog";
 import { photographyItems, type PortfolioItem } from "@/data/portfolio";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight, X } from "@phosphor-icons/react";
 
 const ease = [0.25, 0.46, 0.45, 0.94];
@@ -22,8 +22,8 @@ function GalleryItem({
 }) {
   const [hovered, setHovered] = useState(false);
 
-  // Alternate aspect ratios for visual rhythm
-  const isWide = index % 5 === 0 || index % 5 === 3;
+  // Alternate aspect ratios per column for visual rhythm
+  const isWide = index % 2 === 0;
   const aspectRatio = isWide ? "3/2" : "4/5";
 
   return (
@@ -112,6 +112,19 @@ function Lightbox({
   const prev = () => setCurrent((i) => (i - 1 + items.length) % items.length);
   const next = () => setCurrent((i) => (i + 1) % items.length);
 
+  useEffect(() => {
+    setCurrent(activeIndex);
+  }, [activeIndex]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") setCurrent((i) => (i - 1 + items.length) % items.length);
+      else if (e.key === "ArrowRight") setCurrent((i) => (i + 1) % items.length);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [items.length]);
+
   return (
     <Dialog open onOpenChange={(open) => !open && onClose()}>
       <DialogContent
@@ -140,7 +153,7 @@ function Lightbox({
             <button
               type="button"
               onClick={next}
-              className="absolute right-14 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
               aria-label="Next"
             >
               <ArrowRight className="h-4 w-4" weight="bold" />
@@ -151,7 +164,7 @@ function Lightbox({
         <AnimatePresence mode="wait">
           <motion.div
             key={current}
-            className="flex items-center justify-center min-h-[70vh] max-h-[90vh] px-16 py-12"
+            className="flex items-center justify-center min-h-[70vh] max-h-[90vh] px-4 sm:px-16 py-6 sm:py-12"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -214,7 +227,7 @@ export default function Photography() {
   return (
     <div className="min-h-screen pb-32">
       {/* Page header */}
-      <div className="container pt-16 pb-14">
+      <div className="container pt-20 sm:pt-24 pb-14 scroll-mt-20">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -237,7 +250,7 @@ export default function Photography() {
               <GalleryItem
                 key={item.id}
                 item={item}
-                index={i * 2}
+                index={i}
                 onClick={() => openLightbox(item)}
               />
             ))}
@@ -247,7 +260,7 @@ export default function Photography() {
               <GalleryItem
                 key={item.id}
                 item={item}
-                index={i * 2 + 1}
+                index={i}
                 onClick={() => openLightbox(item)}
               />
             ))}
