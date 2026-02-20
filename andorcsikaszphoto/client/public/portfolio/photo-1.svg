@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  <rect width="1200" height="1500" fill="#e5e5e5"/>
+  <g fill="#a3a3a3" opacity="0.5">
+    <path d="M600 500c-110 0-200 90-200 200s90 200 200 200 200-90 200-200-90-200-200-200zm0 320c-66 0-120-54-120-120s54-120 120-120 120 54 120 120-54 120-120 120z"/>
+    <path d="M600 340L500 240h200L600 340zm0-20l60-80H540l60 80z"/>
+  </g>
+  <text x="600" y="720" font-family="system-ui,sans-serif" font-size="14" fill="#737373" text-anchor="middle">Your photo</text>
+</svg>

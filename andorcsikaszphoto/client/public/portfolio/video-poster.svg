@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  <rect width="1200" height="1500" fill="#262626"/>
+  <polygon points="540,480 540,1020 960,750" fill="#737373" opacity="0.6"/>
+  <text x="600" y="1100" font-family="system-ui,sans-serif" font-size="14" fill="#737373" text-anchor="middle">Your video</text>
+</svg>
