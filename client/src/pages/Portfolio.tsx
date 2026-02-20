@@ -1,21 +1,19 @@
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
   heroImages,
   aboutImage,
-  portfolioItems,
-  type PortfolioItem,
+  portfolioConfig,
+  photographyItems,
+  droneItems,
 } from "@/data/portfolio";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
+import { ArrowRight } from "@phosphor-icons/react";
 
 const HERO_CROSSFADE_MS = 7000;
 const ease = [0.25, 0.46, 0.45, 0.94];
+
+// ─── Hero ────────────────────────────────────────────────────────────────────
 
 function HeroSection() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -44,43 +42,71 @@ function HeroSection() {
             className="h-full w-full object-cover"
             loading={i === 0 ? "eager" : "lazy"}
           />
-          <div className="absolute inset-0 bg-black/25" />
+          <div className="absolute inset-0 bg-black/30" />
         </motion.div>
       ))}
-      <div className="relative z-10 flex h-full flex-col items-end justify-end px-8 pb-12 sm:px-12 sm:pb-16">
+
+      {/* Name + tagline top-left */}
+      <motion.div
+        className="absolute top-0 left-0 z-10 p-8 sm:p-12"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 0.5 }}
+      >
+        <p className="text-[11px] uppercase tracking-[0.25em] font-medium text-white/80">
+          Csíkász Andor
+        </p>
+        <p className="text-[11px] uppercase tracking-[0.2em] font-light text-white/50 mt-1">
+          Photography · Drone · Sandbox
+        </p>
+      </motion.div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 1 }}
+      >
         <motion.div
-          className="flex flex-col sm:flex-row gap-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-        >
-          <a
-            href="#work"
-            className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3.5 text-sm font-medium text-neutral-900 transition-opacity hover:opacity-90"
-          >
-            Work
-          </a>
-          <Link href="/contact">
-            <span className="inline-flex items-center justify-center rounded-full border border-white/70 px-8 py-3.5 text-sm font-medium text-white backdrop-blur-sm transition-opacity hover:opacity-90">
-              Contact
-            </span>
-          </Link>
-        </motion.div>
+          className="h-8 w-px bg-white/40"
+          animate={{ scaleY: [1, 0.4, 1] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </motion.div>
+
+      {/* Hero dot indicators */}
+      <div className="absolute bottom-8 right-8 z-10 flex gap-2">
+        {heroImages.map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            onClick={() => setActiveIndex(i)}
+            className="h-1.5 rounded-full transition-all duration-500"
+            style={{
+              width: i === activeIndex ? "24px" : "6px",
+              backgroundColor: i === activeIndex ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.35)",
+            }}
+            aria-label={`Image ${i + 1}`}
+          />
+        ))}
       </div>
     </section>
   );
 }
 
+// ─── About ───────────────────────────────────────────────────────────────────
+
 function AboutSection() {
   return (
-    <section id="about" className="py-20 sm:py-32 scroll-mt-20">
+    <section className="py-24 sm:py-36">
       <div className="container">
         <div className="grid gap-16 lg:grid-cols-2 lg:gap-24 items-center">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-10% 0px" }}
-            transition={{ duration: 0.6, ease }}
+            transition={{ duration: 0.7, ease }}
             className="relative overflow-hidden rounded-2xl"
           >
             <img
@@ -90,29 +116,40 @@ function AboutSection() {
               loading="lazy"
             />
           </motion.div>
+
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-10% 0px" }}
-            transition={{ duration: 0.6, ease, delay: 0.1 }}
+            transition={{ duration: 0.7, ease, delay: 0.1 }}
           >
-            <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
+            <p className="text-[11px] uppercase tracking-[0.2em] font-medium text-muted-foreground mb-6">
               About
-            </h2>
-            <p className="mt-8 text-lg text-muted-foreground leading-relaxed">
+            </p>
+            <p className="text-lg sm:text-xl text-foreground leading-relaxed">
               I picked up a camera in 2022 and haven't really put it down since.
               What started as curiosity turned into something I now carry everywhere —
               through 40 countries and counting.
             </p>
-            <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
+            <p className="mt-5 text-base text-muted-foreground leading-relaxed">
               I shoot landscapes, people, cities, whatever catches my eye. Got a drone
               at some point because I wanted to see things from above. Most of what I do
-              is just trying to hold on to a moment before it's gone — no posing, no
-              staging, just what's there.
+              is just trying to hold on to a moment before it's gone.
             </p>
-            <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
+            <p className="mt-4 text-base text-muted-foreground leading-relaxed">
               Based in Hungary, usually somewhere else.
             </p>
+
+            <Link href="/photography">
+              <motion.button
+                type="button"
+                className="mt-10 inline-flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.15em] text-foreground hover:text-muted-foreground transition-colors duration-200"
+                whileHover={{ x: 4 }}
+                transition={{ duration: 0.2 }}
+              >
+                View Work <ArrowRight className="h-3.5 w-3.5" weight="bold" />
+              </motion.button>
+            </Link>
           </motion.div>
         </div>
       </div>
@@ -120,194 +157,194 @@ function AboutSection() {
   );
 }
 
-function PortfolioFullWidthItem({
-  item,
-  onClick,
+// ─── Section preview card ─────────────────────────────────────────────────────
+
+function SectionCard({
+  href,
+  label,
+  description,
+  images,
   index,
 }: {
-  item: PortfolioItem;
-  onClick: () => void;
+  href: string;
+  label: string;
+  description: string;
+  images: string[];
   index: number;
 }) {
   const [hovered, setHovered] = useState(false);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 32 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-8% 0px" }}
-      transition={{ duration: 0.8, ease, delay: index * 0.05 }}
+      viewport={{ once: true, margin: "-6% 0px" }}
+      transition={{ duration: 0.7, ease, delay: index * 0.1 }}
     >
-      <motion.button
-        type="button"
-        onClick={onClick}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        className="group relative w-full overflow-hidden rounded-2xl bg-neutral-100 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
-        style={{ aspectRatio: item.type === "video" ? "16/9" : "3/2" }}
-      >
-        <div className="absolute inset-0">
-          {item.type === "video" ? (
-            <motion.div
-              className="h-full w-full"
-              animate={{ scale: hovered ? 1.03 : 1 }}
+      <Link href={href}>
+        <motion.div
+          className="group block cursor-pointer"
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        >
+          {/* Image preview */}
+          <div className="relative overflow-hidden rounded-2xl aspect-[3/2] bg-neutral-100">
+            <motion.img
+              src={images[0]}
+              alt={label}
+              className="absolute inset-0 h-full w-full object-cover"
+              animate={{
+                opacity: hovered && images[1] ? 0 : 1,
+                scale: hovered ? 1.04 : 1,
+              }}
               transition={{ duration: 0.6, ease }}
-            >
-              <video
-                src={item.src}
-                poster={item.poster}
-                muted
-                playsInline
-                loop
-                preload="metadata"
-                className="h-full w-full object-cover"
-              />
-            </motion.div>
-          ) : (
-            <>
+              loading="lazy"
+            />
+            {images[1] && (
               <motion.img
-                src={item.src}
-                alt={item.alt}
+                src={images[1]}
+                alt=""
                 className="absolute inset-0 h-full w-full object-cover"
-                animate={{
-                  opacity: hovered && item.hoverSrc ? 0 : 1,
-                  scale: hovered ? 1.02 : 1,
-                }}
-                transition={{ duration: 0.5, ease }}
+                initial={false}
+                animate={{ opacity: hovered ? 1 : 0, scale: hovered ? 1.04 : 1 }}
+                transition={{ duration: 0.6, ease }}
+                loading="lazy"
               />
-              {item.hoverSrc && (
-                <motion.img
-                  src={item.hoverSrc}
-                  alt=""
-                  className="absolute inset-0 h-full w-full object-cover"
-                  initial={false}
-                  animate={{ opacity: hovered ? 1 : 0, scale: hovered ? 1.02 : 1 }}
-                  transition={{ duration: 0.5, ease }}
-                />
-              )}
-            </>
-          )}
-        </div>
-        {(item.title || item.category) && (
-          <motion.div
-            className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/50 to-transparent"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: hovered ? 1 : 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            <p className="text-sm font-semibold text-white">{item.title}</p>
-            {item.category && (
-              <p className="text-xs font-medium text-white/80 mt-1">{item.category}</p>
             )}
-          </motion.div>
-        )}
-      </motion.button>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+          </div>
+
+          {/* Label */}
+          <div className="mt-5 flex items-center justify-between">
+            <div>
+              <h2 className="text-base font-semibold text-foreground">{label}</h2>
+              <p className="mt-1 text-[13px] text-muted-foreground">{description}</p>
+            </div>
+            <motion.span
+              className="text-muted-foreground group-hover:text-foreground transition-colors"
+              animate={{ x: hovered ? 4 : 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <ArrowRight className="h-4 w-4" weight="regular" />
+            </motion.span>
+          </div>
+        </motion.div>
+      </Link>
     </motion.div>
   );
 }
 
-function PortfolioSection({
-  onOpenLightbox,
-}: {
-  onOpenLightbox: (item: PortfolioItem) => void;
-}) {
+// ─── Work preview ─────────────────────────────────────────────────────────────
+
+function WorkSection() {
+  const sections = [
+    {
+      href: "/photography",
+      label: "Photography",
+      description: "Landscapes, portraits, cities — 40+ countries",
+      images: [
+        photographyItems[0].src,
+        photographyItems[1].src,
+      ],
+    },
+    {
+      href: "/drone",
+      label: "Drone",
+      description: "Aerial photography and video",
+      images: [
+        droneItems[0].src,
+        droneItems[1].src,
+      ],
+    },
+    {
+      href: "/sandbox",
+      label: "Sandbox",
+      description: "Experiments and personal projects",
+      images: [
+        photographyItems[4].src,
+        photographyItems[5].src,
+      ],
+    },
+  ];
+
   return (
-    <section id="work" className="py-20 sm:py-32 scroll-mt-20">
-      <div className="container mb-16">
-        <motion.h2
-          className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground"
-          initial={{ opacity: 0, y: 20 }}
+    <section className="py-24 sm:py-32 border-t border-border/30">
+      <div className="container">
+        <motion.p
+          className="text-[11px] uppercase tracking-[0.2em] font-medium text-muted-foreground mb-12"
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
           Work
-        </motion.h2>
-      </div>
-      <div className="container max-w-5xl space-y-8 sm:space-y-12">
-        {portfolioItems.map((item, index) => (
-          <PortfolioFullWidthItem
-            key={item.id}
-            item={item}
-            index={index}
-            onClick={() => onOpenLightbox(item)}
-          />
-        ))}
+        </motion.p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
+          {sections.map((section, i) => (
+            <SectionCard key={section.href} {...section} index={i} />
+          ))}
+        </div>
       </div>
     </section>
   );
 }
 
-function Lightbox({
-  item,
-  onClose,
-}: {
-  item: PortfolioItem;
-  onClose: () => void;
-}) {
+// ─── Contact CTA ──────────────────────────────────────────────────────────────
+
+function ContactCTA() {
   return (
-    <Dialog open onOpenChange={(open) => !open && onClose()}>
-      <DialogContent
-        showCloseButton={false}
-        className="max-w-[95vw] w-full p-0 gap-0 overflow-hidden rounded-2xl border-0 bg-black"
-      >
-        <button
-          type="button"
-          onClick={onClose}
-          className="absolute top-6 right-6 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 text-xl"
-          aria-label="Close"
+    <section className="py-24 sm:py-32 border-t border-border/30">
+      <div className="container">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease }}
+          className="max-w-lg"
         >
-          ×
-        </button>
-        <div className="flex items-center justify-center min-h-[70vh] max-h-[95vh] p-6 pt-16">
-          {item.type === "video" ? (
-            <video
-              src={item.src}
-              poster={item.poster}
-              controls
-              autoPlay
-              className="max-h-[90vh] w-full rounded-lg object-contain"
-            />
-          ) : (
-            <motion.img
-              src={item.src}
-              alt={item.alt}
-              className="max-h-[90vh] w-full rounded-lg object-contain"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4 }}
-            />
-          )}
-        </div>
-        {(item.title || item.alt) && (
-          <DialogHeader className="px-6 py-6">
-            <DialogTitle className="text-base font-medium text-white">
-              {item.title || item.alt}
-            </DialogTitle>
-            {item.category && (
-              <p className="text-sm text-white/60 mt-1">{item.category}</p>
+          <p className="text-[11px] uppercase tracking-[0.2em] font-medium text-muted-foreground mb-6">
+            Contact
+          </p>
+          <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground leading-tight">
+            Have a project in mind?
+          </h2>
+          <p className="mt-4 text-base text-muted-foreground leading-relaxed">
+            Whether it's a commercial shoot, a collaboration, or just a conversation about photography — get in touch.
+          </p>
+          <div className="mt-8 flex flex-col sm:flex-row gap-4">
+            <a
+              href={`mailto:${portfolioConfig.email}`}
+              className="inline-flex items-center justify-center rounded-full bg-foreground px-8 py-3.5 text-sm font-medium text-background transition-opacity hover:opacity-80"
+            >
+              {portfolioConfig.email}
+            </a>
+            {portfolioConfig.instagram && (
+              <a
+                href={portfolioConfig.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-full border border-border px-8 py-3.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+              >
+                Instagram
+              </a>
             )}
-          </DialogHeader>
-        )}
-      </DialogContent>
-    </Dialog>
+          </div>
+        </motion.div>
+      </div>
+    </section>
   );
 }
 
-export default function Portfolio() {
-  const [lightboxItem, setLightboxItem] = useState<PortfolioItem | null>(null);
+// ─── Page ─────────────────────────────────────────────────────────────────────
 
+export default function Portfolio() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-background">
       <HeroSection />
       <AboutSection />
-      <PortfolioSection onOpenLightbox={setLightboxItem} />
-
-      <AnimatePresence>
-        {lightboxItem && (
-          <Lightbox item={lightboxItem} onClose={() => setLightboxItem(null)} />
-        )}
-      </AnimatePresence>
+      <WorkSection />
+      <ContactCTA />
     </div>
   );
 }

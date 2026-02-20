@@ -6,8 +6,9 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { List } from "@phosphor-icons/react";
 
 const navItems = [
-  { label: "About me", href: "/#about" },
-  { label: "Work", href: "/#work" },
+  { label: "Photography", href: "/photography" },
+  { label: "Drone", href: "/drone" },
+  { label: "Sandbox", href: "/sandbox" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -23,20 +24,24 @@ function NavLinks({
   return (
     <>
       {navItems.map((item) => {
-        const isActive = item.href === "/contact" && location === "/contact";
+        const isActive = location === item.href;
         return (
-          <a
+          <Link
             key={item.href}
             href={item.href}
             onClick={onClick}
             className={`text-[13px] uppercase tracking-[0.1em] font-light transition-colors duration-200 ${
-              mobile ? "px-4 py-4 min-h-[52px] text-sm tracking-[0.1em]" : "px-5 py-2"
+              mobile
+                ? "px-4 py-4 min-h-[52px] text-sm tracking-[0.1em] flex items-center"
+                : "px-5 py-2"
             } ${
-              isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+              isActive
+                ? "text-foreground"
+                : "text-muted-foreground hover:text-foreground"
             }`}
           >
             {item.label}
-          </a>
+          </Link>
         );
       })}
     </>
@@ -95,9 +100,6 @@ export function PortfolioLayout({
             <span className="text-[13px] uppercase tracking-[0.15em] font-medium text-foreground">
               {portfolioConfig.name}
             </span>
-            <span className="text-[13px] uppercase tracking-[0.15em] font-light text-muted-foreground">
-              photography
-            </span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-1">
@@ -116,15 +118,17 @@ export function PortfolioLayout({
             {portfolioConfig.name}
           </span>
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
-            <a
-              href={portfolioConfig.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[13px] tracking-wide text-muted-foreground hover:text-foreground transition-colors"
-              aria-label="Instagram"
-            >
-              Instagram
-            </a>
+            {portfolioConfig.instagram && (
+              <a
+                href={portfolioConfig.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[13px] tracking-wide text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Instagram"
+              >
+                Instagram
+              </a>
+            )}
             <a
               href={`mailto:${portfolioConfig.email}`}
               className="text-[13px] tracking-wide text-muted-foreground hover:text-foreground transition-colors"
