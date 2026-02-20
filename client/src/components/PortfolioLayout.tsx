@@ -9,7 +9,6 @@ const navItems = [
   { label: "Photography", href: "/photography" },
   { label: "Drone", href: "/drone" },
   { label: "Sandbox", href: "/sandbox" },
-  { label: "Contact", href: "/contact" },
 ];
 
 function NavLinks({
@@ -64,6 +63,12 @@ function MobileNav() {
             <NavLinks onClick={() => setOpen(false)} mobile />
           </nav>
           <div className="mt-auto p-6 pt-8 border-t border-border/50 flex flex-col gap-4">
+            <Link
+              href="/contact"
+              className="text-[13px] tracking-wide text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Contact
+            </Link>
             {portfolioConfig.instagram && (
               <a
                 href={portfolioConfig.instagram}
@@ -118,6 +123,12 @@ export function PortfolioLayout({
             {portfolioConfig.name}
           </span>
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
+            <Link
+              href="/contact"
+              className="text-[13px] tracking-wide text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Contact
+            </Link>
             {portfolioConfig.instagram && (
               <a
                 href={portfolioConfig.instagram}

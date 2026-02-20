@@ -20,59 +20,30 @@ function GalleryItem({
   index: number;
   onClick: () => void;
 }) {
-  const [hovered, setHovered] = useState(false);
-
-  // Alternate aspect ratios per column for visual rhythm
   const isWide = index % 2 === 0;
   const aspectRatio = isWide ? "3/2" : "4/5";
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 32 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-6% 0px" }}
-      transition={{ duration: 0.7, ease, delay: (index % 3) * 0.07 }}
+      transition={{ duration: 0.6, ease, delay: (index % 3) * 0.05 }}
     >
-      <motion.button
+      <button
         type="button"
         onClick={onClick}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
         className="group relative w-full overflow-hidden rounded-xl bg-neutral-100 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
         style={{ aspectRatio }}
       >
-        <motion.img
+        <img
           src={item.src}
           alt={item.alt}
-          className="absolute inset-0 h-full w-full object-cover"
-          animate={{
-            opacity: hovered && item.hoverSrc ? 0 : 1,
-            scale: hovered ? 1.03 : 1,
-          }}
-          transition={{ duration: 0.5, ease }}
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
           loading="lazy"
         />
-        {item.hoverSrc && (
-          <motion.img
-            src={item.hoverSrc}
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover"
-            initial={false}
-            animate={{ opacity: hovered ? 1 : 0, scale: hovered ? 1.03 : 1 }}
-            transition={{ duration: 0.5, ease }}
-            loading="lazy"
-          />
-        )}
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"
-          animate={{ opacity: hovered ? 1 : 0 }}
-          transition={{ duration: 0.3 }}
-        />
-        <motion.div
-          className="absolute bottom-0 left-0 right-0 p-5"
-          animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 6 }}
-          transition={{ duration: 0.3 }}
-        >
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute bottom-0 left-0 right-0 p-5 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
           {item.title && (
             <p className="text-sm font-semibold text-white leading-tight">
               {item.title}
@@ -91,8 +62,8 @@ function GalleryItem({
               </>
             )}
           </div>
-        </motion.div>
-      </motion.button>
+        </div>
+      </button>
     </motion.div>
   );
 }
@@ -118,8 +89,8 @@ function Lightbox({
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") setCurrent((i) => (i - 1 + items.length) % items.length);
-      else if (e.key === "ArrowRight") setCurrent((i) => (i + 1) % items.length);
+      if (e.key === "ArrowLeft") prev();
+      else if (e.key === "ArrowRight") next();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
@@ -215,7 +186,6 @@ function Lightbox({
 export default function Photography() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  // Split into two masonry-style columns
   const col1 = photographyItems.filter((_, i) => i % 2 === 0);
   const col2 = photographyItems.filter((_, i) => i % 2 !== 0);
 
@@ -226,7 +196,6 @@ export default function Photography() {
 
   return (
     <div className="min-h-screen pb-32">
-      {/* Page header */}
       <div className="container pt-20 sm:pt-24 pb-14 scroll-mt-20">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -237,12 +206,11 @@ export default function Photography() {
             Photography
           </h1>
           <p className="mt-3 text-base text-muted-foreground max-w-md leading-relaxed">
-            Landscapes, portraits, cities — whatever catches my eye. Shooting across 40+ countries since 2022.
+            Add your photos here.
           </p>
         </motion.div>
       </div>
 
-      {/* Masonry grid */}
       <div className="container">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 items-start">
           <div className="flex flex-col gap-4 sm:gap-6">

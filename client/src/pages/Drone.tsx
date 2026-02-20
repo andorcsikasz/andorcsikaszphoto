@@ -20,32 +20,23 @@ function DroneItem({
   index: number;
   onClick: () => void;
 }) {
-  const [hovered, setHovered] = useState(false);
-
-  // Drone shots look best at cinematic / wide ratios
   const aspectRatio = item.type === "video" ? "16/9" : index % 3 === 1 ? "4/3" : "16/9";
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 32 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-6% 0px" }}
-      transition={{ duration: 0.7, ease, delay: (index % 3) * 0.06 }}
+      transition={{ duration: 0.6, ease, delay: (index % 3) * 0.05 }}
     >
-      <motion.button
+      <button
         type="button"
         onClick={onClick}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
         className="group relative w-full overflow-hidden rounded-xl bg-neutral-100 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
         style={{ aspectRatio }}
       >
         {item.type === "video" ? (
-          <motion.div
-            className="h-full w-full"
-            animate={{ scale: hovered ? 1.02 : 1 }}
-            transition={{ duration: 0.6, ease }}
-          >
+          <>
             <video
               src={item.src}
               poster={item.poster}
@@ -53,56 +44,25 @@ function DroneItem({
               playsInline
               loop
               preload="metadata"
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
             />
-            {/* Play indicator */}
-            <motion.div
-              className="absolute inset-0 flex items-center justify-center"
-              animate={{ opacity: hovered ? 0 : 1 }}
-              transition={{ duration: 0.2 }}
-            >
+            <div className="absolute inset-0 flex items-center justify-center opacity-80 group-hover:opacity-0 transition-opacity duration-300">
               <div className="flex h-14 w-14 items-center justify-center rounded-full bg-black/30 backdrop-blur-sm">
                 <div className="ml-1 h-0 w-0 border-y-[7px] border-l-[12px] border-y-transparent border-l-white" />
               </div>
-            </motion.div>
-          </motion.div>
-        ) : (
-          <>
-            <motion.img
-              src={item.src}
-              alt={item.alt}
-              className="absolute inset-0 h-full w-full object-cover"
-              animate={{
-                opacity: hovered && item.hoverSrc ? 0 : 1,
-                scale: hovered ? 1.03 : 1,
-              }}
-              transition={{ duration: 0.5, ease }}
-              loading="lazy"
-            />
-            {item.hoverSrc && (
-              <motion.img
-                src={item.hoverSrc}
-                alt=""
-                className="absolute inset-0 h-full w-full object-cover"
-                initial={false}
-                animate={{ opacity: hovered ? 1 : 0, scale: hovered ? 1.03 : 1 }}
-                transition={{ duration: 0.5, ease }}
-                loading="lazy"
-              />
-            )}
+            </div>
           </>
+        ) : (
+          <img
+            src={item.src}
+            alt={item.alt}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+            loading="lazy"
+          />
         )}
 
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"
-          animate={{ opacity: hovered ? 1 : 0 }}
-          transition={{ duration: 0.3 }}
-        />
-        <motion.div
-          className="absolute bottom-0 left-0 right-0 p-5"
-          animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 6 }}
-          transition={{ duration: 0.3 }}
-        >
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute bottom-0 left-0 right-0 p-5 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
           {item.title && (
             <p className="text-sm font-semibold text-white leading-tight">
               {item.title}
@@ -121,8 +81,8 @@ function DroneItem({
               </>
             )}
           </div>
-        </motion.div>
-      </motion.button>
+        </div>
+      </button>
     </motion.div>
   );
 }
@@ -148,8 +108,8 @@ function Lightbox({
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") setCurrent((i) => (i - 1 + items.length) % items.length);
-      else if (e.key === "ArrowRight") setCurrent((i) => (i + 1) % items.length);
+      if (e.key === "ArrowLeft") prev();
+      else if (e.key === "ArrowRight") next();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
@@ -260,12 +220,8 @@ export default function Drone() {
     setLightboxIndex(idx);
   };
 
-  // Featured first item full-width, then grid
-  const [featured, ...rest] = droneItems;
-
   return (
     <div className="min-h-screen pb-32">
-      {/* Page header */}
       <div className="container pt-20 sm:pt-24 pb-14 scroll-mt-20">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -276,22 +232,18 @@ export default function Drone() {
             Drone
           </h1>
           <p className="mt-3 text-base text-muted-foreground max-w-md leading-relaxed">
-            Aerial photography and video. I got a drone because I wanted to see things from above.
+            Add your videos here.
           </p>
         </motion.div>
       </div>
 
-      <div className="container space-y-4 sm:space-y-6">
-        {/* Featured full-width item */}
-        <DroneItem item={featured} index={0} onClick={() => openLightbox(featured)} />
-
-        {/* Grid of remaining items */}
+      <div className="container">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {rest.map((item, i) => (
+          {droneItems.map((item, i) => (
             <DroneItem
               key={item.id}
               item={item}
-              index={i + 1}
+              index={i}
               onClick={() => openLightbox(item)}
             />
           ))}
