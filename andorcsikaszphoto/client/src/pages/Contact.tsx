@@ -50,6 +50,11 @@ export default function Contact() {
               href={href}
               target={href.startsWith("mailto") ? undefined : "_blank"}
               rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
+              onClick={() => {
+                if (label === portfolioConfig.email) funnel.contactLink("email");
+                else if (label === "Instagram") funnel.contactLink("instagram");
+                else if (label === "LinkedIn") funnel.contactLink("linkedin");
+              }}
               className="group flex items-center gap-4 text-muted-foreground hover:text-foreground transition-colors duration-200 py-3 border-b border-border/30 hover:border-border/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
               initial={reduced ? false : { opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}

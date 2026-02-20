@@ -8,6 +8,7 @@ import {
   Users,
 } from "@phosphor-icons/react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { funnel } from "@/lib/funnel";
 
 const spring = { type: "spring" as const, stiffness: 300, damping: 30 };
 const springSoft = { type: "spring" as const, stiffness: 260, damping: 28 };
@@ -60,6 +61,8 @@ function ProjectCard({
         href: project.link,
         target: "_blank",
         rel: "noopener noreferrer",
+        onClick: () =>
+          funnel.sandboxProjectClick(project.id, project.title, project.link),
         className:
           "group block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-xl",
       }
