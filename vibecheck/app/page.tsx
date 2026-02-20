@@ -369,8 +369,8 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
       }}
       transition={{ duration: 0.9, ease: easeElite }}
       className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden"
-      style={{ 
-        backgroundColor: 'var(--bg-primary)',
+      style={{
+        backgroundColor: '#080c10',
         willChange: 'opacity, transform'
       }}
       onTouchStart={handleTouchStart}
@@ -388,40 +388,19 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
         showPulses={true}
       />
 
-      {/* Radial vignette - soft edges, center stays readable */}
+      {/* Radial vignette */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse 90% 80% at 50% 45%, transparent 25%, rgba(10,10,12,0.3) 60%, rgba(10,10,12,0.7) 100%)',
+          background: 'radial-gradient(ellipse 60% 55% at 50% 50%, transparent 0%, rgba(8,12,16,0.7) 65%, rgba(8,12,16,0.95) 100%)',
         }}
       />
 
       {/* Centered Content Block */}
       <div className="relative flex flex-col items-center justify-center gap-0 z-10 px-4 text-center">
 
-        {/* Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: stage >= 1 ? 1 : 0, y: stage >= 1 ? 0 : -8 }}
-          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-7 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-xs font-semibold tracking-widest uppercase"
-          style={{
-            backgroundColor: 'color-mix(in srgb, var(--accent-primary) 12%, transparent)',
-            borderColor: 'color-mix(in srgb, var(--accent-primary) 40%, transparent)',
-            color: 'var(--accent-primary)',
-            backdropFilter: 'blur(8px)',
-          }}
-        >
-          <span
-            className="w-1.5 h-1.5 rounded-full"
-            style={{ backgroundColor: 'var(--accent-primary)', boxShadow: '0 0 6px var(--accent-primary)' }}
-          />
-          Collaborative Event Management
-        </motion.div>
-
         {/* Wordmark */}
         <div className="flex items-baseline justify-center">
-          {/* "Gather" */}
           <motion.span
             initial={{ opacity: 0, y: 24 }}
             animate={{
@@ -438,7 +417,7 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
               fontFamily: 'var(--font-logo)',
               fontSize: 'clamp(3.5rem, 11vw, 8.5rem)',
               fontWeight: 900,
-              color: 'var(--text-primary)',
+              color: '#ffffff',
               letterSpacing: '-0.05em',
               lineHeight: 1,
               willChange: 'transform, opacity',
@@ -447,7 +426,6 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
             Gather
           </motion.span>
 
-          {/* "Go" — gradient */}
           <motion.span
             initial={{ opacity: 0, x: 28 }}
             animate={{
@@ -459,7 +437,7 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
               fontFamily: 'var(--font-logo)',
               fontSize: 'clamp(3.5rem, 11vw, 8.5rem)',
               fontWeight: 900,
-              background: 'linear-gradient(135deg, #0f4c75 0%, #1e5f8e 40%, #0d9488 100%)',
+              background: 'linear-gradient(135deg, #5eead4 0%, #38bdf8 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
@@ -472,45 +450,16 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
           </motion.span>
         </div>
 
-        {/* Sub-headline */}
+        {/* Tagline */}
         <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: stage >= 2 ? 1 : 0, y: stage >= 2 ? 0 : 10 }}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: stage >= 2 ? 1 : 0, y: stage >= 2 ? 0 : 8 }}
           transition={{ duration: 1.0, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-5 text-base sm:text-lg max-w-sm leading-relaxed"
-          style={{ color: 'var(--text-muted)', willChange: 'transform, opacity' }}
+          className="mt-5 text-sm tracking-[0.18em] uppercase font-medium"
+          style={{ color: 'rgba(255,255,255,0.38)', willChange: 'transform, opacity' }}
         >
-          Plan events together — votes, payments, and RSVPs in one place.
+          Collaborative Event Management
         </motion.p>
-
-        {/* Feature pills */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: stage >= 3 ? 1 : 0, y: stage >= 3 ? 0 : 10 }}
-          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-8 flex flex-wrap justify-center gap-2"
-        >
-          {[
-            { icon: '📅', label: 'Google Calendar' },
-            { icon: '👥', label: 'Group Invites' },
-            { icon: '💳', label: 'Revolut Pay' },
-            { icon: '✅', label: 'RSVP Tracking' },
-          ].map((f) => (
-            <span
-              key={f.label}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-sm font-medium border"
-              style={{
-                backgroundColor: 'color-mix(in srgb, var(--bg-card) 75%, transparent)',
-                borderColor: 'var(--border-primary)',
-                color: 'var(--text-secondary)',
-                backdropFilter: 'blur(10px)',
-              }}
-            >
-              <span>{f.icon}</span>
-              {f.label}
-            </span>
-          ))}
-        </motion.div>
 
       </div>
 
@@ -538,18 +487,10 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
               animate={{ opacity: [0.2, 0.9, 0.2] }}
               transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut', delay: i * 0.18 }}
             >
-              <path d="M1 1L9 7L17 1" stroke="var(--accent-primary)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M1 1L9 7L17 1" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </motion.svg>
           ))}
         </motion.div>
-        <motion.p
-          className="text-[10px] tracking-[0.28em] uppercase font-semibold"
-          style={{ color: 'var(--text-muted)' }}
-          animate={{ opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          {lang === 'en' ? 'Scroll to continue' : 'Görgess tovább'}
-        </motion.p>
       </motion.div>
     </motion.div>
   )
@@ -2253,26 +2194,26 @@ export default function Home() {
                       {lang === 'en' ? 'Pick one that represents you' : 'Válassz egyet ami illik hozzád'}
                     </p>
                     
-                    <div className="grid grid-cols-4 gap-3 mb-8 max-w-[220px] mx-auto">
+                    <div className="grid grid-cols-4 gap-4 mb-8 w-full max-w-xs mx-auto">
                       {AVATAR_SHAPES.map((shape, index) => (
                         <button
                           key={shape}
                           onClick={() => setTempProfile({ ...tempProfile, avatarIndex: index })}
-                          className={`aspect-square p-3 rounded-xl border-2 transition-all flex items-center justify-center ${
+                          className={`aspect-square p-4 rounded-2xl border-2 transition-all flex items-center justify-center ${
                             (tempProfile.avatarIndex ?? 0) % 8 === index
-                              ? 'border-white bg-white/10 scale-110'
-                              : 'border-white/10 hover:border-white/30 hover:bg-white/5'
+                              ? 'border-white bg-white/10 scale-105'
+                              : 'border-white/15 hover:border-white/40 hover:bg-white/5'
                           }`}
                         >
-                          <AvatarShapeIcon shape={shape} className="w-10 h-10 text-white" />
+                          <AvatarShapeIcon shape={shape} className="w-full h-full text-white" />
                         </button>
                       ))}
                     </div>
 
                     {/* Preview */}
                     <div className="flex items-center justify-center gap-4 mb-8 p-4 bg-white/5 rounded-xl">
-                      <div className="w-16 h-16 rounded-full bg-white/10 p-2 flex items-center justify-center">
-                        <AvatarShapeIcon shape={AVATAR_SHAPES[(tempProfile.avatarIndex ?? 0) % 8]} className="w-10 h-10 text-white" />
+                      <div className="w-16 h-16 rounded-full bg-white/10 p-2.5 flex items-center justify-center">
+                        <AvatarShapeIcon shape={AVATAR_SHAPES[(tempProfile.avatarIndex ?? 0) % 8]} className="w-full h-full text-white" />
                       </div>
                       <div className="text-left">
                         <p className="font-semibold text-lg text-white">{tempProfile.name}</p>
@@ -5565,22 +5506,22 @@ export default function Home() {
               <div className="p-6 overflow-y-auto flex-1">
                 {!selectedSuggestionCategory ? (
                   <>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-3">
                       {EVENT_SUGGESTION_CATEGORIES.map((cat) => (
                         <button
                           key={cat.id}
                           type="button"
                           onClick={() => startOnboarding(cat)}
-                          className="rounded-xl border p-6 flex flex-col items-center gap-3 transition-all text-center hover:border-[var(--accent-primary)] hover:ring-2 hover:ring-[var(--accent-primary)]/20 group"
+                          className="rounded-xl border p-4 sm:p-5 flex flex-col items-center gap-3 transition-all text-center hover:border-[var(--accent-primary)] hover:ring-2 hover:ring-[var(--accent-primary)]/20 group"
                           style={{ borderColor: 'var(--border-primary)', backgroundColor: 'var(--bg-tertiary)' }}
                         >
-                          {cat.id === 'birthday' && <CakeIcon className="w-8 h-8 text-pink-400 group-hover:scale-110 transition-transform" />}
-                          {cat.id === 'camping' && <FireIcon className="w-8 h-8 text-emerald-500 group-hover:scale-110 transition-transform" />}
-                          {cat.id === 'romantic' && <HeartIcon className="w-8 h-8 text-rose-400 group-hover:scale-110 transition-transform" />}
-                          {cat.id === 'surprise' && <SparklesIcon className="w-8 h-8 text-purple-400 group-hover:scale-110 transition-transform" />}
-                          {cat.id === 'dinner' && <CurrencyDollarIcon className="w-8 h-8 text-amber-500 group-hover:scale-110 transition-transform" />}
-                          {cat.id === 'outdoor' && <MapPinIcon className="w-8 h-8 text-emerald-500 group-hover:scale-110 transition-transform" />}
-                          <span className="font-bold" style={{ color: 'var(--text-primary)' }}>
+                          {cat.id === 'birthday' && <CakeIcon className="w-10 h-10 sm:w-12 sm:h-12 text-pink-400 group-hover:scale-110 transition-transform" />}
+                          {cat.id === 'camping' && <FireIcon className="w-10 h-10 sm:w-12 sm:h-12 text-emerald-500 group-hover:scale-110 transition-transform" />}
+                          {cat.id === 'romantic' && <HeartIcon className="w-10 h-10 sm:w-12 sm:h-12 text-rose-400 group-hover:scale-110 transition-transform" />}
+                          {cat.id === 'surprise' && <SparklesIcon className="w-10 h-10 sm:w-12 sm:h-12 text-purple-400 group-hover:scale-110 transition-transform" />}
+                          {cat.id === 'dinner' && <CurrencyDollarIcon className="w-10 h-10 sm:w-12 sm:h-12 text-amber-500 group-hover:scale-110 transition-transform" />}
+                          {cat.id === 'outdoor' && <MapPinIcon className="w-10 h-10 sm:w-12 sm:h-12 text-emerald-500 group-hover:scale-110 transition-transform" />}
+                          <span className="font-bold text-sm sm:text-base" style={{ color: 'var(--text-primary)' }}>
                             {lang === 'en' ? cat.labelEn : cat.labelHu}
                           </span>
                         </button>
