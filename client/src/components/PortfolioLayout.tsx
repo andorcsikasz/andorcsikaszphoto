@@ -4,6 +4,8 @@ import { portfolioConfig } from "@/data/portfolio";
 import { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { List } from "@phosphor-icons/react";
+import { Suspense } from "react";
+import Silk from "@/components/Silk";
 
 const navItems = [
   { label: "Photography", href: "/photography" },
@@ -125,10 +127,22 @@ export function PortfolioLayout({
 
   return (
     <div
-      className={`min-h-screen bg-background flex flex-col ${
+      className={`relative min-h-screen flex flex-col overflow-x-hidden ${
         isLanding ? "h-screen overflow-hidden" : ""
       }`}
     >
+      <Suspense fallback={null}>
+        <Silk
+          speed={5}
+          scale={1}
+          color="#7B61FF"
+          noiseIntensity={1.5}
+          rotation={0}
+          opacity={1}
+          className="pointer-events-none"
+        />
+      </Suspense>
+      <div className="relative z-10 flex min-h-screen flex-1 flex-col bg-background/60 backdrop-blur-sm">
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 sm:h-20 items-center justify-between">
           <Link
@@ -193,6 +207,7 @@ export function PortfolioLayout({
         </div>
       </footer>
       )}
+      </div>
     </div>
   );
 }
