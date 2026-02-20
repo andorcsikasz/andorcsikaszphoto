@@ -4,8 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: "Source Sans 3", system-ui, sans-serif;
-  --font-portfolio: "Source Sans 3", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-portfolio: "Inter", system-ui, sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);

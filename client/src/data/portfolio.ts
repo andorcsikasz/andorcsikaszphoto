@@ -129,22 +129,38 @@ export const droneItems: PortfolioItem[] = [
   },
 ];
 
-// Sandbox — projects with links (add URLs later)
+// Sandbox — projects
 export const sandboxProjects: SandboxProject[] = [
   {
     id: "s1",
-    title: "Project Alpha",
-    description: "Startup-related project. Link to be added.",
-    tags: ["startup", "product"],
-    link: undefined, // add URL when ready
+    title: "ForumApp",
+    description: "Platform for young people (16–30) to discover programs, internships, and volunteering. Growth tracking and smart matching.",
+    tags: ["startup", "platform", "youth"],
+    link: "https://p2-forumapp.up.railway.app/en",
     year: 2024,
   },
   {
     id: "s2",
-    title: "Project Beta",
-    description: "Another venture or experiment.",
-    tags: ["startup"],
-    link: undefined,
+    title: "Anna Papfalusi Photography",
+    description: "Photography portfolio — portraits, gallery, pricing, and bookings.",
+    tags: ["photography", "portfolio"],
+    link: "https://p4-papfalusiannaphotography.up.railway.app/#home",
+    year: 2024,
+  },
+  {
+    id: "s3",
+    title: "FlatMate",
+    description: "Verified mid-term rentals in Budapest.",
+    tags: ["startup", "housing", "budapest"],
+    link: "https://flatmate-production-e444.up.railway.app/",
+    year: 2024,
+  },
+  {
+    id: "s4",
+    title: "VibeCheck",
+    description: "Collaborative event management platform.",
+    tags: ["startup", "events"],
+    link: "https://p1-vibecheck.up.railway.app/",
     year: 2024,
   },
 ];
