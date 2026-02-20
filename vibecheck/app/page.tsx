@@ -397,126 +397,159 @@ function PreLandingPage({ onComplete, lang = 'en' }: { onComplete: () => void; l
       />
 
       {/* Centered Content Block */}
-      <div className="relative flex flex-col items-center justify-center gap-6 z-10 px-4">
-        {/* Logo */}
-        <div className="flex items-center justify-center">
-        {/* "Gather" text */}
-        <motion.span
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ 
-            opacity: stage >= 1 ? 1 : 0,
-            y: stage >= 1 ? 0 : 20,
-            x: stage >= 2 ? -8 : 0,
-          }}
-          transition={{ 
-            opacity: { duration: 1.1, ease: [0.16, 1, 0.3, 1] },
-            y: { duration: 1.1, ease: [0.16, 1, 0.3, 1] },
-            x: { duration: 1.3, ease: [0.16, 1, 0.3, 1] },
-          }}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black"
-          style={{ 
-            fontFamily: "var(--font-logo)",
-            color: 'var(--text-primary)',
-            letterSpacing: '-0.05em',
-            willChange: 'transform, opacity',
-            textShadow: '0 2px 8px rgba(0,0,0,0.2)'
-          }}
-        >
-          Gather
-        </motion.span>
+      <div className="relative flex flex-col items-center justify-center gap-0 z-10 px-4 text-center">
 
-        {/* "Go" text - solid accent, no glow */}
-        <motion.span
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ 
-            opacity: stage >= 2 ? 1 : 0,
-            x: stage >= 2 ? 0 : 30,
-          }}
-          transition={{ 
-            duration: 1.1,
-            ease: [0.16, 1, 0.3, 1],
-          }}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black"
-          style={{ 
-            fontFamily: "var(--font-logo)",
+        {/* Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: stage >= 1 ? 1 : 0, y: stage >= 1 ? 0 : -8 }}
+          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-7 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-xs font-semibold tracking-widest uppercase"
+          style={{
+            backgroundColor: 'color-mix(in srgb, var(--accent-primary) 12%, transparent)',
+            borderColor: 'color-mix(in srgb, var(--accent-primary) 40%, transparent)',
             color: 'var(--accent-primary)',
-            letterSpacing: '-0.05em',
-            willChange: 'transform, opacity',
-            textShadow: '0 2px 8px rgba(0,0,0,0.15)'
+            backdropFilter: 'blur(8px)',
           }}
         >
-          Go
-        </motion.span>
+          <span
+            className="w-1.5 h-1.5 rounded-full"
+            style={{ backgroundColor: 'var(--accent-primary)', boxShadow: '0 0 6px var(--accent-primary)' }}
+          />
+          Collaborative Event Management
+        </motion.div>
+
+        {/* Wordmark */}
+        <div className="flex items-baseline justify-center">
+          {/* "Gather" */}
+          <motion.span
+            initial={{ opacity: 0, y: 24 }}
+            animate={{
+              opacity: stage >= 1 ? 1 : 0,
+              y: stage >= 1 ? 0 : 24,
+              x: stage >= 2 ? -6 : 0,
+            }}
+            transition={{
+              opacity: { duration: 1.1, ease: [0.16, 1, 0.3, 1] },
+              y: { duration: 1.1, ease: [0.16, 1, 0.3, 1] },
+              x: { duration: 1.3, ease: [0.16, 1, 0.3, 1] },
+            }}
+            style={{
+              fontFamily: 'var(--font-logo)',
+              fontSize: 'clamp(3.5rem, 11vw, 8.5rem)',
+              fontWeight: 900,
+              color: 'var(--text-primary)',
+              letterSpacing: '-0.05em',
+              lineHeight: 1,
+              willChange: 'transform, opacity',
+            }}
+          >
+            Gather
+          </motion.span>
+
+          {/* "Go" — gradient */}
+          <motion.span
+            initial={{ opacity: 0, x: 28 }}
+            animate={{
+              opacity: stage >= 2 ? 1 : 0,
+              x: stage >= 2 ? 0 : 28,
+            }}
+            transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              fontFamily: 'var(--font-logo)',
+              fontSize: 'clamp(3.5rem, 11vw, 8.5rem)',
+              fontWeight: 900,
+              background: 'linear-gradient(135deg, #0f4c75 0%, #1e5f8e 40%, #0d9488 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              letterSpacing: '-0.05em',
+              lineHeight: 1,
+              willChange: 'transform, opacity',
+            }}
+          >
+            Go
+          </motion.span>
         </div>
 
-        {/* Tagline */}
+        {/* Sub-headline */}
         <motion.p
           initial={{ opacity: 0, y: 10 }}
-          animate={{ 
-            opacity: stage >= 2 ? 1 : 0,
-            y: stage >= 2 ? 0 : 10,
-          }}
-          transition={{ 
-            duration: 1.1,
-            delay: 0.35,
-            ease: [0.16, 1, 0.3, 1] 
-          }}
-          className="text-sm sm:text-base tracking-[0.2em] uppercase font-bold"
-          style={{ 
-            color: 'var(--text-secondary)',
-            willChange: 'transform, opacity',
-          }}
+          animate={{ opacity: stage >= 2 ? 1 : 0, y: stage >= 2 ? 0 : 10 }}
+          transition={{ duration: 1.0, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-5 text-base sm:text-lg max-w-sm leading-relaxed"
+          style={{ color: 'var(--text-muted)', willChange: 'transform, opacity' }}
         >
-          Collaborative Event Management
+          Plan events together — votes, payments, and RSVPs in one place.
         </motion.p>
+
+        {/* Feature pills */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: stage >= 3 ? 1 : 0, y: stage >= 3 ? 0 : 10 }}
+          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-8 flex flex-wrap justify-center gap-2"
+        >
+          {[
+            { icon: '📅', label: 'Google Calendar' },
+            { icon: '👥', label: 'Group Invites' },
+            { icon: '💳', label: 'Revolut Pay' },
+            { icon: '✅', label: 'RSVP Tracking' },
+          ].map((f) => (
+            <span
+              key={f.label}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-sm font-medium border"
+              style={{
+                backgroundColor: 'color-mix(in srgb, var(--bg-card) 75%, transparent)',
+                borderColor: 'var(--border-primary)',
+                color: 'var(--text-secondary)',
+                backdropFilter: 'blur(10px)',
+              }}
+            >
+              <span>{f.icon}</span>
+              {f.label}
+            </span>
+          ))}
+        </motion.div>
 
       </div>
 
-      {/* Scroll indicator - fixed position; click or scroll to continue */}
+      {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: stage >= 3 ? 1 : 0 }}
-        transition={{ duration: 0.8, delay: 0.3 }}
-        className="fixed bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-[101] cursor-pointer"
+        transition={{ duration: 0.8, delay: 0.4 }}
+        className="fixed bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-[101] cursor-pointer"
         style={{ pointerEvents: stage >= 3 ? 'auto' : 'none' }}
         onClick={handleContinue}
       >
-        <motion.p
-          className="text-xs tracking-[0.25em] uppercase font-semibold"
-          style={{ color: 'var(--accent-primary)' }}
-          animate={{ opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+        <motion.div
+          animate={{ y: [0, 5, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+          className="flex flex-col items-center gap-1"
         >
-          {lang === 'en' ? 'Scroll to continue' : 'Görgess tovább'}
-        </motion.p>
-
-        {/* Stacked chevrons */}
-        <div className="flex flex-col items-center mt-1" style={{ gap: '2px' }}>
           {[0, 1, 2].map((i) => (
             <motion.svg
               key={i}
-              width="18"
-              height="8"
+              width="16"
+              height="7"
               viewBox="0 0 18 8"
               fill="none"
-              animate={{ opacity: [0.15, 0.8, 0.15] }}
-              transition={{
-                duration: 1.6,
-                repeat: Infinity,
-                ease: 'easeInOut',
-                delay: i * 0.2,
-              }}
+              animate={{ opacity: [0.2, 0.9, 0.2] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut', delay: i * 0.18 }}
             >
-              <path
-                d="M1 1L9 7L17 1"
-                stroke="var(--accent-primary)"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d="M1 1L9 7L17 1" stroke="var(--accent-primary)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
             </motion.svg>
           ))}
-        </div>
+        </motion.div>
+        <motion.p
+          className="text-[10px] tracking-[0.28em] uppercase font-semibold"
+          style={{ color: 'var(--text-muted)' }}
+          animate={{ opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          {lang === 'en' ? 'Scroll to continue' : 'Görgess tovább'}
+        </motion.p>
       </motion.div>
     </motion.div>
   )
