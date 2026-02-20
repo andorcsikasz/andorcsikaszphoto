@@ -30,7 +30,7 @@ function NavLinks({
             href={item.href}
             onClick={onClick}
             className={`
-              relative font-headline text-sm uppercase tracking-tighter
+              relative font-headline text-base sm:text-lg uppercase tracking-tighter
               transition-colors duration-200
               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm
               ${mobile ? "px-4 py-4 min-h-[52px] flex items-center" : "px-4 py-2.5"}
@@ -76,16 +76,16 @@ function MobileNav() {
             <Link
               href="/contact"
               onClick={() => setOpen(false)}
-              className="text-sm tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm py-1"
-            >
-              Contact
-            </Link>
+            className="text-base tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm py-1"
+          >
+            Contact
+          </Link>
             {portfolioConfig.instagram && (
               <a
                 href={portfolioConfig.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm py-1"
+                className="text-base tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm py-1"
                 aria-label="Instagram"
               >
                 Instagram
@@ -96,7 +96,7 @@ function MobileNav() {
                 href={portfolioConfig.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm py-1"
+                className="text-base tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm py-1"
                 aria-label="LinkedIn"
               >
                 LinkedIn
@@ -104,7 +104,7 @@ function MobileNav() {
             )}
             <a
               href={`mailto:${portfolioConfig.email}`}
-              className="text-sm tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm py-1"
+              className="text-base tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm py-1"
             >
               {portfolioConfig.email}
             </a>
@@ -130,10 +130,10 @@ export function PortfolioLayout({
       }`}
     >
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-14 sm:h-16 items-center justify-between">
+        <div className="container flex h-16 sm:h-20 items-center justify-between">
           <Link
             href="/"
-            className="font-headline text-base sm:text-lg uppercase tracking-tighter text-foreground hover:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+            className="font-headline text-xl sm:text-2xl uppercase tracking-tighter text-foreground hover:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
           >
             {portfolioConfig.name}
           </Link>
@@ -151,13 +151,13 @@ export function PortfolioLayout({
       {!isLanding && (
       <footer className="py-8 sm:py-10 border-t border-border/40">
         <div className="container flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
-          <span className="text-sm uppercase tracking-[0.12em] font-medium text-muted-foreground">
+          <span className="text-base uppercase tracking-[0.12em] font-medium text-muted-foreground">
             {portfolioConfig.name}
           </span>
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
             <Link
               href="/contact"
-              className="text-sm tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+              className="text-base tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
             >
               Contact
             </Link>
@@ -166,7 +166,7 @@ export function PortfolioLayout({
                 href={portfolioConfig.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+                className="text-base tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
                 aria-label="Instagram"
               >
                 Instagram
@@ -177,7 +177,7 @@ export function PortfolioLayout({
                 href={portfolioConfig.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+                className="text-base tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
                 aria-label="LinkedIn"
               >
                 LinkedIn
@@ -185,7 +185,7 @@ export function PortfolioLayout({
             )}
             <a
               href={`mailto:${portfolioConfig.email}`}
-              className="text-sm tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+              className="text-base tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
             >
               {portfolioConfig.email}
             </a>
