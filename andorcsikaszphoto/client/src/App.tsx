@@ -5,14 +5,20 @@ import { Route, Switch, useLocation } from "wouter";
 import { PortfolioLayout } from "./components/PortfolioLayout";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Portfolio from "./pages/Portfolio";
-import Contact from "./pages/Contact";
+import Contact from "@/pages/Contact";
 import Photography from "./pages/Photography";
 import Drone from "./pages/Drone";
 import Sandbox from "./pages/Sandbox";
 import { motion } from "framer-motion";
+import { funnel } from "@/lib/funnel";
+import { useEffect } from "react";
 
 function Router() {
   const [location] = useLocation();
+
+  useEffect(() => {
+    funnel.pageView(location, document.title);
+  }, [location]);
 
   return (
     <PortfolioLayout>

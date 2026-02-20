@@ -51,6 +51,15 @@ async function startServer() {
     res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
   });
 
+  // Funnel / analytics events (for conversion tracking; log and optional future storage)
+  app.post("/api/funnel", (req, res) => {
+    const body = req.body as { name?: string; path?: string; timestamp?: string; [k: string]: unknown };
+    if (body?.name) {
+      logger.child("Funnel").info(body.name, body);
+    }
+    res.status(204).end();
+  });
+
   // In self-hosted mode, proxy /auth requests to Auth service
   if (ENV.isSelfHosted) {
     log.info("Self-hosted mode: proxying /auth to Auth service on localhost:9999");

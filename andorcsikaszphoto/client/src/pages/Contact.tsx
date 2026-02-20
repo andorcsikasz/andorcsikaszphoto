@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { EnvelopeSimple, InstagramLogo, LinkedinLogo } from "@phosphor-icons/react";
 import { Link } from "wouter";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { funnel } from "@/lib/funnel";
 
 const spring = { type: "spring" as const, stiffness: 300, damping: 30 };
 
