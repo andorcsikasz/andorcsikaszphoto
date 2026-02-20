@@ -385,7 +385,7 @@ export default function Photography() {
             animate={{ opacity: 1, y: 0 }}
             transition={reduced ? { duration: 0 } : { ...spring, delay: 0.1 }}
           >
-            <h1 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-foreground leading-[1.15]">
+            <h1 className="font-headline text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-[-0.02em] text-foreground leading-[0.95]">
               {photographyIntro.headline}
             </h1>
             <p className="mt-6 text-base sm:text-lg text-muted-foreground leading-relaxed">
@@ -400,14 +400,14 @@ export default function Photography() {
 
       {/* Gallery */}
       <section className="container py-16 sm:py-20 border-t border-border/50">
-        <motion.p
-          className="text-[11px] uppercase tracking-[0.2em] font-medium text-muted-foreground mb-10"
+        <motion.h2
+          className="font-headline text-3xl sm:text-4xl lg:text-5xl uppercase tracking-tighter text-foreground mb-10"
           initial={reduced ? false : { opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
         >
           Gallery
-        </motion.p>
+        </motion.h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 items-start">
           <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8">
             {col1.map((item, i) => (
@@ -435,7 +435,7 @@ export default function Photography() {
       {/* Services */}
       <section className="container py-16 sm:py-24 border-t border-border/50">
         <motion.h2
-          className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-foreground mb-4"
+          className="font-headline text-3xl sm:text-4xl lg:text-5xl uppercase tracking-tighter text-foreground mb-4"
           initial={reduced ? false : { opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -475,7 +475,7 @@ export default function Photography() {
       <section className="container py-16 sm:py-24 border-t border-border/50">
         <div className="max-w-2xl">
           <motion.h2
-            className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-foreground mb-4"
+            className="font-headline text-3xl sm:text-4xl lg:text-5xl uppercase tracking-tighter text-foreground mb-4"
             initial={reduced ? false : { opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}

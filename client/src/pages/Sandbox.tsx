@@ -26,15 +26,16 @@ function ProjectCard({
 
   return (
     <motion.article
-      initial={reduced ? false : { opacity: 0, y: 16 }}
+      initial={reduced ? false : { opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-5% 0px" }}
       transition={
-        reduced ? { duration: 0 } : { ...springSoft, delay: (index % 2) * 0.04 }
+        reduced ? { duration: 0 } : { ...springSoft, delay: index * 0.06 }
       }
+      whileHover={reduced ? undefined : { y: -4, transition: { duration: 0.2 } }}
     >
       <Wrapper {...wrapperProps}>
-        <div className="rounded-xl sm:rounded-2xl border border-border bg-card overflow-hidden transition-all duration-300 hover:border-border hover:shadow-lg hover:shadow-black/5">
+        <div className="rounded-xl sm:rounded-2xl border border-border bg-card overflow-hidden shadow-lg shadow-black/10 transition-shadow duration-300 ease-out group-hover:shadow-xl group-hover:shadow-black/15">
           {project.image && (
             <div className="relative aspect-[16/9] overflow-hidden bg-muted/50">
               <img
@@ -100,7 +101,7 @@ export default function Sandbox() {
           animate={{ opacity: 1, y: 0 }}
           transition={reduced ? { duration: 0 } : spring}
         >
-          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-foreground">
+          <h1 className="font-headline text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase tracking-tighter text-foreground">
             Sandbox
           </h1>
           <p className="mt-3 text-base sm:text-lg text-muted-foreground max-w-md leading-relaxed">
@@ -109,8 +110,8 @@ export default function Sandbox() {
         </motion.div>
       </div>
 
-      <div className="container">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl">
+      <div className="container px-4 sm:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
           {sandboxProjects.map((project, index) => (
             <ProjectCard key={project.id} project={project} index={index} />
           ))}

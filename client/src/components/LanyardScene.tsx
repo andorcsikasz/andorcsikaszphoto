@@ -109,7 +109,15 @@ function Lanyard() {
   );
 }
 
-export function LanyardScene() {
+type LanyardSceneProps = {
+  position?: [number, number, number];
+  gravity?: [number, number, number];
+};
+
+export function LanyardScene({
+  position = [0, 0, 20],
+  gravity = [0, -40, 0],
+}: LanyardSceneProps) {
   return (
     <div className="absolute inset-0 overflow-hidden bg-[var(--background)]">
       <Suspense
@@ -118,14 +126,14 @@ export function LanyardScene() {
         }
       >
         <Canvas
-          camera={{ position: [0, 0, 12], fov: 45 }}
+          camera={{ position, fov: 20 }}
           dpr={[1, 2]}
-          gl={{ antialias: true }}
+          gl={{ antialias: true, alpha: true }}
         >
           <color attach="background" args={["transparent"]} />
-          <ambientLight intensity={0.9} />
+          <ambientLight intensity={Math.PI} />
           <directionalLight position={[5, 5, 5]} intensity={1.2} />
-          <Physics gravity={[0, -9.81, 0]}>
+          <Physics gravity={gravity}>
             <Lanyard />
           </Physics>
         </Canvas>

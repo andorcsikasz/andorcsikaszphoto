@@ -30,7 +30,7 @@ function NavLinks({
             href={item.href}
             onClick={onClick}
             className={`
-              relative text-sm uppercase tracking-[0.12em] font-medium
+              relative font-headline text-sm uppercase tracking-tighter
               transition-colors duration-200
               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm
               ${mobile ? "px-4 py-4 min-h-[52px] flex items-center" : "px-4 py-2.5"}
@@ -120,13 +120,20 @@ export function PortfolioLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const [location] = useLocation();
+  const isLanding = location === "/";
+
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div
+      className={`min-h-screen bg-background flex flex-col ${
+        isLanding ? "h-screen overflow-hidden" : ""
+      }`}
+    >
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 sm:h-16 items-center justify-between">
           <Link
             href="/"
-            className="text-sm uppercase tracking-[0.15em] font-semibold text-foreground hover:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+            className="font-headline text-base sm:text-lg uppercase tracking-tighter text-foreground hover:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
           >
             {portfolioConfig.name}
           </Link>
@@ -139,8 +146,9 @@ export function PortfolioLayout({
         </div>
       </header>
 
-      <main className="flex-1 overflow-x-hidden">{children}</main>
+      <main className={`flex-1 overflow-x-hidden ${isLanding ? "overflow-hidden" : "overflow-y-auto"}`}>{children}</main>
 
+      {!isLanding && (
       <footer className="py-8 sm:py-10 border-t border-border/40">
         <div className="container flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
           <span className="text-sm uppercase tracking-[0.12em] font-medium text-muted-foreground">
@@ -184,6 +192,7 @@ export function PortfolioLayout({
           </div>
         </div>
       </footer>
+      )}
     </div>
   );
 }
