@@ -231,9 +231,9 @@ function BookingForm() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="rounded-2xl border border-border bg-card p-8 sm:p-10 text-center"
+        className="rounded-2xl border border-border/70 bg-card/90 backdrop-blur-sm p-8 sm:p-10 text-center shadow-xl shadow-black/10"
       >
-        <p className="text-lg font-medium text-foreground">Request sent.</p>
+        <p className="text-lg font-semibold text-foreground">Request sent.</p>
         <p className="mt-2 text-sm text-muted-foreground">
           Your default email client will open. Send the message to confirm your booking request.
         </p>
@@ -245,18 +245,18 @@ function BookingForm() {
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="booking-name">Name</Label>
+          <Label htmlFor="booking-name" className="text-sm font-medium">Name</Label>
           <Input
             id="booking-name"
             required
             value={form.name}
             onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
             placeholder="Your name"
-            className="h-10"
+            className="h-11 bg-background/70 border-border/80"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="booking-email">Email</Label>
+          <Label htmlFor="booking-email" className="text-sm font-medium">Email</Label>
           <Input
             id="booking-email"
             type="email"
@@ -264,12 +264,12 @@ function BookingForm() {
             value={form.email}
             onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
             placeholder="you@example.com"
-            className="h-10"
+            className="h-11 bg-background/70 border-border/80"
           />
         </div>
       </div>
       <div className="space-y-2">
-        <Label htmlFor="booking-phone">Phone</Label>
+        <Label htmlFor="booking-phone" className="text-sm font-medium">Phone</Label>
         <Input
           id="booking-phone"
           type="tel"
@@ -277,39 +277,39 @@ function BookingForm() {
           value={form.phone}
           onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
           placeholder="+36 00 000 0000"
-          className="h-10"
+          className="h-11 bg-background/70 border-border/80"
         />
       </div>
       <div className="grid gap-6 sm:grid-cols-3">
         <div className="space-y-2">
-          <Label htmlFor="booking-date">Date</Label>
+          <Label htmlFor="booking-date" className="text-sm font-medium">Date</Label>
           <Input
             id="booking-date"
             type="date"
             required
             value={form.date}
             onChange={(e) => setForm((f) => ({ ...f, date: e.target.value }))}
-            className="h-10"
+            className="h-11 bg-background/70 border-border/80"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="booking-time">Time</Label>
+          <Label htmlFor="booking-time" className="text-sm font-medium">Time</Label>
           <Input
             id="booking-time"
             type="time"
             required
             value={form.time}
             onChange={(e) => setForm((f) => ({ ...f, time: e.target.value }))}
-            className="h-10"
+            className="h-11 bg-background/70 border-border/80"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="booking-duration">Duration</Label>
+          <Label htmlFor="booking-duration" className="text-sm font-medium">Duration</Label>
           <select
             id="booking-duration"
             value={form.duration}
             onChange={(e) => setForm((f) => ({ ...f, duration: e.target.value }))}
-            className="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className="flex h-11 w-full rounded-md border border-border/80 bg-background/70 px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             <option value="">Select duration</option>
             <option value="1 hour">1 hour</option>
@@ -321,17 +321,17 @@ function BookingForm() {
         </div>
       </div>
       <div className="space-y-2">
-        <Label htmlFor="booking-message">Message (optional)</Label>
+        <Label htmlFor="booking-message" className="text-sm font-medium">Message (optional)</Label>
         <Textarea
           id="booking-message"
           value={form.message}
           onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
           placeholder="Tell me about your project, location, or any questions..."
           rows={4}
-          className="resize-none"
+          className="resize-none bg-background/70 border-border/80"
         />
       </div>
-      <Button type="submit" size="lg" className="w-full sm:w-auto">
+      <Button type="submit" size="lg" className="w-full sm:w-auto h-11 px-8 font-semibold">
         Request booking
       </Button>
     </form>
@@ -473,7 +473,8 @@ export default function Photography() {
 
       {/* Booking CTA */}
       <section className="container py-16 sm:py-24 border-t border-border/50">
-        <div className="max-w-2xl">
+        <div className="grid gap-10 lg:grid-cols-5 items-start">
+          <div className="lg:col-span-2">
           <motion.h2
             className="font-headline text-3xl sm:text-4xl lg:text-5xl uppercase tracking-tighter text-foreground mb-4"
             initial={reduced ? false : { opacity: 0 }}
@@ -490,7 +491,19 @@ export default function Photography() {
           >
             Tell me about your project and I’ll get back to you within 24 hours.
           </motion.p>
+          <motion.ul
+            className="mt-6 space-y-2 text-sm text-muted-foreground"
+            initial={reduced ? false : { opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            <li>• Wedding, event, and travel sessions</li>
+            <li>• Fast reply, clear pricing, simple process</li>
+            <li>• Flexible date and location planning</li>
+          </motion.ul>
+          </div>
           <motion.div
+            className="lg:col-span-3 rounded-2xl border border-border/70 bg-card/90 backdrop-blur-sm p-6 sm:p-8 shadow-xl shadow-black/10"
             initial={reduced ? false : { opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}

@@ -242,7 +242,7 @@ export default function Drone() {
             Drone
           </h1>
           <p className="mt-3 text-base sm:text-lg text-muted-foreground max-w-md leading-relaxed">
-            Add your videos here.
+            This page is under construction. Drones are charging, pilots are caffeinating.
           </p>
         </motion.div>
       </div>

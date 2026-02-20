@@ -32,7 +32,7 @@ function NavLinks({
             href={item.href}
             onClick={onClick}
             className={`
-              relative font-headline text-base sm:text-lg uppercase tracking-tighter
+              relative font-headline font-bold text-base sm:text-lg uppercase tracking-tighter
               transition-colors duration-200
               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm
               ${mobile ? "px-4 py-4 min-h-[52px] flex items-center" : "px-4 py-2.5"}
@@ -135,7 +135,7 @@ export function PortfolioLayout({
         <Silk
           speed={5}
           scale={1}
-          color="#7B61FF"
+          color="#3F2A8C"
           noiseIntensity={1.5}
           rotation={0}
           opacity={1}
@@ -147,7 +147,7 @@ export function PortfolioLayout({
         <div className="container flex h-16 sm:h-20 items-center justify-between">
           <Link
             href="/"
-            className="font-headline text-xl sm:text-2xl uppercase tracking-tighter text-foreground hover:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+            className="font-headline font-extrabold text-xl sm:text-2xl uppercase tracking-tighter text-foreground hover:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
           >
             {portfolioConfig.name}
           </Link>

@@ -4,9 +4,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: "Inter", system-ui, sans-serif;
-  --font-display: "Inter", system-ui, sans-serif;
-  --font-headline: "Inter", system-ui, sans-serif;
+  --font-sans: "Syne", system-ui, sans-serif;
+  --font-display: "Syne", system-ui, sans-serif;
+  --font-headline: "Syne", system-ui, sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
