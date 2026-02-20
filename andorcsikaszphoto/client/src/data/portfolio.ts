@@ -191,7 +191,7 @@ export const sandboxProjects: SandboxProject[] = [
     description: "Collaborative event management platform.",
     tags: ["startup", "events"],
     image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80",
-    link: "https://p1-vibecheck.up.railway.app/",
+    link: "https://andorcsikasz.com",
     year: 2024,
   },
 ];
