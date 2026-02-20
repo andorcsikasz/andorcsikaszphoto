@@ -91,6 +91,17 @@ function MobileNav() {
                 Instagram
               </a>
             )}
+            {portfolioConfig.linkedin && (
+              <a
+                href={portfolioConfig.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm py-1"
+                aria-label="LinkedIn"
+              >
+                LinkedIn
+              </a>
+            )}
             <a
               href={`mailto:${portfolioConfig.email}`}
               className="text-sm tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm py-1"
@@ -151,6 +162,17 @@ export function PortfolioLayout({
                 aria-label="Instagram"
               >
                 Instagram
+              </a>
+            )}
+            {portfolioConfig.linkedin && (
+              <a
+                href={portfolioConfig.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm tracking-wide text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+                aria-label="LinkedIn"
+              >
+                LinkedIn
               </a>
             )}
             <a

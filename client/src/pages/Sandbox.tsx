@@ -34,7 +34,19 @@ function ProjectCard({
       }
     >
       <Wrapper {...wrapperProps}>
-        <div className="rounded-xl sm:rounded-2xl border border-border/50 bg-muted/20 p-6 sm:p-8 transition-all duration-300 hover:border-border hover:bg-muted/40 hover:shadow-lg hover:shadow-black/5">
+        <div className="rounded-xl sm:rounded-2xl border border-border bg-card overflow-hidden transition-all duration-300 hover:border-border hover:shadow-lg hover:shadow-black/5">
+          {project.image && (
+            <div className="relative aspect-[16/9] overflow-hidden bg-muted/50">
+              <img
+                src={project.image}
+                alt={project.title}
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+            </div>
+          )}
+          <div className="p-6 sm:p-8">
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0 flex-1">
               <h2 className="text-base sm:text-lg font-semibold text-foreground leading-snug group-hover:text-foreground/90 transition-colors">
@@ -70,6 +82,7 @@ function ProjectCard({
               ))}
             </div>
           )}
+          </div>
         </div>
       </Wrapper>
     </motion.article>

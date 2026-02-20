@@ -30,6 +30,33 @@ export interface SandboxProject {
 export const heroImage =
   "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=90";
 
+// Photography page content
+export const photographyIntro = {
+  headline: "Photography for me is about holding on to a moment before it’s gone.",
+  paragraph1:
+    "I picked up a camera in 2022 and haven’t really put it down since. What started as curiosity turned into something I carry everywhere — through 40 countries and counting.",
+  paragraph2:
+    "I shoot landscapes, people, cities, whatever catches my eye. I’m not interested in perfection. I’m interested in the light, the mood, the feeling of being there. That split second before you move on.",
+};
+
+export const photographyServices = [
+  {
+    id: "wedding",
+    title: "Wedding",
+    description: "Your day, told honestly. From getting ready to the last dance — I focus on the real moments, the emotions, the small details you’ll want to remember.",
+  },
+  {
+    id: "event",
+    title: "Event",
+    description: "Corporate events, celebrations, conferences. I document the energy and the people — clean, editorial coverage that tells the story.",
+  },
+  {
+    id: "travel",
+    title: "Travel",
+    description: "Destination and travel photography. Whether it’s a brand shoot abroad or a personal project, I bring a documentary eye and a love for new places.",
+  },
+];
+
 // Photography — add your photos later
 export const photographyItems: PortfolioItem[] = [
   {
@@ -136,6 +163,7 @@ export const sandboxProjects: SandboxProject[] = [
     title: "ForumApp",
     description: "Platform for young people (16–30) to discover programs, internships, and volunteering. Growth tracking and smart matching.",
     tags: ["startup", "platform", "youth"],
+    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
     link: "https://p2-forumapp.up.railway.app/en",
     year: 2024,
   },
@@ -144,6 +172,7 @@ export const sandboxProjects: SandboxProject[] = [
     title: "Anna Papfalusi Photography",
     description: "Photography portfolio — portraits, gallery, pricing, and bookings.",
     tags: ["photography", "portfolio"],
+    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&q=80",
     link: "https://p4-papfalusiannaphotography.up.railway.app/#home",
     year: 2024,
   },
@@ -152,6 +181,7 @@ export const sandboxProjects: SandboxProject[] = [
     title: "FlatMate",
     description: "Verified mid-term rentals in Budapest.",
     tags: ["startup", "housing", "budapest"],
+    image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&q=80",
     link: "https://flatmate-production-e444.up.railway.app/",
     year: 2024,
   },
@@ -160,6 +190,7 @@ export const sandboxProjects: SandboxProject[] = [
     title: "VibeCheck",
     description: "Collaborative event management platform.",
     tags: ["startup", "events"],
+    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80",
     link: "https://p1-vibecheck.up.railway.app/",
     year: 2024,
   },
@@ -170,5 +201,5 @@ export const portfolioConfig = {
   email: "andor.csikasz@gmail.com",
   instagram: "https://www.instagram.com/andorcsikasz/",
   twitter: "",
-  linkedin: "",
+  linkedin: "https://www.linkedin.com/in/andorcsikasz",
 };

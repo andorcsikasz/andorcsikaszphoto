@@ -1,6 +1,6 @@
 import { portfolioConfig } from "@/data/portfolio";
 import { motion } from "framer-motion";
-import { EnvelopeSimple, InstagramLogo } from "@phosphor-icons/react";
+import { EnvelopeSimple, InstagramLogo, LinkedinLogo } from "@phosphor-icons/react";
 import { Link } from "wouter";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
@@ -14,6 +14,9 @@ const contactLinks = [
   },
   ...(portfolioConfig.instagram
     ? [{ href: portfolioConfig.instagram, icon: InstagramLogo, label: "Instagram" }]
+    : []),
+  ...(portfolioConfig.linkedin
+    ? [{ href: portfolioConfig.linkedin, icon: LinkedinLogo, label: "LinkedIn" }]
     : []),
 ];
 

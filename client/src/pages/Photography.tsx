@@ -4,11 +4,21 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { photographyItems, type PortfolioItem } from "@/data/portfolio";
+import {
+  photographyItems,
+  photographyIntro,
+  photographyServices,
+  portfolioConfig,
+} from "@/data/portfolio";
+import type { PortfolioItem } from "@/data/portfolio";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight, X } from "@phosphor-icons/react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 const spring = { type: "spring" as const, stiffness: 300, damping: 30 };
 const springSoft = { type: "spring" as const, stiffness: 260, damping: 28 };
@@ -192,12 +202,149 @@ function Lightbox({
   );
 }
 
+function BookingForm() {
+  const [submitted, setSubmitted] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    date: "",
+    time: "",
+    duration: "",
+    message: "",
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const subject = encodeURIComponent("Photography inquiry");
+    const body = encodeURIComponent(
+      `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\n` +
+        `Preferred date: ${form.date}\nPreferred time: ${form.time}\nDuration: ${form.duration}\n\n` +
+        (form.message ? `Message:\n${form.message}` : "")
+    );
+    window.location.href = `mailto:${portfolioConfig.email}?subject=${subject}&body=${body}`;
+    setSubmitted(true);
+  };
+
+  if (submitted) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="rounded-2xl border border-border bg-card p-8 sm:p-10 text-center"
+      >
+        <p className="text-lg font-medium text-foreground">Request sent.</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Your default email client will open. Send the message to confirm your booking request.
+        </p>
+      </motion.div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="grid gap-6 sm:grid-cols-2">
+        <div className="space-y-2">
+          <Label htmlFor="booking-name">Name</Label>
+          <Input
+            id="booking-name"
+            required
+            value={form.name}
+            onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+            placeholder="Your name"
+            className="h-10"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="booking-email">Email</Label>
+          <Input
+            id="booking-email"
+            type="email"
+            required
+            value={form.email}
+            onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+            placeholder="you@example.com"
+            className="h-10"
+          />
+        </div>
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="booking-phone">Phone</Label>
+        <Input
+          id="booking-phone"
+          type="tel"
+          required
+          value={form.phone}
+          onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+          placeholder="+36 00 000 0000"
+          className="h-10"
+        />
+      </div>
+      <div className="grid gap-6 sm:grid-cols-3">
+        <div className="space-y-2">
+          <Label htmlFor="booking-date">Date</Label>
+          <Input
+            id="booking-date"
+            type="date"
+            required
+            value={form.date}
+            onChange={(e) => setForm((f) => ({ ...f, date: e.target.value }))}
+            className="h-10"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="booking-time">Time</Label>
+          <Input
+            id="booking-time"
+            type="time"
+            required
+            value={form.time}
+            onChange={(e) => setForm((f) => ({ ...f, time: e.target.value }))}
+            className="h-10"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="booking-duration">Duration</Label>
+          <select
+            id="booking-duration"
+            value={form.duration}
+            onChange={(e) => setForm((f) => ({ ...f, duration: e.target.value }))}
+            className="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          >
+            <option value="">Select duration</option>
+            <option value="1 hour">1 hour</option>
+            <option value="2 hours">2 hours</option>
+            <option value="3 hours">3 hours</option>
+            <option value="Half day">Half day</option>
+            <option value="Full day">Full day</option>
+          </select>
+        </div>
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="booking-message">Message (optional)</Label>
+        <Textarea
+          id="booking-message"
+          value={form.message}
+          onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
+          placeholder="Tell me about your project, location, or any questions..."
+          rows={4}
+          className="resize-none"
+        />
+      </div>
+      <Button type="submit" size="lg" className="w-full sm:w-auto">
+        Request booking
+      </Button>
+    </form>
+  );
+}
+
 export default function Photography() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const reduced = useReducedMotion();
 
   const col1 = photographyItems.filter((_, i) => i % 2 === 0);
   const col2 = photographyItems.filter((_, i) => i % 2 !== 0);
+  const featured = photographyItems.slice(0, 2);
 
   const openLightbox = (item: PortfolioItem) => {
     const idx = photographyItems.findIndex((p) => p.id === item.id);
@@ -206,22 +353,61 @@ export default function Photography() {
 
   return (
     <div className="min-h-screen pb-24 sm:pb-32">
-      <div className="container pt-16 sm:pt-20 pb-12 sm:pb-16 scroll-mt-20">
-        <motion.div
-          initial={reduced ? false : { opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={reduced ? { duration: 0 } : spring}
-        >
-          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-foreground">
-            Photography
-          </h1>
-          <p className="mt-3 text-base sm:text-lg text-muted-foreground max-w-md leading-relaxed">
-            Add your photos here.
-          </p>
-        </motion.div>
-      </div>
+      {/* Hero: 2 pics + intro text */}
+      <section className="container pt-16 sm:pt-20 pb-16 sm:pb-24 scroll-mt-20">
+        <div className="grid gap-12 lg:grid-cols-5 lg:gap-16 items-start">
+          <motion.div
+            className="lg:col-span-3 grid grid-cols-2 gap-4"
+            initial={reduced ? false : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={reduced ? { duration: 0 } : spring}
+          >
+            {featured.map((item, i) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => openLightbox(item)}
+                className="group relative overflow-hidden rounded-xl sm:rounded-2xl aspect-[4/5] bg-muted/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              >
+                <img
+                  src={item.src}
+                  alt={item.alt}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  loading="eager"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              </button>
+            ))}
+          </motion.div>
+          <motion.div
+            className="lg:col-span-2"
+            initial={reduced ? false : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={reduced ? { duration: 0 } : { ...spring, delay: 0.1 }}
+          >
+            <h1 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-foreground leading-[1.15]">
+              {photographyIntro.headline}
+            </h1>
+            <p className="mt-6 text-base sm:text-lg text-muted-foreground leading-relaxed">
+              {photographyIntro.paragraph1}
+            </p>
+            <p className="mt-4 text-base sm:text-lg text-muted-foreground leading-relaxed">
+              {photographyIntro.paragraph2}
+            </p>
+          </motion.div>
+        </div>
+      </section>
 
-      <div className="container">
+      {/* Gallery */}
+      <section className="container py-16 sm:py-20 border-t border-border/50">
+        <motion.p
+          className="text-[11px] uppercase tracking-[0.2em] font-medium text-muted-foreground mb-10"
+          initial={reduced ? false : { opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        >
+          Gallery
+        </motion.p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 items-start">
           <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8">
             {col1.map((item, i) => (
@@ -244,7 +430,75 @@ export default function Photography() {
             ))}
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* Services */}
+      <section className="container py-16 sm:py-24 border-t border-border/50">
+        <motion.h2
+          className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-foreground mb-4"
+          initial={reduced ? false : { opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        >
+          Services
+        </motion.h2>
+        <motion.p
+          className="text-muted-foreground max-w-xl mb-12"
+          initial={reduced ? false : { opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        >
+          Wedding, event, or travel — I approach each project with the same intention: capture what matters.
+        </motion.p>
+        <div className="grid gap-6 sm:grid-cols-3">
+          {photographyServices.map((svc, i) => (
+            <motion.div
+              key={svc.id}
+              className="rounded-xl sm:rounded-2xl border border-border bg-card p-6 sm:p-8"
+              initial={reduced ? false : { opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-5% 0px" }}
+              transition={reduced ? { duration: 0 } : { ...springSoft, delay: i * 0.05 }}
+            >
+              <h3 className="font-display text-lg font-semibold text-foreground">
+                {svc.title}
+              </h3>
+              <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+                {svc.description}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Booking CTA */}
+      <section className="container py-16 sm:py-24 border-t border-border/50">
+        <div className="max-w-2xl">
+          <motion.h2
+            className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-foreground mb-4"
+            initial={reduced ? false : { opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            Book a session
+          </motion.h2>
+          <motion.p
+            className="text-muted-foreground mb-10"
+            initial={reduced ? false : { opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            Tell me about your project and I’ll get back to you within 24 hours.
+          </motion.p>
+          <motion.div
+            initial={reduced ? false : { opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            <BookingForm />
+          </motion.div>
+        </div>
+      </section>
 
       <AnimatePresence>
         {lightboxIndex !== null && (
