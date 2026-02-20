@@ -135,15 +135,15 @@ export function PortfolioLayout({
         <Silk
           speed={5}
           scale={1}
-          color="#3F2A8C"
+          color="#5B3BFF"
           noiseIntensity={1.5}
           rotation={0}
           opacity={1}
           className="pointer-events-none"
         />
       </Suspense>
-      <div className="relative z-10 flex min-h-screen flex-1 flex-col bg-background/60 backdrop-blur-sm">
-      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
+      <div className="relative z-10 flex min-h-screen flex-1 flex-col bg-black/35 backdrop-blur-[2px]">
+      <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/40 backdrop-blur-xl">
         <div className="container flex h-16 sm:h-20 items-center justify-between">
           <Link
             href="/"
